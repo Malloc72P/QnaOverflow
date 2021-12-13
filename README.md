@@ -1,8 +1,8 @@
-# GoodBoard
+# QnaBoard
 
-> **기본에 충실한 게시판 프로젝트**
+> **기본에 충실한 Q&A 게시판 프로젝트**
 >
-> demo : https://goodboard.com
+> demo : https://qnaboard.com
 
 
 
