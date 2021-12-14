@@ -1,2 +1,8 @@
-package scra.qnaboard;public interface MemberRepositoryQuerydsl {
+package scra.qnaboard;
+
+import java.util.List;
+
+public interface TestRepositoryQuerydsl {
+
+    List<TestEntity> search();
 }
