@@ -171,3 +171,26 @@
 #### 6.2 예외처리
 
 - ControllerAdvice를 사용한 예외처리 부분이 전체적으로 어케 생겼는지 소개
+
+### 7. 배포
+
+<hr/>
+
+#### 7.1 ⚙배포를 위한 스프링 설정
+
+```
+src/main/resources
+			|-------application.yml
+            |-------application-local.yml
+            |-------application-dev.yml
+            |-------application-prod.yml
+				
+```
+
+- 공통설정은 application.yml에 작성한다
+- 로컬에서 개발할 때 사용하는 설정은 local, 개발서버는 dev, 운영서버는 prod설정파일을 사용한다
+- ddl-auto: create 설정은 로컬환경에서만 사용하도록 한다
+
+#### 7.2 🧵배포환경
+
+- 
