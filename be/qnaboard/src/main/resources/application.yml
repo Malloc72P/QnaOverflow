@@ -1,18 +1,8 @@
 spring:
   profiles:
     active: local
-  datasource:
-    url: jdbc:h2:tcp://localhost/~/qnaboard
-    username: sa
-    password:
-    driver-class-name: org.h2.Driver
-
   jpa:
-    hibernate:
-      ddl-auto: create
     properties:
       hibernate:
-        use_sql_comments: true
-        format_sql: true
         jdbc:
           batch_size: 100
