@@ -1,0 +1,10 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:qnaboard;MODE=MYSQL
+  jpa:
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        format_sql: true
+
