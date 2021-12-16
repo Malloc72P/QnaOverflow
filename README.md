@@ -30,7 +30,7 @@
 | Spring Data JPA | 2.6.0   |
 | QueryDSL        |         |
 | H2              | 1.4.200 |
-| MySQL           | 8       |
+| MySQL           | 8.0.27  |
 
 🪓**Frontend**
 
