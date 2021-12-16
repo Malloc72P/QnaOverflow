@@ -1,6 +1,8 @@
 spring:
-  datasource:
-    url: jdbc:h2:tcp://localhost/~/qnaboard
-    username: sa
-    password:
-    driver-class-name: org.h2.Driver
+  jpa:
+    hibernate:
+      ddl-auto: none
+
+database_url : dburl
+database_username : dbuser
+database_password : password

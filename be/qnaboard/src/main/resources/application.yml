@@ -1,8 +1,15 @@
 spring:
   profiles:
     active: local
+  datasource:
+    url: jdbc:mysql://${database_url}/qnaboard
+    username: ${database_username}
+    password: ${database_password}
+    driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     properties:
       hibernate:
+        ddl-auto: none
+        dialect: org.hibernate.dialect.MySQL8Dialect
         jdbc:
           batch_size: 100
