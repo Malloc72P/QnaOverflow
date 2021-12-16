@@ -1,4 +1,5 @@
-buildscript {//querydsl
+//querydsl
+buildscript {
 	ext {
 		queryDslVersion = "5.0.0"
 	}
@@ -8,7 +9,8 @@ plugins {
 	id 'org.springframework.boot' version '2.6.1'
 	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
 	id 'java'
-	id "com.ewerk.gradle.plugins.querydsl" version "1.0.10"//querydsl
+	//querydsl
+	id "com.ewerk.gradle.plugins.querydsl" version "1.0.10"
 }
 
 group = 'scra'
@@ -19,7 +21,8 @@ configurations {
 	compileOnly {
 		extendsFrom annotationProcessor
 	}
-	querydsl.extendsFrom compileClasspath//querydsl
+	//querydsl
+	querydsl.extendsFrom compileClasspath
 }
 
 repositories {
@@ -41,6 +44,9 @@ dependencies {
 
 	//p6spy sql 로깅 라이브러리
 	implementation("com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.7.1")
+
+	//mysql connector
+	runtimeOnly 'mysql:mysql-connector-java'
 }
 
 test {
