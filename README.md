@@ -172,25 +172,32 @@
 
 - ControllerAdvice를 사용한 예외처리 부분이 전체적으로 어케 생겼는지 소개
 
+#### 6.3 개발환경 구축
+
+- 로컬, 개발서버, 운영서버마다 별도의 설정파일로 관리한다
+
+  ```
+  src/main/resources
+  			|-------application.yml
+              |-------application-local.yml
+              |-------application-dev.yml
+              |-------application-prod.yml
+  				
+  ```
+
+- 로컬환경의 MySQL 데이터베이스는 docker-compose를 사용해서 편하게 구축한다
+  개발서버 및 운영서버의 데이터베이스는 AWS의 RDS를 사용해서 구축한다
+
+- 스프링의 ddl-auto: create 설정은 로컬환경에서만 사용하도록 한다
+
 ### 7. 배포
 
 <hr/>
 
-#### 7.1 ⚙배포를 위한 스프링 설정
+#### 7.1 ⚙배포환경
 
-```
-src/main/resources
-			|-------application.yml
-            |-------application-local.yml
-            |-------application-dev.yml
-            |-------application-prod.yml
-				
-```
+- 
 
-- 공통설정은 application.yml에 작성한다
-- 로컬에서 개발할 때 사용하는 설정은 local, 개발서버는 dev, 운영서버는 prod설정파일을 사용한다
-- ddl-auto: create 설정은 로컬환경에서만 사용하도록 한다
-
-#### 7.2 🧵배포환경
+#### 7.2 🧵 자동배포
 
 - 
