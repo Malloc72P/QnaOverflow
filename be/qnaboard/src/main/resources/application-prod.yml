@@ -1,8 +1,0 @@
-spring:
-  jpa:
-    hibernate:
-      ddl-auto: none
-
-database_url : dburl
-database_username : dbuser
-database_password : password
