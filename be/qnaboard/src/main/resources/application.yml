@@ -1,6 +1,6 @@
 spring:
   profiles:
-    active: local
+    active: dev
   datasource:
     url: jdbc:mysql://${database_url}/qnaboard
     username: ${database_username}
