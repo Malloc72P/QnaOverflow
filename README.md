@@ -26,17 +26,18 @@
 | 기술명          | Version |
 | --------------- | ------- |
 | Springboot      | 2.6.1   |
-| Gradle          |         |
+| Gradle          | 7.3.1   |
 | Spring Data JPA | 2.6.0   |
-| QueryDSL        |         |
+| QueryDSL        | 5.0.0   |
 | H2              | 1.4.200 |
 | MySQL           | 8.0.27  |
+| Thymeleaf       |         |
 
-🪓**Frontend**
+**🎸 기타**
 
 | 기술명  | Version |
 | ------- | ------- |
-| ReactJS | 17.0.2  |
+| Jenkins | 2.325   |
 
 
 
@@ -178,10 +179,10 @@
 
   ```
   src/main/resources
-  			|-------application.yml
-              |-------application-local.yml
-              |-------application-dev.yml
-              |-------application-prod.yml
+            |--application.yml
+            |--application-local.yml
+            |--application-dev.yml
+            |--application-prod.yml
   				
   ```
 
@@ -196,8 +197,14 @@
 
 #### 7.1 ⚙배포환경
 
-- 
+![](https://i.imgur.com/doM8mIi.png)
 
-#### 7.2 🧵 자동배포
+- 로컬환경에서 도커를 설치하고, 그 안에 젠킨스를 설치하여 배포를 진행했다.
+- 젠킨스에서 빌드 및 테스트를 하고 jar파일을 S3에 업로드 한 다음, CodeDeploy에 배포요청을 해서 대상 EC2 인스턴스에서 앱을 실행할 수 있도록 설정했다.
+- 데이터베이스의 주소 및 계정정보와 같은 민감한 내용을 담고 있는 설정파일은 Git 리포지토리에 올라가지 않도록 하고, 젠킨스에서 없는 설정파일을 따로 주입해서 빌드하도록 설정했다.
+- 배포가 끝나서 EC2에서 앱을 실행시킬 때, 어떤 프로필로 동작할지를 명시해주었다.
 
-- 
+
+
+
+
