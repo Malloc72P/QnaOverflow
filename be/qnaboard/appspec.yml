@@ -1,0 +1,6 @@
+version: 0.0
+os: linux
+files:
+  - source: deploy/be/deploy.zip
+    destination: /home/ec2-user/zip
+    overwrite: yes
