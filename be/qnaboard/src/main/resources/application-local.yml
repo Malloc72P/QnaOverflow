@@ -1,11 +1,12 @@
 spring:
   jpa:
-    hibernate:
-      ddl-auto: create
     properties:
       hibernate:
-        format_sql: true
+        ddl-auto: create-drop
+logging:
+  level:
+    org.hibernate.SQL: debug
 
-database_url : localhost:3306
-database_username : dev
-database_password : dev1234
+database_url: localhost:3306
+database_username: dev
+database_password: dev1234

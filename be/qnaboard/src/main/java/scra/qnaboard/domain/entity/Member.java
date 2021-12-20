@@ -12,11 +12,13 @@ import java.util.Objects;
  */
 @Getter
 @Entity
+@Table(name = "members")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Member extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "members_id")
     private Long id;
 
     private String nickname;
