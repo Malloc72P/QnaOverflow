@@ -8,6 +8,7 @@ import scra.qnaboard.domain.entity.Comment;
 import scra.qnaboard.domain.entity.Member;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -38,7 +39,7 @@ public abstract class Post extends BaseTimeEntity {
     private Long downVoteCount = 0L;
 
     @OneToMany(mappedBy = "parentPost", fetch = FetchType.LAZY)
-    private List<Comment> comments;
+    private List<Comment> comments = new ArrayList<>();
 
     public Post(Member author, String content) {
         this.author = author;
