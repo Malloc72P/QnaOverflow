@@ -23,7 +23,7 @@ class MemberTest {
      */
     @Test
     @DisplayName("맴버 엔티티를 저장할 수 있어야함")
-    void testSaveEntity() {
+    void testSaveMember() {
         Member[] testcases = {
                 new Member("member1", MemberRole.ADMIN),
                 new Member("member2", MemberRole.NORMAL),
