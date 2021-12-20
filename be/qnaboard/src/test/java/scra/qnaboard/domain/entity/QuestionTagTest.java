@@ -48,5 +48,4 @@ class QuestionTagTest {
         assertThat(foundQuestionTag.getTag()).isEqualTo(tag);
     }
 
-
 }
