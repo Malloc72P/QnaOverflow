@@ -82,6 +82,11 @@ class CommentTest {
         Comment findC6 = em.find(Comment.class, c6.getId());
         assertThat(findC5.getParentComment()).isEqualTo(c4)
                 .isEqualTo(findC6.getParentComment());
+
+        assertThat(findC5.getCreatedDate())
+                .isNotNull()
+                .isEqualTo(findC5.getLastModifiedDate());
+
     }
 
 }
