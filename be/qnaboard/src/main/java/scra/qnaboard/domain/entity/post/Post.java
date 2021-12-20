@@ -30,7 +30,7 @@ public abstract class Post extends BaseTimeEntity {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "members_id")
+    @JoinColumn(name = "author_id")
     private Member author;
 
     private String content;
