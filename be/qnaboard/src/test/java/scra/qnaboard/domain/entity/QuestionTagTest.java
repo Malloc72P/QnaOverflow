@@ -10,7 +10,6 @@ import scra.qnaboard.domain.entity.post.Question;
 import javax.persistence.EntityManager;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Transactional
