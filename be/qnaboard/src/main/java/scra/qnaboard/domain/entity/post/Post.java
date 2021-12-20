@@ -4,9 +4,11 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import scra.qnaboard.domain.entity.BaseTimeEntity;
+import scra.qnaboard.domain.entity.Comment;
 import scra.qnaboard.domain.entity.Member;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -34,6 +36,9 @@ public abstract class Post extends BaseTimeEntity {
 
     private Long upVoteCount = 0L;
     private Long downVoteCount = 0L;
+
+    @OneToMany(mappedBy = "parentPost", fetch = FetchType.LAZY)
+    private List<Comment> comments;
 
     public Post(Member author, String content) {
         this.author = author;
