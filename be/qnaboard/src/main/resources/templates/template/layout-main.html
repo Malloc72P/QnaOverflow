@@ -1,0 +1,26 @@
+<!--/*
+모든 페이지의 기본 레이아웃이 되는 템플릿.
+새로 페이지를 만든다면 이 템플릿을 사용하면 된다.
+페이지의 제목과 컨텐츠는 이 템플릿의 파라미터로 넘기면 된다
+
+사용자의 로그인 여부에 따라 네비바의 내용이 바뀐다.
+만약 로그인된 사용자라면 세번째 파라미터인 username 으로 사용자의 이름을 넘겨주면 된다
+비로그인 사용자라면 null을 넘기면 된다
+*/-->
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="kr"
+      th:fragment="layout (title, content, username)">
+
+<head th:replace="template/fragment/base-head :: base_head(~{::title})">
+    <title>title</title>
+</head>
+
+<body>
+<div th:replace="template/fragment/navibar :: navibar(${username})"></div>
+<div th:replace="${content}">
+    <p>content</p>
+</div>
+</body>
+<script th:src="@{/js/bootstrap.min.js}"></script>
+</html>

@@ -1,0 +1,60 @@
+<!--/*
+페이지의 맨 위에 붙는 네비바
+기능
+- 비로그인 유저를 위한 로그인 기능
+- 로그인 유저를 위한 마이페이지, 로그아웃, 탈퇴 기능
+*/-->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="kr">
+
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark" th:fragment="navibar(username)">
+    <!--/*
+        네비바 컨테이너 - PowerOverflow와 로그인버튼 등의 모든 네비바 아이템은 이 안에 있어야 함
+    */-->
+    <div class="container-fluid">
+        <!--/*PowerOverflow 배너 있는 부분*/-->
+        <a class="navbar-brand" href="#">🏹Power Overflow</a>
+
+        <!--/*네비바가 collapse 되었을 때, 이걸 열 수 있게 해주는 햄버거 버튼*/-->
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
+                aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <!--/*로그인, 회원기능을 위한 영역*/-->
+        <div class="collapse navbar-collapse" id="navbarNavDropdown">
+            <ul class="navbar-nav ms-auto">
+                <!--/*비로그인 유저를 위한 로그인 드랍다운 버튼과 메뉴*/-->
+                <li class="nav-item dropdown" th:if="${username == null}">
+                    <a class="nav-link dropdown-toggle active" href="#" id="navbarDropdownLoginMenuLink"
+                       role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        🔑Login
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownLoginMenuLink">
+                        <li><a class="dropdown-item" href="#">구글 계정으로 로그인하기</a></li>
+                        <li><a class="dropdown-item" href="#">네이버 계정으로 로그인하기</a></li>
+                    </ul>
+                </li>
+
+                <!--/*로그인 유저를 위한 멤버 드랍다운 버튼과 메뉴*/-->
+                <li class="nav-item dropdown" th:if="${username != null}">
+                    <a class="nav-link dropdown-toggle active" href="#" id="navbarDropdownMemberMenuLink"
+                       role="button" data-bs-toggle="dropdown" aria-expanded="false" th:text="'😀'+${username}">
+                        😀username
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownMemberMenuLink">
+                        <li><a class="dropdown-item" href="#">마이페이지</a></li>
+                        <li><a class="dropdown-item" href="#">로그아웃</a></li>
+                        <li><a class="dropdown-item" href="#">회원탈퇴</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+</body>
+
+</html>
