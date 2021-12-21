@@ -1,7 +1,12 @@
-<html xmlns:th="http://www.thymeleaf.org" lang="kr">
+<!--/*
+모든 페이지에 공통으로 적용할 헤드 태그.
+여기서 부트스트랩 css 적용 및 페이지의 제목을 설정한다
+페이지의 제목은 파라미터로 받아서 적용한다
+*/-->
+<html lang="kr" xmlns:th="http://www.thymeleaf.org">
 
 <head th:fragment="base_head(title)">
     <meta charset="UTF-8">
-    <link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" type="text/css">
     <title th:replace="${title}">페이지 제목</title>
 </head>
