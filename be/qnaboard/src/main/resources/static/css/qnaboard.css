@@ -45,20 +45,30 @@
 
 .question-list-item .right-side .tag-wrapper {
     display: flex;
+    flex-wrap: wrap;
 }
 
-.question-list-item .right-side .tag-wrapper *{
-    margin-right: 12px;
+.question-list-item .right-side .tag-wrapper a{
+    margin-right: 8px;
 }
 
-.question-list-item .right-side .tag-wrapper .space{
-    flex: 1;
+.question-list-item .right-side a {
+    text-decoration: none;
+    margin-bottom: 6px;
 }
 
-.question-list-item .right-side .tag-wrapper .date {
+.question-list-item .right-side .createBy {
+    text-align: right;
+}
+
+.question-list-item .right-side .createBy div{
     display: inline-block;
     line-height: 18px;
-    padding-top: 10px;
+    padding-top: 12px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 155px;
+    color: #6c757d;
 }
 
 

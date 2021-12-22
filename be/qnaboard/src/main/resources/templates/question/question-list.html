@@ -10,7 +10,9 @@
 <section>
     <h2>질문 목록</h2>
     <hr/>
-    <div th:replace="template/fragment/question/question-item-summary"></div>
+    <div th:replace="template/fragment/question/question-item-summary ::
+            question_item_summary('title', 1, 1, 1, '2021-12:22 18:01:23', 1, 'edward_nygmaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')">
+    </div>
 
 </section>
 

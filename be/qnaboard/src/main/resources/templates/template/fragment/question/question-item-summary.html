@@ -9,31 +9,48 @@
 
 <body>
 
-<div class="question-list-item border-1 border-bottom" th:fragment="sidebar_item">
+<div class="question-list-item border-1 border-bottom"
+     th:fragment="question_item_summary(title, voteScore, answerCount, viewCount, createDate, questionId, authorName)">
     <div class="left-side">
         <div class="left-button">
-            <div class="up">3</div>
+            <div class="up" th:text="${voteScore}">3</div>
             <div>votes</div>
         </div>
 
         <div class="left-button">
-            <div class="up">6</div>
+            <div class="up" th:text="${answerCount}">6</div>
             <div>answers</div>
         </div>
 
         <div class="left-button">
-            <div class="up">300</div>
+            <div class="up" th:text="${viewCount}">300</div>
             <div>views</div>
         </div>
     </div>
     <div class="right-side">
-        <a href="#" class="btn"><h3>How can i use map label in angular?</h3></a>
+        <a th:href="@{/questions/{questionId}(questionId=${questionId})}"><h3 th:text="${title}">How can i use map label
+            in angular?</h3></a>
         <div class="tag-wrapper">
-            <a class="btn btn-secondary" href="#" role="button">Angular</a>
-            <a class="btn btn-secondary" href="#" role="button">Web</a>
-            <a class="btn btn-secondary" href="#" role="button">Something</a>
-            <div class="space"></div>
-            <div class="date">2021-12:22 18:01:23</div>
+            <a class="btn btn-secondary btn-sm" href="#" role="button">Angular</a>
+            <a class="btn btn-secondary btn-sm" href="#" role="button">Web</a>
+            <a class="btn btn-secondary btn-sm" href="#" role="button">Something</a>
+            <a class="btn btn-secondary btn-sm" href="#" role="button">Something</a>
+            <a class="btn btn-secondary btn-sm" href="#" role="button">Something</a>
+            <a class="btn btn-secondary btn-sm" href="#" role="button">Something</a>
+            <a class="btn btn-secondary btn-sm" href="#" role="button">Something</a>
+            <a class="btn btn-secondary btn-sm" href="#" role="button">Something</a>
+            <a class="btn btn-secondary btn-sm" href="#" role="button">Something</a>
+            <a class="btn btn-secondary btn-sm" href="#" role="button">Something</a>
+            <a class="btn btn-secondary btn-sm" href="#" role="button">Something</a>
+            <a class="btn btn-secondary btn-sm" href="#" role="button">Something</a>
+            <a class="btn btn-secondary btn-sm" href="#" role="button">Something</a>
+            <a class="btn btn-secondary btn-sm" href="#" role="button">Something</a>
+            <a class="btn btn-secondary btn-sm" href="#" role="button">Something</a>
+            <a class="btn btn-secondary btn-sm" href="#" role="button">Something</a>
+        </div>
+        <div class="createBy">
+            <div th:text="${createDate}">2021-12:22 18:01:23</div>
+            <div th:text="${authorName}">edward nygma</div>
         </div>
     </div>
 </div>
