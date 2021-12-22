@@ -1,0 +1,30 @@
+<!--/*
+페이지의 맨 위에 붙는 네비바
+기능
+- 비로그인 유저를 위한 로그인 기능
+- 로그인 유저를 위한 마이페이지, 로그아웃, 탈퇴 기능
+*/-->
+<!DOCTYPE html>
+<html lang="kr" xmlns:th="http://www.thymeleaf.org">
+
+<body>
+
+<div class="col-md-3 col-lg-2 d-md-block bg-light sidebar"
+     th:fragment="sidebar">
+    <ul class="nav nav-pills flex-column mb-auto">
+
+        <li th:replace="template/fragment/sidebar/sidebar-item ::
+                sidebar_item(#{ui.sidebar.questions}, '#', true)"></li>
+
+        <li th:replace="template/fragment/sidebar/sidebar-item ::
+                sidebar_item(#{ui.sidebar.tags}, '#', false)"></li>
+
+        <li th:replace="template/fragment/sidebar/sidebar-item ::
+                sidebar_item(#{ui.sidebar.users}, '#', false)"></li>
+
+    </ul>
+</div>
+
+</body>
+
+</html>

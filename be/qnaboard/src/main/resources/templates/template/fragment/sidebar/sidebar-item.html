@@ -1,0 +1,23 @@
+<!--/*
+페이지의 맨 위에 붙는 네비바
+기능
+- 비로그인 유저를 위한 로그인 기능
+- 로그인 유저를 위한 마이페이지, 로그아웃, 탈퇴 기능
+*/-->
+<!DOCTYPE html>
+<html lang="kr" xmlns:th="http://www.thymeleaf.org">
+
+<body>
+<ul>
+<li class="nav-item" th:fragment="sidebar_item(title, link, isActive)">
+    <a class="nav-link" href="#"
+       th:classappend="${isActive} ? active : ''"
+       th:text="${title}">
+        Orders
+    </a>
+</li>
+</ul>
+
+</body>
+
+</html>
