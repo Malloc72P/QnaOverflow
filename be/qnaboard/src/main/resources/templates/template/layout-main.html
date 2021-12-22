@@ -12,8 +12,7 @@
 <html lang="kr" th:fragment="layout (title, content, username)"
       xmlns:th="http://www.thymeleaf.org">
 
-<head th:replace="template/fragment/base-head :: base_head(~{::title})">
-    <title>title</title>
+<head th:replace="template/fragment/base-head :: base_head(${title})">
 </head>
 
 <body>

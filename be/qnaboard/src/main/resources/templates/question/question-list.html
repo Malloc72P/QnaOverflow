@@ -5,7 +5,7 @@
 <html lang="kr" th:replace="~{/template/layout-main :: layout (~{::title}, ~{::section}, ${username})}"
       xmlns:th="http://www.thymeleaf.org">
 
-<title>타이틀 테스트</title>
+<title th:text="#{ui.global.title}">제목</title>
 
 <section></section>
 

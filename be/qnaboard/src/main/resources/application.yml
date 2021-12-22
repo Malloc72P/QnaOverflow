@@ -16,3 +16,6 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.MySQL8Dialect
         default_batch_fetch_size: 100
+  messages:
+    basename: i18n/messages, config.i18n.messages
+    encoding: UTF-8

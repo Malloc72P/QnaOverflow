@@ -18,7 +18,8 @@
         <a class="navbar-brand" href="#">🏹Power Overflow</a>
 
         <!--/*네비바가 collapse 되었을 때, 이걸 열 수 있게 해주는 햄버거 버튼*/-->
-        <button aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler"
+        <button aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation"
+                class="navbar-toggler"
                 data-bs-target="#navbarNavDropdown" data-bs-toggle="collapse" type="button">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -29,25 +30,26 @@
                 <!--/*비로그인 유저를 위한 로그인 드랍다운 버튼과 메뉴*/-->
                 <li class="nav-item dropdown" th:if="${username == null}">
                     <a aria-expanded="false" class="nav-link dropdown-toggle active" data-bs-toggle="dropdown"
-                       href="#" id="navbarDropdownLoginMenuLink" role="button">
+                       href="#" id="navbarDropdownLoginMenuLink" role="button" th:text="#{ui.navibar.guest.dropdown}">
                         🔑Login
                     </a>
                     <ul aria-labelledby="navbarDropdownLoginMenuLink" class="dropdown-menu dropdown-menu-end">
-                        <li><a class="dropdown-item" href="#">구글 계정으로 로그인하기</a></li>
-                        <li><a class="dropdown-item" href="#">네이버 계정으로 로그인하기</a></li>
+                        <li><a class="dropdown-item" href="#" th:text="#{ui.navibar.guest.google-login}">구글로그인</a></li>
+                        <li><a class="dropdown-item" href="#" th:text="#{ui.navibar.guest.naver-login}">네이버로그인</a></li>
                     </ul>
                 </li>
 
                 <!--/*로그인 유저를 위한 멤버 드랍다운 버튼과 메뉴*/-->
                 <li class="nav-item dropdown" th:if="${username != null}">
                     <a aria-expanded="false" class="nav-link dropdown-toggle active" data-bs-toggle="dropdown"
-                       href="#" id="navbarDropdownMemberMenuLink" role="button" th:text="'😀'+${username}">
-                        😀username
+                       href="#" id="navbarDropdownMemberMenuLink" role="button"
+                       th:text="#{ui.navibar.login.dropdown}+${username}">
+                        유저이름
                     </a>
                     <ul aria-labelledby="navbarDropdownMemberMenuLink" class="dropdown-menu dropdown-menu-end">
-                        <li><a class="dropdown-item" href="#">마이페이지</a></li>
-                        <li><a class="dropdown-item" href="#">로그아웃</a></li>
-                        <li><a class="dropdown-item" href="#">회원탈퇴</a></li>
+                        <li><a class="dropdown-item" href="#" th:text="#{ui.navibar.login.my-page}">마이페이지</a></li>
+                        <li><a class="dropdown-item" href="#" th:text="#{ui.navibar.login.logout}">로그아웃</a></li>
+                        <li><a class="dropdown-item" href="#" th:text="#{ui.navibar.login.sign-out}">회원탈퇴</a></li>
                     </ul>
                 </li>
             </ul>
