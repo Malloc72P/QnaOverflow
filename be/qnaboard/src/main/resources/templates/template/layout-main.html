@@ -19,8 +19,8 @@
 <div th:replace="template/fragment/navibar :: navibar(${username})"></div>
 <div class="container-fluid">
     <div class="row">
-        <div class="col-md-3 col-lg-3 sidebar" th:replace="template/fragment/sidebar/sidebar :: sidebar"></div>
-        <div class="col-md-9 col-lg-9 content">
+        <div th:replace="template/fragment/sidebar/sidebar :: sidebar"></div>
+        <div class="col-md-9 col-lg-10 content">
             <div th:replace="${content}"></div>
         </div>
     </div>
