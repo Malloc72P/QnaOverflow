@@ -26,12 +26,9 @@ public class Tag extends BaseTimeEntity {
 
     private String name;
 
-    private String color;
-
-    public Tag(Member author, String name, String color) {
+    public Tag(Member author, String name) {
         this.author = author;
         this.name = name;
-        this.color = color;
     }
 
     @Override
@@ -40,12 +37,11 @@ public class Tag extends BaseTimeEntity {
         if (o == null || getClass() != o.getClass()) return false;
         Tag tag = (Tag) o;
         return Objects.equals(getId(), tag.getId()) &&
-                Objects.equals(getName(), tag.getName()) &&
-                Objects.equals(getColor(), tag.getColor());
+                Objects.equals(getName(), tag.getName());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getName(), getColor());
+        return Objects.hash(getId(), getName());
     }
 }

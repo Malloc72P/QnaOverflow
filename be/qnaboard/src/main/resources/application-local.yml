@@ -1,11 +1,17 @@
 spring:
   jpa:
+    hibernate:
+      ddl-auto: create-drop
     properties:
       hibernate:
-        ddl-auto: create-drop
+  sql:
+    init:
+      mode: always
+
 logging:
   level:
     org.hibernate.SQL: debug
+
 
 database_url: localhost:3306
 database_username: dev

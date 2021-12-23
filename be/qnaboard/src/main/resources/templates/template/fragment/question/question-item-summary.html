@@ -8,33 +8,35 @@
 
 <body>
 
+<!--/*@thymesVar id="question" type="scra.qnaboard.web.dto.QuestionSummaryDTO"*/-->
 <div class="question-list-item border-1 border-bottom"
-     th:fragment="question_item_summary(title, voteScore, answerCount, viewCount, createDate, questionId, authorName)">
+     th:fragment="question_item_summary(question)">
     <div class="left-side">
         <div class="left-button">
-            <div class="up" th:text="${voteScore}">3</div>
+            <div class="up" th:text="${question.voteScore}">3</div>
             <div>votes</div>
         </div>
 
         <div class="left-button">
-            <div class="up" th:text="${answerCount}">6</div>
+            <div class="up" th:text="${question.answerCount}">6</div>
             <div>answers</div>
         </div>
 
         <div class="left-button">
-            <div class="up" th:text="${viewCount}">300</div>
+            <div class="up" th:text="${question.viewCount}">300</div>
             <div>views</div>
         </div>
     </div>
     <div class="right-side">
-        <a th:href="@{/questions/{questionId}(questionId=${questionId})}"><h3 th:text="${title}">title</h3></a>
+        <a th:href="@{/questions/{questionId}(questionId=${question.questionId})}"><h3 th:text="${question.title}">
+            title</h3></a>
         <div class="tag-wrapper">
             <a class="btn btn-secondary btn-sm" href="#" role="button">Angular</a>
             <a class="btn btn-secondary btn-sm" href="#" role="button">Web</a>
         </div>
         <div class="createBy">
-            <div th:text="${createDate}">2021-12:22 18:01:23</div>
-            <div th:text="${authorName}">edward nygma</div>
+            <div th:text="${question.createDate}">2021-12:22 18:01:23</div>
+            <div th:text="${question.authorName}">edward nygma</div>
         </div>
     </div>
 </div>
