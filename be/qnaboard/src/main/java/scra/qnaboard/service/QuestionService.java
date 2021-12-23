@@ -5,8 +5,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import scra.qnaboard.domain.entity.post.Question;
 import scra.qnaboard.domain.repository.QuestionRepository;
-import scra.qnaboard.web.dto.QuestionListDTO;
-import scra.qnaboard.web.dto.QuestionSummaryDTO;
+import scra.qnaboard.web.dto.question.list.QuestionListDTO;
+import scra.qnaboard.web.dto.question.list.QuestionSummaryDTO;
 
 import java.util.List;
 import java.util.stream.Collectors;

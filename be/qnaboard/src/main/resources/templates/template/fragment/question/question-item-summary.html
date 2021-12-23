@@ -8,9 +8,9 @@
 
 <body>
 
-<!--/*@thymesVar id="question" type="scra.qnaboard.web.dto.QuestionSummaryDTO"*/-->
 <div class="question-list-item border-1 border-bottom"
      th:fragment="question_item_summary(question)">
+    <!--/*@thymesVar id="question" type="scra.qnaboard.web.dto.question.list.QuestionSummaryDTO"*/-->
     <div class="left-side">
         <div class="left-button">
             <div class="up" th:text="${question.voteScore}">3</div>

@@ -6,7 +6,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import scra.qnaboard.service.QuestionService;
-import scra.qnaboard.web.dto.QuestionListDTO;
+import scra.qnaboard.web.dto.question.list.QuestionListDTO;
 
 /**
  * 질문글에 대한 요청을 처리하는 컨트롤러

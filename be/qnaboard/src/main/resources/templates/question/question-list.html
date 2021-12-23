@@ -1,5 +1,8 @@
 <!--/*
-질문게시판 페이지
+질문목록조회의 뷰(QuestionController.questionList)
+dto.question.list 패키지의 QuestionListDTO를 모델로 받아서 랜더링한다
+
+@TODO 질문이 하나도 없을때 페이지 레이아웃이 안이뻐지는 상황을 대비해서 section에 min-height를 넣었는데, 조금 개선이 필요해보인다.
 */-->
 <!DOCTYPE html>
 <html lang="kr" th:replace="~{/template/layout-main :: layout (~{::title}, ~{::section}, ${username})}"
@@ -8,7 +11,7 @@
 <title th:text="#{ui.global.title}">제목</title>
 
 <section style="min-height: 1440px;">
-    <h2>질문 목록</h2>
+    <h2 th:text="#{ui.question.list.page-title}">질문 목록</h2>
     <hr/>
     <div th:each="question : ${dto.questions}"
          th:insert="template/fragment/question/question-item-summary ::

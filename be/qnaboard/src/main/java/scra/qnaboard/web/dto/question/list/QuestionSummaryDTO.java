@@ -1,4 +1,4 @@
-package scra.qnaboard.web.dto;
+package scra.qnaboard.web.dto.question.list;
 
 import lombok.Getter;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -11,6 +11,10 @@ import java.util.List;
 
 import static scra.qnaboard.web.dto.exception.DtoConversionFailedException.ENTITY_OR_FIELD_IS_NULL;
 
+/**
+ * 질문 목록조회를 위한 DTO. 질문목록의 요약정보라고 생각하면 된다. <br>
+ * question-item-summary 프래그먼트로 해당 DTO를 넘겨서 뷰를 랜더링한다
+ */
 @Getter
 public class QuestionSummaryDTO {
 
