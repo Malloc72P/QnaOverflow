@@ -19,7 +19,7 @@ public class QuestionController {
      */
     @GetMapping
     public String questionList(Model model) {
-        model.addAttribute("username", null);
+        model.addAttribute("username", "asdf");
         return "/question/question-list";
     }
 }

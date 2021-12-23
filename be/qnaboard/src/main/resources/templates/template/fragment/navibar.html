@@ -9,32 +9,37 @@
 
 <body>
 
-<nav class="navbar navbar-expand-lg navbar-light bg-light border-4 border-bottom shadow-sm"
+<nav class="navbar navbar-expand-md navbar-dark bg-dark shadow-sm p-0 my-navbar"
      th:fragment="navibar(username)">
     <!--/*
         네비바 컨테이너 - PowerOverflow와 로그인버튼 등의 모든 네비바 아이템은 이 안에 있어야 함
     */-->
     <div class="container-fluid">
         <!--/*PowerOverflow 배너 있는 부분*/-->
-        <a class="navbar-brand" href="#">🏹Power Overflow</a>
+        <a class="navbar-brand  col-md-3 col-lg-2 me-0 px-3" href="#">🏹QnaOverflow</a>
 
         <!--/*네비바가 collapse 되었을 때, 이걸 열 수 있게 해주는 햄버거 버튼*/-->
-        <button aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation"
+        <button aria-controls="sidebar"
+                aria-expanded="false"
+                aria-label="Toggle navigation"
                 class="navbar-toggler"
-                data-bs-target="#navbarNavDropdown" data-bs-toggle="collapse" type="button">
+                data-bs-target="#sidebar" data-bs-toggle="collapse" type="button">
             <span class="navbar-toggler-icon"></span>
         </button>
 
+        <!--/*검색 폼*/-->
+        <input class="form-control w-100 form-control-dark me-auto" type="text" placeholder="Search" aria-label="Search">
+
         <!--/*로그인, 회원기능을 위한 영역*/-->
-        <div class="collapse navbar-collapse" id="navbarNavDropdown">
-            <ul class="navbar-nav ms-auto">
+        <div class="navbar-nav nav-user">
+            <ul class="navbar-nav">
                 <!--/*비로그인 유저를 위한 로그인 드랍다운 버튼과 메뉴*/-->
                 <li class="nav-item dropdown" th:if="${username == null}">
                     <a aria-expanded="false" class="nav-link dropdown-toggle active" data-bs-toggle="dropdown"
                        href="#" id="navbarDropdownLoginMenuLink" role="button" th:text="#{ui.navibar.guest.dropdown}">
                         🔑Login
                     </a>
-                    <ul aria-labelledby="navbarDropdownLoginMenuLink" class="dropdown-menu dropdown-menu-end">
+                    <ul aria-labelledby="navbarDropdownLoginMenuLink" class="dropdown-menu dropdown-menu-dark dropdown-menu-end">
                         <li><a class="dropdown-item" href="#" th:text="#{ui.navibar.guest.google-login}">구글로그인</a></li>
                         <li><a class="dropdown-item" href="#" th:text="#{ui.navibar.guest.naver-login}">네이버로그인</a></li>
                     </ul>
@@ -47,7 +52,7 @@
                        th:text="#{ui.navibar.login.dropdown}+${username}">
                         유저이름
                     </a>
-                    <ul aria-labelledby="navbarDropdownMemberMenuLink" class="dropdown-menu dropdown-menu-end">
+                    <ul aria-labelledby="navbarDropdownMemberMenuLink" class="dropdown-menu dropdown-menu-dark dropdown-menu-end">
                         <li><a class="dropdown-item" href="#" th:text="#{ui.navibar.login.my-page}">마이페이지</a></li>
                         <li><a class="dropdown-item" href="#" th:text="#{ui.navibar.login.logout}">로그아웃</a></li>
                         <li><a class="dropdown-item" href="#" th:text="#{ui.navibar.login.sign-out}">회원탈퇴</a></li>

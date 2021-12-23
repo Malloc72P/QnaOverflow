@@ -1,5 +1,5 @@
 <!--/*
-    역할 : 질문게시판 페이지
+질문게시판 페이지
 */-->
 <!DOCTYPE html>
 <html lang="kr" th:replace="~{/template/layout-main :: layout (~{::title}, ~{::section}, ${username})}"
@@ -7,11 +7,11 @@
 
 <title th:text="#{ui.global.title}">제목</title>
 
-<section>
+<section style="min-height: 1440px;">
     <h2>질문 목록</h2>
     <hr/>
     <div th:replace="template/fragment/question/question-item-summary ::
-            question_item_summary('title', 1, 1, 1, '2021-12:22 18:01:23', 1, 'edward_nygmaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')">
+            question_item_summary('How can i use map label in angular???????????????????????????????????????????????????????????????', 1, 1, 1, '2021-12:22 18:01:23', 1, 'edward_nygmaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')">
     </div>
 
 </section>

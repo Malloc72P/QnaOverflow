@@ -1,8 +1,7 @@
 <!--/*
-페이지의 맨 위에 붙는 네비바
-기능
-- 비로그인 유저를 위한 로그인 기능
-- 로그인 유저를 위한 마이페이지, 로그아웃, 탈퇴 기능
+질문게시판의 질문 아이템
+질문에 대해 요약한 정보만 가지고 있다
+누르면 질문 상세페이지로 이동한다
 */-->
 <!DOCTYPE html>
 <html lang="kr" xmlns:th="http://www.thymeleaf.org">
@@ -28,25 +27,10 @@
         </div>
     </div>
     <div class="right-side">
-        <a th:href="@{/questions/{questionId}(questionId=${questionId})}"><h3 th:text="${title}">How can i use map label
-            in angular?</h3></a>
+        <a th:href="@{/questions/{questionId}(questionId=${questionId})}"><h3 th:text="${title}">title</h3></a>
         <div class="tag-wrapper">
             <a class="btn btn-secondary btn-sm" href="#" role="button">Angular</a>
             <a class="btn btn-secondary btn-sm" href="#" role="button">Web</a>
-            <a class="btn btn-secondary btn-sm" href="#" role="button">Something</a>
-            <a class="btn btn-secondary btn-sm" href="#" role="button">Something</a>
-            <a class="btn btn-secondary btn-sm" href="#" role="button">Something</a>
-            <a class="btn btn-secondary btn-sm" href="#" role="button">Something</a>
-            <a class="btn btn-secondary btn-sm" href="#" role="button">Something</a>
-            <a class="btn btn-secondary btn-sm" href="#" role="button">Something</a>
-            <a class="btn btn-secondary btn-sm" href="#" role="button">Something</a>
-            <a class="btn btn-secondary btn-sm" href="#" role="button">Something</a>
-            <a class="btn btn-secondary btn-sm" href="#" role="button">Something</a>
-            <a class="btn btn-secondary btn-sm" href="#" role="button">Something</a>
-            <a class="btn btn-secondary btn-sm" href="#" role="button">Something</a>
-            <a class="btn btn-secondary btn-sm" href="#" role="button">Something</a>
-            <a class="btn btn-secondary btn-sm" href="#" role="button">Something</a>
-            <a class="btn btn-secondary btn-sm" href="#" role="button">Something</a>
         </div>
         <div class="createBy">
             <div th:text="${createDate}">2021-12:22 18:01:23</div>
