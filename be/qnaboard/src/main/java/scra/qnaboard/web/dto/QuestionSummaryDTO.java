@@ -1,6 +1,7 @@
 package scra.qnaboard.web.dto;
 
 import lombok.Getter;
+import org.springframework.format.annotation.DateTimeFormat;
 import scra.qnaboard.domain.entity.post.Question;
 import scra.qnaboard.web.dto.exception.DtoConversionFailedException;
 
@@ -18,6 +19,7 @@ public class QuestionSummaryDTO {
     private long voteScore;
     private int answerCount;
     private long viewCount;
+    @DateTimeFormat(pattern = "yyyy-mm-dd HH:MM")
     private LocalDateTime createDate;
     private String authorName;
     private List<TagDTO> tagDTOs = new ArrayList<>();
