@@ -28,7 +28,10 @@
 
 .question-list-item {
     padding: 12px 8px 12px 8px;
-    display: flex;
+}
+
+.question-list-item > div {
+    /*display: flex;*/
 }
 
 .question-list-item .left-side {
@@ -70,18 +73,24 @@
 .question-list-item .right-side a {
     text-decoration: none;
     margin-bottom: 6px;
+    display: inline-block;
 }
 
-.question-list-item .right-side .createBy {
+.question-list-item .low {
+    display: flex;
+}
+
+.question-list-item .low .createBy {
     text-align: right;
 }
 
-.question-list-item .right-side .createBy div {
-    display: inline-block;
-    line-height: 18px;
-    padding-top: 12px;
-    max-width: 155px;
+.question-list-item .low .createBy > div {
     color: #6c757d;
+    display: inline-block;
+}
+
+.space {
+    flex: 1;
 }
 
 .question-list-item .right-side .createBy div, .question-list-item .right-side h3 {
