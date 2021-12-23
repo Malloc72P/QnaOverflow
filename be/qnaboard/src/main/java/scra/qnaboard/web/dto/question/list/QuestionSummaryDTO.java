@@ -23,7 +23,7 @@ public class QuestionSummaryDTO {
     private long voteScore;
     private int answerCount;
     private long viewCount;
-    @DateTimeFormat(pattern = "yyyy-mm-dd HH:MM")
+    @DateTimeFormat(pattern = "yyyy-MM-dd hh:mm a")
     private LocalDateTime createDate;
     private String authorName;
     private List<TagDTO> tagDTOs = new ArrayList<>();
