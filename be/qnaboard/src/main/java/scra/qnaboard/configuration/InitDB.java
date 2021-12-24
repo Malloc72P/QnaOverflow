@@ -16,6 +16,9 @@ import scra.qnaboard.domain.repository.TagRepository;
 import javax.annotation.PostConstruct;
 import java.util.Arrays;
 
+/**
+ * 로컬에서 개발할 때 데이터를 초기화 하기 위한 클래스.
+ */
 @Slf4j
 @Profile("local")
 @Configuration
