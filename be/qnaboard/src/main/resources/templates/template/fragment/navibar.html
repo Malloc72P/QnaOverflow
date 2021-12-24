@@ -28,7 +28,8 @@
         </button>
 
         <!--/*검색 폼*/-->
-        <input class="form-control w-100 form-control-dark me-auto" type="text" placeholder="Search" aria-label="Search">
+        <input aria-label="Search" class="form-control w-100 form-control-dark me-auto" placeholder="Search"
+               type="text">
 
         <!--/*로그인, 회원기능을 위한 영역*/-->
         <div class="navbar-nav nav-user">
@@ -39,7 +40,8 @@
                        href="#" id="navbarDropdownLoginMenuLink" role="button" th:text="#{ui.navibar.guest.dropdown}">
                         🔑Login
                     </a>
-                    <ul aria-labelledby="navbarDropdownLoginMenuLink" class="dropdown-menu dropdown-menu-dark dropdown-menu-end">
+                    <ul aria-labelledby="navbarDropdownLoginMenuLink"
+                        class="dropdown-menu dropdown-menu-dark dropdown-menu-end">
                         <li><a class="dropdown-item" href="#" th:text="#{ui.navibar.guest.google-login}">구글로그인</a></li>
                         <li><a class="dropdown-item" href="#" th:text="#{ui.navibar.guest.naver-login}">네이버로그인</a></li>
                     </ul>
@@ -52,7 +54,8 @@
                        th:text="#{ui.navibar.login.dropdown}+${username}">
                         유저이름
                     </a>
-                    <ul aria-labelledby="navbarDropdownMemberMenuLink" class="dropdown-menu dropdown-menu-dark dropdown-menu-end">
+                    <ul aria-labelledby="navbarDropdownMemberMenuLink"
+                        class="dropdown-menu dropdown-menu-dark dropdown-menu-end">
                         <li><a class="dropdown-item" href="#" th:text="#{ui.navibar.login.my-page}">마이페이지</a></li>
                         <li><a class="dropdown-item" href="#" th:text="#{ui.navibar.login.logout}">로그아웃</a></li>
                         <li><a class="dropdown-item" href="#" th:text="#{ui.navibar.login.sign-out}">회원탈퇴</a></li>

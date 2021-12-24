@@ -34,9 +34,9 @@
             </a>
             <div class="tag-wrapper">
                 <!--/*@TODO 태그의 href는 태그검색으로 해야 함! 나중에 검색기능 붙일 때 고민할 것*/-->
-                <a th:each="tag : ${question.tags}"
-                   class="btn btn-secondary btn-sm" href="#"
-                   role="button" th:text="${tag.name}">tag name</a>
+                <a class="btn btn-secondary btn-sm"
+                   href="#" role="button"
+                   th:each="tag : ${question.tags}" th:text="${tag.name}">tag name</a>
             </div>
         </div>
     </div>

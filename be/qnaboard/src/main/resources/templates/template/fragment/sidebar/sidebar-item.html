@@ -7,13 +7,13 @@
 
 <body>
 <ul>
-<li class="nav-item" th:fragment="sidebar_item(title, link, isActive)">
-    <a class="nav-link" href="#"
-       th:classappend="${isActive} ? active : ''"
-       th:text="${title}">
-        Orders
-    </a>
-</li>
+    <li class="nav-item" th:fragment="sidebar_item(title, link, isActive)">
+        <a class="nav-link" href="#"
+           th:classappend="${isActive} ? active : ''"
+           th:text="${title}">
+            Orders
+        </a>
+    </li>
 </ul>
 
 </body>

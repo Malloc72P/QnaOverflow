@@ -1,6 +1,9 @@
 package scra.qnaboard.web.dto.question.list;
 
+import com.querydsl.core.annotations.QueryProjection;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import scra.qnaboard.domain.entity.QuestionTag;
 import scra.qnaboard.domain.entity.post.Question;
@@ -17,6 +20,7 @@ import static scra.qnaboard.web.dto.exception.DtoConversionFailedException.ENTIT
  * question-item-summary 프래그먼트로 해당 DTO를 넘겨서 뷰를 랜더링한다
  */
 @Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class QuestionSummaryDTO {
 
     private long questionId;
@@ -29,6 +33,7 @@ public class QuestionSummaryDTO {
     private String authorName;
     private List<TagDTO> tags = new ArrayList<>();
 
+    @QueryProjection
     public QuestionSummaryDTO(long questionId,
                               String title,
                               long voteScore,
@@ -47,16 +52,15 @@ public class QuestionSummaryDTO {
 
     public static QuestionSummaryDTO from(Question question) {
         isConversionPossible(question);
+        QuestionSummaryDTO dto = new QuestionSummaryDTO();
 
-        QuestionSummaryDTO dto = new QuestionSummaryDTO(
-                question.getId(),
-                question.getTitle(),
-                question.getUpVoteCount() - question.getDownVoteCount(),
-                question.getAnswers().size(),
-                question.getViewCount(),
-                question.getCreatedDate(),
-                question.getAuthor().getNickname()
-        );
+        dto.questionId = question.getId();
+        dto.title = question.getTitle();
+        dto.voteScore = question.getUpVoteCount() - question.getDownVoteCount();
+        dto.answerCount = question.getAnswers().size();
+        dto.viewCount = question.getViewCount();
+        dto.createDate = question.getCreatedDate();
+        dto.authorName = question.getAuthor().getNickname();
 
         question.getQuestionTags()
                 .stream()
@@ -75,5 +79,9 @@ public class QuestionSummaryDTO {
 
     public void addTag(TagDTO tagDTO) {
         tags.add(tagDTO);
+    }
+
+    public void setTags(List<TagDTO> tags) {
+        this.tags = tags;
     }
 }

@@ -80,7 +80,15 @@ public class InitDB {
             questionRepository.saveAll(Arrays.asList(questions));
 
             Arrays.stream(questions)
+                    .filter(question -> question.getId() >= 4)
                     .forEach(question -> Arrays.asList(tags).forEach(question::addTag));
+            questions[0].addTag(tags[0]);
+            questions[0].addTag(tags[1]);
+            questions[0].addTag(tags[2]);
+
+            questions[1].addTag(tags[3]);
+            questions[1].addTag(tags[4]);
+            questions[1].addTag(tags[5]);
 
             log.info("데이터베이스 초기화 완료");
         }
