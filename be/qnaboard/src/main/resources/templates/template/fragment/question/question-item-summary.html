@@ -33,8 +33,10 @@
                 <h3 th:text="${question.title}">title</h3>
             </a>
             <div class="tag-wrapper">
-                <a class="btn btn-secondary btn-sm" href="#" role="button">Angular</a>
-                <a class="btn btn-secondary btn-sm" href="#" role="button">Web</a>
+                <!--/*@TODO 태그의 href는 태그검색으로 해야 함! 나중에 검색기능 붙일 때 고민할 것*/-->
+                <a th:each="tag : ${question.tags}"
+                   class="btn btn-secondary btn-sm" href="#"
+                   role="button" th:text="${tag.name}">tag name</a>
             </div>
         </div>
     </div>

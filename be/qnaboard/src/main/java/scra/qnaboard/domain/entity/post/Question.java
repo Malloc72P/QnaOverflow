@@ -4,7 +4,10 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import scra.qnaboard.domain.entity.Member;
+import scra.qnaboard.domain.entity.QuestionTag;
+import scra.qnaboard.domain.entity.Tag;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
@@ -14,7 +17,10 @@ import java.util.Objects;
 
 /**
  * 질문글에 대한 엔티티 <br>
- * 답변글을 List로 가지고 있는다
+ * 답변글을 List로 가지고 있다 <br>
+ *
+ * QuestionTag를 CascadeType.ALL로 가진다. 그래서 Question을 영속화할때 가지고 있는 모든 QuestionTag도 함께 영속화한다. <br>
+ * 반대로 Question을 지우면 연관된 모든 QuestionTag가 지워진다.
  *
  * @TODO 대댓글도 추가해야함!
  */
@@ -30,9 +36,27 @@ public class Question extends Post {
     @OneToMany(mappedBy = "question", fetch = FetchType.LAZY)
     private List<Answer> answers = new ArrayList<>();
 
+    @OneToMany(mappedBy = "question", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<QuestionTag> questionTags = new ArrayList<>();
+
     public Question(Member author, String content, String title) {
         super(author, content);
         this.title = title;
+    }
+
+    public void addQuestionTag(QuestionTag questionTag) {
+        questionTags.add(questionTag);
+    }
+
+    /**
+     * 태그를 질문엔티티에 추가하는 메서드 <br>
+     * 태그와 질문 엔티티 사이를 이어주는 QuestionTag는 CascadeType.ALL 설정이 걸려있어서, <br>
+     * 따로 영속화하지 않아도 Question엔티티를 영속화할때 함께 처리된다
+     * @param tag 질문 엔티티에 추가할 태그 엔티티. QuestionTag아님!
+     */
+    public void addTag(Tag tag) {
+        QuestionTag questionTag = new QuestionTag(tag, this);
+        questionTags.add(questionTag);
     }
 
     @Override

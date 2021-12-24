@@ -2,6 +2,7 @@ package scra.qnaboard.web.dto.question.list;
 
 import lombok.Getter;
 import org.springframework.format.annotation.DateTimeFormat;
+import scra.qnaboard.domain.entity.QuestionTag;
 import scra.qnaboard.domain.entity.post.Question;
 import scra.qnaboard.web.dto.exception.DtoConversionFailedException;
 
@@ -26,7 +27,7 @@ public class QuestionSummaryDTO {
     @DateTimeFormat(pattern = "yyyy-MM-dd hh:mm a")
     private LocalDateTime createDate;
     private String authorName;
-    private List<TagDTO> tagDTOs = new ArrayList<>();
+    private List<TagDTO> tags = new ArrayList<>();
 
     public QuestionSummaryDTO(long questionId,
                               String title,
@@ -46,7 +47,8 @@ public class QuestionSummaryDTO {
 
     public static QuestionSummaryDTO from(Question question) {
         isConversionPossible(question);
-        return new QuestionSummaryDTO(
+
+        QuestionSummaryDTO dto = new QuestionSummaryDTO(
                 question.getId(),
                 question.getTitle(),
                 question.getUpVoteCount() - question.getDownVoteCount(),
@@ -55,15 +57,23 @@ public class QuestionSummaryDTO {
                 question.getCreatedDate(),
                 question.getAuthor().getNickname()
         );
+
+        question.getQuestionTags()
+                .stream()
+                .map(QuestionTag::getTag)
+                .map(TagDTO::from)
+                .forEach(dto::addTag);
+
+        return dto;
     }
 
     private static void isConversionPossible(Question question) {
-        if (question == null || question.getAuthor() == null) {
+        if (question == null || question.getAuthor() == null || question.getAnswers() == null || question.getQuestionTags() == null) {
             throw new DtoConversionFailedException(ENTITY_OR_FIELD_IS_NULL);
         }
     }
 
-    public void addTagDTO(TagDTO tagDTO) {
-        tagDTOs.add(tagDTO);
+    public void addTag(TagDTO tagDTO) {
+        tags.add(tagDTO);
     }
 }
