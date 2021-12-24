@@ -2,15 +2,9 @@ spring:
   jpa:
     hibernate:
       ddl-auto: create-drop
-    properties:
-      hibernate:
   sql:
     init:
       mode: always
-
-logging:
-  level:
-    org.hibernate.SQL: debug
 
 
 database_url: localhost:3306

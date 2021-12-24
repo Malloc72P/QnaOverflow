@@ -5,8 +5,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import scra.qnaboard.domain.entity.post.Question;
+import scra.qnaboard.domain.repository.QuestionRepository;
 import scra.qnaboard.service.QuestionService;
 import scra.qnaboard.web.dto.question.list.QuestionListDTO;
+
+import java.util.List;
 
 /**
  * 질문글에 대한 요청을 처리하는 컨트롤러
