@@ -7,12 +7,25 @@
 <body>
 
 <div class="comment-wrapper" th:fragment="comment_wrapper">
-    <div th:replace="template/fragment/comment/comment :: comment"></div>
-    <div th:replace="template/fragment/comment/comment :: comment"></div>
-    <div th:replace="template/fragment/comment/comment :: comment"></div>
-    <div th:replace="template/fragment/comment/comment :: comment"></div>
-    <div th:replace="template/fragment/comment/comment :: comment"></div>
-    <div th:replace="template/fragment/comment/comment :: comment"></div>
+    <div class="comment-list mb-4">
+        <div th:replace="template/fragment/comment/comment :: comment"></div>
+        <div th:replace="template/fragment/comment/comment :: comment"></div>
+        <div th:replace="template/fragment/comment/comment :: comment"></div>
+        <div th:replace="template/fragment/comment/comment :: comment"></div>
+        <div th:replace="template/fragment/comment/comment :: comment"></div>
+        <div th:replace="template/fragment/comment/comment :: comment"></div>
+    </div>
+    <div class="comment-writer">
+        <h4 class="mb-3">댓글 작성하기</h4>
+        <form>
+            <div class="mb-3">
+                <textarea class="form-control" placeholder="댓글을 작성해주세요"></textarea>
+            </div>
+            <div class="text-end">
+                <button class="btn btn-sm btn-primary">댓글작성</button>
+            </div>
+        </form>
+    </div>
 </div>
 
 </body>

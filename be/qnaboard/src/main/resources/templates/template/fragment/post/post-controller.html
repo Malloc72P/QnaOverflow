@@ -1,0 +1,28 @@
+<!--/*
+게시글 컨트롤러
+이걸로 게시글 수정, 삭제 요청을 할 수 있다
+언제 수정되었고 생성되었는지도 출력한다
+*/-->
+<!DOCTYPE html>
+<html lang="kr" xmlns:th="http://www.thymeleaf.org">
+
+<body>
+
+<!--/*게시글 컨트롤러(수정, 삭제 작성자, 작성일, 수정일)*/-->
+<div class="container-fluid pt-5 pb-4 ps-0 pe-0" th:fragment="post_controller">
+    <div class="row">
+        <div class="float-start">
+            <button class="btn btn-sm btn-outline-dark">수정하기</button>
+            <button class="btn btn-sm btn-outline-dark">삭제하기</button>
+        </div>
+        <div class="float-end text-end pe-4">
+            <div>작성자 : Edward Nygma</div>
+            <div>작성일 : 2021-12-12 12:12 PM</div>
+            <div>수정일 : 2021-12-12 12:12 PM</div>
+        </div>
+    </div>
+</div>
+
+</body>
+
+</html>
