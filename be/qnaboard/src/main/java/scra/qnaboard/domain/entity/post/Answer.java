@@ -22,9 +22,8 @@ public class Answer extends Post {
 
     private boolean accepted = false;
 
-    //@TODO referencedColumnName 이거 지워도 되는지 한번 테스트해봐야됨
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "answer_id", referencedColumnName = "post_id")
+    @JoinColumn(name = "answer_id")
     private Question question;
 
     public Answer(Member author, String content, Question question) {
