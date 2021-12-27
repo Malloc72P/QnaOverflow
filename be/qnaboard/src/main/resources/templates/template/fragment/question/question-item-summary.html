@@ -9,7 +9,7 @@
 <body>
 
 <div class="question-list-item border-1 border-bottom container-fluid"
-     th:fragment="question_item_summary(question)">
+th:fragment="question_item_summary(question)">
     <!--/*@thymesVar id="question" type="scra.qnaboard.web.dto.question.list.QuestionSummaryDTO"*/-->
     <div class="row">
         <div class="left-side col-lg-3 col-sm-5">
@@ -29,14 +29,12 @@
             </div>
         </div>
         <div class="right-side col-lg-9 col-sm-7">
-            <a th:href="@{/questions/{questionId}(questionId=${question.questionId})}">
+            <a class="d-inline-block text-decoration-none text-break"
+               th:href="@{/questions/{questionId}(questionId=${question.questionId})}">
                 <h3 th:text="${question.title}">title</h3>
             </a>
-            <div class="tag-wrapper">
-                <!--/*@TODO 태그의 href는 태그검색으로 해야 함! 나중에 검색기능 붙일 때 고민할 것*/-->
-                <a class="btn btn-secondary btn-sm"
-                   href="#" role="button"
-                   th:each="tag : ${question.tags}" th:text="${tag.name}">tag name</a>
+            <div th:replace="template/fragment/tag/tag-wrapper ::
+                    tag_wrapper(${question.tags})">
             </div>
         </div>
     </div>

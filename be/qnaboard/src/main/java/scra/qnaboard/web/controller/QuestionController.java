@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import scra.qnaboard.service.QuestionService;
 import scra.qnaboard.web.dto.question.list.QuestionListDTO;
@@ -24,11 +25,16 @@ public class QuestionController {
      * @return 질문글 목록조회 페이지
      */
     @GetMapping
-    public String questionList(Model model) {
+    public String list(Model model) {
         QuestionListDTO questionListDTO = questionService.questionList();
 
         model.addAttribute("username", null);
         model.addAttribute("dto", questionListDTO);
         return "/question/question-list";
+    }
+
+    @GetMapping("{questionId}")
+    public String detail(@PathVariable Long questionId) {
+        return "/question/question-detail";
     }
 }

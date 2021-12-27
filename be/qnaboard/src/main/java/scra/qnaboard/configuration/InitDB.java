@@ -70,7 +70,7 @@ public class InitDB {
 
             Question[] questions = {
                     new Question(members[0], "content-1", "title-1"),
-                    new Question(members[1], "content-2", "title-2"),
+                    new Question(members[1], "content-2", "title-2aaaaaaaaaaaaaaaaaa2aaaaaaaaaaaaaaaaaa2aaaaaaaaaaaaaaaaaa2aaaaaaaaaaaaaaaaaa2aaaaaaaaaaaaaaaaaa2aaaaaaaaaaaaaaaaaa2aaaaaaaaaaaaaaaaaa2aaaaaaaaaaaaaaaaaa2aaaaaaaaaaaaaaaaaa2aaaaaaaaaaaaaaaaaa2aaaaaaaaaaaaaaaaaa2aaaaaaaaaaaaaaaaaa"),
                     new Question(members[1], "content-3", "title-3"),
                     new Question(members[2], "content-4", "title-4"),
                     new Question(members[2], "content-5", "title-5"),
@@ -91,6 +91,34 @@ public class InitDB {
 
             questions[1].addTag(tags[3]);
             questions[1].addTag(tags[4]);
+            questions[1].addTag(tags[5]);
+            questions[1].addTag(tags[5]);
+            questions[1].addTag(tags[5]);
+            questions[1].addTag(tags[5]);
+            questions[1].addTag(tags[5]);
+            questions[1].addTag(tags[5]);
+            questions[1].addTag(tags[5]);
+            questions[1].addTag(tags[5]);
+            questions[1].addTag(tags[5]);
+            questions[1].addTag(tags[5]);
+            questions[1].addTag(tags[5]);
+            questions[1].addTag(tags[5]);
+            questions[1].addTag(tags[5]);
+            questions[1].addTag(tags[5]);
+            questions[1].addTag(tags[5]);
+            questions[1].addTag(tags[5]);
+            questions[1].addTag(tags[5]);
+            questions[1].addTag(tags[5]);
+            questions[1].addTag(tags[5]);
+            questions[1].addTag(tags[5]);
+            questions[1].addTag(tags[5]);
+            questions[1].addTag(tags[5]);
+            questions[1].addTag(tags[5]);
+            questions[1].addTag(tags[5]);
+            questions[1].addTag(tags[5]);
+            questions[1].addTag(tags[5]);
+            questions[1].addTag(tags[5]);
+            questions[1].addTag(tags[5]);
             questions[1].addTag(tags[5]);
 
             log.info("데이터베이스 초기화 완료");

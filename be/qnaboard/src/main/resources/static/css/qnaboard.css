@@ -1,5 +1,5 @@
 .content {
-    padding: 24px;
+    padding: 24px 16px;
 }
 
 .sidebar {
@@ -30,10 +30,6 @@
     padding: 12px 8px 12px 8px;
 }
 
-.question-list-item > div {
-    /*display: flex;*/
-}
-
 .question-list-item .left-side {
     display: flex;
     color: #6c757d;
@@ -55,23 +51,11 @@
     text-align: center;
 }
 
-.question-list-item .right-side {
-    padding-left: 12px;
-    flex: 1;
-    width: 0;
-}
-
-.question-list-item .right-side .tag-wrapper {
-    display: flex;
-    flex-wrap: wrap;
-}
-
-.question-list-item .right-side .tag-wrapper a {
+.tag-wrapper a {
     margin-right: 8px;
 }
 
-.question-list-item .right-side a {
-    text-decoration: none;
+.tag-wrapper a {
     margin-bottom: 6px;
     display: inline-block;
 }
@@ -91,11 +75,6 @@
 
 .space {
     flex: 1;
-}
-
-.question-list-item .right-side .createBy div, .question-list-item .right-side h3 {
-    overflow: hidden;
-    text-overflow: ellipsis;
 }
 
 .navbar .navbar-brand {
@@ -123,4 +102,8 @@
 .my-navbar > .container-fluid .nav-link {
     padding-left: 8px;
 
+}
+
+.hover-underline:hover {
+    text-decoration: underline!important;
 }
