@@ -8,33 +8,25 @@
 
 <body>
 
-<div class="answer row mb-5" th:fragment="answer_item_detail">
+<!--/*@thymesVar id="voteScore" type="scra.qnaboard.web.dto.question.detail.AnswerDTO"*/-->
+<div class="answer row mb-5" th:fragment="answer_item_detail(answer)">
     <div class="col-md-1 ps-0 pe-0">
         <!--/*좌측 투표 버튼 컨테이너*/-->
-        <div th:replace="template/fragment/post/vote-controller :: vote_controller"></div>
+        <div th:replace="template/fragment/post/vote-controller :: vote_controller(${answer.voteScore})"></div>
     </div>
     <!--/*우측 게시글 컨테이너(컨텐츠, 태그, 게시글 컨트롤, 대댓글목록)*/-->
     <div class="col-md-11">
         <!--/*게시글 컨텐츠*/-->
-        <div class="post-content-wrapper">
-            <p>I've video modified by reverse the first 1024 bytes. So I write a http proxy for ffprobe to
-                modify
-                the video stream header. The proxy works fine, the ffprobe can show the video info correctly
-                except,
-                it will fetch the video content more than one time.</p>
-            <p>
-                I've log the fetch process and the response header like below log output, I also have disable
-                the
-                Etag of the video file.
-                why it fetch the content more than one time?
-                Content-Range:[bytes 0-30070813/30070814]
-                Content-Range:[bytes 29832748-30070813/30070814]
-                Content-Range:[bytes 48-30070813/30070814]
-            </p>
+        <div class="post-content-wrapper" th:text="${answer.content}">
+            content
         </div>
 
         <!--/*게시글 컨트롤러(공유,수정, 수정,생성시간)*/-->
-        <div th:replace="template/fragment/post/post-controller :: post_controller"></div>
+        <div th:replace="template/fragment/post/post-controller
+             :: post_controller( ${answer.authorName},
+                                 ${answer.createdDate},
+                                 ${answer.lastModifiedDate})">
+        </div>
         <hr>
         <!--/*대댓글 목록 컨테이너*/-->
         <div th:replace="template/fragment/comment/comment-wrapper :: comment_wrapper"></div>

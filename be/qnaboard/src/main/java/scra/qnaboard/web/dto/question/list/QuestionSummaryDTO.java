@@ -11,6 +11,8 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import static scra.qnaboard.utils.DateTimeUtil.MY_FORMAT;
+
 /**
  * 질문 목록조회를 위한 DTO. 질문목록의 요약정보라고 생각하면 된다. <br>
  * question-item-summary 프래그먼트로 해당 DTO를 넘겨서 뷰를 랜더링한다 <br>
@@ -24,7 +26,7 @@ public class QuestionSummaryDTO {
     private long voteScore;
     private int answerCount;
     private long viewCount;
-    @DateTimeFormat(pattern = "yyyy-MM-dd hh:mm a")
+    @DateTimeFormat(pattern = MY_FORMAT)
     private LocalDateTime createDate;
     private String authorName;
     private List<TagDTO> tags = new ArrayList<>();

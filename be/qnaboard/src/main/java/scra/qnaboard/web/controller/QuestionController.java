@@ -37,7 +37,7 @@ public class QuestionController {
     @GetMapping("{questionId}")
     public String detail(@PathVariable Long questionId, Model model) {
         QuestionDetailDTO detailDTO = questionService.questionDetail(questionId);
-        model.addAttribute(detailDTO);
+        model.addAttribute("question", detailDTO);
 
         return "/question/question-detail";
     }

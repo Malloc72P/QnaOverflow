@@ -10,26 +10,25 @@ dto.question.detail 패키지의 QuestionDetailDTO를 모델로 받아서 랜더
 
 <section style="min-height: 1440px;">
     <!--질문 컨테이너 헤더-->
-    <h2>❓질문 제목인데 이걸 어떻게 고치면 좋을까요?</h2>
+    <h2 th:text="${question.title}">❓질문 제목인데 이걸 어떻게 고치면 좋을까요?</h2>
     <hr/>
 
     <!--/*질문 컨테이너 바디/-->
     <div class="container-fluid ps-0 pe-0">
         <!--/*질문 본문*/-->
-        <div th:replace="template/fragment/question/question-item-detail :: question_item_detail"></div>
+        <div th:replace="template/fragment/question/question-item-detail :: question_item_detail(${question})"></div>
 
         <!--/*질문 답변 경계선*/-->
+        <!--/*답글 개수*/-->
+        <h3>답글 : <span th:text="${question.answers.size()}">3</span></h3>
         <hr class="opacity-100">
 
         <!--/*답변 게시글 컨테이너*/-->
         <div class="row">
-            <!--/*답글 개수*/-->
-            <h3>답글 : 3</h3>
             <!--답변게시글 목록-->
-            <div class="answer-wrapper">
-                <div th:replace="template/fragment/answer/answer-item-detail :: answer_item_detail"></div>
-                <div th:replace="template/fragment/answer/answer-item-detail :: answer_item_detail"></div>
-                <div th:replace="template/fragment/answer/answer-item-detail :: answer_item_detail"></div>
+            <div class="answer-wrapper"
+                 th:each="answer : ${question.answers}"
+                 th:insert="template/fragment/answer/answer-item-detail :: answer_item_detail(${answer})">
             </div>
         </div>
 

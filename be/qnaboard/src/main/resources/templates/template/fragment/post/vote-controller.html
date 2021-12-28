@@ -8,12 +8,12 @@
 <body>
 
 <!--/*좌측 투표 버튼 컨테이너*/-->
-<div class="container-fluid ps-0 pe-0 text-center pb-3 ps-md-2 pe-md-2" th:fragment="vote_controller">
+<div class="container-fluid ps-0 pe-0 text-center pb-3 ps-md-2 pe-md-2" th:fragment="vote_controller(voteScore)">
     <div class="col">
         <div class="mb-2 d-grid gap-2">
             <button class="btn btn-outline-dark"><h3>▲</h3></button>
         </div>
-        <div><h3 class="mb-0">255</h3></div>
+        <div><h3 class="mb-0" th:text="${voteScore}">255</h3></div>
         <div class="mt-2 d-grid gap-2">
             <button class="btn btn-outline-dark"><h3>▼</h3></button>
         </div>
