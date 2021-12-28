@@ -1,6 +1,9 @@
 package scra.qnaboard.web.dto.question.detail;
 
+import com.querydsl.core.annotations.QueryProjection;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import scra.qnaboard.domain.entity.QuestionTag;
 import scra.qnaboard.domain.entity.post.Question;
 import scra.qnaboard.web.dto.tag.TagDTO;
@@ -17,6 +20,7 @@ import java.util.stream.Collectors;
  * 바꾸고 싶으면 post-controller.html 프래그먼트에서 수정하자
  */
 @Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class QuestionDetailDTO {
 
     private long questionId;
@@ -31,6 +35,33 @@ public class QuestionDetailDTO {
     private String authorName;
     private List<TagDTO> tags = new ArrayList<>();
 
+    @QueryProjection
+    public QuestionDetailDTO(long questionId,
+                             String title,
+                             String content,
+                             long voteScore,
+                             long viewCount,
+                             LocalDateTime createdDate,
+                             LocalDateTime lastModifiedDate,
+                             long authorId,
+                             String authorName) {
+        this.questionId = questionId;
+        this.title = title;
+        this.content = content;
+        this.voteScore = voteScore;
+        this.viewCount = viewCount;
+        this.createdDate = createdDate;
+        this.lastModifiedDate = lastModifiedDate;
+        this.authorId = authorId;
+        this.authorName = authorName;
+    }
+
+    /**
+     * 엔티티에서 DTO로 변환하는 메서드
+     *
+     * @param question 대상 엔티티
+     * @return QuestionDetailDTO
+     */
     public static QuestionDetailDTO from(Question question) {
         QuestionDetailDTO detailDTO = new QuestionDetailDTO();
         detailDTO.questionId = question.getId();
@@ -54,5 +85,10 @@ public class QuestionDetailDTO {
                 .collect(Collectors.toList());
 
         return detailDTO;
+    }
+
+    public void updateDependency(List<TagDTO> tags, List<AnswerDTO> answers) {
+        this.tags = tags;
+        this.answers = answers;
     }
 }

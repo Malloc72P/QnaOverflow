@@ -15,7 +15,7 @@ public class TestDataInit {
      * 데이터 초기화
      * @param em 초기화에 사용할 엔티티 매니저
      */
-    public static Question init(EntityManager em) {
+    public static Question[] init(EntityManager em) {
         Member author = new Member("member1", MemberRole.NORMAL);
         em.persist(author);
 
@@ -31,7 +31,7 @@ public class TestDataInit {
 
         Question[] questions = {
                 new Question(author, "target-content", "target-title"),
-                new Question(author, "content-2", "title-2"),
+                new Question(author, "no-tag-no-answer", "title-2"),
                 new Question(author, "content-3", "title-3"),
                 new Question(author, "content-4", "title-4"),
                 new Question(author, "content-5", "title-5"),
@@ -51,7 +51,7 @@ public class TestDataInit {
         Arrays.stream(answers).forEach(em::persist);
 
         Arrays.stream(tags).forEach(testTargetQuestion::addTag);
-        return testTargetQuestion;
+        return questions;
     }
 
 }

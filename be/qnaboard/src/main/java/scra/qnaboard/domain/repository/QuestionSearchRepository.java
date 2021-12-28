@@ -5,10 +5,17 @@ import lombok.RequiredArgsConstructor;
 import org.hibernate.jpa.QueryHints;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+import scra.qnaboard.domain.entity.QQuestionTag;
+import scra.qnaboard.domain.entity.post.QAnswer;
 import scra.qnaboard.domain.entity.post.Question;
+import scra.qnaboard.service.exception.QuestionNotFoundException;
+import scra.qnaboard.web.dto.question.detail.AnswerDTO;
+import scra.qnaboard.web.dto.question.detail.QAnswerDTO;
+import scra.qnaboard.web.dto.question.detail.QQuestionDetailDTO;
+import scra.qnaboard.web.dto.question.detail.QuestionDetailDTO;
 import scra.qnaboard.web.dto.question.list.QQuestionSummaryDTO;
-import scra.qnaboard.web.dto.question.list.QTagDTO;
 import scra.qnaboard.web.dto.question.list.QuestionSummaryDTO;
+import scra.qnaboard.web.dto.tag.QTagDTO;
 import scra.qnaboard.web.dto.tag.TagDTO;
 
 import java.util.List;
@@ -83,23 +90,87 @@ public class QuestionSearchRepository {
         return questions;
     }
 
+    /**
+     * 패치조인으로 질문글 상세보기를 하는 메서드
+     *
+     * @param questionId 상세보기 대상 질문글의 아이디
+     * @return 질문글 엔티티를 감싼 옵셔널 객체
+     */
     public Optional<Question> questionDetail(long questionId) {
         Question findQuestion = queryFactory
-                .select(question)
+                .select(question).distinct()
                 .from(question)
                 .innerJoin(question.author, member).fetchJoin()
                 .leftJoin(question.answers, answer).fetchJoin()
-                .innerJoin(answer.author, member).fetchJoin()
+                .leftJoin(answer.author, member).fetchJoin()
                 .where(question.id.eq(questionId))
+                .setHint(QueryHints.HINT_PASS_DISTINCT_THROUGH, false)
                 .fetchOne();
 
-        queryFactory.select(question)
+        queryFactory.select(question).distinct()
                 .from(question)
                 .leftJoin(question.questionTags, questionTag).fetchJoin()
-                .innerJoin(questionTag.tag, tag).fetchJoin()
+                .leftJoin(questionTag.tag, tag).fetchJoin()
                 .where(question.id.eq(questionId))
+                .setHint(QueryHints.HINT_PASS_DISTINCT_THROUGH, false)
                 .fetch();
 
         return Optional.ofNullable(findQuestion);
+    }
+
+    /**
+     * DTO 프로젝션으로 질문글 상세보기를 하는 메서드
+     *
+     * @param questionId 상세보기 대상 질문글의 아이디
+     * @return 질문글 DTO를 감싼 옵셔널 객체
+     */
+    public QuestionDetailDTO questionDetailV2(long questionId) {
+        QuestionDetailDTO detailDTO = queryFactory
+                .select(new QQuestionDetailDTO(
+                        question.id,
+                        question.title,
+                        question.content,
+                        question.upVoteCount.subtract(question.downVoteCount),
+                        question.viewCount,
+                        question.createdDate,
+                        question.lastModifiedDate,
+                        question.author.id,
+                        question.author.nickname
+                )).from(question)
+                .innerJoin(question.author, member)
+                .where(question.id.eq(questionId))
+                .fetchOne();
+
+        List<TagDTO> tags = queryFactory
+                .select(new QTagDTO(
+                        tag.id,
+                        questionTag.question.id,
+                        tag.name
+                )).from(questionTag)
+                .innerJoin(questionTag.tag, tag)
+                .where(questionTag.question.id.eq(questionId))
+                .fetch();
+
+        List<AnswerDTO> answers = queryFactory
+                .select(new QAnswerDTO(
+                        answer.id,
+                        answer.content,
+                        answer.upVoteCount.subtract(answer.downVoteCount),
+                        answer.createdDate,
+                        answer.lastModifiedDate,
+                        answer.author.id,
+                        answer.author.nickname
+                )).from(answer)
+                .innerJoin(answer.author, member)
+                .where(answer.question.id.eq(questionId))
+                .fetch();
+
+        if (detailDTO == null) {
+            throw new QuestionNotFoundException(questionId);
+        }
+
+        detailDTO.updateDependency(tags, answers);
+
+        return detailDTO;
     }
 }

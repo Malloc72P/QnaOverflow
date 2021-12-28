@@ -11,6 +11,8 @@ import scra.qnaboard.web.dto.question.detail.QuestionDetailDTO;
 
 import javax.persistence.EntityManager;
 
+import java.util.Arrays;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -27,10 +29,15 @@ class QuestionServiceTest {
     @Test
     @DisplayName("아이디로 질문글 엔티티를 찾고 DTO로 변환할 수 있어야 함")
     void testQuestionDetail() {
-        Question question = TestDataInit.init(em);
+        Question[] questions = TestDataInit.init(em);
 
-        QuestionDetailDTO detailDTO = questionService.questionDetail(question.getId());
+        Arrays.stream(questions).forEach(question -> {
+            QuestionDetailDTO detailDTO = questionService.questionDetail(question.getId());
+            testDetailDTO(detailDTO, question);
+        });
+    }
 
+    private void testDetailDTO(QuestionDetailDTO detailDTO, Question question) {
         assertThat(detailDTO).extracting(
                 QuestionDetailDTO::getQuestionId,
                 QuestionDetailDTO::getTitle,

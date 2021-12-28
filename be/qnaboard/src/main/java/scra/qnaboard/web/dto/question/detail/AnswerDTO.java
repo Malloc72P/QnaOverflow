@@ -1,6 +1,9 @@
 package scra.qnaboard.web.dto.question.detail;
 
+import com.querydsl.core.annotations.QueryProjection;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import scra.qnaboard.domain.entity.post.Answer;
 
 import java.time.LocalDateTime;
@@ -13,6 +16,7 @@ import java.time.LocalDateTime;
  */
 
 @Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class AnswerDTO {
 
     private long answerId;
@@ -22,6 +26,23 @@ public class AnswerDTO {
     private LocalDateTime lastModifiedDate;
     private long authorId;
     private String authorName;
+
+    @QueryProjection
+    public AnswerDTO(long answerId,
+                     String content,
+                     long voteScore,
+                     LocalDateTime createdDate,
+                     LocalDateTime lastModifiedDate,
+                     long authorId,
+                     String authorName) {
+        this.answerId = answerId;
+        this.content = content;
+        this.voteScore = voteScore;
+        this.createdDate = createdDate;
+        this.lastModifiedDate = lastModifiedDate;
+        this.authorId = authorId;
+        this.authorName = authorName;
+    }
 
     public static AnswerDTO from(Answer answer) {
         AnswerDTO answerDTO = new AnswerDTO();

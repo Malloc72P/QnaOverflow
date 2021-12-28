@@ -9,8 +9,10 @@ import scra.qnaboard.domain.entity.QuestionTag;
 import scra.qnaboard.domain.entity.post.Answer;
 import scra.qnaboard.domain.entity.post.Question;
 import scra.qnaboard.utils.TestDataInit;
+import scra.qnaboard.web.dto.question.detail.QuestionDetailDTO;
 
 import javax.persistence.EntityManager;
+import java.util.Arrays;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -25,32 +27,47 @@ class QuestionSearchRepositoryTest {
     private EntityManager em;
 
     @Test
-    @DisplayName("질문 상세보기를 하면 질문과 연관된 작성자, 답변글목록, 태그목록을 가져와야 합니다")
+    @DisplayName("질문 상세보기를 할 수 있어야 함")
     void questionDetail() {
-        Question testTargetQuestion = TestDataInit.init(em);
+        Question[] questions = TestDataInit.init(em);
 
         em.flush();
         em.clear();
 
-        testDetailEntity(testTargetQuestion);
+        Arrays.stream(questions)
+                .forEach(question -> {
+                    Question findQuestion = repository.questionDetail(question.getId()).orElse(null);
+                    testFoundEntityIsEqualToExpected(question, findQuestion);
+                });
+    }
 
+    @Test
+    @DisplayName("질문 상세보기를 v2메서드로 할 수 있어야 함")
+    void questionDetailV2() {
+        Question[] questions = TestDataInit.init(em);
+
+        em.flush();
+        em.clear();
+
+        Arrays.stream(questions)
+                .forEach(question -> {
+                    QuestionDetailDTO detailDTO = repository.questionDetailV2(question.getId());
+                    testDetailDTO(detailDTO, question);
+                });
     }
 
     /**
      * 예상되는 값을 가지고 엔티티를 테스트.
      *
-     * @param testTargetQuestion 예상되는 엔티티의 상태값
+     * @param question 예상되는 엔티티의 상태값
      */
-    private void testDetailEntity(Question testTargetQuestion) {
-        Question findQuestion = repository.questionDetail(testTargetQuestion.getId())
-                .orElse(null);
-
+    private void testFoundEntityIsEqualToExpected(Question question, Question findQuestion) {
         //찾은 question 엔티티는 null 이면 안됨
         assertThat(findQuestion).isNotNull();
 
         //태그와 답변글 개수가 같아야 함
-        assertThat(findQuestion.getQuestionTags().size()).isEqualTo(testTargetQuestion.getQuestionTags().size());
-        assertThat(findQuestion.getAnswers().size()).isEqualTo(testTargetQuestion.getAnswers().size());
+        assertThat(findQuestion.getQuestionTags().size()).isEqualTo(question.getQuestionTags().size());
+        assertThat(findQuestion.getAnswers().size()).isEqualTo(question.getAnswers().size());
 
         //제목, 내용, 작성자가 같아야 함
         assertThat(findQuestion)
@@ -59,18 +76,34 @@ class QuestionSearchRepositoryTest {
                         Question::getContent,
                         Question::getAuthor
                 ).containsExactly(
-                        testTargetQuestion.getTitle(),
-                        testTargetQuestion.getContent(),
-                        testTargetQuestion.getAuthor()
+                        question.getTitle(),
+                        question.getContent(),
+                        question.getAuthor()
                 );
 
-        //태그 내용이 같아야 함
-        assertThat(findQuestion.getQuestionTags())
-                .contains(testTargetQuestion.getQuestionTags().toArray(new QuestionTag[0]));
-
-        //답변글 내용이 같아야 함
-        assertThat(findQuestion.getAnswers())
-                .contains(testTargetQuestion.getAnswers().toArray(new Answer[0]));
+        //태그와 답변글 개수가 같아야 함
+        assertThat(findQuestion.getQuestionTags().size()).isEqualTo(question.getQuestionTags().size());
+        assertThat(findQuestion.getAnswers().size()).isEqualTo(question.getAnswers().size());
     }
 
+    private void testDetailDTO(QuestionDetailDTO detailDTO, Question question) {
+        assertThat(detailDTO).extracting(
+                QuestionDetailDTO::getQuestionId,
+                QuestionDetailDTO::getTitle,
+                QuestionDetailDTO::getContent,
+                QuestionDetailDTO::getVoteScore,
+                QuestionDetailDTO::getViewCount,
+                QuestionDetailDTO::getAuthorName
+        ).containsExactly(
+                question.getId(),
+                question.getTitle(),
+                question.getContent(),
+                question.getUpVoteCount() - question.getDownVoteCount(),
+                question.getViewCount(),
+                question.getAuthor().getNickname()
+        );
+
+        assertThat(detailDTO.getTags().size()).isEqualTo(question.getQuestionTags().size());
+        assertThat(detailDTO.getAnswers().size()).isEqualTo(question.getAnswers().size());
+    }
 }

@@ -36,10 +36,7 @@ public class QuestionService {
     }
 
     public QuestionDetailDTO questionDetail(long questionId) {
-        Question question = questionSearchRepository.questionDetail(questionId)
-                .orElseThrow(() -> new QuestionNotFoundException(questionId));
-
-        return QuestionDetailDTO.from(question);
+        return questionSearchRepository.questionDetailV2(questionId);
     }
 
 }
