@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import scra.qnaboard.service.QuestionService;
+import scra.qnaboard.web.dto.question.detail.QuestionDetailDTO;
 import scra.qnaboard.web.dto.question.list.QuestionListDTO;
 
 /**
@@ -34,7 +35,10 @@ public class QuestionController {
     }
 
     @GetMapping("{questionId}")
-    public String detail(@PathVariable Long questionId) {
+    public String detail(@PathVariable Long questionId, Model model) {
+        QuestionDetailDTO detailDTO = questionService.questionDetail(questionId);
+        model.addAttribute(detailDTO);
+
         return "/question/question-detail";
     }
 }

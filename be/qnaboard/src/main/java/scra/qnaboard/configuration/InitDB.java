@@ -8,7 +8,9 @@ import org.springframework.transaction.annotation.Transactional;
 import scra.qnaboard.domain.entity.Member;
 import scra.qnaboard.domain.entity.MemberRole;
 import scra.qnaboard.domain.entity.Tag;
+import scra.qnaboard.domain.entity.post.Answer;
 import scra.qnaboard.domain.entity.post.Question;
+import scra.qnaboard.domain.repository.AnswerRepository;
 import scra.qnaboard.domain.repository.MemberRepository;
 import scra.qnaboard.domain.repository.QuestionRepository;
 import scra.qnaboard.domain.repository.TagRepository;
@@ -46,6 +48,7 @@ public class InitDB {
         private final MemberRepository memberRepository;
         private final QuestionRepository questionRepository;
         private final TagRepository tagRepository;
+        private final AnswerRepository answerRepository;
 
         @Transactional
         public void initDB() {
@@ -70,7 +73,7 @@ public class InitDB {
 
             Question[] questions = {
                     new Question(members[0], "content-1", "title-1"),
-                    new Question(members[1], "content-2", "title-2aaaaaaaaaaaaaaaaaa2aaaaaaaaaaaaaaaaaa2aaaaaaaaaaaaaaaaaa2aaaaaaaaaaaaaaaaaa2aaaaaaaaaaaaaaaaaa2aaaaaaaaaaaaaaaaaa2aaaaaaaaaaaaaaaaaa2aaaaaaaaaaaaaaaaaa2aaaaaaaaaaaaaaaaaa2aaaaaaaaaaaaaaaaaa2aaaaaaaaaaaaaaaaaa2aaaaaaaaaaaaaaaaaa"),
+                    new Question(members[1], "content-2", "title-2aaaaaaaaaaaaaaaaaa"),
                     new Question(members[1], "content-3", "title-3"),
                     new Question(members[2], "content-4", "title-4"),
                     new Question(members[2], "content-5", "title-5"),
@@ -105,22 +108,33 @@ public class InitDB {
             questions[1].addTag(tags[5]);
             questions[1].addTag(tags[5]);
             questions[1].addTag(tags[5]);
-            questions[1].addTag(tags[5]);
-            questions[1].addTag(tags[5]);
-            questions[1].addTag(tags[5]);
-            questions[1].addTag(tags[5]);
-            questions[1].addTag(tags[5]);
-            questions[1].addTag(tags[5]);
-            questions[1].addTag(tags[5]);
-            questions[1].addTag(tags[5]);
-            questions[1].addTag(tags[5]);
-            questions[1].addTag(tags[5]);
-            questions[1].addTag(tags[5]);
-            questions[1].addTag(tags[5]);
-            questions[1].addTag(tags[5]);
-            questions[1].addTag(tags[5]);
-            questions[1].addTag(tags[5]);
 
+            Answer[] answers = {
+                    new Answer(members[0], "content1", questions[0]),
+                    new Answer(members[0], "content2", questions[0]),
+                    new Answer(members[1], "content3", questions[0]),
+                    new Answer(members[1], "content4", questions[0]),
+                    new Answer(members[2], "content5", questions[1]),
+                    new Answer(members[2], "content6", questions[1]),
+                    new Answer(members[2], "content7", questions[1]),
+                    new Answer(members[2], "content8", questions[1]),
+                    new Answer(members[2], "content9", questions[1]),
+                    new Answer(members[2], "content10", questions[1]),
+                    new Answer(members[3], "content11", questions[1]),
+                    new Answer(members[3], "content12", questions[1]),
+                    new Answer(members[3], "content13", questions[1]),
+                    new Answer(members[3], "content14", questions[1]),
+                    new Answer(members[3], "content15", questions[2]),
+                    new Answer(members[0], "content16", questions[2]),
+                    new Answer(members[0], "content17", questions[2]),
+                    new Answer(members[0], "content18", questions[2]),
+                    new Answer(members[0], "content19", questions[2]),
+                    new Answer(members[3], "content20", questions[2]),
+                    new Answer(members[3], "content21", questions[2]),
+                    new Answer(members[3], "content22", questions[2])
+            };
+
+            answerRepository.saveAll(Arrays.asList(answers));
             log.info("데이터베이스 초기화 완료");
         }
     }

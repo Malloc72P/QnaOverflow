@@ -11,9 +11,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * 질문글에 대한 엔티티 <br>
@@ -33,7 +31,7 @@ public class Question extends Post {
 
     private String title;
 
-    @OneToMany(mappedBy = "question", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "question", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Answer> answers = new ArrayList<>();
 
     @OneToMany(mappedBy = "question", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
@@ -42,10 +40,6 @@ public class Question extends Post {
     public Question(Member author, String content, String title) {
         super(author, content);
         this.title = title;
-    }
-
-    public void addQuestionTag(QuestionTag questionTag) {
-        questionTags.add(questionTag);
     }
 
     /**
@@ -58,6 +52,10 @@ public class Question extends Post {
     public void addTag(Tag tag) {
         QuestionTag questionTag = new QuestionTag(tag, this);
         questionTags.add(questionTag);
+    }
+
+    public void addAnswer(Answer answer) {
+        answers.add(answer);
     }
 
     @Override

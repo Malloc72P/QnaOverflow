@@ -2,20 +2,24 @@ package scra.qnaboard.domain.repository;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.jpa.QueryHints;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+import scra.qnaboard.domain.entity.post.Question;
 import scra.qnaboard.web.dto.question.list.QQuestionSummaryDTO;
 import scra.qnaboard.web.dto.question.list.QTagDTO;
 import scra.qnaboard.web.dto.question.list.QuestionSummaryDTO;
-import scra.qnaboard.web.dto.question.list.TagDTO;
+import scra.qnaboard.web.dto.tag.TagDTO;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static scra.qnaboard.domain.entity.QMember.member;
 import static scra.qnaboard.domain.entity.QQuestionTag.questionTag;
 import static scra.qnaboard.domain.entity.QTag.tag;
+import static scra.qnaboard.domain.entity.post.QAnswer.answer;
 import static scra.qnaboard.domain.entity.post.QQuestion.question;
 
 /**
@@ -77,5 +81,25 @@ public class QuestionSearchRepository {
         questions.forEach(question -> question.setTags(tagMap.get(question.getQuestionId())));
 
         return questions;
+    }
+
+    public Optional<Question> questionDetail(long questionId) {
+        Question findQuestion = queryFactory
+                .select(question)
+                .from(question)
+                .innerJoin(question.author, member).fetchJoin()
+                .leftJoin(question.answers, answer).fetchJoin()
+                .innerJoin(answer.author, member).fetchJoin()
+                .where(question.id.eq(questionId))
+                .fetchOne();
+
+        queryFactory.select(question)
+                .from(question)
+                .leftJoin(question.questionTags, questionTag).fetchJoin()
+                .innerJoin(questionTag.tag, tag).fetchJoin()
+                .where(question.id.eq(questionId))
+                .fetch();
+
+        return Optional.ofNullable(findQuestion);
     }
 }

@@ -29,6 +29,7 @@ public class Answer extends Post {
     public Answer(Member author, String content, Question question) {
         super(author, content);
         this.question = question;
+        question.addAnswer(this);
     }
 
     @Override

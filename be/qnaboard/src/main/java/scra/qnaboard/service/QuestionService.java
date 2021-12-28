@@ -3,8 +3,11 @@ package scra.qnaboard.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import scra.qnaboard.domain.entity.post.Question;
 import scra.qnaboard.domain.repository.QuestionRepository;
 import scra.qnaboard.domain.repository.QuestionSearchRepository;
+import scra.qnaboard.service.exception.QuestionNotFoundException;
+import scra.qnaboard.web.dto.question.detail.QuestionDetailDTO;
 import scra.qnaboard.web.dto.question.list.QuestionListDTO;
 import scra.qnaboard.web.dto.question.list.QuestionSummaryDTO;
 
@@ -30,6 +33,13 @@ public class QuestionService {
     public QuestionListDTO questionList() {
         List<QuestionSummaryDTO> questionSummaryDTOS = questionSearchRepository.search();
         return new QuestionListDTO(questionSummaryDTOS);
+    }
+
+    public QuestionDetailDTO questionDetail(long questionId) {
+        Question question = questionSearchRepository.questionDetail(questionId)
+                .orElseThrow(() -> new QuestionNotFoundException(questionId));
+
+        return QuestionDetailDTO.from(question);
     }
 
 }

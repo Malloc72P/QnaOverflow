@@ -5,6 +5,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
+import scra.qnaboard.web.dto.tag.TagDTO;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -16,7 +17,6 @@ import java.util.List;
  * createDate를 원하는 포맷으로 뷰에 출력하기 위해 Formatter를 사용한다(@DateTimeFormat)
  */
 @Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class QuestionSummaryDTO {
 
     private long questionId;
