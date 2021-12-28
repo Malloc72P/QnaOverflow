@@ -5,8 +5,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
-import scra.qnaboard.domain.entity.QuestionTag;
-import scra.qnaboard.domain.entity.post.Answer;
 import scra.qnaboard.domain.entity.post.Question;
 import scra.qnaboard.utils.TestDataInit;
 import scra.qnaboard.web.dto.question.detail.QuestionDetailDTO;
@@ -26,6 +24,9 @@ class QuestionSearchRepositoryTest {
     @Autowired
     private EntityManager em;
 
+    /**
+     * 패치조인으로 질문상세보기하는 메서드를 테스트함
+     */
     @Test
     @DisplayName("질문 상세보기를 할 수 있어야 함")
     void questionDetail() {
@@ -41,6 +42,9 @@ class QuestionSearchRepositoryTest {
                 });
     }
 
+    /**
+     * 프로젝션으로 질문 상세보기하는 메서드를 테스트함
+     */
     @Test
     @DisplayName("질문 상세보기를 v2메서드로 할 수 있어야 함")
     void questionDetailV2() {
@@ -86,6 +90,9 @@ class QuestionSearchRepositoryTest {
         assertThat(findQuestion.getAnswers().size()).isEqualTo(question.getAnswers().size());
     }
 
+    /**
+     * DTO가 엔티티의 값을 잘 가지고 있는지 테스트함
+     */
     private void testDetailDTO(QuestionDetailDTO detailDTO, Question question) {
         assertThat(detailDTO).extracting(
                 QuestionDetailDTO::getQuestionId,

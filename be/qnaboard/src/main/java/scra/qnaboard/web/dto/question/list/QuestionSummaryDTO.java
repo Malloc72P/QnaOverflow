@@ -1,9 +1,7 @@
 package scra.qnaboard.web.dto.question.list;
 
 import com.querydsl.core.annotations.QueryProjection;
-import lombok.AccessLevel;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import scra.qnaboard.web.dto.tag.TagDTO;
 

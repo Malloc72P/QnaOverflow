@@ -1,9 +1,7 @@
 package scra.qnaboard.web.dto.tag;
 
 import com.querydsl.core.annotations.QueryProjection;
-import lombok.AccessLevel;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 /**
  * 질문 목록조회를 위한 DTO. 질문의 태그를 위한 DTO이다. <br>

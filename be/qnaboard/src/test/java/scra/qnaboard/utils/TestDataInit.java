@@ -13,6 +13,7 @@ public class TestDataInit {
 
     /**
      * 데이터 초기화
+     *
      * @param em 초기화에 사용할 엔티티 매니저
      */
     public static Question[] init(EntityManager em) {

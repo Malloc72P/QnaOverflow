@@ -5,8 +5,6 @@ import lombok.RequiredArgsConstructor;
 import org.hibernate.jpa.QueryHints;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-import scra.qnaboard.domain.entity.QQuestionTag;
-import scra.qnaboard.domain.entity.post.QAnswer;
 import scra.qnaboard.domain.entity.post.Question;
 import scra.qnaboard.service.exception.QuestionNotFoundException;
 import scra.qnaboard.web.dto.question.detail.AnswerDTO;
