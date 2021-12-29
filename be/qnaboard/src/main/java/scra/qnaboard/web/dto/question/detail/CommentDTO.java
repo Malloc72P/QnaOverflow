@@ -8,24 +8,15 @@ import org.springframework.format.annotation.DateTimeFormat;
 import scra.qnaboard.utils.DateTimeUtil;
 
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class CommentDTO {
+public class CommentDTO implements Comparable<CommentDTO> {
 
-    private static final Comparator<CommentDTO> comparator = (c1, c2) -> {
-        LocalDateTime left = c1.getCreatedDate();
-        LocalDateTime right = c2.getCreatedDate();
-
-        if (left.isBefore(right)) {
-            return -1;
-        } else if (left.isEqual(right)) {
-            return 0;
-        } else {
-            return 1;
-        }
-    };
     private long commentId;
     private long authorId;
     private String authorName;
@@ -66,7 +57,7 @@ public class CommentDTO {
         Map<Long, CommentDTO> commentMap = new HashMap<>();
         List<CommentDTO> newComments = new ArrayList<>();
 
-        originalComments.sort(comparator);
+        originalComments.sort(CommentDTO::compareTo);
 
         for (CommentDTO comment : originalComments) {
             commentMap.put(comment.getCommentId(), comment);
@@ -81,7 +72,7 @@ public class CommentDTO {
                 }
             }
         }
-        newComments.sort(comparator);
+        newComments.sort(CommentDTO::compareTo);
         return newComments;
     }
 
@@ -92,5 +83,19 @@ public class CommentDTO {
 
     private void updateParent(CommentDTO parent) {
         this.parent = parent;
+    }
+
+    @Override
+    public int compareTo(CommentDTO other) {
+        LocalDateTime left = this.getCreatedDate();
+        LocalDateTime right = other.getCreatedDate();
+
+        if (left.isBefore(right)) {
+            return -1;
+        } else if (left.isEqual(right)) {
+            return 0;
+        } else {
+            return 1;
+        }
     }
 }

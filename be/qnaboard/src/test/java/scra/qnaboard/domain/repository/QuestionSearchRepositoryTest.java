@@ -13,7 +13,6 @@ import scra.qnaboard.web.dto.question.detail.QuestionDetailDTO;
 
 import javax.persistence.EntityManager;
 import java.util.ArrayDeque;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Queue;
 
@@ -130,7 +129,8 @@ class QuestionSearchRepositoryTest {
     /**
      * 질문상세보기 DTO 안에 있는 댓글에 대한 테스트 메서드. <br>
      * 최상위 댓글 및 그 하위에 있는 모든 댓글을 테스트함
-     * @param comments 댓글 엔티티
+     *
+     * @param comments    댓글 엔티티
      * @param commentDTOS 댓글 DTO
      */
     private void testComments(List<Comment> comments, List<CommentDTO> commentDTOS) {
@@ -160,7 +160,8 @@ class QuestionSearchRepositoryTest {
 
     /**
      * 댓글 엔티티와 DTO List를 비교함(개수 + 내용물)
-     * @param comments 엔티티 list
+     *
+     * @param comments    엔티티 list
      * @param dtoComments dto list
      */
     private void compareCommentAndDTO(List<Comment> comments, List<CommentDTO> dtoComments) {
@@ -174,6 +175,7 @@ class QuestionSearchRepositoryTest {
 
     /**
      * 게시글의 최상위 댓글을 생성일로 오름차순 정렬해서 가져옴
+     *
      * @param parentPostId 게시글 아이디
      * @return 댓글 목록
      */
@@ -189,6 +191,7 @@ class QuestionSearchRepositoryTest {
 
     /**
      * 댓글의 자식 댓글을 생성일로 오름차순 정렬해서 가져옴
+     *
      * @param parentCommentId 부모댓글의 아이디
      * @return 댓글 목록
      */
