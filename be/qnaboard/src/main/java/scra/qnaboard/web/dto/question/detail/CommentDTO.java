@@ -26,7 +26,7 @@ public class CommentDTO implements Comparable<CommentDTO> {
     private Long parentCommentId;
     private long parentPostId;
     private CommentDTO parent;
-    private List<CommentDTO> childs = new ArrayList<>();
+    private List<CommentDTO> children = new ArrayList<>();
 
     @QueryProjection
     public CommentDTO(long commentId,
@@ -83,7 +83,7 @@ public class CommentDTO implements Comparable<CommentDTO> {
      * @param child 자식 댓글 DTO
      */
     private void addChild(CommentDTO child) {
-        childs.add(child);
+        children.add(child);
         child.updateParent(this);
     }
 

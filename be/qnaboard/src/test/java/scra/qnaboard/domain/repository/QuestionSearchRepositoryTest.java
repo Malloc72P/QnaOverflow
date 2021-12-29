@@ -150,8 +150,8 @@ class QuestionSearchRepositoryTest {
         Queue<CommentDTO> queue = new ArrayDeque<>(commentDTOS);
         while (!queue.isEmpty()) {
             CommentDTO poll = queue.poll();
-            List<CommentDTO> dtoChildren = poll.getChilds();
-            queue.addAll(poll.getChilds());
+            List<CommentDTO> dtoChildren = poll.getChildren();
+            queue.addAll(poll.getChildren());
 
             List<Comment> comments = commentsByParentCommentId(poll.getCommentId());
             compareCommentAndDTO(comments, dtoChildren);

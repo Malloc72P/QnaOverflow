@@ -6,14 +6,10 @@
 
 <body>
 
-<div class="comment-wrapper" th:fragment="comment_wrapper">
-    <div class="comment-list mb-4">
-        <div th:replace="template/fragment/comment/comment :: comment"></div>
-        <div th:replace="template/fragment/comment/comment :: comment"></div>
-        <div th:replace="template/fragment/comment/comment :: comment"></div>
-        <div th:replace="template/fragment/comment/comment :: comment"></div>
-        <div th:replace="template/fragment/comment/comment :: comment"></div>
-        <div th:replace="template/fragment/comment/comment :: comment"></div>
+<div class="comment-wrapper" th:fragment="comment_wrapper(comments)">
+    <div class="comment-list mb-4"
+         th:each="comment : ${comments}"
+         th:insert="template/fragment/comment/comment :: comment_block(${comment})">
     </div>
     <div class="comment-writer">
         <h4 class="mb-3">댓글 작성하기</h4>

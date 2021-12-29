@@ -5,21 +5,30 @@
 <html lang="kr" xmlns:th="http://www.thymeleaf.org">
 
 <body>
-
-<div class="comment card mb-3" th:fragment="comment">
-    <div class="card-header">
-        <div class="d-inline-block">Edward Nygma</div>
-        <div class="float-end">
-            <span>2021-12-12 12:12PM</span>
-            <a class="text-decoration-none text-black hover-underline" href="#">수정</a>
-            <a class="text-decoration-none text-black hover-underline" href="#">삭제</a>
+<div th:fragment="comment_block(comment)">
+    <div class="comment card mb-3" >
+        <div class="card-header">
+            <div class="d-inline-block" th:text="${comment.authorName}">Edward Nygma</div>
+            <div class="float-end">
+                <span th:text="${{comment.createdDate}}">2021-12-12 12:12PM</span>
+                <a class="text-decoration-none text-black hover-underline" href="#">수정</a>
+                <a class="text-decoration-none text-black hover-underline" href="#">삭제</a>
+            </div>
+        </div>
+        <div class="card-body">
+            <p class="card-text" th:text="${comment.content}">
+                Some quick example text to build on the card title and make up
+                the bulk of the card's content.
+            </p>
         </div>
     </div>
-    <div class="card-body">
-        <p class="card-text">Some quick example text to build on the card title and make up the bulk
-            of the card's content.</p>
+
+    <div class="child-comment-wrapper ms-2 ms-md-3"
+         th:each="childComment : ${comment.children}">
+        <div th:replace="template/fragment/comment/comment :: comment_block(${childComment})"></div>
     </div>
 </div>
+
 
 </body>
 

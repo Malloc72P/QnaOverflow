@@ -32,7 +32,7 @@
         </div>
         <hr>
         <!--/*대댓글 목록 컨테이너*/-->
-        <div th:replace="template/fragment/comment/comment-wrapper :: comment_wrapper"></div>
+        <div th:replace="template/fragment/comment/comment-wrapper :: comment_wrapper(${question.comments})"></div>
     </div>
 
 </div>

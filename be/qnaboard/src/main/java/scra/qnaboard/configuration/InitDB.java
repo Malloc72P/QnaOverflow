@@ -2,13 +2,16 @@ package scra.qnaboard.configuration;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.transaction.annotation.Transactional;
+import scra.qnaboard.domain.entity.Comment;
 import scra.qnaboard.domain.entity.Member;
 import scra.qnaboard.domain.entity.MemberRole;
 import scra.qnaboard.domain.entity.Tag;
 import scra.qnaboard.domain.entity.post.Answer;
+import scra.qnaboard.domain.entity.post.Post;
 import scra.qnaboard.domain.entity.post.Question;
 import scra.qnaboard.domain.repository.AnswerRepository;
 import scra.qnaboard.domain.repository.MemberRepository;
@@ -16,6 +19,7 @@ import scra.qnaboard.domain.repository.QuestionRepository;
 import scra.qnaboard.domain.repository.TagRepository;
 
 import javax.annotation.PostConstruct;
+import javax.persistence.EntityManager;
 import java.util.Arrays;
 
 /**
@@ -45,97 +49,84 @@ public class InitDB {
     @RequiredArgsConstructor
     static class InitService {
 
-        private final MemberRepository memberRepository;
-        private final QuestionRepository questionRepository;
-        private final TagRepository tagRepository;
-        private final AnswerRepository answerRepository;
+        private final EntityManager em;
 
         @Transactional
         public void initDB() {
             log.info("데이터베이스 초기화 시작");
-            Member[] members = {
-                    new Member("member1", MemberRole.NORMAL),
-                    new Member("member2", MemberRole.ADMIN),
-                    new Member("member3", MemberRole.ADMIN),
-                    new Member("member4", MemberRole.ADMIN)
-            };
-            memberRepository.saveAll(Arrays.asList(members));
 
+            //1. 멤버 생성
+            Member author = new Member("member1", MemberRole.NORMAL);
+            em.persist(author);
+
+            //2. 태그 생성
             Tag[] tags = {
-                    new Tag(members[2], "Angular"),
-                    new Tag(members[1], "Web"),
-                    new Tag(members[1], "JQuery"),
-                    new Tag(members[3], "ReactJS"),
-                    new Tag(members[3], "VueJS"),
-                    new Tag(members[2], "SpringBoot")
+                    new Tag(author, "Angular"),
+                    new Tag(author, "Web"),
+                    new Tag(author, "JQuery"),
+                    new Tag(author, "ReactJS"),
+                    new Tag(author, "VueJS"),
+                    new Tag(author, "SpringBoot")
             };
-            tagRepository.saveAll(Arrays.asList(tags));
+            Arrays.stream(tags).forEach(em::persist);
 
+            //3. 질문글 생성
             Question[] questions = {
-                    new Question(members[0], "content-1", "title-1"),
-                    new Question(members[1], "content-2", "title-2aaaaaaaaaaaaaaaaaa"),
-                    new Question(members[1], "content-3", "title-3"),
-                    new Question(members[2], "content-4", "title-4"),
-                    new Question(members[2], "content-5", "title-5"),
-                    new Question(members[2], "content-6", "title-6"),
-                    new Question(members[3], "content-7", "title-7"),
-                    new Question(members[3], "content-8", "title-8"),
-                    new Question(members[0], "content-9", "title-9"),
-                    new Question(members[0], "content-10", "title-10")
+                    new Question(author, "target-content", "target-title"),
+                    new Question(author, "no-tag-no-answer", "title-2"),
+                    new Question(author, "content-3", "title-3"),
+                    new Question(author, "content-4", "title-4"),
+                    new Question(author, "content-5", "title-5"),
             };
-            questionRepository.saveAll(Arrays.asList(questions));
+            Arrays.stream(questions).forEach(em::persist);
+            Question testTargetQuestion = questions[0];
 
-            Arrays.stream(questions)
-                    .filter(question -> question.getId() >= 4)
-                    .forEach(question -> Arrays.asList(tags).forEach(question::addTag));
-            questions[0].addTag(tags[0]);
-            questions[0].addTag(tags[1]);
-            questions[0].addTag(tags[2]);
-
-            questions[1].addTag(tags[3]);
-            questions[1].addTag(tags[4]);
-            questions[1].addTag(tags[5]);
-            questions[1].addTag(tags[5]);
-            questions[1].addTag(tags[5]);
-            questions[1].addTag(tags[5]);
-            questions[1].addTag(tags[5]);
-            questions[1].addTag(tags[5]);
-            questions[1].addTag(tags[5]);
-            questions[1].addTag(tags[5]);
-            questions[1].addTag(tags[5]);
-            questions[1].addTag(tags[5]);
-            questions[1].addTag(tags[5]);
-            questions[1].addTag(tags[5]);
-            questions[1].addTag(tags[5]);
-            questions[1].addTag(tags[5]);
-
+            //4. 답변글 생성
             Answer[] answers = {
-                    new Answer(members[0], "content1", questions[0]),
-                    new Answer(members[0], "content2", questions[0]),
-                    new Answer(members[1], "content3", questions[0]),
-                    new Answer(members[1], "content4", questions[0]),
-                    new Answer(members[2], "content5", questions[1]),
-                    new Answer(members[2], "content6", questions[1]),
-                    new Answer(members[2], "content7", questions[1]),
-                    new Answer(members[2], "content8", questions[1]),
-                    new Answer(members[2], "content9", questions[1]),
-                    new Answer(members[2], "content10", questions[1]),
-                    new Answer(members[3], "content11", questions[1]),
-                    new Answer(members[3], "content12", questions[1]),
-                    new Answer(members[3], "content13", questions[1]),
-                    new Answer(members[3], "content14", questions[1]),
-                    new Answer(members[3], "content15", questions[2]),
-                    new Answer(members[0], "content16", questions[2]),
-                    new Answer(members[0], "content17", questions[2]),
-                    new Answer(members[0], "content18", questions[2]),
-                    new Answer(members[0], "content19", questions[2]),
-                    new Answer(members[3], "content20", questions[2]),
-                    new Answer(members[3], "content21", questions[2]),
-                    new Answer(members[3], "content22", questions[2])
+                    new Answer(author, "content1", testTargetQuestion),
+                    new Answer(author, "content2", testTargetQuestion),
+                    new Answer(author, "content3", testTargetQuestion),
+                    new Answer(author, "content4", testTargetQuestion),
+                    new Answer(author, "content5", testTargetQuestion),
+                    new Answer(author, "content6", testTargetQuestion),
+                    new Answer(author, "content7", testTargetQuestion),
             };
+            Arrays.stream(answers).forEach(em::persist);
 
-            answerRepository.saveAll(Arrays.asList(answers));
+            //5. 질문글에 태그 등록
+            Arrays.stream(tags).forEach(testTargetQuestion::addTag);
+
+            //6. 질문글에 대댓글 등록
+            Comment c7 = createComment(em, author, testTargetQuestion, "q-content-7", null);
+            Comment c8 = createComment(em, author, testTargetQuestion, "q-content-8", null);
+            Comment c1 = createComment(em, author, testTargetQuestion, "q-content-1", null);
+            Comment c2 = createComment(em, author, testTargetQuestion, "q-content-2", c1);
+            Comment c3 = createComment(em, author, testTargetQuestion, "q-content-3", c2);
+            Comment c4 = createComment(em, author, testTargetQuestion, "q-content-4", c3);
+            Comment c5 = createComment(em, author, testTargetQuestion, "q-content-5", c4);
+            Comment c6 = createComment(em, author, testTargetQuestion, "q-content-6", c4);
+
+            //7. 답변글에 대댓글 등록
+            Arrays.stream(answers).forEach(answer -> {
+                Comment ac4 = createComment(em, author, answer, answer.getId() + "content-4", null);
+                Comment ac5 = createComment(em, author, answer, answer.getId() + "content-5", null);
+                Comment ac6 = createComment(em, author, answer, answer.getId() + "content-6", ac5);
+                Comment ac1 = createComment(em, author, answer, answer.getId() + "content-1", null);
+                Comment ac2 = createComment(em, author, answer, answer.getId() + "content-2", ac1);
+                Comment ac3 = createComment(em, author, answer, answer.getId() + "content-3", ac1);
+            });
+
             log.info("데이터베이스 초기화 완료");
+        }
+
+        private static Comment createComment(EntityManager em,
+                                             Member author,
+                                             Post post,
+                                             String content,
+                                             Comment parentComment) {
+            Comment c1 = new Comment(author, content, post, parentComment);
+            em.persist(c1);
+            return c1;
         }
     }
 }
