@@ -72,19 +72,35 @@ public class CommentDTO implements Comparable<CommentDTO> {
                 }
             }
         }
+        //최상위 댓글도 정렬해줌
         newComments.sort(CommentDTO::compareTo);
         return newComments;
     }
 
+    /**
+     * 자식 댓글 DTO를 추가하는 메서드.
+     * 이걸로 추가해야 함. 그러면 자동으로 자식 댓글의 부모 필드도 세팅해줌
+     * @param child 자식 댓글 DTO
+     */
     private void addChild(CommentDTO child) {
         childs.add(child);
         child.updateParent(this);
     }
 
+    /**
+     * 부모 댓글을 세팅하는 메서드. 직접 호출하면 안됨. addChild()에서만 호출해야 함
+     * @param parent 부모 댓글
+     */
     private void updateParent(CommentDTO parent) {
         this.parent = parent;
     }
 
+    /**
+     * CommentDTO를 생성일로 비교하는 메서드. <br>
+     * this에 해당하는 댓글객체가 비교대상보다 이전에 작성되었다면 -1을 리턴함(작다고 표현함)
+     * @param other 비교대상
+     * @return 비교 결과.
+     */
     @Override
     public int compareTo(CommentDTO other) {
         LocalDateTime left = this.getCreatedDate();
