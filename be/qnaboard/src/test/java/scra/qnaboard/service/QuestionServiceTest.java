@@ -30,7 +30,7 @@ class QuestionServiceTest {
     @Test
     @DisplayName("아이디로 질문글 엔티티를 찾고 DTO로 변환할 수 있어야 함")
     void testQuestionDetail() {
-        Question[] questions = TestDataInit.init(em);
+        Question[] questions = TestDataInit.init(em).getQuestions();
 
         em.flush();
         em.clear();

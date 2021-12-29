@@ -34,6 +34,7 @@ public class QuestionDetailDTO {
     private long authorId;
     private String authorName;
     private List<TagDTO> tags = new ArrayList<>();
+    private List<CommentDTO> comments = new ArrayList<>();
 
     @QueryProjection
     public QuestionDetailDTO(long questionId,
@@ -87,8 +88,24 @@ public class QuestionDetailDTO {
         return detailDTO;
     }
 
-    public void updateDependency(List<TagDTO> tags, List<AnswerDTO> answers) {
-        this.tags = tags;
+    public void updateAnswer(List<AnswerDTO> answers) {
+        if (answers == null) {
+            return;
+        }
         this.answers = answers;
+    }
+
+    public void updateTags(List<TagDTO> tags) {
+        if (tags == null) {
+            return;
+        }
+        this.tags = tags;
+    }
+
+    public void updateComments(List<CommentDTO> comments) {
+        if (comments == null) {
+            return;
+        }
+        this.comments = comments;
     }
 }

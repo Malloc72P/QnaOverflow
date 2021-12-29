@@ -1,9 +1,11 @@
 package scra.qnaboard.utils;
 
+import scra.qnaboard.domain.entity.Comment;
 import scra.qnaboard.domain.entity.Member;
 import scra.qnaboard.domain.entity.MemberRole;
 import scra.qnaboard.domain.entity.Tag;
 import scra.qnaboard.domain.entity.post.Answer;
+import scra.qnaboard.domain.entity.post.Post;
 import scra.qnaboard.domain.entity.post.Question;
 
 import javax.persistence.EntityManager;
@@ -16,10 +18,12 @@ public class TestDataInit {
      *
      * @param em 초기화에 사용할 엔티티 매니저
      */
-    public static Question[] init(EntityManager em) {
+    public static TestDataDTO init(EntityManager em) {
+        //1. 멤버 생성
         Member author = new Member("member1", MemberRole.NORMAL);
         em.persist(author);
 
+        //2. 태그 생성
         Tag[] tags = {
                 new Tag(author, "Angular"),
                 new Tag(author, "Web"),
@@ -30,6 +34,7 @@ public class TestDataInit {
         };
         Arrays.stream(tags).forEach(em::persist);
 
+        //3. 질문글 생성
         Question[] questions = {
                 new Question(author, "target-content", "target-title"),
                 new Question(author, "no-tag-no-answer", "title-2"),
@@ -40,6 +45,7 @@ public class TestDataInit {
         Arrays.stream(questions).forEach(em::persist);
         Question testTargetQuestion = questions[0];
 
+        //4. 답변글 생성
         Answer[] answers = {
                 new Answer(author, "content1", testTargetQuestion),
                 new Answer(author, "content2", testTargetQuestion),
@@ -51,8 +57,40 @@ public class TestDataInit {
         };
         Arrays.stream(answers).forEach(em::persist);
 
+        //5. 질문글에 태그 등록
         Arrays.stream(tags).forEach(testTargetQuestion::addTag);
-        return questions;
+
+        //6. 질문글에 대댓글 등록
+        Comment c7 = createComment(em, author, testTargetQuestion, "content-7", null);
+        Comment c8 = createComment(em, author, testTargetQuestion, "content-8", null);
+        Comment c1 = createComment(em, author, testTargetQuestion, "content-1", null);
+        Comment c2 = createComment(em, author, testTargetQuestion, "content-2", c1);
+        Comment c3 = createComment(em, author, testTargetQuestion, "content-3", c2);
+        Comment c4 = createComment(em, author, testTargetQuestion, "content-4", c3);
+        Comment c5 = createComment(em, author, testTargetQuestion, "content-5", c4);
+        Comment c6 = createComment(em, author, testTargetQuestion, "content-6", c4);
+
+        //7. 답변글에 대댓글 등록
+        Arrays.stream(answers).forEach(answer -> {
+            Comment ac4 = createComment(em, author, answer, answer.getId() + "content-4", null);
+            Comment ac5 = createComment(em, author, answer, answer.getId() + "content-5", null);
+            Comment ac6 = createComment(em, author, answer, answer.getId() + "content-6", ac5);
+            Comment ac1 = createComment(em, author, answer, answer.getId() + "content-1", null);
+            Comment ac2 = createComment(em, author, answer, answer.getId() + "content-2", ac1);
+            Comment ac3 = createComment(em, author, answer, answer.getId() + "content-3", ac1);
+        });
+
+        return new TestDataDTO(tags, questions, new Member[]{author}, answers);
+    }
+
+    private static Comment createComment(EntityManager em,
+                                         Member author,
+                                         Post post,
+                                         String content,
+                                         Comment parentComment) {
+        Comment c1 = new Comment(author, content, post, parentComment);
+        em.persist(c1);
+        return c1;
     }
 
 }

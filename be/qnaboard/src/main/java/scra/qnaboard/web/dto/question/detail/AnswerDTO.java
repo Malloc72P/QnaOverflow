@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 import scra.qnaboard.domain.entity.post.Answer;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 답변 게시글을 위한 DTO
@@ -26,6 +28,7 @@ public class AnswerDTO {
     private LocalDateTime lastModifiedDate;
     private long authorId;
     private String authorName;
+    private List<CommentDTO> comments = new ArrayList<>();
 
     @QueryProjection
     public AnswerDTO(long answerId,
@@ -55,5 +58,12 @@ public class AnswerDTO {
         answerDTO.authorName = answer.getAuthor().getNickname();
 
         return answerDTO;
+    }
+
+    public void updateComments(List<CommentDTO> comments) {
+        if (comments == null) {
+            return;
+        }
+        this.comments = comments;
     }
 }
