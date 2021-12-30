@@ -2,6 +2,7 @@ package scra.qnaboard.web.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -13,6 +14,8 @@ import scra.qnaboard.web.dto.question.create.CreateQuestionForm;
 import scra.qnaboard.web.dto.question.detail.QuestionDetailDTO;
 import scra.qnaboard.web.dto.question.list.QuestionListDTO;
 
+import java.util.Locale;
+
 /**
  * 질문글에 대한 요청을 처리하는 컨트롤러
  */
@@ -23,6 +26,7 @@ import scra.qnaboard.web.dto.question.list.QuestionListDTO;
 public class QuestionController {
 
     private final QuestionService questionService;
+    private final MessageSource messageSource;
 
     /**
      * 질문글 목록조회 요청을 처리하는 핸들러
@@ -75,13 +79,17 @@ public class QuestionController {
     }
 
     @PostMapping("{questionId}/delete")
-    public String delete(@PathVariable long questionId, RedirectAttributes redirectAttributes) {
+    public String delete(@PathVariable long questionId, RedirectAttributes redirectAttributes, Locale locale) {
         questionService.deleteQuestion(1L, questionId);
         String title = "삭제 성공";
         String content = "질문게시글을 성공적으로 삭제하였습니다";
 
-        redirectAttributes.addAttribute("title", title);
-        redirectAttributes.addAttribute("content", content);
+        redirectAttributes.addAttribute("title", getMessage("title", locale));
+        redirectAttributes.addAttribute("content", getMessage("content", locale));
         return "redirect:/notify";
+    }
+
+    private String getMessage(String code, Locale locale) {
+        return messageSource.getMessage("ui.notify.delete." + code, null, locale);
     }
 }
