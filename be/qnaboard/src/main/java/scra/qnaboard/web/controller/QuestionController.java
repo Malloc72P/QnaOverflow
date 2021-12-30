@@ -57,11 +57,23 @@ public class QuestionController {
         return "/question/question-detail";
     }
 
+    /**
+     * 질문게시글 입력 폼 요청을 처리함
+     * @param form 질문글에 대한 데이터를 담은 DTO(왜 입력에 실패했는지 알려주기 위해서 존재함)
+     * @return 질문게시글 입력 폼
+     */
     @GetMapping("form")
     public String questionForm(@ModelAttribute("questionForm") CreateQuestionForm form) {
         return "/question/question-form";
     }
 
+    /**
+     * 질문 게시글 생성 요청을 처리함
+     * @param form 질문게시글의 내용을 담고있는 DTO
+     * @param bindingResult 필드에러를 담고 있는 객체
+     * @param redirectAttributes 예외처리를 위해 존재함. 이거 덕분에 리다이렉션할때 데이터를 전달할 수 있음
+     * @return 실패 - 질문글입력폼 | 성공 - 질문글 상세보기(생성한 질문글)
+     */
     @PostMapping
     public String newQuestion(@ModelAttribute("questionForm") @Validated CreateQuestionForm form,
                               BindingResult bindingResult,
@@ -78,18 +90,31 @@ public class QuestionController {
         return "redirect:/questions/{questionId}";
     }
 
+    /**
+     * 질문글 삭제요청을 처리함(물리적 삭제 대신 논리적 삭제를 함)
+     * @param questionId 삭제할 질문글의 아이디
+     * @param redirectAttributes 삭제결과 통보를 위한 객체
+     * @param locale 메세지 소스에서 사용할 로케일 정보(Accept 헤더 사용)
+     * @return 결과를 통보하는 뷰
+     */
     @PostMapping("{questionId}/delete")
     public String delete(@PathVariable long questionId, RedirectAttributes redirectAttributes, Locale locale) {
         questionService.deleteQuestion(1L, questionId);
         String title = "삭제 성공";
         String content = "질문게시글을 성공적으로 삭제하였습니다";
 
-        redirectAttributes.addAttribute("title", getMessage("title", locale));
-        redirectAttributes.addAttribute("content", getMessage("content", locale));
+        redirectAttributes.addAttribute("title", getMessage("ui.notify.delete.title", locale));
+        redirectAttributes.addAttribute("content", getMessage("ui.notify.delete.content", locale));
         return "redirect:/notify";
     }
 
+    /**
+     * 메세지 소스에서 메세지를 꺼내오는 메서드
+     * @param code 메세지 코드
+     * @param locale 로케일 정보
+     * @return 메세지
+     */
     private String getMessage(String code, Locale locale) {
-        return messageSource.getMessage("ui.notify.delete." + code, null, locale);
+        return messageSource.getMessage(code, null, locale);
     }
 }
