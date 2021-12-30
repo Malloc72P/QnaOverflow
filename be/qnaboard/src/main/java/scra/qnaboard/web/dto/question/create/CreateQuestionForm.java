@@ -8,9 +8,9 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
 @Getter
-@AllArgsConstructor
 @ToString
-public class NewQuestionForm {
+@AllArgsConstructor
+public class CreateQuestionForm {
 
     @NotBlank
     @Size(min = 6, max = 300)

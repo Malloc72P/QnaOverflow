@@ -9,7 +9,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import scra.qnaboard.service.QuestionService;
-import scra.qnaboard.web.dto.question.create.NewQuestionForm;
+import scra.qnaboard.web.dto.question.create.CreateQuestionForm;
 import scra.qnaboard.web.dto.question.detail.QuestionDetailDTO;
 import scra.qnaboard.web.dto.question.list.QuestionListDTO;
 
@@ -54,12 +54,12 @@ public class QuestionController {
     }
 
     @GetMapping("form")
-    public String questionForm(@ModelAttribute("questionForm") NewQuestionForm form) {
+    public String questionForm(@ModelAttribute("questionForm") CreateQuestionForm form) {
         return "/question/question-form";
     }
 
     @PostMapping
-    public String newQuestion(@ModelAttribute("questionForm") @Validated NewQuestionForm form,
+    public String newQuestion(@ModelAttribute("questionForm") @Validated CreateQuestionForm form,
                               BindingResult bindingResult,
                               RedirectAttributes redirectAttributes) {
         log.info("form = {}", form);
@@ -68,9 +68,9 @@ public class QuestionController {
         if (bindingResult.hasErrors()) {
             return "/question/question-form";
         }
-        return "/question/question-form";
-//        long newQuestionId = 1L;
-//        redirectAttributes.addAttribute("questionId", newQuestionId);
-//        return "redirect:/question/questions/{questionId}";
+
+        long newQuestionId = questionService.createQuestion(1L, form.getTitle(), form.getContent());
+        redirectAttributes.addAttribute("questionId", newQuestionId);
+        return "redirect:/questions/{questionId}";
     }
 }
