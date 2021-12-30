@@ -9,13 +9,15 @@ import scra.qnaboard.domain.repository.question.QuestionRepository;
 import scra.qnaboard.domain.repository.question.QuestionSearchDetailRepository;
 import scra.qnaboard.domain.repository.question.QuestionSearchListRepository;
 import scra.qnaboard.domain.repository.question.QuestionSimpleQueryRepository;
-import scra.qnaboard.service.exception.CanNotDeleteQuestionException;
+import scra.qnaboard.service.exception.QuestionDeleteFailedException;
 import scra.qnaboard.service.exception.QuestionNotFoundException;
 import scra.qnaboard.web.dto.question.detail.QuestionDetailDTO;
 import scra.qnaboard.web.dto.question.list.QuestionListDTO;
 import scra.qnaboard.web.dto.question.list.QuestionSummaryDTO;
 
 import java.util.List;
+
+import static scra.qnaboard.service.exception.QuestionDeleteFailedException.UNAUTHORIZED;
 
 /**
  * 질문 엔티티에 대한 비즈니스 로직을 처리하는 서비스
@@ -54,11 +56,12 @@ public class QuestionService {
 
     /**
      * 질문게시글을 생성로직을 처리하는 메서드
-     * @TODO 아직 태그에 대한 기능은 추가하지 못했다
+     *
      * @param authorId 게시글 작성자의 아이디
-     * @param title 게시글 제목
-     * @param content 게시글 내용
+     * @param title    게시글 제목
+     * @param content  게시글 내용
      * @return 생성된 게시글의 아이디
+     * @TODO 아직 태그에 대한 기능은 추가하지 못했다
      */
     @Transactional
     public long createQuestion(long authorId, String title, String content) {
@@ -71,8 +74,9 @@ public class QuestionService {
     /**
      * 게시글 삭제로직을 처리하는 메서드.
      * soft delete라서 데이터가 물리적으로 지워지지 않는다.
+     *
      * @param requesterId 삭제요청을 한 사용자의 아이디
-     * @param questionId 삭제할 질문게시글의 아이디
+     * @param questionId  삭제할 질문게시글의 아이디
      */
     @Transactional
     public void deleteQuestion(long requesterId, long questionId) {
@@ -81,7 +85,7 @@ public class QuestionService {
 
         //관리자가 아니면서 소유자도 아니면 실패해야함
         if (requester.isNotAdmin() && question.isNotOwner(requester)) {
-            throw new CanNotDeleteQuestionException(questionId, requesterId);
+            throw new QuestionDeleteFailedException(UNAUTHORIZED, questionId, requesterId);
         }
 
         //관리자이거나 질문게시글의 소유자면 질문게시글 삭제함
@@ -91,6 +95,7 @@ public class QuestionService {
 
     /**
      * 질문게시글과 작성자를 패치조인으로 함께 조회하는 로직을 처리하는 메서드.
+     *
      * @param questionId 조회할 게시글의 아이디
      * @return 질문게시글 엔티티(작성자 포함)
      */
