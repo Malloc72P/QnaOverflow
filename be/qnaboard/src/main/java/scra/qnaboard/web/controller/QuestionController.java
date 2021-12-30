@@ -100,8 +100,6 @@ public class QuestionController {
     @PostMapping("{questionId}/delete")
     public String delete(@PathVariable long questionId, RedirectAttributes redirectAttributes, Locale locale) {
         questionService.deleteQuestion(1L, questionId);
-        String title = "삭제 성공";
-        String content = "질문게시글을 성공적으로 삭제하였습니다";
 
         redirectAttributes.addAttribute("title", getMessage("ui.notify.delete.title", locale));
         redirectAttributes.addAttribute("content", getMessage("ui.notify.delete.content", locale));
