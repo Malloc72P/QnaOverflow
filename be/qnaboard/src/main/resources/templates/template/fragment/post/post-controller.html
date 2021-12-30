@@ -9,11 +9,17 @@
 <body>
 
 <!--/*게시글 컨트롤러(수정, 삭제 작성자, 작성일, 수정일)*/-->
-<div class="container-fluid pt-5 pb-4 ps-0 pe-0" th:fragment="post_controller(username, createDate, modifyDate)">
+<div class="container-fluid pt-5 pb-4 ps-0 pe-0"
+     th:fragment="post_controller(username, createDate, modifyDate, postId)">
     <div class="row">
         <div class="float-start">
-            <button class="btn btn-sm btn-outline-dark">수정하기</button>
-            <button class="btn btn-sm btn-outline-dark">삭제하기</button>
+            <button th:href="@{/questions/{questionId}/edit(questionId=${question.questionId})}"
+                    class="btn btn-sm btn-outline-dark">수정하기
+            </button>
+            <form class="d-inline-block" method="post"
+                  th:action="@{/questions/{questionId}/delete(questionId=${question.questionId})}">
+                <button type="submit" class="btn btn-sm btn-outline-dark">삭제하기</button>
+            </form>
         </div>
         <div class="float-end text-end pe-4">
             <div>작성자 : <span th:text="${username}">Edward Nygma</span></div>

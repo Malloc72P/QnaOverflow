@@ -28,7 +28,8 @@
         <div th:replace="template/fragment/post/post-controller
              :: post_controller( ${question.authorName},
                                  ${question.createdDate},
-                                 ${question.lastModifiedDate})">
+                                 ${question.lastModifiedDate},
+                                 ${question.questionId})">
         </div>
         <hr>
         <!--/*대댓글 목록 컨테이너*/-->

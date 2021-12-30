@@ -2,7 +2,6 @@ package scra.qnaboard.configuration;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,10 +12,6 @@ import scra.qnaboard.domain.entity.Tag;
 import scra.qnaboard.domain.entity.post.Answer;
 import scra.qnaboard.domain.entity.post.Post;
 import scra.qnaboard.domain.entity.post.Question;
-import scra.qnaboard.domain.repository.AnswerRepository;
-import scra.qnaboard.domain.repository.MemberRepository;
-import scra.qnaboard.domain.repository.QuestionRepository;
-import scra.qnaboard.domain.repository.TagRepository;
 
 import javax.annotation.PostConstruct;
 import javax.persistence.EntityManager;

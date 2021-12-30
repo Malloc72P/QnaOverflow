@@ -27,23 +27,29 @@ public abstract class Post extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "post_id")
-    private Long id;
+    protected Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "author_id")
-    private Member author;
+    protected Member author;
 
-    private String content;
+    protected String content;
 
-    private Long upVoteCount = 0L;
-    private Long downVoteCount = 0L;
+    protected Long upVoteCount = 0L;
+    protected Long downVoteCount = 0L;
 
     @OneToMany(mappedBy = "parentPost", fetch = FetchType.LAZY)
-    private List<Comment> comments = new ArrayList<>();
+    protected List<Comment> comments = new ArrayList<>();
+
+    private boolean deleted = false;
 
     public Post(Member author, String content) {
         this.author = author;
         this.content = content;
+    }
+
+    public void delete() {
+        deleted = true;
     }
 
     @Override

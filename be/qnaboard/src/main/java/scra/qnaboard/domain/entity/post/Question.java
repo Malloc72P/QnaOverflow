@@ -54,6 +54,10 @@ public class Question extends Post {
         questionTags.add(questionTag);
     }
 
+    public boolean isNotOwner(Member member) {
+        return !member.equals(author);
+    }
+
     public void addAnswer(Answer answer) {
         answers.add(answer);
     }

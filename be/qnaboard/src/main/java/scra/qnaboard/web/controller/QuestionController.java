@@ -73,4 +73,15 @@ public class QuestionController {
         redirectAttributes.addAttribute("questionId", newQuestionId);
         return "redirect:/questions/{questionId}";
     }
+
+    @PostMapping("{questionId}/delete")
+    public String delete(@PathVariable long questionId, RedirectAttributes redirectAttributes) {
+        questionService.deleteQuestion(1L, questionId);
+        String title = "삭제 성공";
+        String content = "질문게시글을 성공적으로 삭제하였습니다";
+
+        redirectAttributes.addAttribute("title", title);
+        redirectAttributes.addAttribute("content", content);
+        return "redirect:/notify";
+    }
 }

@@ -7,6 +7,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 import scra.qnaboard.domain.entity.Comment;
 import scra.qnaboard.domain.entity.post.Question;
+import scra.qnaboard.domain.repository.question.QuestionSearchListRepository;
 import scra.qnaboard.utils.TestDataInit;
 import scra.qnaboard.web.dto.question.detail.CommentDTO;
 import scra.qnaboard.web.dto.question.detail.QuestionDetailDTO;
@@ -23,7 +24,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 class QuestionSearchRepositoryTest {
 
     @Autowired
-    private QuestionSearchRepository repository;
+    private QuestionSearchListRepository repository;
 
     @Autowired
     private EntityManager em;
