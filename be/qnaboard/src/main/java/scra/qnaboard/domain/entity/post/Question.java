@@ -21,8 +21,6 @@ import java.util.Objects;
  * <p>
  * QuestionTag를 CascadeType.ALL로 가진다. 그래서 Question을 영속화할때 가지고 있는 모든 QuestionTag도 함께 영속화한다. <br>
  * 반대로 Question을 지우면 연관된 모든 QuestionTag가 지워진다.
- *
- * @TODO 대댓글도 추가해야함!
  */
 @Getter
 @Entity

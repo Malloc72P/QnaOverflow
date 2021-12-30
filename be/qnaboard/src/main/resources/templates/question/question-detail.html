@@ -6,9 +6,9 @@ dto.question.detail 패키지의 QuestionDetailDTO를 모델로 받아서 랜더
 <html lang="kr" th:replace="~{/template/layout-main :: layout (~{::title}, ~{::section}, ${username})}"
       xmlns:th="http://www.thymeleaf.org">
 
-<title th:text="#{ui.global.title}">제목</title>
+<title th:text="#{ui.main.title}">제목</title>
 
-<section style="min-height: 1440px;">
+<section>
     <!--질문 컨테이너 헤더-->
     <h2 th:text="${question.title}">❓질문 제목인데 이걸 어떻게 고치면 좋을까요?</h2>
     <hr/>

@@ -1,18 +1,22 @@
 package scra.qnaboard.web.controller;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import scra.qnaboard.service.QuestionService;
+import scra.qnaboard.web.dto.question.create.NewQuestionForm;
 import scra.qnaboard.web.dto.question.detail.QuestionDetailDTO;
 import scra.qnaboard.web.dto.question.list.QuestionListDTO;
 
 /**
  * 질문글에 대한 요청을 처리하는 컨트롤러
  */
+@Slf4j
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/questions")
@@ -34,11 +38,39 @@ public class QuestionController {
         return "/question/question-list";
     }
 
+    /**
+     * 질문글 상세조회 요청을 처리하는 핸들러
+     *
+     * @param questionId 대상 질문글의 아이디
+     * @param model      뷰에 넘길 모델
+     * @return 질문글 상세조회 페이지
+     */
     @GetMapping("{questionId}")
     public String detail(@PathVariable Long questionId, Model model) {
         QuestionDetailDTO detailDTO = questionService.questionDetail(questionId);
         model.addAttribute("question", detailDTO);
 
         return "/question/question-detail";
+    }
+
+    @GetMapping("form")
+    public String questionForm(@ModelAttribute("questionForm") NewQuestionForm form) {
+        return "/question/question-form";
+    }
+
+    @PostMapping
+    public String newQuestion(@ModelAttribute("questionForm") @Validated NewQuestionForm form,
+                              BindingResult bindingResult,
+                              RedirectAttributes redirectAttributes) {
+        log.info("form = {}", form);
+        log.info("bindingResult = {}", bindingResult);
+
+        if (bindingResult.hasErrors()) {
+            return "/question/question-form";
+        }
+        return "/question/question-form";
+//        long newQuestionId = 1L;
+//        redirectAttributes.addAttribute("questionId", newQuestionId);
+//        return "redirect:/question/questions/{questionId}";
     }
 }
