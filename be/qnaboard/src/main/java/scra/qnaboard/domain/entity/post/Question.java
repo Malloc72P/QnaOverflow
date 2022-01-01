@@ -33,6 +33,7 @@ public class Question extends Post {
 
     private String title;
 
+    //@TODO 이 양방향 매핑도 지워줄 것!
     @OneToMany(mappedBy = "question", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<QuestionTag> questionTags = new ArrayList<>();
 
