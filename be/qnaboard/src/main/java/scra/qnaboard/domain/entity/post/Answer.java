@@ -23,13 +23,12 @@ public class Answer extends Post {
     private boolean accepted = false;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "answer_id")
+    @JoinColumn(name = "question_id")
     private Question question;
 
     public Answer(Member author, String content, Question question) {
         super(author, content);
         this.question = question;
-        question.addAnswer(this);
     }
 
     @Override

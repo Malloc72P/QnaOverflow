@@ -10,15 +10,15 @@
 
 <!--/*게시글 컨트롤러(수정, 삭제 작성자, 작성일, 수정일)*/-->
 <div class="container-fluid pt-5 pb-4 ps-0 pe-0"
-     th:fragment="post_controller(username, createDate, modifyDate, postId)">
+     th:fragment="post_controller(username, createDate, modifyDate, postId, editUrl, deleteUrl)">
     <div class="row">
         <div class="float-start">
-            <a th:href="@{/questions/{questionId}/editForm(questionId=${question.questionId})}"
-               class="btn btn-sm btn-outline-dark">수정하기
+            <a class="btn btn-sm btn-outline-dark"
+               th:href="${editUrl}">수정하기
             </a>
             <form class="d-inline-block" method="post"
-                  th:action="@{/questions/{questionId}/delete(questionId=${question.questionId})}">
-                <button type="submit" class="btn btn-sm btn-outline-dark">삭제하기</button>
+                  th:action="${deleteUrl}">
+                <button class="btn btn-sm btn-outline-dark" type="submit">삭제하기</button>
             </form>
         </div>
         <div class="float-end text-end pe-4">

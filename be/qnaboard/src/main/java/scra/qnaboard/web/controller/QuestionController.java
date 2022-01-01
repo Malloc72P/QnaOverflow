@@ -28,7 +28,7 @@ import java.util.Locale;
 public class QuestionController {
 
     private final QuestionService questionService;
-    private final MessageSource messageSource;
+    private final MessageSource message;
 
     /**
      * 질문글 목록조회 요청을 처리하는 핸들러
@@ -103,8 +103,8 @@ public class QuestionController {
     public String delete(@PathVariable long questionId, RedirectAttributes redirectAttributes, Locale locale) {
         questionService.deleteQuestion(1L, questionId);
 
-        redirectAttributes.addAttribute("title", getMessage("ui.notify.delete.title", locale));
-        redirectAttributes.addAttribute("content", getMessage("ui.notify.delete.content", locale));
+        redirectAttributes.addAttribute("title", message.getMessage("ui.notify.delete.title", null, locale));
+        redirectAttributes.addAttribute("content", message.getMessage("ui.notify.delete.title", null, locale));
         return "redirect:/notify";
     }
 
@@ -152,14 +152,4 @@ public class QuestionController {
         return "redirect:/questions/{questionId}";
     }
 
-    /**
-     * 메세지 소스에서 메세지를 꺼내오는 메서드
-     *
-     * @param code   메세지 코드
-     * @param locale 로케일 정보
-     * @return 메세지
-     */
-    private String getMessage(String code, Locale locale) {
-        return messageSource.getMessage(code, null, locale);
-    }
 }

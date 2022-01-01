@@ -25,6 +25,7 @@ public class QuestionSimpleQueryRepository {
 
     /**
      * 질문 엔티티와 작성자를 함께 조회해서(패치조인) 반환한다
+     *
      * @param questionId 조회할 질문게시글의 아이디
      * @return 질문 엔티티(작성자 포함)
      */

@@ -7,6 +7,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 import scra.qnaboard.domain.entity.Member;
 import scra.qnaboard.domain.entity.MemberRole;
+import scra.qnaboard.utils.QueryUtils;
 
 import javax.persistence.EntityManager;
 import java.util.ArrayList;
@@ -64,7 +65,7 @@ class QuestionTest {
         em.clear();
 
         Question findQuestion = em.find(Question.class, question.getId());
-        assertThat(findQuestion.getAnswers())
-                .contains(answers.get(0), answers.get(1), answers.get(2));
+        int size = QueryUtils.sizeOfAnswerByQuestionId(em, findQuestion.getId());
+        assertThat(size).isEqualTo(answers.size());
     }
 }

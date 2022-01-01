@@ -7,9 +7,9 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import scra.qnaboard.domain.entity.post.Question;
 import scra.qnaboard.service.exception.QuestionNotFoundException;
+import scra.qnaboard.web.dto.answer.AnswerDetailDTO;
+import scra.qnaboard.web.dto.answer.QAnswerDetailDTO;
 import scra.qnaboard.web.dto.question.detail.*;
-import scra.qnaboard.web.dto.question.list.QQuestionSummaryDTO;
-import scra.qnaboard.web.dto.question.list.QuestionSummaryDTO;
 import scra.qnaboard.web.dto.tag.QTagDTO;
 import scra.qnaboard.web.dto.tag.TagDTO;
 
@@ -39,42 +39,13 @@ public class QuestionSearchDetailRepository {
 
     private final QuestionBooleanExpressionSupplier expressionSupplier;
 
-
-    /**
-     * 패치조인으로 질문글 상세보기를 하는 메서드
-     *
-     * @param questionId 상세보기 대상 질문글의 아이디
-     * @return 질문글 엔티티를 감싼 옵셔널 객체
-     */
-    public Optional<Question> questionDetail(long questionId) {
-        Question findQuestion = queryFactory
-                .select(question).distinct()
-                .from(question)
-                .innerJoin(question.author, member).fetchJoin()
-                .leftJoin(question.answers, answer).fetchJoin()
-                .leftJoin(answer.author, member).fetchJoin()
-                .where(expressionSupplier.notDeletedAndEqualsId(questionId))
-                .setHint(QueryHints.HINT_PASS_DISTINCT_THROUGH, false)
-                .fetchOne();
-
-        queryFactory.select(question).distinct()
-                .from(question)
-                .leftJoin(question.questionTags, questionTag).fetchJoin()
-                .leftJoin(questionTag.tag, tag).fetchJoin()
-                .where(expressionSupplier.notDeletedAndEqualsId(questionId))
-                .setHint(QueryHints.HINT_PASS_DISTINCT_THROUGH, false)
-                .fetch();
-
-        return Optional.ofNullable(findQuestion);
-    }
-
     /**
      * DTO 프로젝션으로 질문글 상세보기를 하는 메서드
      *
      * @param questionId 상세보기 대상 질문글의 아이디
      * @return 질문글 DTO를 감싼 옵셔널 객체
      */
-    public QuestionDetailDTO questionDetailV2(long questionId) {
+    public QuestionDetailDTO questionDetail(long questionId) {
         //1. 질문글 상세조회 - 질문글 작성자만 조인해서 가져옴
         QuestionDetailDTO detailDTO = questionDetailDtoByQuestionId(questionId);
 
@@ -82,11 +53,11 @@ public class QuestionSearchDetailRepository {
         List<TagDTO> tags = tagDtosByQuestionId(questionId);
 
         //3. 답변글과 답변글 작성자만 가져옴
-        List<AnswerDTO> answers = answerDtosByQuestionId(questionId);
+        List<AnswerDetailDTO> answers = answerDtosByQuestionId(questionId);
 
         //4. 대댓글 목록을 가져오기 위해 질문글과 답변글의 아이디를 컬렉션으로 모음
         List<Long> postIds = answers.stream()
-                .map(AnswerDTO::getAnswerId)
+                .map(AnswerDetailDTO::getAnswerId)
                 .collect(Collectors.toList());
         postIds.add(questionId);
 
@@ -148,9 +119,9 @@ public class QuestionSearchDetailRepository {
      * @param questionId 질문글 아이디
      * @return 답변게시글 DTO 리스트
      */
-    private List<AnswerDTO> answerDtosByQuestionId(long questionId) {
+    private List<AnswerDetailDTO> answerDtosByQuestionId(long questionId) {
         return queryFactory
-                .select(new QAnswerDTO(
+                .select(new QAnswerDetailDTO(
                         answer.id,
                         answer.content,
                         answer.upVoteCount.subtract(answer.downVoteCount),

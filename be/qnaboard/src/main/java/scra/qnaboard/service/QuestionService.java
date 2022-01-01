@@ -51,7 +51,7 @@ public class QuestionService {
      * @return 질문글 상세조회 DTO
      */
     public QuestionDetailDTO questionDetail(long questionId) {
-        return questionSearchDetailRepository.questionDetailV2(questionId);
+        return questionSearchDetailRepository.questionDetail(questionId);
     }
 
     /**
@@ -116,6 +116,11 @@ public class QuestionService {
         }
 
         question.update(title, content);
+    }
+
+    public Question findQuestion(long questionId) {
+        return questionRepository.findById(questionId)
+                .orElseThrow(() -> new QuestionNotFoundException(questionId));
     }
 
     /**

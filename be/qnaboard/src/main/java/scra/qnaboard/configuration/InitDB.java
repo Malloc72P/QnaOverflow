@@ -46,6 +46,16 @@ public class InitDB {
 
         private final EntityManager em;
 
+        private static Comment createComment(EntityManager em,
+                                             Member author,
+                                             Post post,
+                                             String content,
+                                             Comment parentComment) {
+            Comment c1 = new Comment(author, content, post, parentComment);
+            em.persist(c1);
+            return c1;
+        }
+
         @Transactional
         public void initDB() {
             log.info("데이터베이스 초기화 시작");
@@ -112,16 +122,6 @@ public class InitDB {
             });
 
             log.info("데이터베이스 초기화 완료");
-        }
-
-        private static Comment createComment(EntityManager em,
-                                             Member author,
-                                             Post post,
-                                             String content,
-                                             Comment parentComment) {
-            Comment c1 = new Comment(author, content, post, parentComment);
-            em.persist(c1);
-            return c1;
         }
     }
 }

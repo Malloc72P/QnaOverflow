@@ -15,26 +15,26 @@
 
     <form action="/questions" method="post" th:object="${questionForm}">
         <div th:if="${#fields.hasGlobalErrors()}">
-            <p th:each="err : ${#fields.globalErrors()}"
-               th:text="${err}"
-               class="field-error">글로벌 오류 메세지</p>
+            <p class="field-error"
+               th:each="err : ${#fields.globalErrors()}"
+               th:text="${err}">글로벌 오류 메세지</p>
         </div>
         <div class="mb-3">
-            <label for="title" class="form-label" th:text="#{ui.question.form.input-title}">질문 제목</label>
-            <input id="title" name="title" type="text" class="form-control" required aria-describedby="titleHelp"
-                   th:field="*{title}">
-            <div id="titleHelp" class="form-text" th:text="#{ui.question.form.input-title-help}">질문의 제목을 적어주세요</div>
+            <label class="form-label" for="title" th:text="#{ui.question.form.input-title}">질문 제목</label>
+            <input aria-describedby="titleHelp" class="form-control" id="title" name="title" required th:field="*{title}"
+                   type="text">
+            <div class="form-text" id="titleHelp" th:text="#{ui.question.form.input-title-help}">질문의 제목을 적어주세요</div>
             <div class="text-danger" th:errors="*{title}">제목은 6자 이상이어야 합니다</div>
         </div>
         <div class="mb-3">
-            <label for="content" class="form-label">질문내용</label>
-            <textarea id="content" name="content" type="text" class="form-control" style="min-height: 200px"
-                      aria-describedby="contentHelp" required th:field="*{content}"></textarea>
-            <div id="contentHelp" class="form-text" th:text="#{ui.question.form.input-content-help}">내용을 적어주세요</div>
+            <label class="form-label" for="content">질문내용</label>
+            <textarea aria-describedby="contentHelp" class="form-control" id="content" name="content" required
+                      style="min-height: 200px" th:field="*{content}" type="text"></textarea>
+            <div class="form-text" id="contentHelp" th:text="#{ui.question.form.input-content-help}">내용을 적어주세요</div>
             <div class="text-danger" th:errors="*{content}">제목은 6자 이상이어야 합니다</div>
         </div>
         <div class="clearfix">
-            <button type="submit" class="btn btn-primary float-end">Submit</button>
+            <button class="btn btn-primary float-end" type="submit">Submit</button>
         </div>
     </form>
 </section>

@@ -7,7 +7,6 @@ import org.springframework.util.StringUtils;
 import scra.qnaboard.domain.entity.Member;
 import scra.qnaboard.domain.entity.QuestionTag;
 import scra.qnaboard.domain.entity.Tag;
-import scra.qnaboard.service.exception.QuestionEditFailedException;
 import scra.qnaboard.service.exception.QuestionPropertyIsEmptyException;
 
 import javax.persistence.CascadeType;
@@ -35,9 +34,6 @@ public class Question extends Post {
     private String title;
 
     @OneToMany(mappedBy = "question", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<Answer> answers = new ArrayList<>();
-
-    @OneToMany(mappedBy = "question", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<QuestionTag> questionTags = new ArrayList<>();
 
     public Question(Member author, String content, String title) {
@@ -59,10 +55,6 @@ public class Question extends Post {
 
     public boolean isNotOwner(Member member) {
         return !member.equals(author);
-    }
-
-    public void addAnswer(Answer answer) {
-        answers.add(answer);
     }
 
     public void update(String title, String content) {

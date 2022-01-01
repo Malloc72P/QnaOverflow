@@ -4,6 +4,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 import scra.qnaboard.domain.entity.Member;
 import scra.qnaboard.domain.entity.post.Question;
@@ -11,6 +12,7 @@ import scra.qnaboard.service.exception.QuestionDeleteFailedException;
 import scra.qnaboard.service.exception.QuestionEditFailedException;
 import scra.qnaboard.service.exception.QuestionPropertyIsEmptyException;
 import scra.qnaboard.service.exception.UnauthorizedQuestionEditException;
+import scra.qnaboard.utils.QueryUtils;
 import scra.qnaboard.utils.TestDataDTO;
 import scra.qnaboard.utils.TestDataInit;
 import scra.qnaboard.web.dto.question.detail.QuestionDetailDTO;
@@ -69,7 +71,8 @@ class QuestionServiceTest {
         );
 
         assertThat(detailDTO.getTags().size()).isEqualTo(question.getQuestionTags().size());
-        assertThat(detailDTO.getAnswers().size()).isEqualTo(question.getAnswers().size());
+        int size = QueryUtils.sizeOfAnswerByQuestionId(em, question.getId());
+        assertThat(detailDTO.getAnswers().size()).isEqualTo(size);
     }
 
     @Test

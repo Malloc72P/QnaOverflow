@@ -11,6 +11,7 @@ public interface QuestionRepository extends JpaRepository<Question, Long> {
 
     /**
      * soft delete를 위한 메서드. 반드시 어걸로만 지워야 함
+     *
      * @param questionId 삭제할 질문게시글의 아이디
      */
     @Modifying

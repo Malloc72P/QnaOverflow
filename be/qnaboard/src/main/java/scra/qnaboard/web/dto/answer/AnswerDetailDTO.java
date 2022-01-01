@@ -1,10 +1,11 @@
-package scra.qnaboard.web.dto.question.detail;
+package scra.qnaboard.web.dto.answer;
 
 import com.querydsl.core.annotations.QueryProjection;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import scra.qnaboard.domain.entity.post.Answer;
+import scra.qnaboard.web.dto.question.detail.CommentDTO;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -16,10 +17,9 @@ import java.util.List;
  * 프래그먼트에 localDateTime만 넘기고 DTO는 안넘겨서 애너테이션 정보가 전달되지 않는 모양이다
  * 바꾸고 싶으면 post-controller.html 프래그먼트에서 수정하자
  */
-
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class AnswerDTO {
+public class AnswerDetailDTO {
 
     private long answerId;
     private String content;
@@ -31,13 +31,13 @@ public class AnswerDTO {
     private List<CommentDTO> comments = new ArrayList<>();
 
     @QueryProjection
-    public AnswerDTO(long answerId,
-                     String content,
-                     long voteScore,
-                     LocalDateTime createdDate,
-                     LocalDateTime lastModifiedDate,
-                     long authorId,
-                     String authorName) {
+    public AnswerDetailDTO(long answerId,
+                           String content,
+                           long voteScore,
+                           LocalDateTime createdDate,
+                           LocalDateTime lastModifiedDate,
+                           long authorId,
+                           String authorName) {
         this.answerId = answerId;
         this.content = content;
         this.voteScore = voteScore;
@@ -47,8 +47,8 @@ public class AnswerDTO {
         this.authorName = authorName;
     }
 
-    public static AnswerDTO from(Answer answer) {
-        AnswerDTO answerDTO = new AnswerDTO();
+    public static AnswerDetailDTO from(Answer answer) {
+        AnswerDetailDTO answerDTO = new AnswerDetailDTO();
         answerDTO.answerId = answer.getId();
         answerDTO.content = answer.getContent();
         answerDTO.voteScore = answer.getUpVoteCount() - answer.getDownVoteCount();

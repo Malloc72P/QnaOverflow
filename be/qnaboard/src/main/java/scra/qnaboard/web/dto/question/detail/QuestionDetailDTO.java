@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import scra.qnaboard.domain.entity.QuestionTag;
 import scra.qnaboard.domain.entity.post.Question;
+import scra.qnaboard.web.dto.answer.AnswerDetailDTO;
 import scra.qnaboard.web.dto.tag.TagDTO;
 
 import java.time.LocalDateTime;
@@ -27,7 +28,7 @@ public class QuestionDetailDTO {
     private String title;
     private String content;
     private long voteScore;
-    private List<AnswerDTO> answers = new ArrayList<>();
+    private List<AnswerDetailDTO> answers = new ArrayList<>();
     private long viewCount;
     private LocalDateTime createdDate;
     private LocalDateTime lastModifiedDate;
@@ -58,7 +59,7 @@ public class QuestionDetailDTO {
     }
 
     /**
-     * 엔티티에서 DTO로 변환하는 메서드
+     * 엔티티에서 DTO로 변환하는 메서드. 태그랑 답변게시글은 따로 넣을 것
      *
      * @param question 대상 엔티티
      * @return QuestionDetailDTO
@@ -75,20 +76,10 @@ public class QuestionDetailDTO {
         detailDTO.authorId = question.getAuthor().getId();
         detailDTO.authorName = question.getAuthor().getNickname();
 
-        detailDTO.tags = question.getQuestionTags().stream()
-                .map(QuestionTag::getTag)
-                .map(tag -> new TagDTO(tag.getId(), question.getId(), tag.getName()))
-                .collect(Collectors.toList());
-
-
-        detailDTO.answers = question.getAnswers().stream()
-                .map(AnswerDTO::from)
-                .collect(Collectors.toList());
-
         return detailDTO;
     }
 
-    public void updateAnswer(List<AnswerDTO> answers) {
+    public void updateAnswer(List<AnswerDetailDTO> answers) {
         if (answers == null) {
             return;
         }

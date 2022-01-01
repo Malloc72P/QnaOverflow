@@ -8,7 +8,7 @@
 
 <body>
 
-<!--/*@thymesVar id="voteScore" type="scra.qnaboard.web.dto.question.detail.AnswerDTO"*/-->
+<!--/*@thymesVar id="voteScore" type="scra.qnaboard.web.dto.answer.AnswerDetailDTO"*/-->
 <div class="answer row mb-5" th:fragment="answer_item_detail(answer)">
     <div class="col-md-1 ps-0 pe-0">
         <!--/*좌측 투표 버튼 컨테이너*/-->
@@ -26,7 +26,9 @@
              :: post_controller( ${answer.authorName},
                                  ${answer.createdDate},
                                  ${answer.lastModifiedDate},
-                                 ${answer.answerId})">
+                                 ${answer.answerId},
+                                 '#',
+                                 '#')">
         </div>
         <hr>
         <!--/*대댓글 목록 컨테이너*/-->

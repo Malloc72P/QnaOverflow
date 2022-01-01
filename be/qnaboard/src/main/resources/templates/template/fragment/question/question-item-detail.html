@@ -29,7 +29,10 @@
              :: post_controller( ${question.authorName},
                                  ${question.createdDate},
                                  ${question.lastModifiedDate},
-                                 ${question.questionId})">
+                                 ${question.questionId},
+                                 @{/questions/{questionId}/editForm(questionId=${question.questionId})},
+                                 @{/questions/{questionId}/delete(questionId=${question.questionId})}
+                                 )">
         </div>
         <hr>
         <!--/*대댓글 목록 컨테이너*/-->

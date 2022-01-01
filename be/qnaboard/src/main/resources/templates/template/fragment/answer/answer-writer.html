@@ -6,7 +6,7 @@
 
 <body>
 
-<div class="answer-writer mb-5" th:fragment="answer_writer">
+<div class="answer-writer mb-5" th:fragment="answer_writer(questionId)">
     <div>
         <h3>답변 작성하기</h3>
     </div>
@@ -16,9 +16,41 @@
             <textarea class="form-control" id="textarea-submit-answer" placeholder="답변을 작성해주세요"></textarea>
         </div>
         <div class="clearfix">
-            <button class="float-end btn btn-primary" name="답변 제출" type="submit">답변 제출하기</button>
+            <button class="float-end btn btn-primary" id="submit-answer-button"
+                    name="답변 제출" type="submit">답변 제출하기
+            </button>
         </div>
     </form>
+    <script th:inline="javascript">
+        const submitAnswer = async (event) => {
+            event.preventDefault();
+            let textAreaElement = document.getElementById("textarea-submit-answer");
+            let content = textAreaElement.value;
+            let questionId = [[${questionId}]];
+            let url = `http://localhost:8080/${questionId}/answers`;
+            let body = {"content": content};
+
+            try {
+                let response = await request(url, PUT, body, MODE_TEXT);
+
+                let parser = new DOMParser();
+                let answerElementWrapper = parser.parseFromString(response, "text/html");
+                let answerElement = answerElementWrapper.querySelector(".answer");
+                console.log(answerElement);
+
+                let answerWrapper = document.getElementById("answer-wrapper");
+                answerWrapper.appendChild(answerElement);
+
+                textAreaElement.value = "";
+            } catch (error) {
+                alert("답변의 내용은 6자보다 길어야 합니다");
+            }
+
+        };
+
+        let submitAnswerButton = document.getElementById("submit-answer-button");
+        submitAnswerButton.addEventListener("click", submitAnswer);
+    </script>
 </div>
 
 </body>

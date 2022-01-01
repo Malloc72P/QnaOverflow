@@ -1,9 +1,11 @@
 package scra.qnaboard.domain.repository.question;
 
+import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+import scra.qnaboard.domain.entity.post.QAnswer;
 import scra.qnaboard.web.dto.question.list.QQuestionSummaryDTO;
 import scra.qnaboard.web.dto.question.list.QuestionSummaryDTO;
 import scra.qnaboard.web.dto.tag.QTagDTO;
@@ -16,6 +18,7 @@ import java.util.stream.Collectors;
 import static scra.qnaboard.domain.entity.QMember.member;
 import static scra.qnaboard.domain.entity.QQuestionTag.questionTag;
 import static scra.qnaboard.domain.entity.QTag.tag;
+import static scra.qnaboard.domain.entity.post.QAnswer.answer;
 import static scra.qnaboard.domain.entity.post.QQuestion.question;
 
 /**
@@ -46,7 +49,9 @@ public class QuestionSearchListRepository {
                         question.id,
                         question.title,
                         question.upVoteCount.subtract(question.downVoteCount),
-                        question.answers.size(),
+                        JPAExpressions.select(answer.id.count().intValue())
+                                .from(answer)
+                                .where(answer.question.id.eq(question.id)),
                         question.viewCount,
                         question.createdDate,
                         question.author.nickname

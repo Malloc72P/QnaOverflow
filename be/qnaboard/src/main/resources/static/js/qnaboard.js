@@ -10,10 +10,46 @@ const handleBtnClickEffect = (element) => {
     }, 150);
 };
 
+const request = async (url, method, body, responseType) => {
+    let response = await fetch(url, {
+        method: method,
+        headers: commonHeader,
+        body: JSON.stringify(body)
+    });
+    if (!response.ok) {
+        throw new Error(response.statusText);
+    }
+
+    switch (responseType) {
+        case MODE_JSON:
+            return await response.json();
+        case MODE_TEXT:
+            return await response.text()
+        default:
+            throw new Error("unknown response type")
+    }
+};
+
+const commonHeader = {
+    "Content-Type": "application/json",
+    "Accept": "*/*",
+    "Accept-Encoding": "gzip, deflate, br",
+};
+
+const MODE_JSON = "JSON";
+const MODE_TEXT = "TEXT";
+
+const GET = "GET";
+const POST = "POST";
+const PATCH = "PATCH";
+const PUT = "PUT";
+const DELETE = "DELETE";
+
 //main =========================================
 let elements = document.querySelectorAll(".btn");
 for (let element of elements) {
     element.addEventListener("pointerdown", () => handleBtnClickEffect(element));
 }
+
 
 

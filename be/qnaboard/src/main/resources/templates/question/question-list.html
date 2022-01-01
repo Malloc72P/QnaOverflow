@@ -11,7 +11,7 @@ dto.question.list 패키지의 QuestionListDTO를 모델로 받아서 랜더링�
 <section>
     <div class="clearfix">
         <h2 class="float-start" th:text="#{ui.question.list.page-title}">질문 목록</h2>
-        <a th:href="@{/questions/form}" class="btn btn-primary float-end">질문하기</a>
+        <a class="btn btn-primary float-end" th:href="@{/questions/form}">질문하기</a>
     </div>
     <hr/>
     <div th:each="question : ${dto.questions}"
