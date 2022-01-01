@@ -41,11 +41,15 @@ public abstract class Post extends BaseTimeEntity {
     @OneToMany(mappedBy = "parentPost", fetch = FetchType.LAZY)
     protected List<Comment> comments = new ArrayList<>();
 
-    private boolean deleted = false;
+    protected boolean deleted = false;
 
     public Post(Member author, String content) {
         this.author = author;
         this.content = content;
+    }
+
+    public boolean isNotOwner(Member member) {
+        return !member.equals(author);
     }
 
     public void delete() {

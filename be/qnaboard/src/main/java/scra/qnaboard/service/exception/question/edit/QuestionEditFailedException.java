@@ -1,4 +1,4 @@
-package scra.qnaboard.service.exception;
+package scra.qnaboard.service.exception.question.edit;
 
 public class QuestionEditFailedException extends RuntimeException {
 

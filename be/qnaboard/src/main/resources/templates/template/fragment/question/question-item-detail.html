@@ -9,7 +9,7 @@
 <body>
 
 <!--/*@thymesVar id="voteScore" type="scra.qnaboard.web.dto.question.detail.QuestionDetailDTO"*/-->
-<div class="row mb-5" th:fragment="question_item_detail(question)">
+<div th:id="'q-' + ${question.questionId}" class="question row mb-5" th:fragment="question_item_detail(question)">
     <div class="col-md-1 ps-0 pe-0">
         <!--/*좌측 투표 버튼 컨테이너*/-->
         <div th:replace="template/fragment/post/vote-controller :: vote_controller(${question.voteScore})"></div>
@@ -20,7 +20,6 @@
         <div class="post-content-wrapper" th:text="${question.content}">
             content
         </div>
-        <!--/*태그 목록 - 게시글은 아직 DTO 못받아서 임시로 하드코딩해놨음*/-->
         <div th:replace="template/fragment/tag/tag-wrapper :: tag_wrapper(${question.tags})">
         </div>
 
@@ -30,9 +29,16 @@
                                  ${question.createdDate},
                                  ${question.lastModifiedDate},
                                  ${question.questionId},
-                                 @{/questions/{questionId}/editForm(questionId=${question.questionId})},
-                                 @{/questions/{questionId}/delete(questionId=${question.questionId})}
+                                 ~{::.edit-question},
+                                 ~{::.delete-question}
                                  )">
+            <a class="edit-question btn btn-sm btn-outline-dark"
+               th:href="@{/questions/{questionId}/editForm(questionId=${question.questionId})}">수정하기
+            </a>
+            <form class="delete-question d-inline-block" method="post"
+                  th:action="@{/questions/{questionId}/delete(questionId=${question.questionId})}">
+                <button class="btn btn-sm btn-outline-dark" type="submit">삭제하기</button>
+            </form>
         </div>
         <hr>
         <!--/*대댓글 목록 컨테이너*/-->

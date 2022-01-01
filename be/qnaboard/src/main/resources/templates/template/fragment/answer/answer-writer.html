@@ -36,10 +36,13 @@
                 let parser = new DOMParser();
                 let answerElementWrapper = parser.parseFromString(response, "text/html");
                 let answerElement = answerElementWrapper.querySelector(".answer");
+                answerElement.querySelector(".answer-delete").addEventListener("click", deleteAnswer);
                 console.log(answerElement);
 
                 let answerWrapper = document.getElementById("answer-wrapper");
                 answerWrapper.appendChild(answerElement);
+
+                increaseAnswerCount();
 
                 textAreaElement.value = "";
             } catch (error) {

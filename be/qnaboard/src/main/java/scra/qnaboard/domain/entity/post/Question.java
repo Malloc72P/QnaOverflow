@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.util.StringUtils;
 import scra.qnaboard.domain.entity.Member;
-import scra.qnaboard.service.exception.QuestionPropertyIsEmptyException;
+import scra.qnaboard.service.exception.question.edit.QuestionPropertyIsEmptyException;
 
 import javax.persistence.Entity;
 import java.util.Objects;
@@ -14,8 +14,8 @@ import java.util.Objects;
  * 질문글에 대한 엔티티 <br>
  * 답변글을 List로 가지고 있다 <br>
  * <p>
- * QuestionTag를 CascadeType.ALL로 가진다. 그래서 Question을 영속화할때 가지고 있는 모든 QuestionTag도 함께 영속화한다. <br>
- * 반대로 Question을 지우면 연관된 모든 QuestionTag가 지워진다.
+ * QuestionTag와 Answer가 Question 엔티티와 다대일 관계를 가지고 있으나, Question에서는 매핑하지 않는다 <br>
+ * QuestionTag나 Answer가 필요하다면 JPQL 쿼리를 날려서 가져오도록 하자
  */
 @Getter
 @Entity
@@ -29,10 +29,6 @@ public class Question extends Post {
     public Question(Member author, String content, String title) {
         super(author, content);
         this.title = title;
-    }
-
-    public boolean isNotOwner(Member member) {
-        return !member.equals(author);
     }
 
     public void update(String title, String content) {

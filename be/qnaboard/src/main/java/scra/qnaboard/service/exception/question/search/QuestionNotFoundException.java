@@ -1,4 +1,4 @@
-package scra.qnaboard.service.exception;
+package scra.qnaboard.service.exception.question.search;
 
 public class QuestionNotFoundException extends RuntimeException {
     private static final String NOT_FOUND = "질문게시글을 찾을 수 없습니다 : ";

@@ -2,11 +2,9 @@ package scra.qnaboard.domain.repository.question;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.jpa.QueryHints;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-import scra.qnaboard.domain.entity.post.Question;
-import scra.qnaboard.service.exception.QuestionNotFoundException;
+import scra.qnaboard.service.exception.question.search.QuestionNotFoundException;
 import scra.qnaboard.web.dto.answer.AnswerDetailDTO;
 import scra.qnaboard.web.dto.answer.QAnswerDetailDTO;
 import scra.qnaboard.web.dto.question.detail.*;
@@ -17,7 +15,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static scra.qnaboard.domain.entity.QComment.comment;
@@ -131,7 +128,7 @@ public class QuestionSearchDetailRepository {
                         answer.author.nickname
                 )).from(answer)
                 .innerJoin(answer.author, member)
-                .where(answer.question.id.eq(questionId))
+                .where(expressionSupplier.answerNotDeletedAndEqualsId(questionId))
                 .fetch();
     }
 
@@ -173,7 +170,7 @@ public class QuestionSearchDetailRepository {
                         question.author.nickname
                 )).from(question)
                 .innerJoin(question.author, member)
-                .where(expressionSupplier.notDeletedAndEqualsId(questionId))
+                .where(expressionSupplier.questionNotDeletedAndEqualsId(questionId))
                 .fetchOne();
 
         if (detailDTO == null) {

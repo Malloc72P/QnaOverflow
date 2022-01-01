@@ -9,7 +9,7 @@
 <body>
 
 <!--/*@thymesVar id="voteScore" type="scra.qnaboard.web.dto.answer.AnswerDetailDTO"*/-->
-<div class="answer row mb-5" th:fragment="answer_item_detail(answer)">
+<div th:id="'a-' + ${answer.answerId}" class="answer row mb-5" th:fragment="answer_item_detail(questionId, answer)">
     <div class="col-md-1 ps-0 pe-0">
         <!--/*좌측 투표 버튼 컨테이너*/-->
         <div th:replace="template/fragment/post/vote-controller :: vote_controller(${answer.voteScore})"></div>
@@ -27,8 +27,10 @@
                                  ${answer.createdDate},
                                  ${answer.lastModifiedDate},
                                  ${answer.answerId},
-                                 '#',
-                                 '#')">
+                                 ~{::.answer-edit},
+                                 ~{::.answer-delete})">
+            <button class="answer-edit btn btn-sm btn-outline-dark">수정하기</button>
+            <button class="answer-delete btn btn-sm btn-outline-dark">삭제하기</button>
         </div>
         <hr>
         <!--/*대댓글 목록 컨테이너*/-->

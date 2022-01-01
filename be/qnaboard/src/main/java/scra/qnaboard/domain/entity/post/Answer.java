@@ -3,7 +3,10 @@ package scra.qnaboard.domain.entity.post;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.util.StringUtils;
 import scra.qnaboard.domain.entity.Member;
+import scra.qnaboard.service.exception.answer.edit.AnswerPropertyIsEmptyException;
+import scra.qnaboard.service.exception.question.edit.QuestionPropertyIsEmptyException;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -29,6 +32,13 @@ public class Answer extends Post {
     public Answer(Member author, String content, Question question) {
         super(author, content);
         this.question = question;
+    }
+
+    public void update(String content) {
+        if (!StringUtils.hasText(content)) {
+            throw new AnswerPropertyIsEmptyException(content);
+        }
+        this.content = content;
     }
 
     @Override

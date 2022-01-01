@@ -32,7 +32,7 @@ public class QuestionSimpleQueryRepository {
     public Optional<Question> questionWithAuthor(long questionId) {
         Question findQuestion = queryFactory.selectFrom(question)
                 .innerJoin(question.author, member).fetchJoin()
-                .where(expressionSupplier.notDeletedAndEqualsId(questionId))
+                .where(expressionSupplier.questionNotDeletedAndEqualsId(questionId))
                 .fetchOne();
 
         return Optional.ofNullable(findQuestion);

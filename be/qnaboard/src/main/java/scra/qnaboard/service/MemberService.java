@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import scra.qnaboard.domain.entity.Member;
 import scra.qnaboard.domain.repository.MemberRepository;
-import scra.qnaboard.service.exception.MemberNotFoundException;
+import scra.qnaboard.service.exception.member.MemberNotFoundException;
 
 @Service
 @Transactional(readOnly = true)
