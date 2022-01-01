@@ -3,9 +3,12 @@ package scra.qnaboard.domain.entity.post;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.util.StringUtils;
 import scra.qnaboard.domain.entity.Member;
 import scra.qnaboard.domain.entity.QuestionTag;
 import scra.qnaboard.domain.entity.Tag;
+import scra.qnaboard.service.exception.QuestionEditFailedException;
+import scra.qnaboard.service.exception.QuestionPropertyIsEmptyException;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -60,6 +63,14 @@ public class Question extends Post {
 
     public void addAnswer(Answer answer) {
         answers.add(answer);
+    }
+
+    public void update(String title, String content) {
+        if (!StringUtils.hasText(title) || !StringUtils.hasText(content)) {
+            throw new QuestionPropertyIsEmptyException(title, content);
+        }
+        this.title = title;
+        this.content = content;
     }
 
     @Override

@@ -20,40 +20,51 @@ public class TestDataInit {
      */
     public static TestDataDTO init(EntityManager em) {
         //1. 멤버 생성
-        Member author = new Member("member1", MemberRole.NORMAL);
-        em.persist(author);
+
+        Member[] members = {
+                new Member("member1", MemberRole.NORMAL),
+                new Member("Admin1", MemberRole.ADMIN),
+                new Member("Admin2", MemberRole.ADMIN),
+                new Member("member2", MemberRole.NORMAL),
+                new Member("member3", MemberRole.NORMAL),
+                new Member("member4", MemberRole.NORMAL),
+                new Member("member5", MemberRole.NORMAL),
+                new Member("member6", MemberRole.NORMAL),
+                new Member("member7", MemberRole.NORMAL),
+        };
+        Arrays.stream(members).forEach(em::persist);
 
         //2. 태그 생성
         Tag[] tags = {
-                new Tag(author, "Angular"),
-                new Tag(author, "Web"),
-                new Tag(author, "JQuery"),
-                new Tag(author, "ReactJS"),
-                new Tag(author, "VueJS"),
-                new Tag(author, "SpringBoot")
+                new Tag(members[1], "Angular"),
+                new Tag(members[1], "Web"),
+                new Tag(members[1], "JQuery"),
+                new Tag(members[2], "ReactJS"),
+                new Tag(members[2], "VueJS"),
+                new Tag(members[1], "SpringBoot")
         };
         Arrays.stream(tags).forEach(em::persist);
 
         //3. 질문글 생성
         Question[] questions = {
-                new Question(author, "target-content", "target-title"),
-                new Question(author, "no-tag-no-answer", "title-2"),
-                new Question(author, "content-3", "title-3"),
-                new Question(author, "content-4", "title-4"),
-                new Question(author, "content-5", "title-5"),
+                new Question(members[1], "target-content", "target-title"),
+                new Question(members[1], "no-tag-no-answer", "title-2"),
+                new Question(members[0], "content-3", "title-3"),
+                new Question(members[3], "content-4", "title-4"),
+                new Question(members[0], "content-5", "title-5"),
         };
         Arrays.stream(questions).forEach(em::persist);
         Question testTargetQuestion = questions[0];
 
         //4. 답변글 생성
         Answer[] answers = {
-                new Answer(author, "content1", testTargetQuestion),
-                new Answer(author, "content2", testTargetQuestion),
-                new Answer(author, "content3", testTargetQuestion),
-                new Answer(author, "content4", testTargetQuestion),
-                new Answer(author, "content5", testTargetQuestion),
-                new Answer(author, "content6", testTargetQuestion),
-                new Answer(author, "content7", testTargetQuestion),
+                new Answer(members[4], "content1", testTargetQuestion),
+                new Answer(members[4], "content2", testTargetQuestion),
+                new Answer(members[2], "content3", testTargetQuestion),
+                new Answer(members[1], "content4", testTargetQuestion),
+                new Answer(members[1], "content5", testTargetQuestion),
+                new Answer(members[0], "content6", testTargetQuestion),
+                new Answer(members[0], "content7", testTargetQuestion),
         };
         Arrays.stream(answers).forEach(em::persist);
 
@@ -61,26 +72,26 @@ public class TestDataInit {
         Arrays.stream(tags).forEach(testTargetQuestion::addTag);
 
         //6. 질문글에 대댓글 등록
-        Comment c7 = createComment(em, author, testTargetQuestion, "content-7", null);
-        Comment c8 = createComment(em, author, testTargetQuestion, "content-8", null);
-        Comment c1 = createComment(em, author, testTargetQuestion, "content-1", null);
-        Comment c2 = createComment(em, author, testTargetQuestion, "content-2", c1);
-        Comment c3 = createComment(em, author, testTargetQuestion, "content-3", c2);
-        Comment c4 = createComment(em, author, testTargetQuestion, "content-4", c3);
-        Comment c5 = createComment(em, author, testTargetQuestion, "content-5", c4);
-        Comment c6 = createComment(em, author, testTargetQuestion, "content-6", c4);
+        Comment c7 = createComment(em, members[0], testTargetQuestion, "content-7", null);
+        Comment c8 = createComment(em, members[1], testTargetQuestion, "content-8", null);
+        Comment c1 = createComment(em, members[1], testTargetQuestion, "content-1", null);
+        Comment c2 = createComment(em, members[1], testTargetQuestion, "content-2", c1);
+        Comment c3 = createComment(em, members[0], testTargetQuestion, "content-3", c2);
+        Comment c4 = createComment(em, members[3], testTargetQuestion, "content-4", c3);
+        Comment c5 = createComment(em, members[3], testTargetQuestion, "content-5", c4);
+        Comment c6 = createComment(em, members[0], testTargetQuestion, "content-6", c4);
 
         //7. 답변글에 대댓글 등록
         Arrays.stream(answers).forEach(answer -> {
-            Comment ac4 = createComment(em, author, answer, answer.getId() + "content-4", null);
-            Comment ac5 = createComment(em, author, answer, answer.getId() + "content-5", null);
-            Comment ac6 = createComment(em, author, answer, answer.getId() + "content-6", ac5);
-            Comment ac1 = createComment(em, author, answer, answer.getId() + "content-1", null);
-            Comment ac2 = createComment(em, author, answer, answer.getId() + "content-2", ac1);
-            Comment ac3 = createComment(em, author, answer, answer.getId() + "content-3", ac1);
+            Comment ac4 = createComment(em, members[0], answer, answer.getId() + "content-4", null);
+            Comment ac5 = createComment(em, members[1], answer, answer.getId() + "content-5", null);
+            Comment ac6 = createComment(em, members[2], answer, answer.getId() + "content-6", ac5);
+            Comment ac1 = createComment(em, members[0], answer, answer.getId() + "content-1", null);
+            Comment ac2 = createComment(em, members[1], answer, answer.getId() + "content-2", ac1);
+            Comment ac3 = createComment(em, members[0], answer, answer.getId() + "content-3", ac1);
         });
 
-        return new TestDataDTO(tags, questions, new Member[]{author}, answers);
+        return new TestDataDTO(tags, questions, members, answers);
     }
 
     private static Comment createComment(EntityManager em,

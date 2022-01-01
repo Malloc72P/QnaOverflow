@@ -9,15 +9,15 @@ import scra.qnaboard.domain.repository.question.QuestionRepository;
 import scra.qnaboard.domain.repository.question.QuestionSearchDetailRepository;
 import scra.qnaboard.domain.repository.question.QuestionSearchListRepository;
 import scra.qnaboard.domain.repository.question.QuestionSimpleQueryRepository;
+import scra.qnaboard.service.dto.QuestionOnlyDTO;
 import scra.qnaboard.service.exception.QuestionDeleteFailedException;
 import scra.qnaboard.service.exception.QuestionNotFoundException;
+import scra.qnaboard.service.exception.UnauthorizedQuestionEditException;
 import scra.qnaboard.web.dto.question.detail.QuestionDetailDTO;
 import scra.qnaboard.web.dto.question.list.QuestionListDTO;
 import scra.qnaboard.web.dto.question.list.QuestionSummaryDTO;
 
 import java.util.List;
-
-import static scra.qnaboard.service.exception.QuestionDeleteFailedException.UNAUTHORIZED;
 
 /**
  * 질문 엔티티에 대한 비즈니스 로직을 처리하는 서비스
@@ -85,12 +85,37 @@ public class QuestionService {
 
         //관리자가 아니면서 소유자도 아니면 실패해야함
         if (requester.isNotAdmin() && question.isNotOwner(requester)) {
-            throw new QuestionDeleteFailedException(UNAUTHORIZED, questionId, requesterId);
+            throw new QuestionDeleteFailedException(QuestionDeleteFailedException.UNAUTHORIZED, questionId, requesterId);
         }
 
         //관리자이거나 질문게시글의 소유자면 질문게시글 삭제함
         //관리자는 다른 관리자의 게시글을 지울 수 있음
         questionRepository.deleteById(questionId);
+    }
+
+    public QuestionOnlyDTO questionOnly(long requesterId, long questionId) {
+        Question question = questionWithAuthor(questionId);
+        Member requester = memberService.findMember(requesterId);
+
+        //관리자가 아니면서 소유자도 아니면 실패해야함
+        if (requester.isNotAdmin() && question.isNotOwner(requester)) {
+            throw new UnauthorizedQuestionEditException(questionId, requesterId);
+        }
+
+        return QuestionOnlyDTO.from(question);
+    }
+
+    @Transactional
+    public void editQuestion(long requesterId, long questionId, String title, String content) {
+        Question question = questionWithAuthor(questionId);
+        Member requester = memberService.findMember(requesterId);
+
+        //관리자가 아니면서 소유자도 아니면 실패해야함
+        if (requester.isNotAdmin() && question.isNotOwner(requester)) {
+            throw new UnauthorizedQuestionEditException(questionId, requesterId);
+        }
+
+        question.update(title, content);
     }
 
     /**

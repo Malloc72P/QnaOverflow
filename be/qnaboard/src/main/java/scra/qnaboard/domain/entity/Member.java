@@ -35,6 +35,10 @@ public class Member extends BaseTimeEntity {
         return !role.equals(MemberRole.ADMIN);
     }
 
+    public boolean isNotSame(Member another) {
+        return !id.equals(another.id);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

@@ -13,9 +13,9 @@
      th:fragment="post_controller(username, createDate, modifyDate, postId)">
     <div class="row">
         <div class="float-start">
-            <button th:href="@{/questions/{questionId}/edit(questionId=${question.questionId})}"
-                    class="btn btn-sm btn-outline-dark">수정하기
-            </button>
+            <a th:href="@{/questions/{questionId}/editForm(questionId=${question.questionId})}"
+               class="btn btn-sm btn-outline-dark">수정하기
+            </a>
             <form class="d-inline-block" method="post"
                   th:action="@{/questions/{questionId}/delete(questionId=${question.questionId})}">
                 <button type="submit" class="btn btn-sm btn-outline-dark">삭제하기</button>

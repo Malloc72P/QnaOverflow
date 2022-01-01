@@ -1,0 +1,40 @@
+<!--/*
+질문 수정 기능을 위한 뷰(QuestionController.questionForm)
+*/-->
+<!DOCTYPE html>
+<html lang="kr" th:replace="~{/template/layout-main :: layout (~{::title}, ~{::section}, ${username})}"
+      xmlns:th="http://www.thymeleaf.org">
+
+<title th:text="#{ui.main.title}">제목</title>
+
+<section>
+    <div class="clearfix">
+        <h2 class="float-start" th:text="#{ui.question.edit-form.page-title}">질문하기</h2>
+    </div>
+    <hr/>
+
+    <form th:action="@{/questions/edit/{questionId}(questionId=${questionId})}" method="post"
+          th:object="${questionEditForm}">
+        <div class="mb-3">
+            <label for="title" class="form-label" th:text="#{ui.question.edit-form.input-title}">질문 제목</label>
+            <input id="title" name="title" type="text" class="form-control" required aria-describedby="titleHelp"
+                   th:field="*{title}">
+            <div id="titleHelp" class="form-text" th:text="#{ui.question.edit-form.input-title-help}">질문의 제목을 적어주세요
+            </div>
+            <div class="text-danger" th:errors="*{title}">제목은 6자 이상이어야 합니다</div>
+        </div>
+        <div class="mb-3">
+            <label for="content" class="form-label">질문내용</label>
+            <textarea id="content" name="content" type="text" class="form-control" style="min-height: 200px"
+                      aria-describedby="contentHelp" required th:field="*{content}"></textarea>
+            <div id="contentHelp" class="form-text" th:text="#{ui.question.edit-form.input-content-help}">내용을 적어주세요
+            </div>
+            <div class="text-danger" th:errors="*{content}">제목은 6자 이상이어야 합니다</div>
+        </div>
+        <div class="clearfix">
+            <button type="submit" class="btn btn-primary float-end">Submit</button>
+        </div>
+    </form>
+</section>
+
+</html>
