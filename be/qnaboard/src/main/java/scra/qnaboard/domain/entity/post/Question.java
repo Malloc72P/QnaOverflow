@@ -5,16 +5,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.util.StringUtils;
 import scra.qnaboard.domain.entity.Member;
-import scra.qnaboard.domain.entity.QuestionTag;
-import scra.qnaboard.domain.entity.Tag;
 import scra.qnaboard.service.exception.QuestionPropertyIsEmptyException;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.OneToMany;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 /**
@@ -33,25 +26,9 @@ public class Question extends Post {
 
     private String title;
 
-    //@TODO 이 양방향 매핑도 지워줄 것!
-    @OneToMany(mappedBy = "question", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<QuestionTag> questionTags = new ArrayList<>();
-
     public Question(Member author, String content, String title) {
         super(author, content);
         this.title = title;
-    }
-
-    /**
-     * 태그를 질문엔티티에 추가하는 메서드 <br>
-     * 태그와 질문 엔티티 사이를 이어주는 QuestionTag는 CascadeType.ALL 설정이 걸려있어서, <br>
-     * 따로 영속화하지 않아도 Question엔티티를 영속화할때 함께 처리된다
-     *
-     * @param tag 질문 엔티티에 추가할 태그 엔티티. QuestionTag아님!
-     */
-    public void addTag(Tag tag) {
-        QuestionTag questionTag = new QuestionTag(tag, this);
-        questionTags.add(questionTag);
     }
 
     public boolean isNotOwner(Member member) {

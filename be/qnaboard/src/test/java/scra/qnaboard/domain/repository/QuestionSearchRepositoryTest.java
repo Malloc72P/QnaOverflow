@@ -61,9 +61,10 @@ class QuestionSearchRepositoryTest {
                 question.getAuthor().getNickname()
         );
 
-        assertThat(detailDTO.getTags().size()).isEqualTo(question.getQuestionTags().size());
-        int size = QueryUtils.sizeOfAnswerByQuestionId(em, question.getId());
-        assertThat(detailDTO.getAnswers().size()).isEqualTo(size);
+        int sizeOfQuestionTag = QueryUtils.sizeOfQuestionTagsByQuestionId(em, question.getId());
+        assertThat(detailDTO.getTags().size()).isEqualTo(sizeOfQuestionTag);
+        int sizeOfAnswer = QueryUtils.sizeOfAnswerByQuestionId(em, question.getId());
+        assertThat(detailDTO.getAnswers().size()).isEqualTo(sizeOfAnswer);
     }
 
     @Test

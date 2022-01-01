@@ -5,10 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.transaction.annotation.Transactional;
-import scra.qnaboard.domain.entity.Comment;
-import scra.qnaboard.domain.entity.Member;
-import scra.qnaboard.domain.entity.MemberRole;
-import scra.qnaboard.domain.entity.Tag;
+import scra.qnaboard.domain.entity.*;
 import scra.qnaboard.domain.entity.post.Answer;
 import scra.qnaboard.domain.entity.post.Post;
 import scra.qnaboard.domain.entity.post.Question;
@@ -99,7 +96,9 @@ public class InitDB {
             Arrays.stream(answers).forEach(em::persist);
 
             //5. 질문글에 태그 등록
-            Arrays.stream(tags).forEach(testTargetQuestion::addTag);
+            Arrays.stream(tags)
+                    .map(tag -> new QuestionTag(tag, testTargetQuestion))
+                    .forEach(em::persist);
 
             //6. 질문글에 대댓글 등록
             Comment c7 = createComment(em, author, testTargetQuestion, "q-content-7", null);
