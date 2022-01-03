@@ -10,7 +10,9 @@ import scra.qnaboard.domain.repository.comment.CommentRepository;
 import scra.qnaboard.domain.repository.comment.CommentSimpleQueryRepository;
 import scra.qnaboard.service.exception.comment.CommentNotFoundException;
 import scra.qnaboard.service.exception.comment.delete.CommentDeleteFailedException;
+import scra.qnaboard.service.exception.comment.edit.UnauthorizedCommentEditException;
 import scra.qnaboard.web.dto.comment.CommentDTO;
+import scra.qnaboard.web.dto.comment.edit.EditCommentResultDTO;
 
 @Service
 @RequiredArgsConstructor
@@ -57,6 +59,29 @@ public class CommentService {
         //관리자는 다른 관리자의 게시글을 지울 수 있음
         comment.delete();
     }
+
+    /**
+     * 댓글을 수정하는 메서드
+     *
+     * @param requesterId 요청한 유저의 아이디
+     * @param commentId   수정할 댓글의 아이디
+     * @param content     댓글의 새로운 내용
+     */
+    @Transactional
+    public EditCommentResultDTO editComment(long requesterId, long commentId, String content) {
+        Comment comment = commentWithAuthor(commentId);
+        Member requester = memberService.findMember(requesterId);
+
+        //관리자가 아니면서 소유자도 아니면 실패해야함
+        if (requester.isNotAdmin() && comment.isNotOwner(requester)) {
+            throw new UnauthorizedCommentEditException(commentId, requesterId);
+        }
+
+        comment.update(content);
+
+        return new EditCommentResultDTO(content);
+    }
+
 
     public Comment commentWithAuthor(long commentId) {
         return commentSimpleQueryRepository.commentWithAuthor(commentId)

@@ -1,7 +1,6 @@
 package scra.qnaboard.utils;
 
 import scra.qnaboard.domain.entity.post.Post;
-import scra.qnaboard.domain.entity.post.Question;
 
 import javax.persistence.EntityManager;
 

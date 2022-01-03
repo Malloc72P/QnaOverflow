@@ -52,6 +52,12 @@ public class TestDataDTO {
                 .orElseThrow(() -> new RuntimeException("테스트 실패! 답변 엔티티를 찾지 못함!"));
     }
 
+    public Comment comment() {
+        return Arrays.stream(comments)
+                .findFirst()
+                .orElseThrow(() -> new RuntimeException("테스트 실패! 댓글 엔티티를 찾지 못함!"));
+    }
+
     public Member noneAdminMember() {
         return Arrays.stream(members)
                 .filter(Member::isNotAdmin)

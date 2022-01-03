@@ -10,6 +10,8 @@ import scra.qnaboard.service.CommentService;
 import scra.qnaboard.web.dto.comment.CommentDTO;
 import scra.qnaboard.web.dto.comment.create.CreateCommentDTO;
 import scra.qnaboard.web.dto.comment.delete.CommentDeleteResultDTO;
+import scra.qnaboard.web.dto.comment.edit.EditCommentDTO;
+import scra.qnaboard.web.dto.comment.edit.EditCommentResultDTO;
 
 import java.util.Locale;
 
@@ -39,5 +41,13 @@ public class CommentController {
         String content = messageSource.getMessage("ui.comment.delete.content", null, locale);
         String authorName = messageSource.getMessage("ui.comment.delete.author-name", null, locale);
         return new CommentDeleteResultDTO(authorName, content);
+    }
+
+    @ResponseBody
+    @PatchMapping("{commentId}")
+    public EditCommentResultDTO patchComment(@PathVariable("postId") long postId,
+                                             @PathVariable("commentId") long commentId,
+                                             @RequestBody @Validated EditCommentDTO dto) {
+        return commentService.editComment(1L, commentId, dto.getContent());
     }
 }

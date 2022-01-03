@@ -80,6 +80,18 @@ public class CommentDTO implements Comparable<CommentDTO> {
         return newComments;
     }
 
+    public static CommentDTO from(Comment comment) {
+        CommentDTO commentDTO = new CommentDTO();
+        commentDTO.commentId = comment.getId();
+        commentDTO.authorId = comment.getAuthor().getId();
+        commentDTO.authorName = comment.getAuthor().getNickname();
+        commentDTO.createdDate = comment.getCreatedDate();
+        commentDTO.content = comment.getContent();
+        commentDTO.parentCommentId = comment.getParentComment() == null ? null : comment.getParentComment().getId();
+        commentDTO.parentPostId = comment.getParentPost().getId();
+        return commentDTO;
+    }
+
     /**
      * 삭제된 코멘트인 경우 내용과 작성자 정보를 숨긴다
      */
@@ -120,17 +132,5 @@ public class CommentDTO implements Comparable<CommentDTO> {
         } else {
             return 1;
         }
-    }
-
-    public static CommentDTO from(Comment comment) {
-        CommentDTO commentDTO = new CommentDTO();
-        commentDTO.commentId = comment.getId();
-        commentDTO.authorId = comment.getAuthor().getId();
-        commentDTO.authorName = comment.getAuthor().getNickname();
-        commentDTO.createdDate = comment.getCreatedDate();
-        commentDTO.content = comment.getContent();
-        commentDTO.parentCommentId = comment.getParentComment() == null ? null : comment.getParentComment().getId();
-        commentDTO.parentPostId = comment.getParentPost().getId();
-        return commentDTO;
     }
 }

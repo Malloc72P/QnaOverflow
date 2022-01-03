@@ -34,3 +34,13 @@ const deleteCommentButtons = document.querySelectorAll(".delete-comment-button")
 for (const deleteCommentButton of deleteCommentButtons) {
     deleteCommentButton.addEventListener("pointerdown", deleteComment);
 }
+
+const toggleCommentEditorButtons = document.querySelectorAll(".toggle-comment-editor");
+for (const toggleCommentEditorButton of toggleCommentEditorButtons) {
+    toggleCommentEditorButton.addEventListener("pointerdown", toggleCommentEditor);
+}
+
+const editCommentForms = document.querySelectorAll(".edit-comment-form");
+for (const editCommentForm of editCommentForms) {
+    editCommentForm.addEventListener("submit", editComment);
+}

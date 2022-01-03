@@ -9,7 +9,6 @@ import scra.qnaboard.domain.entity.post.QAnswer;
 import java.util.Optional;
 
 import static scra.qnaboard.domain.entity.QMember.member;
-import static scra.qnaboard.domain.entity.post.QAnswer.answer;
 
 @Repository
 @RequiredArgsConstructor

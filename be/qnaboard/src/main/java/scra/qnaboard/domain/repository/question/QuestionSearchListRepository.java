@@ -5,7 +5,6 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-import scra.qnaboard.domain.entity.post.QAnswer;
 import scra.qnaboard.web.dto.question.list.QQuestionSummaryDTO;
 import scra.qnaboard.web.dto.question.list.QuestionSummaryDTO;
 import scra.qnaboard.web.dto.tag.QTagDTO;

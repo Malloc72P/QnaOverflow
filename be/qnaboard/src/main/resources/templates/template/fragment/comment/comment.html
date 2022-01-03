@@ -14,7 +14,7 @@
                 <span th:text="${{comment.createdDate}}">2021-12-12 12:12PM</span>
                 <a class="toggle-comment-writer text-decoration-none text-black hover-underline"
                    href="javascript:">답글</a>
-                <a class="text-decoration-none text-black hover-underline" href="javascript:">수정</a>
+                <a class="toggle-comment-editor text-decoration-none text-black hover-underline" href="javascript:">수정</a>
                 <a class="delete-comment-button text-decoration-none text-black hover-underline"
                    href="javascript:">삭제</a>
             </div>
@@ -28,6 +28,22 @@
         </div>
     </div>
 
+    <!--대댓글 수정 폼-->
+    <div class="comment-editor d-none">
+        <p class="mb-3">대댓글 수정하기</p>
+        <form class="edit-comment-form">
+            <div class="mb-3">
+                <textarea class="form-control" placeholder="대댓글의 새로운 내용을 입력해주세요"
+                          th:text="${comment.content}"></textarea>
+            </div>
+            <input class="prev-comment-content" type="hidden" th:value="${comment.content}"/>
+            <div class="text-end">
+                <button class="btn btn-sm btn-primary">대댓글 수정하기</button>
+            </div>
+        </form>
+    </div>
+
+    <!--대댓글 입력 폼-->
     <div class="comment-writer d-none">
         <p class="mb-3">대댓글 작성하기</p>
         <form class="reply-comment-form">

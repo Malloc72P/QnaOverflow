@@ -6,7 +6,6 @@ import lombok.NoArgsConstructor;
 import org.springframework.util.StringUtils;
 import scra.qnaboard.domain.entity.Member;
 import scra.qnaboard.service.exception.answer.edit.AnswerPropertyIsEmptyException;
-import scra.qnaboard.service.exception.question.edit.QuestionPropertyIsEmptyException;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
