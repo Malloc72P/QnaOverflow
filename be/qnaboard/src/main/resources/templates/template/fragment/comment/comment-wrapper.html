@@ -6,14 +6,15 @@
 
 <body>
 
-<div class="comment-wrapper" th:fragment="comment_wrapper(comments)">
-    <div class="comment-list mb-4"
-         th:each="comment : ${comments}"
-         th:insert="template/fragment/comment/comment :: comment_block(${comment})">
+<div th:id="'p-' + ${postId}" class="comment-wrapper"
+     th:fragment="comment_wrapper(comments, postId)">
+    <div class="comment-list mb-4">
+        <div th:each="comment : ${comments}"
+             th:insert="template/fragment/comment/comment :: comment_block(${comment})"></div>
     </div>
     <div class="comment-writer">
         <h4 class="mb-3">댓글 작성하기</h4>
-        <form>
+        <form class="create-comment-form">
             <div class="mb-3">
                 <textarea class="form-control" placeholder="댓글을 작성해주세요"></textarea>
             </div>

@@ -95,7 +95,7 @@ const editAnswer = async (event) => {
     const url = `http://localhost:8080/${questionId}/answers/${answerId}`;
 
     let body = {
-        "content" : content
+        "content": content
     };
 
     try {
@@ -130,6 +130,36 @@ const decreaseAnswerCount = () => {
     answerCount.innerText = parseInt(answerCount.innerText) - 1;
 }
 
+const createComment = async (event) => {
+    event.preventDefault();
+    const commentTextArea = event.target[0];
+    const content = commentTextArea.value;
+    const parentCommentId = null;
+    const commentWrapper = commentTextArea.closest(".comment-wrapper");
+
+    const postId = commentWrapper.id.substring(2);
+
+    const url = `http://localhost:8080/posts/${postId}/comments`;
+
+    let body = {
+        "parentCommentId": parentCommentId,
+        "content": content
+    };
+
+    try {
+        const response = await request(url, PUT, body, MODE_TEXT);
+        const domParser = new DOMParser();
+        const comment = domParser.parseFromString(response, "text/html").querySelector(".comment");
+        const commentList = commentWrapper.querySelector(".comment-list");
+        commentList.appendChild(comment);
+        commentTextArea.value = "";
+
+    } catch (error) {
+        alert("자신이 작성한 답변만 삭제할 수 있습니다. 만약 당신이 관리자라면 서버 관리자에게 문의해주세요");
+    }
+
+
+};
 
 //main =========================================
 const elements = document.querySelectorAll(".btn");
@@ -152,6 +182,11 @@ for (const button of editAnswerButtons) {
 
 for (const form of editAnswerForms) {
     form.addEventListener("submit", editAnswer);
+}
+
+const createCommentForms = document.querySelectorAll(".create-comment-form");
+for (const commentForm of createCommentForms) {
+    commentForm.addEventListener("submit", createComment);
 }
 
 

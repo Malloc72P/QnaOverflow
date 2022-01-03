@@ -7,6 +7,8 @@ import org.springframework.transaction.annotation.Transactional;
 import scra.qnaboard.service.exception.question.search.QuestionNotFoundException;
 import scra.qnaboard.web.dto.answer.AnswerDetailDTO;
 import scra.qnaboard.web.dto.answer.QAnswerDetailDTO;
+import scra.qnaboard.web.dto.comment.CommentDTO;
+import scra.qnaboard.web.dto.comment.QCommentDTO;
 import scra.qnaboard.web.dto.question.detail.*;
 import scra.qnaboard.web.dto.tag.QTagDTO;
 import scra.qnaboard.web.dto.tag.TagDTO;

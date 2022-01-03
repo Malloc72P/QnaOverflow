@@ -79,9 +79,9 @@ public class QuestionController {
      * @return 실패 - 질문글입력폼 | 성공 - 질문글 상세보기(생성한 질문글)
      */
     @PostMapping
-    public String newQuestion(@ModelAttribute("questionForm") @Validated CreateQuestionForm form,
-                              BindingResult bindingResult,
-                              RedirectAttributes redirectAttributes) {
+    public String createQuestion(@ModelAttribute("questionForm") @Validated CreateQuestionForm form,
+                                 BindingResult bindingResult,
+                                 RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) {
             return "/question/question-form";
         }
@@ -136,7 +136,7 @@ public class QuestionController {
      * @param questionId         수정할 질문글의 아이디
      * @param bindingResult      필드 에러를 담고 있는 객체
      * @param redirectAttributes 예외처리를 위해 존재함. 이거 덕분에 리다이렉션할때 데이터를 전달할 수 있음
-     * @return
+     * @return 질문 상세보기 페이지
      */
     @PostMapping("edit/{questionId}")
     public String editQuestion(@ModelAttribute("questionEditForm") @Validated EditQuestionForm form,

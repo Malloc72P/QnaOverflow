@@ -5,7 +5,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import scra.qnaboard.domain.entity.post.Answer;
-import scra.qnaboard.web.dto.question.detail.CommentDTO;
+import scra.qnaboard.web.dto.comment.CommentDTO;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;

@@ -4,15 +4,14 @@ import com.querydsl.core.annotations.QueryProjection;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import scra.qnaboard.domain.entity.QuestionTag;
 import scra.qnaboard.domain.entity.post.Question;
 import scra.qnaboard.web.dto.answer.AnswerDetailDTO;
+import scra.qnaboard.web.dto.comment.CommentDTO;
 import scra.qnaboard.web.dto.tag.TagDTO;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * 질문 상세보기 DTO

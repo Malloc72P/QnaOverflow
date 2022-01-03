@@ -1,10 +1,11 @@
-package scra.qnaboard.web.dto.question.detail;
+package scra.qnaboard.web.dto.comment;
 
 import com.querydsl.core.annotations.QueryProjection;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
+import scra.qnaboard.domain.entity.Comment;
 import scra.qnaboard.utils.DateTimeUtil;
 
 import java.time.LocalDateTime;
@@ -25,7 +26,6 @@ public class CommentDTO implements Comparable<CommentDTO> {
     private String content;
     private Long parentCommentId;
     private long parentPostId;
-    private CommentDTO parent;
     private List<CommentDTO> children = new ArrayList<>();
 
     @QueryProjection
@@ -85,16 +85,6 @@ public class CommentDTO implements Comparable<CommentDTO> {
      */
     private void addChild(CommentDTO child) {
         children.add(child);
-        child.updateParent(this);
-    }
-
-    /**
-     * 부모 댓글을 세팅하는 메서드. 직접 호출하면 안됨. addChild()에서만 호출해야 함
-     *
-     * @param parent 부모 댓글
-     */
-    private void updateParent(CommentDTO parent) {
-        this.parent = parent;
     }
 
     /**
@@ -116,5 +106,17 @@ public class CommentDTO implements Comparable<CommentDTO> {
         } else {
             return 1;
         }
+    }
+
+    public static CommentDTO from(Comment comment) {
+        CommentDTO commentDTO = new CommentDTO();
+        commentDTO.commentId = comment.getId();
+        commentDTO.authorId = comment.getAuthor().getId();
+        commentDTO.authorName = comment.getAuthor().getNickname();
+        commentDTO.createdDate = comment.getCreatedDate();
+        commentDTO.content = comment.getContent();
+        commentDTO.parentCommentId = comment.getParentComment() == null ? null : comment.getParentComment().getId();
+        commentDTO.parentPostId = comment.getParentPost().getId();
+        return commentDTO;
     }
 }

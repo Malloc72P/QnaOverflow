@@ -10,7 +10,7 @@ import scra.qnaboard.domain.entity.post.Question;
 import scra.qnaboard.domain.repository.question.QuestionSearchDetailRepository;
 import scra.qnaboard.utils.QueryUtils;
 import scra.qnaboard.utils.TestDataInit;
-import scra.qnaboard.web.dto.question.detail.CommentDTO;
+import scra.qnaboard.web.dto.comment.CommentDTO;
 import scra.qnaboard.web.dto.question.detail.QuestionDetailDTO;
 
 import javax.persistence.EntityManager;
