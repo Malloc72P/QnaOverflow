@@ -12,6 +12,7 @@ import scra.qnaboard.service.exception.answer.delete.AnswerDeleteFailedException
 import scra.qnaboard.service.exception.answer.edit.UnauthorizedAnswerEditException;
 import scra.qnaboard.service.exception.answer.search.AnswerNotFoundException;
 import scra.qnaboard.web.dto.answer.AnswerDetailDTO;
+import scra.qnaboard.web.dto.answer.edit.EditAnswerResultDTO;
 
 @Service
 @RequiredArgsConstructor
@@ -39,7 +40,7 @@ public class AnswerService {
      * @param answerId    삭제할 질문게시글의 아이디
      */
     @Transactional
-    public void deleteQuestion(long requesterId, long answerId) {
+    public void deleteAnswer(long requesterId, long answerId) {
         Answer answer = answerWithAuthor(answerId);
         Member requester = memberService.findMember(requesterId);
 
@@ -61,7 +62,7 @@ public class AnswerService {
      * @param content     답변게시글의 새로운 내용
      */
     @Transactional
-    public void editQuestion(long requesterId, long answerId, String content) {
+    public EditAnswerResultDTO editAnswer(long requesterId, long answerId, String content) {
         Answer answer = answerWithAuthor(answerId);
         Member requester = memberService.findMember(requesterId);
 
@@ -71,6 +72,8 @@ public class AnswerService {
         }
 
         answer.update(content);
+
+        return new EditAnswerResultDTO(answer.getContent(), answer.getLastModifiedDate());
     }
 
     /**

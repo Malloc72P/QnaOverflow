@@ -33,6 +33,18 @@
             <button class="answer-delete btn btn-sm btn-outline-dark">삭제하기</button>
         </div>
         <hr>
+        <form class="answer-edit-form d-none">
+            <div class="mb-3">
+                <label>답변 수정하기</label>
+                <textarea class="form-control" placeholder="답변을 작성해주세요"
+                          th:text="${answer.content}"></textarea>
+            </div>
+            <div class="clearfix">
+                <button class="float-end btn btn-primary"
+                        name="답변 제출" type="submit">답변 제출하기
+                </button>
+            </div>
+        </form>
         <!--/*대댓글 목록 컨테이너*/-->
         <div th:replace="template/fragment/comment/comment-wrapper :: comment_wrapper(${answer.comments})"></div>
     </div>

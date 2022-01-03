@@ -9,6 +9,7 @@ import scra.qnaboard.service.AnswerService;
 import scra.qnaboard.web.dto.answer.AnswerDetailDTO;
 import scra.qnaboard.web.dto.answer.create.CreateAnswerDTO;
 import scra.qnaboard.web.dto.answer.edit.EditAnswerDTO;
+import scra.qnaboard.web.dto.answer.edit.EditAnswerResultDTO;
 
 @Controller
 @RequiredArgsConstructor
@@ -32,14 +33,15 @@ public class AnswerController {
     @ResponseBody
     public void deleteAnswer(@PathVariable("questionId") long questionId,
                              @PathVariable("answerId") long answerId) {
-        answerService.deleteQuestion(1L, answerId);
+        answerService.deleteAnswer(1L, answerId);
     }
 
     @PatchMapping("{answerId}")
     @ResponseBody
-    public void editAnswer(@PathVariable("questionId") long questionId,
-                           @PathVariable("answerId") long answerId,
-                           @RequestBody EditAnswerDTO editAnswerDTO) {
-        answerService.editQuestion(1L, answerId, editAnswerDTO.getContent());
+    public EditAnswerResultDTO editAnswer(@PathVariable("questionId") long questionId,
+                                          @PathVariable("answerId") long answerId,
+                                          @RequestBody EditAnswerDTO editAnswerDTO) {
+        EditAnswerResultDTO editAnswerResultDTO = answerService.editAnswer(1L, answerId, editAnswerDTO.getContent());
+        return editAnswerResultDTO;
     }
 }

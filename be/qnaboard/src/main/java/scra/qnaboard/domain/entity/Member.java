@@ -31,6 +31,10 @@ public class Member extends BaseTimeEntity {
         this.role = role;
     }
 
+    public boolean isAdmin() {
+        return role.equals(MemberRole.ADMIN);
+    }
+
     public boolean isNotAdmin() {
         return !role.equals(MemberRole.ADMIN);
     }

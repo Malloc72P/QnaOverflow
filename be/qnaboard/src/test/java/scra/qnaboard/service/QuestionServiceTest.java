@@ -21,6 +21,7 @@ import java.util.Arrays;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static scra.qnaboard.utils.QueryUtils.isDeletedPost;
 
 @SpringBootTest
 @Transactional
@@ -85,7 +86,7 @@ class QuestionServiceTest {
 
         for (Question question : questions) {
             questionService.deleteQuestion(question.getAuthor().getId(), question.getId());
-            assertThat(isDeleted(question)).isFalse();
+            assertThat(isDeletedPost(em, question)).isFalse();
         }
     }
 
@@ -94,17 +95,14 @@ class QuestionServiceTest {
     void adminCanDeleteAllQuestion() {
         TestDataDTO dataDTO = TestDataInit.init(em);
         Question[] questions = dataDTO.getQuestions();
-        Member admin = Arrays.stream(dataDTO.getMembers())
-                .filter(member -> !member.isNotAdmin())
-                .findFirst()
-                .orElseThrow(() -> new RuntimeException("테스트 실패! 관리자 엔티티를 찾지 못함!"));
+        Member admin = dataDTO.adminMember();
 
         em.flush();
         em.clear();
 
         for (Question question : questions) {
             questionService.deleteQuestion(admin.getId(), question.getId());
-            assertThat(isDeleted(question)).isFalse();
+            assertThat(isDeletedPost(em, question)).isFalse();
         }
     }
 
@@ -119,7 +117,7 @@ class QuestionServiceTest {
 
         for (Question question : questions) {
             Member author = question.getAuthor();
-            Member anotherMember = anotherMember(dataDTO, author);
+            Member anotherMember = dataDTO.anotherMember(author);
             assertThatThrownBy(() -> questionService.deleteQuestion(anotherMember.getId(), question.getId()))
                     .isInstanceOf(QuestionDeleteFailedException.class);
         }
@@ -159,10 +157,7 @@ class QuestionServiceTest {
     void adminCanEditAllQuestion() {
         TestDataDTO dataDTO = TestDataInit.init(em);
         Question[] questions = dataDTO.getQuestions();
-        Member admin = Arrays.stream(dataDTO.getMembers())
-                .filter(member -> !member.isNotAdmin())
-                .findFirst()
-                .orElseThrow(() -> new RuntimeException("테스트 실패! 관리자 엔티티를 찾지 못함!"));
+        Member admin = dataDTO.adminMember();
 
         em.flush();
         em.clear();
@@ -197,7 +192,7 @@ class QuestionServiceTest {
 
         for (Question question : questions) {
             Member author = question.getAuthor();
-            Long anotherMemberId = anotherMember(dataDTO, author).getId();
+            Long anotherMemberId = dataDTO.anotherMember(author).getId();
             String editTitle = "edited-title-" + question.getId();
             String editContent = "edited-content-" + question.getId();
             assertThatThrownBy(() -> questionService.editQuestion(anotherMemberId, question.getId(), editTitle, editContent))
@@ -237,17 +232,4 @@ class QuestionServiceTest {
         }
     }
 
-    private Member anotherMember(TestDataDTO dataDTO, Member author) {
-        return Arrays.stream(dataDTO.getMembers())
-                .filter(member -> member.isNotSame(author) && member.isNotAdmin())
-                .findFirst()
-                .orElseThrow(() -> new RuntimeException("테스트 실패! 멤버 엔티티를 찾지 못함!"));
-    }
-
-    private boolean isDeleted(Question question) {
-        return em.createQuery("select (count(q.id) > 0) from Question q where q.id = :id and q.deleted = false ",
-                        Boolean.class)
-                .setParameter("id", question.getId())
-                .getSingleResult();
-    }
 }

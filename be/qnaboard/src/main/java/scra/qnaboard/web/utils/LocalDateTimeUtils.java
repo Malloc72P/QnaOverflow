@@ -8,5 +8,6 @@ import java.time.format.DateTimeFormatter;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class LocalDateTimeUtils {
 
-    public static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+    public static final String STRING_DATE_TIME_FORMAT = "yyyy-MM-dd hh:mm a";
+    public static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern(STRING_DATE_TIME_FORMAT);
 }

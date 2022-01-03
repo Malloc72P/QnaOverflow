@@ -9,7 +9,7 @@
 <body>
 
 <!--/*게시글 컨트롤러(수정, 삭제 작성자, 작성일, 수정일)*/-->
-<div class="container-fluid pt-5 pb-4 ps-0 pe-0"
+<div class="post-controller container-fluid pt-5 pb-4 ps-0 pe-0"
      th:fragment="post_controller(username, createDate, modifyDate, postId, editComponent, deleteComponent)">
     <div class="row">
         <div class="float-start">
@@ -18,9 +18,10 @@
         </div>
         <div class="float-end text-end pe-4">
             <div>작성자 : <span th:text="${username}">Edward Nygma</span></div>
-            <div>작성일 : <span th:text="${#temporals.format(createDate, 'yyyy-MM-dd hh:mm a')}">2021-12-12 12:12 PM</span>
+            <div>작성일 : <span th:text="${#temporals.format(createDate, 'yyyy-MM-dd hh:mm a')}" class="created-date">2021-12-12 12:12 PM</span>
             </div>
-            <div>수정일 : <span th:text="${#temporals.format(modifyDate, 'yyyy-MM-dd hh:mm a')}">2021-12-12 12:12 PM</span>
+            <div>수정일 : <span th:text="${#temporals.format(modifyDate, 'yyyy-MM-dd hh:mm a')}"
+                             class="last-modified-date">2021-12-12 12:12 PM</span>
             </div>
         </div>
     </div>

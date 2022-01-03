@@ -1,5 +1,8 @@
 package scra.qnaboard.utils;
 
+import scra.qnaboard.domain.entity.post.Post;
+import scra.qnaboard.domain.entity.post.Question;
+
 import javax.persistence.EntityManager;
 
 public class QueryUtils {
@@ -11,5 +14,12 @@ public class QueryUtils {
     public static int sizeOfQuestionTagsByQuestionId(EntityManager em, long questionId) {
         return em.createQuery("select count(qt) from QuestionTag qt where qt.question.id = :id", Long.class)
                 .setParameter("id", questionId).getSingleResult().intValue();
+    }
+
+    public static boolean isDeletedPost(EntityManager em, Post post) {
+        return em.createQuery("select (count(p.id) > 0) from Post p where p.id = :id and p.deleted = false ",
+                        Boolean.class)
+                .setParameter("id", post.getId())
+                .getSingleResult();
     }
 }
