@@ -5,14 +5,16 @@
 <html lang="kr" xmlns:th="http://www.thymeleaf.org">
 
 <body>
-<div th:fragment="comment_block(comment)">
-    <div class="comment card mb-3">
+<div th:id="'c-' + ${comment.commentId}" class="comment" th:fragment="comment_block(comment)">
+    <div class="card mb-3">
         <div class="card-header">
             <div class="d-inline-block" th:text="${comment.authorName}">Edward Nygma</div>
             <div class="float-end">
                 <span th:text="${{comment.createdDate}}">2021-12-12 12:12PM</span>
-                <a class="text-decoration-none text-black hover-underline" href="#">수정</a>
-                <a class="text-decoration-none text-black hover-underline" href="#">삭제</a>
+                <a class="toggle-comment-writer text-decoration-none text-black hover-underline"
+                   href="javascript:">답글</a>
+                <a class="text-decoration-none text-black hover-underline" href="javascript:">수정</a>
+                <a class="text-decoration-none text-black hover-underline" href="javascript:">삭제</a>
             </div>
         </div>
         <div class="card-body">
@@ -23,9 +25,22 @@
         </div>
     </div>
 
-    <div class="child-comment-wrapper ms-2 ms-md-3"
-         th:each="childComment : ${comment.children}">
-        <div th:replace="template/fragment/comment/comment :: comment_block(${childComment})"></div>
+    <div class="comment-writer d-none">
+        <p class="mb-3">대댓글 작성하기</p>
+        <form class="reply-comment-form">
+            <div class="mb-3">
+                <textarea class="form-control" placeholder="대댓글을 작성해주세요"></textarea>
+            </div>
+            <div class="text-end">
+                <button class="btn btn-sm btn-primary">대댓글작성</button>
+            </div>
+        </form>
+    </div>
+
+    <div class="child-comment-wrapper ms-2 ms-md-3">
+        <div th:each="childComment : ${comment.children}">
+            <div th:replace="template/fragment/comment/comment :: comment_block(${childComment})"></div>
+        </div>
     </div>
 </div>
 

@@ -9,7 +9,7 @@
 <div class="tag-wrapper" th:fragment="tag_wrapper(tags)">
     <!--/*@TODO 태그의 href는 태그검색으로 해야 함! 나중에 검색기능 붙일 때 고민할 것*/-->
     <a class="btn btn-secondary btn-sm"
-       href="#" role="button"
+       href="javascript:" role="button"
        th:each="tag : ${tags}" th:text="${tag.name}">tag name</a>
 </div>
 

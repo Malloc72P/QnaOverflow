@@ -11,7 +11,7 @@
 */-->
 
 <!DOCTYPE html>
-<html lang="kr" th:fragment="layout (title, content, username)"
+<html lang="kr" th:fragment="layout (title, content, username, scripts)"
       xmlns:th="http://www.thymeleaf.org">
 
 <head th:replace="template/fragment/base-head :: base_head(${title})">
@@ -31,5 +31,26 @@
 
 </body>
 <script th:src="@{/js/bootstrap.min.js}"></script>
-<script th:src="@{/js/qnaboard.js}"></script>
+<script th:src="@{/js/lib/apiHelper.js}"></script>
+<script th:src="@{/js/lib/answer.js}"></script>
+<script th:src="@{/js/lib/comment.js}"></script>
+<script>
+
+    /**
+     * 부트스트랩 버튼의 애니메이션을 고치기 위한 함수. 포커스를 대상 엘리먼트에 부여하고, 150초 후에 풀어버린다.
+     *
+     * @param element 대상 엘리먼트
+     */
+    const handleBtnClickEffect = (element) => {
+        element.focus();
+        setTimeout(() => {
+            element.blur();
+        }, 150);
+    };
+    const elements = document.querySelectorAll(".btn");
+    for (const element of elements) {
+        element.addEventListener("pointerdown", () => handleBtnClickEffect(element));
+    }
+</script>
+<script th:replace="${scripts}?:_"></script>
 </html>
