@@ -1,3 +1,14 @@
+const toggleCommentWriter = (event) => {
+    event.preventDefault();
+    const comment = event.target.closest(".comment");
+    const commentWriter = comment.querySelector(".comment-writer");
+    commentWriter.classList.toggle("d-none")
+};
+
+const alertWhenCreateCommentIsFailed = () => {
+    alert("댓글은 6자 이상이어야 합니다");
+};
+
 const createComment = async (event) => {
     event.preventDefault();
     const commentTextArea = event.target[0];
@@ -59,16 +70,21 @@ const replyComment = async (event) => {
     }
 };
 
-const alertWhenCreateCommentIsFailed = () => {
-    alert("댓글은 6자 이상이어야 합니다");
-};
-
-const toggleCommentWriter = (event) => {
-    event.preventDefault();
+const deleteComment = async (event) => {
     const comment = event.target.closest(".comment");
-    const commentWriter = comment.querySelector(".comment-writer");
-    commentWriter.classList.toggle("d-none")
-};
+    const commentId = comment.id.substr(2);
+    const commentWrapper = event.target.closest(".comment-wrapper");
+    const postId = commentWrapper.id.substring(2);
+
+    const url = `http://localhost:8080/posts/${postId}/comments/${commentId}`;
+    try {
+        const response = await request(url, DELETE, {}, MODE_JSON);
+        comment.querySelector(".comment-author").innerText = response.deletedAuthorName;
+        comment.querySelector(".comment-content").innerText = response.deletedContentName;
+    } catch (error) {
+        alertWhenCreateCommentIsFailed();
+    }
+}
 
 const setCommentEventListener = (comment) => {
     comment.querySelector(".toggle-comment-writer").addEventListener("pointerdown", toggleCommentWriter);

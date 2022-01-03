@@ -6,7 +6,9 @@ import scra.qnaboard.domain.entity.post.Post;
 import scra.qnaboard.domain.entity.post.Question;
 
 import javax.persistence.EntityManager;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class TestDataInit {
 
@@ -80,6 +82,16 @@ public class TestDataInit {
         Comment c5 = createComment(em, members[3], testTargetQuestion, "content-5", c4);
         Comment c6 = createComment(em, members[0], testTargetQuestion, "content-6", c4);
 
+        List<Comment> commentList = new ArrayList<>();
+        commentList.add(c1);
+        commentList.add(c2);
+        commentList.add(c3);
+        commentList.add(c4);
+        commentList.add(c5);
+        commentList.add(c6);
+        commentList.add(c7);
+        commentList.add(c8);
+
         //7. 답변글에 대댓글 등록
         Arrays.stream(answers).forEach(answer -> {
             Comment ac4 = createComment(em, members[0], answer, answer.getId() + "content-4", null);
@@ -88,9 +100,15 @@ public class TestDataInit {
             Comment ac1 = createComment(em, members[0], answer, answer.getId() + "content-1", null);
             Comment ac2 = createComment(em, members[1], answer, answer.getId() + "content-2", ac1);
             Comment ac3 = createComment(em, members[0], answer, answer.getId() + "content-3", ac1);
+            commentList.add(ac1);
+            commentList.add(ac2);
+            commentList.add(ac3);
+            commentList.add(ac4);
+            commentList.add(ac5);
+            commentList.add(ac6);
         });
 
-        return new TestDataDTO(tags, questions, members, answers);
+        return new TestDataDTO(tags, questions, members, answers, commentList.toArray(Comment[]::new));
     }
 
     private static Comment createComment(EntityManager em,

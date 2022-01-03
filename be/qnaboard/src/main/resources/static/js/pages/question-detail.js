@@ -29,3 +29,8 @@ const replyCommentForms = document.querySelectorAll(".reply-comment-form");
 for (const replyCommentForm of replyCommentForms) {
     replyCommentForm.addEventListener("submit", replyComment);
 }
+
+const deleteCommentButtons = document.querySelectorAll(".delete-comment-button");
+for (const deleteCommentButton of deleteCommentButtons) {
+    deleteCommentButton.addEventListener("pointerdown", deleteComment);
+}

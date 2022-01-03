@@ -40,11 +40,21 @@ public class Comment extends BaseTimeEntity {
     @JoinColumn(name = "parent_comment_id")
     private Comment parentComment;
 
+    private boolean deleted = false;
+
     public Comment(Member author, String content, Post parentPost, Comment parentComment) {
         this.author = author;
         this.content = content;
         this.parentPost = parentPost;
         this.parentComment = parentComment;
+    }
+
+    public void delete() {
+        deleted = true;
+    }
+
+    public boolean isNotOwner(Member member) {
+        return !member.equals(author);
     }
 
     @Override

@@ -9,7 +9,8 @@ import scra.qnaboard.web.dto.answer.AnswerDetailDTO;
 import scra.qnaboard.web.dto.answer.QAnswerDetailDTO;
 import scra.qnaboard.web.dto.comment.CommentDTO;
 import scra.qnaboard.web.dto.comment.QCommentDTO;
-import scra.qnaboard.web.dto.question.detail.*;
+import scra.qnaboard.web.dto.question.detail.QQuestionDetailDTO;
+import scra.qnaboard.web.dto.question.detail.QuestionDetailDTO;
 import scra.qnaboard.web.dto.tag.QTagDTO;
 import scra.qnaboard.web.dto.tag.TagDTO;
 
@@ -27,7 +28,7 @@ import static scra.qnaboard.domain.entity.post.QAnswer.answer;
 import static scra.qnaboard.domain.entity.post.QQuestion.question;
 
 /**
- * 복잡한 단건조회를 하는 쿼리는 여기서 작성함
+ * 복잡한 단건조회는 여기서 작성함
  */
 @Repository
 @Transactional(readOnly = true)
@@ -97,7 +98,7 @@ public class QuestionSearchDetailRepository {
      * @return 대댓글 DTO 리스트
      */
     private List<CommentDTO> commentDtosByPostId(List<Long> postIds) {
-        return queryFactory
+        List<CommentDTO> commentDTOS = queryFactory
                 .select(new QCommentDTO(
                         comment.id,
                         comment.author.id,
@@ -105,11 +106,19 @@ public class QuestionSearchDetailRepository {
                         comment.createdDate,
                         comment.content,
                         comment.parentComment.id,
-                        comment.parentPost.id
+                        comment.parentPost.id,
+                        comment.deleted
                 )).from(comment)
                 .innerJoin(comment.author, member)
                 .where(comment.parentPost.id.in(postIds))
                 .fetch();
+
+        //삭제된 코멘트는 블러 처리한다
+        for (CommentDTO commentDTO : commentDTOS) {
+            commentDTO.blur();
+        }
+
+        return commentDTOS;
     }
 
     /**

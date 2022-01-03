@@ -26,6 +26,7 @@ public class CommentDTO implements Comparable<CommentDTO> {
     private String content;
     private Long parentCommentId;
     private long parentPostId;
+    private boolean deleted;
     private List<CommentDTO> children = new ArrayList<>();
 
     @QueryProjection
@@ -35,7 +36,8 @@ public class CommentDTO implements Comparable<CommentDTO> {
                       LocalDateTime createdDate,
                       String content,
                       Long parentCommentId,
-                      long parentPostId) {
+                      long parentPostId,
+                      boolean deleted) {
         this.commentId = commentId;
         this.authorId = authorId;
         this.authorName = authorName;
@@ -43,6 +45,7 @@ public class CommentDTO implements Comparable<CommentDTO> {
         this.content = content;
         this.parentCommentId = parentCommentId;
         this.parentPostId = parentPostId;
+        this.deleted = deleted;
     }
 
     /**
@@ -78,8 +81,19 @@ public class CommentDTO implements Comparable<CommentDTO> {
     }
 
     /**
+     * 삭제된 코멘트인 경우 내용과 작성자 정보를 숨긴다
+     */
+    public void blur() {
+        if (!deleted) {
+            return;
+        }
+        content = "";
+        authorName = "";
+        authorId = 0L;
+    }
+
+    /**
      * 자식 댓글 DTO를 추가하는 메서드.
-     * 이걸로 추가해야 함. 그러면 자동으로 자식 댓글의 부모 필드도 세팅해줌
      *
      * @param child 자식 댓글 DTO
      */

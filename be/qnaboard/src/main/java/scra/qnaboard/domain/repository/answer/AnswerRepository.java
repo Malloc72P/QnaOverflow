@@ -12,7 +12,7 @@ public interface AnswerRepository extends JpaRepository<Answer, Long> {
     /**
      * soft delete를 위한 메서드. 반드시 어걸로만 지워야 함
      *
-     * @param answerId 삭제할 질문게시글의 아이디
+     * @param answerId 삭제할 답변게시글의 아이디
      */
     @Modifying
     @Transactional

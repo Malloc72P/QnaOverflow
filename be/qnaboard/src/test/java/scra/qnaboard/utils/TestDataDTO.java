@@ -1,5 +1,6 @@
 package scra.qnaboard.utils;
 
+import scra.qnaboard.domain.entity.Comment;
 import scra.qnaboard.domain.entity.Member;
 import scra.qnaboard.domain.entity.Tag;
 import scra.qnaboard.domain.entity.post.Answer;
@@ -13,15 +14,22 @@ public class TestDataDTO {
     Question[] questions;
     Member[] members;
     Answer[] answers;
+    Comment[] comments;
 
     public TestDataDTO(Tag[] tags,
                        Question[] questions,
                        Member[] members,
-                       Answer[] answers) {
+                       Answer[] answers,
+                       Comment[] comments) {
         this.tags = tags;
         this.questions = questions;
         this.members = members;
         this.answers = answers;
+        this.comments = comments;
+    }
+
+    public Stream<Comment> commentStream() {
+        return Arrays.stream(comments);
     }
 
     public Stream<Question> questionStream() {
@@ -79,5 +87,9 @@ public class TestDataDTO {
 
     public Answer[] getAnswers() {
         return answers;
+    }
+
+    public Comment[] getComments() {
+        return comments;
     }
 }

@@ -1,16 +1,17 @@
 package scra.qnaboard.web.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import scra.qnaboard.service.CommentService;
 import scra.qnaboard.web.dto.comment.CommentDTO;
 import scra.qnaboard.web.dto.comment.create.CreateCommentDTO;
+import scra.qnaboard.web.dto.comment.delete.CommentDeleteResultDTO;
+
+import java.util.Locale;
 
 @Controller
 @RequiredArgsConstructor
@@ -18,6 +19,7 @@ import scra.qnaboard.web.dto.comment.create.CreateCommentDTO;
 public class CommentController {
 
     private final CommentService commentService;
+    private final MessageSource messageSource;
 
     @PutMapping
     public String createComment(@PathVariable("postId") long postId,
@@ -26,5 +28,16 @@ public class CommentController {
         CommentDTO commentDTO = commentService.createComment(1L, postId, dto.getParentCommentId(), dto.getContent());
         model.addAttribute("comment", commentDTO);
         return "comment/comment-component";
+    }
+
+    @ResponseBody
+    @DeleteMapping("{commentId}")
+    public CommentDeleteResultDTO deleteComment(@PathVariable("postId") long postId,
+                                                @PathVariable("commentId") long commentId,
+                                                Locale locale) {
+        commentService.deleteComment(1L, commentId);
+        String content = messageSource.getMessage("ui.comment.delete.content", null, locale);
+        String authorName = messageSource.getMessage("ui.comment.delete.author-name", null, locale);
+        return new CommentDeleteResultDTO(authorName, content);
     }
 }
