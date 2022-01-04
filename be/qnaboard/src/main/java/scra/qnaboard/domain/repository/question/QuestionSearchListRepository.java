@@ -72,7 +72,7 @@ public class QuestionSearchListRepository {
                         tag.name
                 )).from(questionTag)
                 .innerJoin(questionTag.tag, tag)
-                .where(questionTag.question.id.in(questionIds))
+                .where(questionTag.question.id.in(questionIds).and(tag.deleted.isFalse()))
                 .fetch();
 
         //4. 태그의 Question ID값을 가지고 Map으로 그룹화 함

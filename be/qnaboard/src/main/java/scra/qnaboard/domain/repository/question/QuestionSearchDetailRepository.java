@@ -157,7 +157,7 @@ public class QuestionSearchDetailRepository {
                         tag.name
                 )).from(questionTag)
                 .innerJoin(questionTag.tag, tag)
-                .where(questionTag.question.id.eq(questionId))
+                .where(questionTag.question.id.eq(questionId).and(tag.deleted.isFalse()))
                 .fetch();
     }
 

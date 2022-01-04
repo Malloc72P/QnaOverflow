@@ -3,6 +3,8 @@ package scra.qnaboard.domain.entity;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.util.StringUtils;
+import scra.qnaboard.service.exception.tag.edit.TagPropertyIsEmptyException;
 
 import javax.persistence.*;
 import java.util.Objects;
@@ -28,10 +30,27 @@ public class Tag extends BaseTimeEntity {
 
     private String description;
 
+    private boolean deleted = false;
+
     public Tag(Member author, String name, String description) {
         this.author = author;
         this.name = name;
         this.description = description;
+    }
+
+    public boolean isNotOwner(Member member) {
+        return !member.equals(author);
+    }
+
+    public void update(String name) {
+        if (!StringUtils.hasText(name)) {
+            throw new TagPropertyIsEmptyException(name);
+        }
+        this.name = name;
+    }
+
+    public void delete() {
+        deleted = true;
     }
 
     @Override
@@ -42,9 +61,9 @@ public class Tag extends BaseTimeEntity {
         return Objects.equals(getId(), tag.getId()) &&
                 Objects.equals(getName(), tag.getName());
     }
-
     @Override
     public int hashCode() {
         return Objects.hash(getId(), getName());
     }
+
 }

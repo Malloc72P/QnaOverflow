@@ -27,7 +27,7 @@ class QuestionTagTest {
         Member member = new Member("member1", MemberRole.NORMAL);
         em.persist(member);
 
-        Tag tag = new Tag(member, "tag1");
+        Tag tag = new Tag(member, "tag1", "description");
         em.persist(tag);
 
         Question question = new Question(member, "content", "title");

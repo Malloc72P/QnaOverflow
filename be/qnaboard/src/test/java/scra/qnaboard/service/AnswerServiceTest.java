@@ -169,7 +169,7 @@ class AnswerServiceTest {
 
         for (Answer answer : answers) {
             answerService.deleteAnswer(answer.getAuthor().getId(), answer.getId());
-            assertThat(isDeletedPost(em, answer)).isFalse();
+            assertThat(isDeletedPost(em, answer)).isTrue();
         }
     }
 
@@ -182,7 +182,7 @@ class AnswerServiceTest {
 
         for (Answer answer : answers) {
             answerService.deleteAnswer(admin.getId(), answer.getId());
-            assertThat(isDeletedPost(em, answer)).isFalse();
+            assertThat(isDeletedPost(em, answer)).isTrue();
         }
     }
 

@@ -103,8 +103,8 @@ public class QuestionController {
     public String delete(@PathVariable long questionId, RedirectAttributes redirectAttributes, Locale locale) {
         questionService.deleteQuestion(1L, questionId);
 
-        redirectAttributes.addAttribute("title", message.getMessage("ui.notify.delete.title", null, locale));
-        redirectAttributes.addAttribute("content", message.getMessage("ui.notify.delete.title", null, locale));
+        redirectAttributes.addAttribute("title", message.getMessage("ui.notify.question.delete.title", null, locale));
+        redirectAttributes.addAttribute("content", message.getMessage("ui.notify.question.delete.content", null, locale));
         return "redirect:/notify";
     }
 

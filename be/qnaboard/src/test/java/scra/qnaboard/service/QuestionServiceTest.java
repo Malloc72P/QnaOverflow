@@ -86,7 +86,7 @@ class QuestionServiceTest {
 
         for (Question question : questions) {
             questionService.deleteQuestion(question.getAuthor().getId(), question.getId());
-            assertThat(isDeletedPost(em, question)).isFalse();
+            assertThat(isDeletedPost(em, question)).isTrue();
         }
     }
 
@@ -102,7 +102,7 @@ class QuestionServiceTest {
 
         for (Question question : questions) {
             questionService.deleteQuestion(admin.getId(), question.getId());
-            assertThat(isDeletedPost(em, question)).isFalse();
+            assertThat(isDeletedPost(em, question)).isTrue();
         }
     }
 

@@ -35,12 +35,12 @@ public class TestDataInit {
 
         //2. 태그 생성
         Tag[] tags = {
-                new Tag(members[1], "Angular"),
-                new Tag(members[1], "Web"),
-                new Tag(members[1], "JQuery"),
-                new Tag(members[2], "ReactJS"),
-                new Tag(members[2], "VueJS"),
-                new Tag(members[1], "SpringBoot")
+                new Tag(members[1], "Angular", "description-Angular"),
+                new Tag(members[1], "Web", "description-Web"),
+                new Tag(members[1], "JQuery", "description-JQuery"),
+                new Tag(members[2], "ReactJS", "description-ReactJS"),
+                new Tag(members[2], "VueJS", "description-VueJS"),
+                new Tag(members[1], "SpringBoot", "description-SpringBoot")
         };
         Arrays.stream(tags).forEach(em::persist);
 

@@ -17,7 +17,7 @@
     }
 
     .navbar .form-control {
-        min-height: 48px!important;
+        min-height: 48px !important;
     }
 }
 
@@ -105,5 +105,15 @@
 }
 
 .hover-underline:hover {
-    text-decoration: underline!important;
+    text-decoration: underline !important;
+}
+
+.button-like-link {
+    background: none !important;
+    border: none;
+    padding: 0 !important;
+    color: #0d6efd;
+    text-decoration: underline;
+    font: inherit;
+    cursor: pointer;
 }
