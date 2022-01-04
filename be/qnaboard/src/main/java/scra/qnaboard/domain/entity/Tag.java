@@ -26,9 +26,12 @@ public class Tag extends BaseTimeEntity {
 
     private String name;
 
-    public Tag(Member author, String name) {
+    private String description;
+
+    public Tag(Member author, String name, String description) {
         this.author = author;
         this.name = name;
+        this.description = description;
     }
 
     @Override

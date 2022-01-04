@@ -11,8 +11,8 @@ import scra.qnaboard.web.dto.comment.CommentDTO;
 import scra.qnaboard.web.dto.comment.QCommentDTO;
 import scra.qnaboard.web.dto.question.detail.QQuestionDetailDTO;
 import scra.qnaboard.web.dto.question.detail.QuestionDetailDTO;
-import scra.qnaboard.web.dto.tag.QTagDTO;
-import scra.qnaboard.web.dto.tag.TagDTO;
+import scra.qnaboard.web.dto.question.tag.QQuestionTagDTO;
+import scra.qnaboard.web.dto.question.tag.QuestionTagDTO;
 
 import java.util.HashMap;
 import java.util.List;
@@ -50,7 +50,7 @@ public class QuestionSearchDetailRepository {
         QuestionDetailDTO detailDTO = questionDetailDtoByQuestionId(questionId);
 
         //2. 질문글태그(QuestionTag)랑 태그(Tag)만 가져옴
-        List<TagDTO> tags = tagDtosByQuestionId(questionId);
+        List<QuestionTagDTO> tags = tagDtosByQuestionId(questionId);
 
         //3. 답변글과 답변글 작성자만 가져옴
         List<AnswerDetailDTO> answers = answerDtosByQuestionId(questionId);
@@ -149,9 +149,9 @@ public class QuestionSearchDetailRepository {
      * @param questionId 질문글 아이디
      * @return 태그 DTO 리스트
      */
-    private List<TagDTO> tagDtosByQuestionId(long questionId) {
+    private List<QuestionTagDTO> tagDtosByQuestionId(long questionId) {
         return queryFactory
-                .select(new QTagDTO(
+                .select(new QQuestionTagDTO(
                         tag.id,
                         questionTag.question.id,
                         tag.name

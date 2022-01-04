@@ -3,7 +3,7 @@ package scra.qnaboard.web.dto.question.list;
 import com.querydsl.core.annotations.QueryProjection;
 import lombok.Getter;
 import org.springframework.format.annotation.DateTimeFormat;
-import scra.qnaboard.web.dto.tag.TagDTO;
+import scra.qnaboard.web.dto.question.tag.QuestionTagDTO;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -27,7 +27,7 @@ public class QuestionSummaryDTO {
     @DateTimeFormat(pattern = MY_FORMAT)
     private LocalDateTime createDate;
     private String authorName;
-    private List<TagDTO> tags = new ArrayList<>();
+    private List<QuestionTagDTO> tags = new ArrayList<>();
 
     /**
      * QueryDSL에서 프로젝션할 때 사용하는 생성자 <br>
@@ -50,7 +50,7 @@ public class QuestionSummaryDTO {
         this.authorName = authorName;
     }
 
-    public void setTags(List<TagDTO> tags) {
+    public void setTags(List<QuestionTagDTO> tags) {
         this.tags = tags;
     }
 }

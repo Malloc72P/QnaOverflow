@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 import scra.qnaboard.domain.entity.post.Question;
 import scra.qnaboard.web.dto.answer.AnswerDetailDTO;
 import scra.qnaboard.web.dto.comment.CommentDTO;
-import scra.qnaboard.web.dto.tag.TagDTO;
+import scra.qnaboard.web.dto.question.tag.QuestionTagDTO;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -33,7 +33,7 @@ public class QuestionDetailDTO {
     private LocalDateTime lastModifiedDate;
     private long authorId;
     private String authorName;
-    private List<TagDTO> tags = new ArrayList<>();
+    private List<QuestionTagDTO> tags = new ArrayList<>();
     private List<CommentDTO> comments = new ArrayList<>();
 
     @QueryProjection
@@ -85,7 +85,7 @@ public class QuestionDetailDTO {
         this.answers = answers;
     }
 
-    public void updateTags(List<TagDTO> tags) {
+    public void updateTags(List<QuestionTagDTO> tags) {
         if (tags == null) {
             return;
         }

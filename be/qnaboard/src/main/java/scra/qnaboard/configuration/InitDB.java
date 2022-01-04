@@ -63,12 +63,12 @@ public class InitDB {
 
             //2. 태그 생성
             Tag[] tags = {
-                    new Tag(author, "Angular"),
-                    new Tag(author, "Web"),
-                    new Tag(author, "JQuery"),
-                    new Tag(author, "ReactJS"),
-                    new Tag(author, "VueJS"),
-                    new Tag(author, "SpringBoot")
+                    new Tag(author, "Angular", "구글에서 만든 웹 프론트엔드 프레임워크인 Angular"),
+                    new Tag(author, "Web", "웹에 관련된 질문은 해당 태그를 사용해주세요"),
+                    new Tag(author, "JQuery", "자바스크립트를 좀 더 편하게 사용할 수 있게 도와주는 라이브러리입니다"),
+                    new Tag(author, "ReactJS", "페이스북에서 만든 웹 프론트엔드 프레임워크입니다. SPA를 보다 쉽게 만들 수 있도록 도와줍니다"),
+                    new Tag(author, "VueJS", "프로그레시브 자바스크립트 프레임워크입니다. 접근하기 쉽고 높은 성능을 자랑합니다"),
+                    new Tag(author, "SpringBoot", "스프링 프레임워크를 보다 더 쉽게 사용할 수 있게 만든 프레임워크입니다")
             };
             Arrays.stream(tags).forEach(em::persist);
 

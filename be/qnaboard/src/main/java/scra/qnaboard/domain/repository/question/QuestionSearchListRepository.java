@@ -7,8 +7,8 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import scra.qnaboard.web.dto.question.list.QQuestionSummaryDTO;
 import scra.qnaboard.web.dto.question.list.QuestionSummaryDTO;
-import scra.qnaboard.web.dto.tag.QTagDTO;
-import scra.qnaboard.web.dto.tag.TagDTO;
+import scra.qnaboard.web.dto.question.tag.QQuestionTagDTO;
+import scra.qnaboard.web.dto.question.tag.QuestionTagDTO;
 
 import java.util.List;
 import java.util.Map;
@@ -65,8 +65,8 @@ public class QuestionSearchListRepository {
                 .collect(Collectors.toList());
 
         //3. 질문목록에서 참조하는 태그정보 조회(QuestionTag와 Tag까지 조인해서 가져오되, in 절을 사용해서 최적화함)
-        List<TagDTO> tags = queryFactory
-                .select(new QTagDTO(
+        List<QuestionTagDTO> tags = queryFactory
+                .select(new QQuestionTagDTO(
                         tag.id,
                         questionTag.question.id,
                         tag.name
@@ -76,8 +76,8 @@ public class QuestionSearchListRepository {
                 .fetch();
 
         //4. 태그의 Question ID값을 가지고 Map으로 그룹화 함
-        Map<Long, List<TagDTO>> tagMap = tags.stream()
-                .collect(Collectors.groupingBy(TagDTO::getQuestionId));
+        Map<Long, List<QuestionTagDTO>> tagMap = tags.stream()
+                .collect(Collectors.groupingBy(QuestionTagDTO::getQuestionId));
 
         //5. 4번에서 만든 맵을 가지고 Question DTO에 태그정보를 입력함
         questions.forEach(question -> question.setTags(tagMap.get(question.getQuestionId())));

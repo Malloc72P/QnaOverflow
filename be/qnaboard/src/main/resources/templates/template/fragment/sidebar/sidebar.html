@@ -14,13 +14,13 @@
     <ul class="nav nav-pills flex-column mb-auto">
 
         <li th:replace="template/fragment/sidebar/sidebar-item ::
-                sidebar_item(#{ui.sidebar.questions}, '#', true)"></li>
+                sidebar_item(#{ui.sidebar.questions}, '/questions')"></li>
 
         <li th:replace="template/fragment/sidebar/sidebar-item ::
-                sidebar_item(#{ui.sidebar.tags}, '#', false)"></li>
+                sidebar_item(#{ui.sidebar.tags}, '/tags')"></li>
 
         <li th:replace="template/fragment/sidebar/sidebar-item ::
-                sidebar_item(#{ui.sidebar.users}, '#', false)"></li>
+                sidebar_item(#{ui.sidebar.users}, '#')"></li>
 
     </ul>
 </div>

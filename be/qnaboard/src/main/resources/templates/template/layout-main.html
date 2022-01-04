@@ -52,5 +52,26 @@
         element.addEventListener("pointerdown", () => handleBtnClickEffect(element));
     }
 </script>
+<script>
+    //사이드바 active 처리
+    const sidebarLinks = document.querySelectorAll(".sidebar-link");
+    const pathname = document.location.pathname;
+
+    let isSelected = false;
+    //링크의 주소와 페이지의 현재주소가 같으면 active클래스를 부여함
+    for (const sidebarLink of sidebarLinks) {
+        const elementPathname = sidebarLink.pathname;
+        if (pathname === elementPathname) {
+            sidebarLink.classList.add("active");
+            isSelected = true;
+            break;
+        }
+    }
+    //경로가 루트면 첫번째 아이템에 active를 부여함
+    if (pathname === "/") {
+        sidebarLinks[0].classList.add("active");
+    }
+
+</script>
 <script th:replace="${scripts}?:_"></script>
 </html>
