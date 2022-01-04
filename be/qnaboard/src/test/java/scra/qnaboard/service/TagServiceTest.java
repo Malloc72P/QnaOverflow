@@ -13,8 +13,13 @@ import scra.qnaboard.service.exception.tag.edit.UnauthorizedTagEditException;
 import scra.qnaboard.utils.QueryUtils;
 import scra.qnaboard.utils.TestDataDTO;
 import scra.qnaboard.utils.TestDataInit;
+import scra.qnaboard.web.dto.tag.search.TagSearchResultDTO;
+import scra.qnaboard.web.dto.tag.search.TagSimpleDTO;
 
 import javax.persistence.EntityManager;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -156,5 +161,36 @@ class TagServiceTest {
             assertThat(findTag.getDescription()).isNotEqualTo(newTagDescription);
         }
 
+    }
+
+    @Test
+    @DisplayName("키워드로 태그를 검색할 수 있어야 함")
+    void testSearchTag() {
+        TestDataDTO dataDTO = TestDataInit.init(em);
+
+        Tag[] tags = dataDTO.getTags();
+
+        String[] testcases = {
+                "a", "b", "c", "d", "e"
+        };
+
+        for (String testcase : testcases) {
+            TagSearchResultDTO searchResult = tagService.search(testcase);
+            List<Tag> expectedResult = QueryUtils.tagByNameLike(em, testcase);
+
+            assertThat(searchResult.getTags().size()).isEqualTo(expectedResult.size());
+
+            List<String> searchResultNames = searchResult.getTags().stream()
+                    .map(TagSimpleDTO::getName)
+                    .sorted(String::compareTo)
+                    .collect(Collectors.toList());
+
+            List<String> realResultNames = expectedResult.stream()
+                    .map(Tag::getName)
+                    .sorted(String::compareTo)
+                    .collect(Collectors.toList());
+
+            assertThat(searchResultNames).isEqualTo(realResultNames);
+        }
     }
 }

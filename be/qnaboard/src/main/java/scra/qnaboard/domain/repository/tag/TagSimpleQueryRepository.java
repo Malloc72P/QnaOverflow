@@ -3,7 +3,6 @@ package scra.qnaboard.domain.repository.tag;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
-import scra.qnaboard.domain.entity.QTag;
 import scra.qnaboard.domain.entity.Tag;
 
 import java.util.List;
@@ -34,5 +33,11 @@ public class TagSimpleQueryRepository {
                 .fetchOne();
 
         return Optional.ofNullable(findTag);
+    }
+
+    public List<Tag> searchTags(String keyword) {
+        return queryFactory.selectFrom(tag)
+                .where(tag.name.like("%" + keyword + "%"))
+                .fetch();
     }
 }

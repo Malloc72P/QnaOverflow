@@ -4,6 +4,7 @@ import scra.qnaboard.domain.entity.Tag;
 import scra.qnaboard.domain.entity.post.Post;
 
 import javax.persistence.EntityManager;
+import java.util.List;
 
 public class QueryUtils {
     public static int sizeOfAnswerByQuestionId(EntityManager em, long questionId) {
@@ -36,5 +37,11 @@ public class QueryUtils {
         return em.createQuery("select t from Tag t join fetch t.author where t.id = :id", Tag.class)
                 .setParameter("id", tagId)
                 .getSingleResult();
+    }
+
+    public static List<Tag> tagByNameLike(EntityManager em, String keyword) {
+        return em.createQuery("select t from Tag t join fetch t.author where t.name like :keyword", Tag.class)
+                .setParameter("keyword", "%" + keyword + "%")
+                .getResultList();
     }
 }

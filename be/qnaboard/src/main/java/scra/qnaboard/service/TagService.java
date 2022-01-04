@@ -12,6 +12,7 @@ import scra.qnaboard.service.exception.tag.edit.UnauthorizedTagEditException;
 import scra.qnaboard.service.exception.tag.search.TagNotFoundException;
 import scra.qnaboard.web.dto.tag.list.TagDTO;
 import scra.qnaboard.web.dto.tag.list.TagListDTO;
+import scra.qnaboard.web.dto.tag.search.TagSearchResultDTO;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -73,6 +74,11 @@ public class TagService {
     public TagDTO tagById(long tagId) {
         Tag findTag = tagWithAuthor(tagId);
         return TagDTO.from(findTag);
+    }
+
+    public TagSearchResultDTO search(String keyword) {
+        List<Tag> tags = tagSimpleQueryRepository.searchTags(keyword);
+        return TagSearchResultDTO.from(tags, keyword);
     }
 
     private Tag tagWithAuthor(long tagId) {
