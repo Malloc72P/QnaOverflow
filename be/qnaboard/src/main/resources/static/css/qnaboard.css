@@ -19,6 +19,16 @@
     .navbar .form-control {
         min-height: 48px !important;
     }
+
+    .tag-card {
+        width: 100%;
+    }
+}
+
+@media (min-width: 768px) {
+    .tag-card {
+        width: 18rem;
+    }
 }
 
 .sidebar .nav-link {
@@ -117,3 +127,4 @@
     font: inherit;
     cursor: pointer;
 }
+
