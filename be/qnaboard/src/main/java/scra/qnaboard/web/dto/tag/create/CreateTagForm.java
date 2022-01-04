@@ -11,11 +11,11 @@ import javax.validation.constraints.Size;
 public class CreateTagForm {
 
     @NotBlank
-    @Size(min = 1)
+    @Size(min = 1, max = 12)
     private String name;
 
     @NotBlank
-    @Size(min = 6)
+    @Size(min = 6, max = 1000)
     private String description;
 
 }

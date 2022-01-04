@@ -41,7 +41,7 @@ public class TagController {
                             RedirectAttributes redirectAttributes,
                             Locale locale) {
         if (bindingResult.hasErrors()) {
-            return "/tags/form";
+            return "/tag/tag-form";
         }
 
         tagService.createTag(1L, form.getName(), form.getDescription());
