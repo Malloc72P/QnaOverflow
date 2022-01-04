@@ -65,7 +65,7 @@ public class TestDataDTO {
                 .orElseThrow(() -> new RuntimeException("테스트 실패! 멤버 엔티티를 찾지 못함!"));
     }
 
-    public Member anotherMember(Member author) {
+    public Member anotherMemberAndNotAdmin(Member author) {
         return Arrays.stream(members)
                 .filter(member -> member.isNotSame(author) && member.isNotAdmin())
                 .findFirst()

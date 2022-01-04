@@ -100,7 +100,7 @@ class AnswerServiceTest {
             String prevContent = answer.getContent();
             String newContent = "aaaaaaaaaaaaaaaaaaa";
             Member author = answer.getAuthor();
-            Member otherMember = testData.anotherMember(author);
+            Member otherMember = testData.anotherMemberAndNotAdmin(author);
 
             assertThatThrownBy(() -> answerService.editAnswer(otherMember.getId(), answer.getId(), newContent))
                     .isInstanceOf(AnswerEditFailedException.class)
@@ -195,7 +195,7 @@ class AnswerServiceTest {
 
         for (Answer answer : answers) {
             Member author = answer.getAuthor();
-            Member anotherMember = dataDTO.anotherMember(author);
+            Member anotherMember = dataDTO.anotherMemberAndNotAdmin(author);
             assertThatThrownBy(() -> answerService.deleteAnswer(anotherMember.getId(), answer.getId()))
                     .isInstanceOf(AnswerDeleteFailedException.class);
         }

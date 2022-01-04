@@ -94,7 +94,7 @@ class CommentServiceTest {
     void memberCanNotDeleteOtherMembersComment() {
         TestDataDTO dataDTO = TestDataInit.init(em);
         for (Comment comment : dataDTO.getComments()) {
-            Member anotherMember = dataDTO.anotherMember(comment.getAuthor());
+            Member anotherMember = dataDTO.anotherMemberAndNotAdmin(comment.getAuthor());
             assertThatThrownBy(() -> commentService.deleteComment(anotherMember.getId(), comment.getId()))
                     .isInstanceOf(CommentDeleteFailedException.class);
             em.flush();
@@ -140,7 +140,7 @@ class CommentServiceTest {
         TestDataDTO dataDTO = TestDataInit.init(em);
         for (Comment comment : dataDTO.getComments()) {
             Member author = comment.getAuthor();
-            Member anotherMember = dataDTO.anotherMember(author);
+            Member anotherMember = dataDTO.anotherMemberAndNotAdmin(author);
             String newContent = "new-content";
             assertThatThrownBy(() -> commentService.editComment(anotherMember.getId(), comment.getId(), newContent))
                     .isInstanceOf(UnauthorizedCommentEditException.class)

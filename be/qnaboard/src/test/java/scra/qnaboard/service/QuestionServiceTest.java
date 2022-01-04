@@ -117,7 +117,7 @@ class QuestionServiceTest {
 
         for (Question question : questions) {
             Member author = question.getAuthor();
-            Member anotherMember = dataDTO.anotherMember(author);
+            Member anotherMember = dataDTO.anotherMemberAndNotAdmin(author);
             assertThatThrownBy(() -> questionService.deleteQuestion(anotherMember.getId(), question.getId()))
                     .isInstanceOf(QuestionDeleteFailedException.class);
         }
@@ -192,7 +192,7 @@ class QuestionServiceTest {
 
         for (Question question : questions) {
             Member author = question.getAuthor();
-            Long anotherMemberId = dataDTO.anotherMember(author).getId();
+            Long anotherMemberId = dataDTO.anotherMemberAndNotAdmin(author).getId();
             String editTitle = "edited-title-" + question.getId();
             String editContent = "edited-content-" + question.getId();
             assertThatThrownBy(() -> questionService.editQuestion(anotherMemberId, question.getId(), editTitle, editContent))

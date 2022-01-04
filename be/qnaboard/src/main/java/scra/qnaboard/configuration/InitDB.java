@@ -58,7 +58,7 @@ public class InitDB {
             log.info("데이터베이스 초기화 시작");
 
             //1. 멤버 생성
-            Member author = new Member("member1", MemberRole.ADMIN);
+            Member author = new Member("member1", MemberRole.NORMAL);
             em.persist(author);
 
             //2. 태그 생성

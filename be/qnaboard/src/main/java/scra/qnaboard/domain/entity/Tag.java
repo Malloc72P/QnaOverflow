@@ -42,11 +42,12 @@ public class Tag extends BaseTimeEntity {
         return !member.equals(author);
     }
 
-    public void update(String name) {
-        if (!StringUtils.hasText(name)) {
-            throw new TagPropertyIsEmptyException(name);
+    public void update(String name, String description) {
+        if (!StringUtils.hasText(name) || !StringUtils.hasText(description)) {
+            throw new TagPropertyIsEmptyException(name, description);
         }
         this.name = name;
+        this.description = description;
     }
 
     public void delete() {
@@ -61,6 +62,7 @@ public class Tag extends BaseTimeEntity {
         return Objects.equals(getId(), tag.getId()) &&
                 Objects.equals(getName(), tag.getName());
     }
+
     @Override
     public int hashCode() {
         return Objects.hash(getId(), getName());

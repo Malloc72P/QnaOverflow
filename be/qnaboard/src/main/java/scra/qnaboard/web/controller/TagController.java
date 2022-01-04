@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import scra.qnaboard.service.TagService;
 import scra.qnaboard.web.dto.tag.create.CreateTagForm;
+import scra.qnaboard.web.dto.tag.edit.EditTagForm;
+import scra.qnaboard.web.dto.tag.list.TagDTO;
 import scra.qnaboard.web.dto.tag.list.TagListDTO;
 
 import java.util.Locale;
@@ -37,9 +39,9 @@ public class TagController {
 
     @PostMapping
     public String create(@ModelAttribute("tagForm") @Validated CreateTagForm form,
-                            BindingResult bindingResult,
-                            RedirectAttributes redirectAttributes,
-                            Locale locale) {
+                         BindingResult bindingResult,
+                         RedirectAttributes redirectAttributes,
+                         Locale locale) {
         if (bindingResult.hasErrors()) {
             return "/tag/tag-form";
         }
@@ -52,8 +54,36 @@ public class TagController {
         return "redirect:/notify";
     }
 
+    @GetMapping("{tagId}/edit-form")
+    public String tagEditForm(@PathVariable("tagId") long tagId,
+                              @ModelAttribute("editTagForm") EditTagForm form,
+                              Model model) {
+        TagDTO tagDTO = tagService.tagById(tagId);
+        form.update(tagDTO.getTagName(), tagDTO.getTagDescription());
+        model.addAttribute("tagId", tagId);
+        return "/tag/tag-edit-form";
+    }
 
-    @PostMapping("/{tagId}/delete")
+    @PostMapping("{tagId}/edit")
+    public String edit(@PathVariable("tagId") long tagId,
+                       @ModelAttribute("editTagForm") @Validated EditTagForm form,
+                       BindingResult bindingResult,
+                       RedirectAttributes redirectAttributes,
+                       Locale locale) {
+        if (bindingResult.hasErrors()) {
+            return "/tag/tag-edit-form";
+        }
+
+        tagService.editTag(1L, tagId, form.getName(), form.getDescription());
+
+        redirectAttributes.addAttribute("title", message.getMessage("ui.notify.tag.edit.title", null, locale));
+        redirectAttributes.addAttribute("content", message.getMessage("ui.notify.tag.edit.content", null, locale));
+
+        return "redirect:/notify";
+    }
+
+
+    @PostMapping("{tagId}/delete")
     public String delete(@PathVariable("tagId") long tagId,
                          RedirectAttributes redirectAttributes,
                          Locale locale) {

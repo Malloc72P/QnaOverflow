@@ -31,4 +31,10 @@ public class QueryUtils {
                 .setParameter("id", tag.getId())
                 .getSingleResult();
     }
+
+    public static Tag tagById(EntityManager em, long tagId) {
+        return em.createQuery("select t from Tag t join fetch t.author where t.id = :id", Tag.class)
+                .setParameter("id", tagId)
+                .getSingleResult();
+    }
 }

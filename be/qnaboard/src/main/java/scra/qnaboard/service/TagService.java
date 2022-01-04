@@ -45,16 +45,16 @@ public class TagService {
     }
 
     @Transactional
-    public void editTag(long requesterId, long tagId, String name) {
+    public void editTag(long requesterId, long tagId, String name, String description) {
         Tag tag = tagWithAuthor(tagId);
         Member requester = memberService.findMember(requesterId);
 
         //관리자가 아니면 실패해야함
-        if (requester.isNotAdmin()) {
+        if (requester.isNotAdmin() && tag.isNotOwner(requester)) {
             throw new UnauthorizedTagEditException(tagId, requesterId);
         }
 
-        tag.update(name);
+        tag.update(name, description);
     }
 
     @Transactional
@@ -63,14 +63,19 @@ public class TagService {
         Member requester = memberService.findMember(requesterId);
 
         //관리자가 아니면 실패해야함
-        if (requester.isNotAdmin()) {
+        if (requester.isNotAdmin() && tag.isNotOwner(requester)) {
             throw new TagDeleteFailedException(TagDeleteFailedException.UNAUTHORIZED, tagId, requesterId);
         }
 
         tag.delete();
     }
 
-    public Tag tagWithAuthor(long tagId) {
+    public TagDTO tagById(long tagId) {
+        Tag findTag = tagWithAuthor(tagId);
+        return TagDTO.from(findTag);
+    }
+
+    private Tag tagWithAuthor(long tagId) {
         return tagSimpleQueryRepository.tagWithAuthor(tagId)
                 .orElseThrow(() -> new TagNotFoundException(tagId));
     }
