@@ -6,8 +6,8 @@
 
 <body>
 
-<div th:id="'p-' + ${postId}" class="comment-wrapper"
-     th:fragment="comment_wrapper(comments, postId)">
+<div class="comment-wrapper" th:fragment="comment_wrapper(comments, postId)"
+     th:id="'p-' + ${postId}">
     <div class="comment-list mb-4">
         <div th:each="comment : ${comments}"
              th:insert="template/fragment/comment/comment :: comment_block(${comment})"></div>

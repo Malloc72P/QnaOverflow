@@ -9,7 +9,7 @@
 <body>
 
 <!--/*@thymesVar id="voteScore" type="scra.qnaboard.web.dto.answer.AnswerDetailDTO"*/-->
-<div th:id="'a-' + ${answer.answerId}" class="answer row mb-5" th:fragment="answer_item_detail(questionId, answer)">
+<div class="answer row mb-5" th:fragment="answer_item_detail(questionId, answer)" th:id="'a-' + ${answer.answerId}">
     <div class="col-md-1 ps-0 pe-0">
         <!--/*좌측 투표 버튼 컨테이너*/-->
         <div th:replace="template/fragment/post/vote-controller :: vote_controller(${answer.voteScore})"></div>

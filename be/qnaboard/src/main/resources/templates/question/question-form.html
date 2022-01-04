@@ -21,7 +21,8 @@
         </div>
         <div class="mb-3">
             <label class="form-label" for="title" th:text="#{ui.question.form.input-title}">질문 제목</label>
-            <input aria-describedby="titleHelp" class="form-control" id="title" name="title" required th:field="*{title}"
+            <input aria-describedby="titleHelp" class="form-control" id="title" name="title" required
+                   th:field="*{title}"
                    type="text">
             <div class="form-text" id="titleHelp" th:text="#{ui.question.form.input-title-help}">질문의 제목을 적어주세요</div>
             <div class="text-danger" th:errors="*{title}">제목은 6자 이상이어야 합니다</div>

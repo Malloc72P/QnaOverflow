@@ -5,16 +5,18 @@
 <html lang="kr" xmlns:th="http://www.thymeleaf.org">
 
 <body>
-<div th:id="'c-' + ${comment.commentId}" class="comment" th:fragment="comment_block(comment)">
+<div class="comment" th:fragment="comment_block(comment)" th:id="'c-' + ${comment.commentId}">
     <div class="card mb-3">
         <div class="card-header">
             <div class="d-inline-block comment-author"
-                 th:text="(!${comment.deleted})? ${comment.authorName} : #{ui.comment.delete.author-name}">Edward Nygma</div>
+                 th:text="(!${comment.deleted})? ${comment.authorName} : #{ui.comment.delete.author-name}">Edward Nygma
+            </div>
             <div class="float-end">
                 <span th:text="${{comment.createdDate}}">2021-12-12 12:12PM</span>
                 <a class="toggle-comment-writer text-decoration-none text-black hover-underline"
                    href="javascript:">답글</a>
-                <a class="toggle-comment-editor text-decoration-none text-black hover-underline" href="javascript:">수정</a>
+                <a class="toggle-comment-editor text-decoration-none text-black hover-underline"
+                   href="javascript:">수정</a>
                 <a class="delete-comment-button text-decoration-none text-black hover-underline"
                    href="javascript:">삭제</a>
             </div>
@@ -36,7 +38,7 @@
                 <textarea class="form-control" placeholder="대댓글의 새로운 내용을 입력해주세요"
                           th:text="${comment.content}"></textarea>
             </div>
-            <input class="prev-comment-content" type="hidden" th:value="${comment.content}"/>
+            <input class="prev-comment-content" th:value="${comment.content}" type="hidden"/>
             <div class="text-end">
                 <button class="btn btn-sm btn-primary">대댓글 수정하기</button>
             </div>

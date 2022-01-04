@@ -17,7 +17,6 @@ import scra.qnaboard.web.dto.tag.search.TagSearchResultDTO;
 import scra.qnaboard.web.dto.tag.search.TagSimpleDTO;
 
 import javax.persistence.EntityManager;
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 

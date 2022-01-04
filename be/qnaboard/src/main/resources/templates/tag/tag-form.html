@@ -13,7 +13,7 @@
     </div>
     <hr/>
 
-    <form th:action="@{/tags}" method="post" th:object="${tagForm}">
+    <form method="post" th:action="@{/tags}" th:object="${tagForm}">
         <div class="mb-3">
             <label class="form-label" for="name" th:text="#{ui.tag.form.input-name}">태그이름</label>
             <input aria-describedby="nameHelp" class="form-control" id="name" name="name" required th:field="*{name}"
@@ -23,7 +23,8 @@
         </div>
         <div class="mb-3">
             <label class="form-label" for="description" th:text="#{ui.tag.form.input-description}">태그 설명</label>
-            <textarea aria-describedby="descriptionHelp" class="form-control" id="description" name="description" required
+            <textarea aria-describedby="descriptionHelp" class="form-control" id="description" name="description"
+                      required
                       style="min-height: 200px" th:field="*{description}" type="text"></textarea>
             <div class="form-text" id="descriptionHelp" th:text="#{ui.tag.form.input-description-help}">설명을 적어주세요</div>
             <div class="text-danger" th:errors="*{description}">설명은 6자 이상이어야 합니다</div>

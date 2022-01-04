@@ -37,13 +37,16 @@
                 <!--/*비로그인 유저를 위한 로그인 드랍다운 버튼과 메뉴*/-->
                 <li class="nav-item dropdown" th:if="${username == null}">
                     <a aria-expanded="false" class="nav-link dropdown-toggle active" data-bs-toggle="dropdown"
-                       href="javascript:" id="navbarDropdownLoginMenuLink" role="button" th:text="#{ui.navibar.guest.dropdown}">
+                       href="javascript:" id="navbarDropdownLoginMenuLink" role="button"
+                       th:text="#{ui.navibar.guest.dropdown}">
                         🔑Login
                     </a>
                     <ul aria-labelledby="navbarDropdownLoginMenuLink"
                         class="dropdown-menu dropdown-menu-dark dropdown-menu-end">
-                        <li><a class="dropdown-item" href="javascript:" th:text="#{ui.navibar.guest.google-login}">구글로그인</a></li>
-                        <li><a class="dropdown-item" href="javascript:" th:text="#{ui.navibar.guest.naver-login}">네이버로그인</a></li>
+                        <li><a class="dropdown-item" href="javascript:"
+                               th:text="#{ui.navibar.guest.google-login}">구글로그인</a></li>
+                        <li><a class="dropdown-item" href="javascript:"
+                               th:text="#{ui.navibar.guest.naver-login}">네이버로그인</a></li>
                     </ul>
                 </li>
 
@@ -56,9 +59,12 @@
                     </a>
                     <ul aria-labelledby="navbarDropdownMemberMenuLink"
                         class="dropdown-menu dropdown-menu-dark dropdown-menu-end">
-                        <li><a class="dropdown-item" href="javascript:" th:text="#{ui.navibar.login.my-page}">마이페이지</a></li>
-                        <li><a class="dropdown-item" href="javascript:" th:text="#{ui.navibar.login.logout}">로그아웃</a></li>
-                        <li><a class="dropdown-item" href="javascript:" th:text="#{ui.navibar.login.sign-out}">회원탈퇴</a></li>
+                        <li><a class="dropdown-item" href="javascript:" th:text="#{ui.navibar.login.my-page}">마이페이지</a>
+                        </li>
+                        <li><a class="dropdown-item" href="javascript:" th:text="#{ui.navibar.login.logout}">로그아웃</a>
+                        </li>
+                        <li><a class="dropdown-item" href="javascript:" th:text="#{ui.navibar.login.sign-out}">회원탈퇴</a>
+                        </li>
                     </ul>
                 </li>
             </ul>

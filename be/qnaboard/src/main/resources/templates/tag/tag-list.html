@@ -28,8 +28,8 @@ dto.tag.list 패키지의 TagListDTO를 모델로 받아서 랜더링한다
                 <p class="card-text" th:text="${tag.tagDescription}">Some quick example text to build on the card title
                     and make up the bulk of the
                     card's content.</p>
-                <a th:href="@{/tags/{tagId}/edit-form(tagId=${tag.tagId})}" class="card-link">태그 수정하기</a>
-                <form method="post" class="d-inline-block card-link"
+                <a class="card-link" th:href="@{/tags/{tagId}/edit-form(tagId=${tag.tagId})}">태그 수정하기</a>
+                <form class="d-inline-block card-link" method="post"
                       th:action="@{/tags/{tagId}/delete(tagId=${tag.tagId})}">
                     <button class="button-like-link">태그 삭제하기</button>
                 </form>
