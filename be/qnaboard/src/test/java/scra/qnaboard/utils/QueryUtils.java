@@ -44,4 +44,13 @@ public class QueryUtils {
                 .setParameter("keyword", "%" + keyword + "%")
                 .getResultList();
     }
+
+    public static boolean hasQuestionTags(EntityManager em, long tagId) {
+        return em.createQuery(
+                        "select (count(qt.id) > 0) " +
+                                "from QuestionTag qt " +
+                                "where qt.tag.id = :tagId", Boolean.class)
+                .setParameter("tagId", tagId)
+                .getSingleResult();
+    }
 }

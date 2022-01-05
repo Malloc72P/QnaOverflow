@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import scra.qnaboard.domain.entity.Member;
 import scra.qnaboard.domain.entity.Tag;
+import scra.qnaboard.domain.repository.tag.QuestionTagSimpleQueryRepository;
 import scra.qnaboard.domain.repository.tag.TagRepository;
 import scra.qnaboard.domain.repository.tag.TagSimpleQueryRepository;
 import scra.qnaboard.service.exception.tag.delete.TagDeleteFailedException;
@@ -24,6 +25,7 @@ public class TagService {
 
     private final MemberService memberService;
     private final TagRepository tagRepository;
+    private final QuestionTagSimpleQueryRepository questionTagSimpleQueryRepository;
     private final TagSimpleQueryRepository tagSimpleQueryRepository;
 
     public TagListDTO tagList() {
@@ -69,6 +71,7 @@ public class TagService {
         }
 
         tag.delete();
+        questionTagSimpleQueryRepository.deleteByTagIdIn(tagId);
     }
 
     public TagDTO tagById(long tagId) {

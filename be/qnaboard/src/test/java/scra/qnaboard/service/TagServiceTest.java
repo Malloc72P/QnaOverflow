@@ -64,6 +64,7 @@ class TagServiceTest {
             tagService.deleteTag(admin.getId(), tag.getId());
 
             assertThat(QueryUtils.isDeletedTag(em, tag)).isTrue();
+            assertThat(QueryUtils.hasQuestionTags(em, tag.getId())).isFalse();
         }
     }
 
@@ -79,6 +80,7 @@ class TagServiceTest {
             tagService.deleteTag(author.getId(), tag.getId());
 
             assertThat(QueryUtils.isDeletedTag(em, tag)).isTrue();
+            assertThat(QueryUtils.hasQuestionTags(em, tag.getId())).isFalse();
         }
     }
 
