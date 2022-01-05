@@ -22,10 +22,10 @@ import java.util.stream.Collectors;
 
 import static scra.qnaboard.domain.entity.QComment.comment;
 import static scra.qnaboard.domain.entity.QMember.member;
-import static scra.qnaboard.domain.entity.QQuestionTag.questionTag;
 import static scra.qnaboard.domain.entity.QTag.tag;
 import static scra.qnaboard.domain.entity.post.QAnswer.answer;
 import static scra.qnaboard.domain.entity.post.QQuestion.question;
+import static scra.qnaboard.domain.entity.questiontag.QQuestionTag.questionTag;
 
 /**
  * 복잡한 단건조회는 여기서 작성함

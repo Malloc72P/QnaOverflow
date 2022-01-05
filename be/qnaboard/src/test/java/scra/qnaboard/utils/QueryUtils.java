@@ -47,9 +47,9 @@ public class QueryUtils {
 
     public static boolean hasQuestionTags(EntityManager em, long tagId) {
         return em.createQuery(
-                        "select (count(qt.id) > 0) " +
+                        "select (count(qt) > 0) " +
                                 "from QuestionTag qt " +
-                                "where qt.tag.id = :tagId", Boolean.class)
+                                "where qt.id.tagId = :tagId", Boolean.class)
                 .setParameter("tagId", tagId)
                 .getSingleResult();
     }

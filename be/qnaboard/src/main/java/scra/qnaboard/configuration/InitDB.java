@@ -9,6 +9,7 @@ import scra.qnaboard.domain.entity.*;
 import scra.qnaboard.domain.entity.post.Answer;
 import scra.qnaboard.domain.entity.post.Post;
 import scra.qnaboard.domain.entity.post.Question;
+import scra.qnaboard.domain.entity.questiontag.QuestionTag;
 
 import javax.annotation.PostConstruct;
 import javax.persistence.EntityManager;

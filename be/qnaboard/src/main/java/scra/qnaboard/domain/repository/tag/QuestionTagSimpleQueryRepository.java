@@ -3,11 +3,8 @@ package scra.qnaboard.domain.repository.tag;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
-import scra.qnaboard.domain.entity.QuestionTag;
 
-import java.util.List;
-
-import static scra.qnaboard.domain.entity.QQuestionTag.questionTag;
+import static scra.qnaboard.domain.entity.questiontag.QQuestionTag.questionTag;
 
 @Repository
 @RequiredArgsConstructor

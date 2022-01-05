@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import scra.qnaboard.domain.entity.Member;
-import scra.qnaboard.domain.entity.QuestionTag;
+import scra.qnaboard.domain.entity.questiontag.QuestionTag;
 import scra.qnaboard.domain.entity.Tag;
 import scra.qnaboard.domain.entity.post.Question;
 import scra.qnaboard.domain.repository.tag.QuestionTagRepository;

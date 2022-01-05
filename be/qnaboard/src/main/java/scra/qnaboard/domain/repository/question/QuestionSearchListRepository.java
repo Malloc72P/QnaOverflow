@@ -15,10 +15,10 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import static scra.qnaboard.domain.entity.QMember.member;
-import static scra.qnaboard.domain.entity.QQuestionTag.questionTag;
 import static scra.qnaboard.domain.entity.QTag.tag;
 import static scra.qnaboard.domain.entity.post.QAnswer.answer;
 import static scra.qnaboard.domain.entity.post.QQuestion.question;
+import static scra.qnaboard.domain.entity.questiontag.QQuestionTag.questionTag;
 
 /**
  * 복잡한 동적쿼리 작성을 위해 QueryDSL을 사용하는 리포지토리
