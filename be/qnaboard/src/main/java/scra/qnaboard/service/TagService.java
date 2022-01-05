@@ -88,6 +88,10 @@ public class TagService {
         return TagSearchResultDTO.from(tags, keyword);
     }
 
+    public List<Tag> tagByIdIn(List<Long> tagIds) {
+        return tagSimpleQueryRepository.tagsByIdIn(tagIds);
+    }
+
     public void createQuestionTags(Question question, List<Long> tagIds) {
         List<Tag> tags = tagSimpleQueryRepository.tagsByIdIn(tagIds);
 

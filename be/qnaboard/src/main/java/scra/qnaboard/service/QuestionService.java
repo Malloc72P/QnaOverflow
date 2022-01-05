@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import scra.qnaboard.domain.entity.Member;
+import scra.qnaboard.domain.entity.Tag;
 import scra.qnaboard.domain.entity.post.Question;
 import scra.qnaboard.domain.repository.question.QuestionRepository;
 import scra.qnaboard.domain.repository.question.QuestionSearchDetailRepository;
@@ -65,12 +66,18 @@ public class QuestionService {
      */
     @Transactional
     public long createQuestion(long authorId, String title, String content, List<Long> tagIds) {
+        //작성자를 조회한다
         Member author = memberService.findMember(authorId);
 
+        //질문글 생성
         Question question = new Question(author, content, title);
-        questionRepository.save(question);
 
-        tagService.createQuestionTags(question, tagIds);
+        //필요한 태그를 전부 조회하고, 질문글에 추가한다
+        List<Tag> tags = tagService.tagByIdIn(tagIds);
+        question.addTagAll(tags);
+
+        //질문글을 저장하고 아이디를 반환한다
+        questionRepository.save(question);
         return question.getId();
     }
 

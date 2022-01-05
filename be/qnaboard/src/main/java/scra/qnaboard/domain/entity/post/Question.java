@@ -5,9 +5,15 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.util.StringUtils;
 import scra.qnaboard.domain.entity.Member;
+import scra.qnaboard.domain.entity.Tag;
+import scra.qnaboard.domain.entity.questiontag.QuestionTag;
 import scra.qnaboard.service.exception.question.edit.QuestionPropertyIsEmptyException;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.OneToMany;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -26,6 +32,9 @@ public class Question extends Post {
 
     private String title;
 
+    @OneToMany(mappedBy = "question", cascade = CascadeType.PERSIST)
+    private List<QuestionTag> questionTags = new ArrayList<>();
+
     public Question(Member author, String content, String title) {
         super(author, content);
         this.title = title;
@@ -37,6 +46,15 @@ public class Question extends Post {
         }
         this.title = title;
         this.content = content;
+    }
+
+    public void addTagAll(List<Tag> tags) {
+        tags.forEach(this::addTag);
+    }
+
+    public void addTag(Tag tag) {
+        QuestionTag questionTag = new QuestionTag(tag, this);
+        questionTags.add(questionTag);
     }
 
     @Override
