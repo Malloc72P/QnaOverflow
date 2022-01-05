@@ -66,9 +66,11 @@ public class QuestionService {
     @Transactional
     public long createQuestion(long authorId, String title, String content, List<Long> tagIds) {
         Member author = memberService.findMember(authorId);
+
         Question question = new Question(author, content, title);
-        tagService.createQuestionTags(question, tagIds);
         questionRepository.save(question);
+
+        tagService.createQuestionTags(question, tagIds);
         return question.getId();
     }
 

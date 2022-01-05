@@ -1,10 +1,7 @@
 spring:
   datasource:
     url: jdbc:h2:mem:qnaboard;MODE=MYSQL;DB_CLOSE_ON_EXIT=FALSE
-  #    url: jdbc:mysql://${database_url}/qnaboard
-  #    username: ${database_username}
-  #    password: ${database_password}
-  #    driver-class-name: com.mysql.cj.jdbc.Driver
+
   jpa:
     hibernate:
       ddl-auto: create
@@ -16,7 +13,12 @@ logging:
   level:
     org.hibernate.SQL: debug
 
-database_url: localhost:3306
-database_username: dev
-database_password: dev1234
+#    url: jdbc:mysql://${database_url}/qnaboard
+#    username: ${database_username}
+#    password: ${database_password}
+#    driver-class-name: com.mysql.cj.jdbc.Driver
+
+#database_url: localhost:3306
+#database_username: dev
+#database_password: dev1234
 
