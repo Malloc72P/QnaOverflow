@@ -46,4 +46,8 @@ public class QuestionTag extends BaseTimeEntity {
     public int hashCode() {
         return Objects.hash(getId());
     }
+
+    public Long getTagId() {
+        return id.tagId;
+    }
 }

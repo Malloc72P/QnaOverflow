@@ -10,17 +10,14 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import scra.qnaboard.service.QuestionService;
-import scra.qnaboard.service.TagService;
-import scra.qnaboard.service.dto.QuestionOnlyDTO;
+import scra.qnaboard.service.dto.QuestionWithTagDTO;
 import scra.qnaboard.web.dto.question.create.CreateQuestionForm;
 import scra.qnaboard.web.dto.question.detail.QuestionDetailDTO;
 import scra.qnaboard.web.dto.question.edit.EditQuestionForm;
 import scra.qnaboard.web.dto.question.list.QuestionListDTO;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
-import java.util.stream.Collectors;
 
 /**
  * 질문글에 대한 요청을 처리하는 컨트롤러
@@ -86,13 +83,15 @@ public class QuestionController {
     public String createQuestion(@ModelAttribute("questionForm") @Validated CreateQuestionForm form,
                                  BindingResult bindingResult,
                                  RedirectAttributes redirectAttributes) {
+        //생성 폼에 문제가 있는지 확인함. 문제가 있다면 생성 페이지로 돌려보냄
         if (bindingResult.hasErrors()) {
             return "/question/question-form";
         }
-        List<Long> tagIds = Arrays.stream(form.getTags().split(","))
-                .map(Long::parseLong)
-                .collect(Collectors.toList());
 
+        //폼에서 태그 아이디를 꺼냄
+        List<Long> tagIds = form.extractTagIds();
+
+        //질문글을 생성하고, 생성된 질문글의 아이디에 대한 상세 페이지 요청을 하도록 리다이렉션시킴
         long newQuestionId = questionService.createQuestion(1L, form.getTitle(), form.getContent(), tagIds);
         redirectAttributes.addAttribute("questionId", newQuestionId);
         return "redirect:/questions/{questionId}";
@@ -108,8 +107,10 @@ public class QuestionController {
      */
     @PostMapping("{questionId}/delete")
     public String delete(@PathVariable long questionId, RedirectAttributes redirectAttributes, Locale locale) {
+        //질문글 삭제
         questionService.deleteQuestion(1L, questionId);
 
+        //삭제완료를 알리는 페이지로 리다이렉션 시킴. 필요한 정보는 요청 파라미터에 넣어줌
         redirectAttributes.addAttribute("title", message.getMessage("ui.notify.question.delete.title", null, locale));
         redirectAttributes.addAttribute("content", message.getMessage("ui.notify.question.delete.content", null, locale));
         return "redirect:/notify";
@@ -127,17 +128,21 @@ public class QuestionController {
     public String questionEditForm(@ModelAttribute("questionEditForm") EditQuestionForm form,
                                    @PathVariable("questionId") long questionId,
                                    Model model) {
-        //find a question and put it into a model
-        QuestionOnlyDTO questionDTO = questionService.questionOnly(1L, questionId);
+        //질문글을 조회해서 폼의 내용을 업데이트함(이 내용이 질문글 수정페이지로 전달됨)
+        QuestionWithTagDTO questionDTO = questionService.questionWithTag(questionId);
         form.update(questionDTO.getTitle(), questionDTO.getContent());
 
+        //질문글의 아이디까지 모델에 담아서 넘겨줌
         model.addAttribute("questionId", questionId);
-        model.addAttribute("questionEditForm", form);
+        model.addAttribute("tags", questionDTO.getTags());
         return "/question/question-edit-form";
     }
 
     /**
-     * 질문게시글 수정요청 처리
+     * 질문게시글 수정요청 처리 <br>
+     * 수정 폼에 잘못 입력해서 validation에 실패했다면, bindingResult.hasError로 검사해서 실패 여부를 알아낸다 <br>
+     * 실패했다면 즉시 수정 폼 뷰를 반환한다. ModelAttribute를 사용하므로, 사용자가 이전에 입력했던 내용은 모델에 이미 담겨있는 상태이다. <br>
+     * 덕분에 사용자에게 왜 입력이 실패했는지를 알려줄 수 있다.
      *
      * @param form               질문게시글 수정 정보
      * @param questionId         수정할 질문글의 아이디
@@ -150,11 +155,15 @@ public class QuestionController {
                                @PathVariable("questionId") long questionId,
                                BindingResult bindingResult,
                                RedirectAttributes redirectAttributes) {
+        //입력 폼에 문제가 있는지 확인
         if (bindingResult.hasErrors()) {
             return "/question/question-edit-form";
         }
-        //edit question
-        questionService.editQuestion(1L, questionId, form.getTitle(), form.getContent());
+
+        List<Long> tagIds = form.extractTagIds();
+
+        //질문글 수정 후 상세 페이지로 리다이렉션
+        questionService.editQuestion(1L, questionId, form.getTitle(), form.getContent(), tagIds);
         redirectAttributes.addAttribute("questionId", questionId);
         return "redirect:/questions/{questionId}";
     }

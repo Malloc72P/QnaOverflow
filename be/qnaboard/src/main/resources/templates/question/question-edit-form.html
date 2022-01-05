@@ -32,6 +32,10 @@
             </div>
             <div class="text-danger" th:errors="*{content}">제목은 6자 이상이어야 합니다</div>
         </div>
+
+        <!--/*태그 입력기*/-->
+        <div th:replace="template/fragment/tag/tag-inputer :: tag_inputer(${tags})"></div>
+
         <div class="clearfix">
             <button class="btn btn-primary float-end" type="submit">Submit</button>
         </div>

@@ -1,5 +1,4 @@
 const tagInput = document.getElementById("tag-input");
-const tagSearchWrapper = document.getElementById("tag-search-form");
 const tagSuggestions = document.getElementById("tag-suggestions");
 const selectedTags = document.getElementById("selected-tag-wrapper");
 const selectedTagIdList = document.getElementById("selected-tag-id-list");
@@ -9,7 +8,12 @@ let prevSearchTagValue = "";
 const selectedTagMap = new Map();
 
 const getTagIdListAsString = () => {
-    return Array.from(selectedTagMap.keys())
+    const keys = selectedTagMap.keys();
+    const tagIdArray = Array.from(keys);
+    if (tagIdArray.length === 0) {
+        return "";
+    }
+    return tagIdArray
         .reduce((prev, curr) => prev + "," + curr);
 }
 
@@ -22,18 +26,15 @@ const addSuggestion = (id, name) => {
     const htmlButtonElement = domParser.parseFromString(
         `<a class="btn btn-sm btn-secondary me-1 mb-1" href="javascript:" data-tagid="${id}">${name}</a>`,
         "text/html").querySelector("a");
-    htmlButtonElement.addEventListener("pointerdown", selectTag);
+    htmlButtonElement.addEventListener("pointerdown", onSelectTag);
     tagSuggestions.appendChild(htmlButtonElement);
 }
 
-const selectTag = (event) => {
-    const tagId = event.target.dataset.tagid;
-    const tagName = event.target.innerText;
-
+const selectTag = (tagId, tagName) => {
+    tagId = Number.parseInt(tagId);
     if (selectedTagMap.has(tagId)) {
         return;
     }
-
 
     const domParser = new DOMParser();
     const tagElement = domParser.parseFromString(
@@ -49,14 +50,21 @@ const selectTag = (event) => {
     refreshTagIds();
 }
 
+const onSelectTag = (event) => {
+    const tagId = event.target.dataset.tagid;
+    const tagName = event.target.innerText;
+
+    selectTag(tagId, tagName);
+}
+
 const removeTag = (event) => {
     const container = event.target.closest("span");
-    const tagId = container.dataset.tagid;
-    const tagName = container.dataset.tagname;
+    const tagId = Number.parseInt(container.dataset.tagid);
 
     if (!selectedTagMap.has(tagId)) {
         return
     }
+
     const tagDataSet = selectedTagMap.get(tagId);
     tagDataSet.tagElement.remove();
     selectedTagMap.delete(tagId);
@@ -99,6 +107,11 @@ const onTagSearchButton = (event) => {
     searchTag(event);
 };
 
-// tagSearchWrapper.addEventListener("submit", searchTag);
 tagInput.addEventListener("keydown", onTagInputKeyDown);
 tagSearchButton.addEventListener("pointerdown", onTagSearchButton);
+
+if (tagParam && tagParam.length > 0) {
+    for (const tag of tagParam) {
+        selectTag(tag.id, tag.name);
+    }
+}

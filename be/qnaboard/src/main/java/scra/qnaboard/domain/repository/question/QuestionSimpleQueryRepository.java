@@ -4,12 +4,17 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+import scra.qnaboard.domain.entity.QTag;
+import scra.qnaboard.domain.entity.post.QQuestion;
 import scra.qnaboard.domain.entity.post.Question;
+import scra.qnaboard.domain.entity.questiontag.QQuestionTag;
 
 import java.util.Optional;
 
 import static scra.qnaboard.domain.entity.QMember.member;
+import static scra.qnaboard.domain.entity.QTag.tag;
 import static scra.qnaboard.domain.entity.post.QQuestion.question;
+import static scra.qnaboard.domain.entity.questiontag.QQuestionTag.questionTag;
 
 /**
  * JPQL을 직접 작성해야하지만, 복잡한 쿼리는 아닌경우 여기에서 처리함
@@ -36,5 +41,15 @@ public class QuestionSimpleQueryRepository {
                 .fetchOne();
 
         return Optional.ofNullable(findQuestion);
+    }
+
+    public Optional<Question> questionWithTag(long questionId) {
+        Question question = queryFactory.selectFrom(QQuestion.question)
+                .leftJoin(QQuestion.question.questionTags, questionTag).fetchJoin()
+                .innerJoin(questionTag.tag, tag).fetchJoin()
+                .where(QQuestion.question.id.eq(questionId))
+                .fetchOne();
+
+        return Optional.ofNullable(question);
     }
 }

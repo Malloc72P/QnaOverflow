@@ -11,13 +11,16 @@ import scra.qnaboard.service.exception.question.delete.QuestionDeleteFailedExcep
 import scra.qnaboard.service.exception.question.edit.QuestionEditFailedException;
 import scra.qnaboard.service.exception.question.edit.QuestionPropertyIsEmptyException;
 import scra.qnaboard.service.exception.question.edit.UnauthorizedQuestionEditException;
+import scra.qnaboard.utils.EntityConverter;
 import scra.qnaboard.utils.QueryUtils;
 import scra.qnaboard.utils.TestDataDTO;
 import scra.qnaboard.utils.TestDataInit;
 import scra.qnaboard.web.dto.question.detail.QuestionDetailDTO;
 
 import javax.persistence.EntityManager;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -136,7 +139,9 @@ class QuestionServiceTest {
             Member author = question.getAuthor();
             String editTitle = "edited-title-" + question.getId();
             String editContent = "edited-content-" + question.getId();
-            questionService.editQuestion(author.getId(), question.getId(), editTitle, editContent);
+            List<Long> tagIds = EntityConverter.getTagIds(question);
+
+            questionService.editQuestion(author.getId(), question.getId(), editTitle, editContent, tagIds);
 
             Question findQuestion = em.createQuery("select q from Question q where q.id = :id", Question.class)
                     .setParameter("id", question.getId())
@@ -165,7 +170,9 @@ class QuestionServiceTest {
         for (Question question : questions) {
             String editTitle = "edited-title-" + question.getId();
             String editContent = "edited-content-" + question.getId();
-            questionService.editQuestion(admin.getId(), question.getId(), editTitle, editContent);
+            List<Long> tagIds = EntityConverter.getTagIds(question);
+
+            questionService.editQuestion(admin.getId(), question.getId(), editTitle, editContent, tagIds);
 
             Question findQuestion = em.createQuery("select q from Question q where q.id = :id", Question.class)
                     .setParameter("id", question.getId())
@@ -195,7 +202,9 @@ class QuestionServiceTest {
             Long anotherMemberId = dataDTO.anotherMemberAndNotAdmin(author).getId();
             String editTitle = "edited-title-" + question.getId();
             String editContent = "edited-content-" + question.getId();
-            assertThatThrownBy(() -> questionService.editQuestion(anotherMemberId, question.getId(), editTitle, editContent))
+            List<Long> tagIds = EntityConverter.getTagIds(question);
+
+            assertThatThrownBy(() -> questionService.editQuestion(anotherMemberId, question.getId(), editTitle, editContent, tagIds))
                     .isInstanceOf(QuestionEditFailedException.class)
                     .isInstanceOf(UnauthorizedQuestionEditException.class);
 
@@ -226,7 +235,7 @@ class QuestionServiceTest {
         Question question = questions[0];
         Long authorId = question.getAuthor().getId();
         for (String[] testcase : testcases) {
-            assertThatThrownBy(() -> questionService.editQuestion(authorId, question.getId(), testcase[0], testcase[1]))
+            assertThatThrownBy(() -> questionService.editQuestion(authorId, question.getId(), testcase[0], testcase[1], new ArrayList<>()))
                     .isInstanceOf(QuestionEditFailedException.class)
                     .isInstanceOf(QuestionPropertyIsEmptyException.class);
         }

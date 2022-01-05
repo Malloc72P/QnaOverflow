@@ -10,7 +10,7 @@ import scra.qnaboard.domain.repository.question.QuestionRepository;
 import scra.qnaboard.domain.repository.question.QuestionSearchDetailRepository;
 import scra.qnaboard.domain.repository.question.QuestionSearchListRepository;
 import scra.qnaboard.domain.repository.question.QuestionSimpleQueryRepository;
-import scra.qnaboard.service.dto.QuestionOnlyDTO;
+import scra.qnaboard.service.dto.QuestionWithTagDTO;
 import scra.qnaboard.service.exception.question.delete.QuestionDeleteFailedException;
 import scra.qnaboard.service.exception.question.edit.UnauthorizedQuestionEditException;
 import scra.qnaboard.service.exception.question.search.QuestionNotFoundException;
@@ -73,8 +73,7 @@ public class QuestionService {
         Question question = new Question(author, content, title);
 
         //필요한 태그를 전부 조회하고, 질문글에 추가한다
-        List<Tag> tags = tagService.tagByIdIn(tagIds);
-        question.addTagAll(tags);
+        tagService.createQuestionTags(question, tagIds);
 
         //질문글을 저장하고 아이디를 반환한다
         questionRepository.save(question);
@@ -103,20 +102,14 @@ public class QuestionService {
         questionRepository.deleteById(questionId);
     }
 
-    public QuestionOnlyDTO questionOnly(long requesterId, long questionId) {
-        Question question = questionWithAuthor(questionId);
-        Member requester = memberService.findMember(requesterId);
+    public QuestionWithTagDTO questionWithTag(long questionId) {
+        Question question = findQuestion(questionId);
 
-        //관리자가 아니면서 소유자도 아니면 실패해야함
-        if (requester.isNotAdmin() && question.isNotOwner(requester)) {
-            throw new UnauthorizedQuestionEditException(questionId, requesterId);
-        }
-
-        return QuestionOnlyDTO.from(question);
+        return QuestionWithTagDTO.from(question);
     }
 
     @Transactional
-    public void editQuestion(long requesterId, long questionId, String title, String content) {
+    public void editQuestion(long requesterId, long questionId, String title, String content, List<Long> tagIds) {
         Question question = questionWithAuthor(questionId);
         Member requester = memberService.findMember(requesterId);
 
@@ -125,7 +118,11 @@ public class QuestionService {
             throw new UnauthorizedQuestionEditException(questionId, requesterId);
         }
 
+        //질문게시글 수정
         question.update(title, content);
+
+        //태그 정보 수정
+        tagService.updateQuestionTags(question, tagIds);
     }
 
     public Question findQuestion(long questionId) {

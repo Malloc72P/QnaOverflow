@@ -13,8 +13,8 @@ import java.util.Objects;
 @NoArgsConstructor
 @AllArgsConstructor
 public class QuestionTagId implements Serializable {
-    private Long questionId;
-    private Long tagId;
+    protected Long questionId;
+    protected Long tagId;
 
     @Override
     public boolean equals(Object o) {

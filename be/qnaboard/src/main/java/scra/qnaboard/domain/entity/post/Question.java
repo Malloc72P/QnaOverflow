@@ -15,6 +15,7 @@ import javax.persistence.OneToMany;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * 질문글에 대한 엔티티 <br>
@@ -32,8 +33,8 @@ public class Question extends Post {
 
     private String title;
 
-    @OneToMany(mappedBy = "question", cascade = CascadeType.PERSIST)
-    private List<QuestionTag> questionTags = new ArrayList<>();
+    @OneToMany(mappedBy = "question")
+    private final List<QuestionTag> questionTags = new ArrayList<>();
 
     public Question(Member author, String content, String title) {
         super(author, content);
@@ -46,15 +47,6 @@ public class Question extends Post {
         }
         this.title = title;
         this.content = content;
-    }
-
-    public void addTagAll(List<Tag> tags) {
-        tags.forEach(this::addTag);
-    }
-
-    public void addTag(Tag tag) {
-        QuestionTag questionTag = new QuestionTag(tag, this);
-        questionTags.add(questionTag);
     }
 
     @Override

@@ -7,6 +7,7 @@ import scra.qnaboard.domain.entity.Member;
 import scra.qnaboard.domain.entity.questiontag.QuestionTag;
 import scra.qnaboard.domain.entity.Tag;
 import scra.qnaboard.domain.entity.post.Question;
+import scra.qnaboard.domain.entity.questiontag.QuestionTagId;
 import scra.qnaboard.domain.repository.tag.QuestionTagRepository;
 import scra.qnaboard.domain.repository.tag.QuestionTagSimpleQueryRepository;
 import scra.qnaboard.domain.repository.tag.TagRepository;
@@ -20,6 +21,7 @@ import scra.qnaboard.web.dto.tag.search.TagSearchResultDTO;
 
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor
@@ -100,6 +102,12 @@ public class TagService {
                 .collect(Collectors.toList());
 
         questionTagRepository.saveAll(questionTags);
+    }
+
+    @Transactional
+    public void updateQuestionTags(Question question, List<Long> tagIds) {
+        questionTagSimpleQueryRepository.deleteByQuestionId(question.getId());
+        createQuestionTags(question, tagIds);
     }
 
     private Tag tagWithAuthor(long tagId) {
