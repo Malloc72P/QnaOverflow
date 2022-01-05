@@ -23,11 +23,15 @@ const commonHeader = {
  * @returns {Promise<string|any>} 프로미스, await하면 메세지 바디가 text 또는 json으로 파싱되어 반환된다
  */
 const request = async (url, method, body, responseType) => {
-    let response = await fetch(url, {
+    let requestMessage = {
         method: method,
-        headers: commonHeader,
-        body: JSON.stringify(body)
-    });
+        headers: commonHeader
+    };
+    if (body !== null) {
+        requestMessage["body"] = JSON.stringify(body);
+    }
+
+    let response = await fetch(url, requestMessage);
     if (!response.ok) {
         throw new Error(response.statusText);
 

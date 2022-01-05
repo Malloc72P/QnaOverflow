@@ -118,13 +118,24 @@
     text-decoration: underline !important;
 }
 
+.hover-bold:hover {
+    background-color: #5c636a;
+    border-color: #565e64;
+    border-radius: 50%;
+}
+
+.disable-btn-secondary-hover:hover {
+    background-color: #6c757d!important;
+    border-color: #6c757d!important;
+}
+
 .button-like-link {
-    background: none !important;
-    border: none;
-    padding: 0 !important;
-    color: #0d6efd;
-    text-decoration: underline;
-    font: inherit;
-    cursor: pointer;
+background: none !important;
+border: none;
+padding: 0 !important;
+color: #0d6efd;
+text-decoration: underline;
+font: inherit;
+cursor: pointer;
 }
 

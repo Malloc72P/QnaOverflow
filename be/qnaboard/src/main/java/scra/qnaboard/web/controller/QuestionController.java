@@ -10,13 +10,17 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import scra.qnaboard.service.QuestionService;
+import scra.qnaboard.service.TagService;
 import scra.qnaboard.service.dto.QuestionOnlyDTO;
 import scra.qnaboard.web.dto.question.create.CreateQuestionForm;
 import scra.qnaboard.web.dto.question.detail.QuestionDetailDTO;
 import scra.qnaboard.web.dto.question.edit.EditQuestionForm;
 import scra.qnaboard.web.dto.question.list.QuestionListDTO;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Locale;
+import java.util.stream.Collectors;
 
 /**
  * 질문글에 대한 요청을 처리하는 컨트롤러
@@ -85,8 +89,11 @@ public class QuestionController {
         if (bindingResult.hasErrors()) {
             return "/question/question-form";
         }
+        List<Long> tagIds = Arrays.stream(form.getTags().split(","))
+                .map(Long::parseLong)
+                .collect(Collectors.toList());
 
-        long newQuestionId = questionService.createQuestion(1L, form.getTitle(), form.getContent());
+        long newQuestionId = questionService.createQuestion(1L, form.getTitle(), form.getContent(), tagIds);
         redirectAttributes.addAttribute("questionId", newQuestionId);
         return "redirect:/questions/{questionId}";
     }

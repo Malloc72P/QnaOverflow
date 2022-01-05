@@ -40,4 +40,10 @@ public class TagSimpleQueryRepository {
                 .where(tag.name.like("%" + keyword + "%"))
                 .fetch();
     }
+
+    public List<Tag> tagsByIdIn(List<Long> tagIds) {
+        return queryFactory.selectFrom(tag)
+                .where(tag.id.in(tagIds))
+                .fetch();
+    }
 }

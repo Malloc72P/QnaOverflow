@@ -4,7 +4,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import scra.qnaboard.domain.entity.Member;
+import scra.qnaboard.domain.entity.QuestionTag;
 import scra.qnaboard.domain.entity.Tag;
+import scra.qnaboard.domain.entity.post.Question;
+import scra.qnaboard.domain.repository.tag.QuestionTagRepository;
 import scra.qnaboard.domain.repository.tag.QuestionTagSimpleQueryRepository;
 import scra.qnaboard.domain.repository.tag.TagRepository;
 import scra.qnaboard.domain.repository.tag.TagSimpleQueryRepository;
@@ -25,6 +28,7 @@ public class TagService {
 
     private final MemberService memberService;
     private final TagRepository tagRepository;
+    private final QuestionTagRepository questionTagRepository;
     private final QuestionTagSimpleQueryRepository questionTagSimpleQueryRepository;
     private final TagSimpleQueryRepository tagSimpleQueryRepository;
 
@@ -82,6 +86,16 @@ public class TagService {
     public TagSearchResultDTO search(String keyword) {
         List<Tag> tags = tagSimpleQueryRepository.searchTags(keyword);
         return TagSearchResultDTO.from(tags, keyword);
+    }
+
+    public void createQuestionTags(Question question, List<Long> tagIds) {
+        List<Tag> tags = tagSimpleQueryRepository.tagsByIdIn(tagIds);
+
+        List<QuestionTag> questionTags = tags.stream()
+                .map(tag -> new QuestionTag(tag, question))
+                .collect(Collectors.toList());
+
+        questionTagRepository.saveAll(questionTags);
     }
 
     private Tag tagWithAuthor(long tagId) {

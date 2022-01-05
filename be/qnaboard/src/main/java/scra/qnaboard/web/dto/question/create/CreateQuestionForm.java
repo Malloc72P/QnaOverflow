@@ -19,4 +19,7 @@ public class CreateQuestionForm {
     @NotBlank
     @Size(min = 6)
     private String content;
+
+    @NotBlank
+    private String tags;
 }

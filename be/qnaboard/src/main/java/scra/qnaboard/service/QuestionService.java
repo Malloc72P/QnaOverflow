@@ -28,6 +28,7 @@ import java.util.List;
 public class QuestionService {
 
     private final MemberService memberService;
+    private final TagService tagService;
     private final QuestionRepository questionRepository;
     private final QuestionSimpleQueryRepository questionSimpleQueryRepository;
     private final QuestionSearchDetailRepository questionSearchDetailRepository;
@@ -61,12 +62,12 @@ public class QuestionService {
      * @param title    게시글 제목
      * @param content  게시글 내용
      * @return 생성된 게시글의 아이디
-     * @TODO 아직 태그에 대한 기능은 추가하지 못했다
      */
     @Transactional
-    public long createQuestion(long authorId, String title, String content) {
+    public long createQuestion(long authorId, String title, String content, List<Long> tagIds) {
         Member author = memberService.findMember(authorId);
         Question question = new Question(author, content, title);
+        tagService.createQuestionTags(question, tagIds);
         questionRepository.save(question);
         return question.getId();
     }
