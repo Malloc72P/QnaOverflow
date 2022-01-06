@@ -41,6 +41,17 @@ public class TagService {
     }
 
     /**
+     * 아이디로 태그 정보와 작성자 정보를 조회하는 메서드
+     *
+     * @param tagId 태그 아이디
+     * @return 검색된 태그의 정보를 담은 DTO
+     */
+    public TagDTO tagById(long tagId) {
+        Tag findTag = tagWithAuthor(tagId);
+        return TagDTO.from(findTag);
+    }
+
+    /**
      * 태그 전체 목록 조회
      *
      * @return 태그 목록 DTO
@@ -117,17 +128,6 @@ public class TagService {
 
         tag.delete();
         questionTagSimpleQueryRepository.deleteByTagIdIn(tagId);
-    }
-
-    /**
-     * 아이디로 태그 정보와 작성자 정보를 조회하는 메서드
-     *
-     * @param tagId 태그 아이디
-     * @return 검색된 태그의 정보를 담은 DTO
-     */
-    public TagDTO tagById(long tagId) {
-        Tag findTag = tagWithAuthor(tagId);
-        return TagDTO.from(findTag);
     }
 
     /**
