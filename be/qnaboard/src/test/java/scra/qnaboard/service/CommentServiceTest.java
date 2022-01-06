@@ -36,7 +36,7 @@ class CommentServiceTest {
         TestDataDTO dataDTO = TestDataInit.init(em);
         Member member = dataDTO.noneAdminMember();
 
-        dataDTO.questionStream().forEach(question -> {
+        dataDTO.getQuestions().forEach(question -> {
             String testContent = "test-comment";
             CommentDTO commentDTO = commentService.createComment(member.getId(), question.getId(), null, testContent);
 

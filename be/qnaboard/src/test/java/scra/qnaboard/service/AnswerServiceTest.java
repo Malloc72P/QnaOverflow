@@ -18,6 +18,7 @@ import scra.qnaboard.web.dto.answer.AnswerDetailDTO;
 
 import javax.persistence.EntityManager;
 import java.util.Arrays;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -38,14 +39,8 @@ class AnswerServiceTest {
     void testCreateAnswer() {
         TestDataDTO testData = TestDataInit.init(em);
 
-        Member author = Arrays.stream(testData.getMembers())
-                .filter(Member::isNotAdmin)
-                .findFirst()
-                .orElseThrow(() -> new RuntimeException("테스트 데이터가 없습니다! : member"));
-
-        Question question = Arrays.stream(testData.getQuestions())
-                .findFirst()
-                .orElseThrow(() -> new RuntimeException("테스트 데이터가 없습니다! : question"));
+        Member author = testData.noneAdminMember();
+        Question question = testData.question();
 
         AnswerDetailDTO createAnswerDTO = answerService.createAnswer(author.getId(), question.getId(), "content-1");
         Answer findAnswer = em.createQuery("select a from Answer a where a.id = :id", Answer.class)
@@ -76,7 +71,7 @@ class AnswerServiceTest {
     void authorCanEditOwnAnswer() {
         TestDataDTO testData = TestDataInit.init(em);
 
-        Answer[] answers = testData.getAnswers();
+        List<Answer> answers = testData.getAnswers();
         for (Answer answer : answers) {
             String newContent = "aaaaaaaaaaaaaaaaaaa";
             Member author = answer.getAuthor();
@@ -95,7 +90,7 @@ class AnswerServiceTest {
     void memberCanNotEditOtherMembersAnswer() {
         TestDataDTO testData = TestDataInit.init(em);
 
-        Answer[] answers = testData.getAnswers();
+        List<Answer> answers = testData.getAnswers();
         for (Answer answer : answers) {
             String prevContent = answer.getContent();
             String newContent = "aaaaaaaaaaaaaaaaaaa";
@@ -122,7 +117,7 @@ class AnswerServiceTest {
         TestDataDTO testData = TestDataInit.init(em);
         Member admin = testData.adminMember();
 
-        Answer[] answers = testData.getAnswers();
+        List<Answer> answers = testData.getAnswers();
         for (Answer answer : answers) {
             String newContent = "aaaaaaaaaaaaaaaaaaa";
 
@@ -142,7 +137,7 @@ class AnswerServiceTest {
     void answerCanNotBeEditedWithEmptyContent() {
         TestDataDTO testData = TestDataInit.init(em);
 
-        Answer[] answers = testData.getAnswers();
+        List<Answer> answers = testData.getAnswers();
         for (Answer answer : answers) {
             String prevContent = answer.getContent();
             String newContent = "";
@@ -165,7 +160,7 @@ class AnswerServiceTest {
     @Test
     @DisplayName("작성자는 답변글을 삭제할 수 있어야 함")
     void authorCanDeleteOwnAnswer() {
-        Answer[] answers = TestDataInit.init(em).getAnswers();
+        List<Answer> answers = TestDataInit.init(em).getAnswers();
 
         for (Answer answer : answers) {
             answerService.deleteAnswer(answer.getAuthor().getId(), answer.getId());
@@ -177,7 +172,7 @@ class AnswerServiceTest {
     @DisplayName("관리자는 모든 답변글을 삭제할 수 있어야 함")
     void adminCanDeleteAllAnswer() {
         TestDataDTO dataDTO = TestDataInit.init(em);
-        Answer[] answers = dataDTO.getAnswers();
+        List<Answer> answers = dataDTO.getAnswers();
         Member admin = dataDTO.adminMember();
 
         for (Answer answer : answers) {
@@ -190,8 +185,7 @@ class AnswerServiceTest {
     @DisplayName("관리자가 아닌 사용자는 다른 사용자의 답변글을 지울 수 없어야 함")
     void memberCanNotDeleteOtherMembersAnswer() {
         TestDataDTO dataDTO = TestDataInit.init(em);
-        Answer[] answers = dataDTO.getAnswers();
-        Member admin = dataDTO.adminMember();
+        List<Answer> answers = dataDTO.getAnswers();
 
         for (Answer answer : answers) {
             Member author = answer.getAuthor();

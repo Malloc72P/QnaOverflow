@@ -58,7 +58,7 @@ class TagServiceTest {
         TestDataDTO dataDTO = TestDataInit.init(em);
 
         Member admin = dataDTO.adminMember();
-        Tag[] tags = dataDTO.getTags();
+        List<Tag> tags = dataDTO.getTags();
 
         for (Tag tag : tags) {
             tagService.deleteTag(admin.getId(), tag.getId());
@@ -73,7 +73,7 @@ class TagServiceTest {
     void authorCanDeleteOwnTag() {
         TestDataDTO dataDTO = TestDataInit.init(em);
 
-        Tag[] tags = dataDTO.getTags();
+        List<Tag> tags = dataDTO.getTags();
 
         for (Tag tag : tags) {
             Member author = tag.getAuthor();
@@ -89,7 +89,7 @@ class TagServiceTest {
     void noneAdminMemberCanNotDeleteTag() {
         TestDataDTO dataDTO = TestDataInit.init(em);
 
-        Tag[] tags = dataDTO.getTags();
+        List<Tag> tags = dataDTO.getTags();
 
         for (Tag tag : tags) {
             Member member = dataDTO.anotherMemberAndNotAdmin(tag.getAuthor());
@@ -106,7 +106,7 @@ class TagServiceTest {
         TestDataDTO dataDTO = TestDataInit.init(em);
 
         Member adminMember = dataDTO.adminMember();
-        Tag[] tags = dataDTO.getTags();
+        List<Tag> tags = dataDTO.getTags();
 
         String newTagName = "new-tag-name";
         String newTagDescription = "new-tag-description";
@@ -125,7 +125,7 @@ class TagServiceTest {
     void authorCanEditOwnTag() {
         TestDataDTO dataDTO = TestDataInit.init(em);
 
-        Tag[] tags = dataDTO.getTags();
+        List<Tag> tags = dataDTO.getTags();
 
         String newTagName = "new-tag-name";
         String newTagDescription = "new-tag-description";
@@ -145,7 +145,7 @@ class TagServiceTest {
     void noneAdminCanNotEditTag() {
         TestDataDTO dataDTO = TestDataInit.init(em);
 
-        Tag[] tags = dataDTO.getTags();
+        List<Tag> tags = dataDTO.getTags();
 
         String newTagName = "new-tag-name";
         String newTagDescription = "new-tag-description";
@@ -169,7 +169,7 @@ class TagServiceTest {
     void testSearchTag() {
         TestDataDTO dataDTO = TestDataInit.init(em);
 
-        Tag[] tags = dataDTO.getTags();
+        List<Tag> tags = dataDTO.getTags();
 
         String[] testcases = {
                 "a", "b", "c", "d", "e"

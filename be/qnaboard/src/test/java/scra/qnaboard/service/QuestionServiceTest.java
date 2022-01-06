@@ -42,12 +42,12 @@ class QuestionServiceTest {
     @Test
     @DisplayName("아이디로 질문글 엔티티를 찾고 DTO로 변환할 수 있어야 함")
     void testQuestionDetail() {
-        Question[] questions = TestDataInit.init(em).getQuestions();
+        List<Question> questions = TestDataInit.init(em).getQuestions();
 
         em.flush();
         em.clear();
 
-        Arrays.stream(questions).forEach(question -> {
+        questions.forEach(question -> {
             QuestionDetailDTO detailDTO = questionService.questionDetail(question.getId());
             testDetailDTO(detailDTO, question);
         });
@@ -82,7 +82,7 @@ class QuestionServiceTest {
     @Test
     @DisplayName("작성자는 질문글을 삭제할 수 있어야 함")
     void authorCanDeleteOwnQuestion() {
-        Question[] questions = TestDataInit.init(em).getQuestions();
+        List<Question> questions = TestDataInit.init(em).getQuestions();
 
         em.flush();
         em.clear();
@@ -97,7 +97,7 @@ class QuestionServiceTest {
     @DisplayName("관리자는 모든 질문글을 삭제할 수 있어야 함")
     void adminCanDeleteAllQuestion() {
         TestDataDTO dataDTO = TestDataInit.init(em);
-        Question[] questions = dataDTO.getQuestions();
+        List<Question> questions = dataDTO.getQuestions();
         Member admin = dataDTO.adminMember();
 
         em.flush();
@@ -113,7 +113,7 @@ class QuestionServiceTest {
     @DisplayName("관리자가 아닌 사용자는 다른 사용자의 질문글을 지울 수 없어야 함")
     void memberCanNotDeleteOtherMembersQuestion() {
         TestDataDTO dataDTO = TestDataInit.init(em);
-        Question[] questions = dataDTO.getQuestions();
+        List<Question> questions = dataDTO.getQuestions();
 
         em.flush();
         em.clear();
@@ -130,7 +130,7 @@ class QuestionServiceTest {
     @DisplayName("자기가 작성한 게시글을 수정할 수 있어야 함")
     void memberCanEditOwnQuestion() {
         TestDataDTO dataDTO = TestDataInit.init(em);
-        Question[] questions = dataDTO.getQuestions();
+        List<Question> questions = dataDTO.getQuestions();
 
         em.flush();
         em.clear();
@@ -161,7 +161,7 @@ class QuestionServiceTest {
     @DisplayName("자기가 작성한 게시글을 수정할 수 있어야 함")
     void adminCanEditAllQuestion() {
         TestDataDTO dataDTO = TestDataInit.init(em);
-        Question[] questions = dataDTO.getQuestions();
+        List<Question> questions = dataDTO.getQuestions();
         Member admin = dataDTO.adminMember();
 
         em.flush();
@@ -192,7 +192,7 @@ class QuestionServiceTest {
     @DisplayName("일반 유저는 다른 사용자의 질문글을 수정할 수 없어야 함")
     void memberCanNotEditAnotherMembersQuestion() {
         TestDataDTO dataDTO = TestDataInit.init(em);
-        Question[] questions = dataDTO.getQuestions();
+        List<Question> questions = dataDTO.getQuestions();
 
         em.flush();
         em.clear();
@@ -221,7 +221,6 @@ class QuestionServiceTest {
     @DisplayName("질문글의 내용을 빈 내용으로 수정할 수 없어야함")
     void canNotEditQuestionWithEmptyProperty() {
         TestDataDTO dataDTO = TestDataInit.init(em);
-        Question[] questions = dataDTO.getQuestions();
 
         em.flush();
         em.clear();
@@ -232,7 +231,7 @@ class QuestionServiceTest {
                 {"", "a"}
         };
 
-        Question question = questions[0];
+        Question question = dataDTO.question();
         Long authorId = question.getAuthor().getId();
         for (String[] testcase : testcases) {
             assertThatThrownBy(() -> questionService.editQuestion(authorId, question.getId(), testcase[0], testcase[1], new ArrayList<>()))

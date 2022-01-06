@@ -8,8 +8,8 @@ import scra.qnaboard.domain.entity.Tag;
 import java.util.List;
 import java.util.Optional;
 
-import static scra.qnaboard.domain.entity.QMember.member;
 import static scra.qnaboard.domain.entity.QTag.tag;
+import static scra.qnaboard.domain.entity.member.QMember.member;
 
 @Repository
 @RequiredArgsConstructor

@@ -14,8 +14,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import static scra.qnaboard.domain.entity.QMember.member;
 import static scra.qnaboard.domain.entity.QTag.tag;
+import static scra.qnaboard.domain.entity.member.QMember.member;
 import static scra.qnaboard.domain.entity.post.QAnswer.answer;
 import static scra.qnaboard.domain.entity.post.QQuestion.question;
 import static scra.qnaboard.domain.entity.questiontag.QQuestionTag.questionTag;

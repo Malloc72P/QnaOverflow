@@ -2,6 +2,7 @@ package scra.qnaboard.utils;
 
 import scra.qnaboard.domain.entity.Tag;
 import scra.qnaboard.domain.entity.post.Post;
+import scra.qnaboard.domain.entity.vote.Vote;
 
 import javax.persistence.EntityManager;
 import java.util.List;
@@ -46,11 +47,19 @@ public class QueryUtils {
     }
 
     public static boolean hasQuestionTags(EntityManager em, long tagId) {
-        return em.createQuery(
-                        "select (count(qt) > 0) " +
-                                "from QuestionTag qt " +
-                                "where qt.id.tagId = :tagId", Boolean.class)
+        return em.createQuery("select (count(qt) > 0) " +
+                        "from QuestionTag qt " +
+                        "where qt.id.tagId = :tagId", Boolean.class)
                 .setParameter("tagId", tagId)
+                .getSingleResult();
+    }
+
+    public static Vote findVoteById(EntityManager em, long memberId, long postId) {
+        return em.createQuery("select v from Vote v " +
+                                "where v.id.memberId = :memberId and v.id.postId = : postId",
+                        Vote.class)
+                .setParameter("memberId", memberId)
+                .setParameter("postId", postId)
                 .getSingleResult();
     }
 }

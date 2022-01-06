@@ -8,7 +8,7 @@ import scra.qnaboard.domain.entity.Comment;
 import java.util.Optional;
 
 import static scra.qnaboard.domain.entity.QComment.comment;
-import static scra.qnaboard.domain.entity.QMember.member;
+import static scra.qnaboard.domain.entity.member.QMember.member;
 
 @Repository
 @RequiredArgsConstructor

@@ -4,15 +4,13 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-import scra.qnaboard.domain.entity.QTag;
 import scra.qnaboard.domain.entity.post.QQuestion;
 import scra.qnaboard.domain.entity.post.Question;
-import scra.qnaboard.domain.entity.questiontag.QQuestionTag;
 
 import java.util.Optional;
 
-import static scra.qnaboard.domain.entity.QMember.member;
 import static scra.qnaboard.domain.entity.QTag.tag;
+import static scra.qnaboard.domain.entity.member.QMember.member;
 import static scra.qnaboard.domain.entity.post.QQuestion.question;
 import static scra.qnaboard.domain.entity.questiontag.QQuestionTag.questionTag;
 

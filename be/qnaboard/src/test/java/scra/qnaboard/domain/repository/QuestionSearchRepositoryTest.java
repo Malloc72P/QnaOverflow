@@ -33,7 +33,7 @@ class QuestionSearchRepositoryTest {
     @Test
     @DisplayName("질문 상세보기를 할 수 있어야 함")
     void questionDetailV2() {
-        Question[] questions = TestDataInit.init(em).getQuestions();
+        List<Question> questions = TestDataInit.init(em).getQuestions();
 
         for (Question question : questions) {
             QuestionDetailDTO detailDTO = repository.questionDetail(question.getId());
@@ -70,7 +70,7 @@ class QuestionSearchRepositoryTest {
     @Test
     @DisplayName("코멘트의 계층구조를 조립해서 가지고 올 수 있어야 함")
     void commentsByParentPostId() {
-        Question[] questions = TestDataInit.init(em).getQuestions();
+        List<Question> questions = TestDataInit.init(em).getQuestions();
 
         for (Question question : questions) {
             //질문 상세조회
