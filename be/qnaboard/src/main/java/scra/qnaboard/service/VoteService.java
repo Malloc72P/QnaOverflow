@@ -10,6 +10,8 @@ import scra.qnaboard.domain.entity.vote.VoteType;
 import scra.qnaboard.domain.repository.vote.VoteRepository;
 import scra.qnaboard.domain.repository.vote.VoteSimpleQueryRepository;
 
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -22,18 +24,26 @@ public class VoteService {
     private final MemberService memberService;
     private final PostService postService;
 
-    @Transactional
-    public void castUpVote(Long requesterId, Long postId) {
-        castVote(requesterId, postId, VoteType.UP);
+    public long voteScore(long postId) {
+        return voteSimpleQueryRepository.voteScore(postId);
+    }
+
+    public Map<Long, Long> voteScoreByPostIdList(List<Long> postIdList) {
+        return voteSimpleQueryRepository.voteScoreByPostIdList(postIdList);
     }
 
     @Transactional
-    public void castDownVote(Long requesterId, Long postId) {
-        castVote(requesterId, postId, VoteType.DOWN);
+    public void voteUp(Long requesterId, Long postId) {
+        vote(requesterId, postId, VoteType.UP);
     }
 
     @Transactional
-    public void castVote(Long requesterId, Long postId, VoteType voteType) {
+    public void voteDown(Long requesterId, Long postId) {
+        vote(requesterId, postId, VoteType.DOWN);
+    }
+
+    @Transactional
+    public void vote(Long requesterId, Long postId, VoteType voteType) {
         //투표자와 대상 게시글 검색
         Member member = memberService.findMember(requesterId);
         Post post = postService.findPostById(postId);

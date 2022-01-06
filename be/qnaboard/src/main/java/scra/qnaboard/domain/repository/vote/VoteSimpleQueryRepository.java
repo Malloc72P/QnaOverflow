@@ -5,11 +5,12 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import scra.qnaboard.domain.entity.member.Member;
 import scra.qnaboard.domain.entity.post.Post;
-import scra.qnaboard.domain.entity.vote.QVote;
 import scra.qnaboard.domain.entity.vote.Vote;
-import scra.qnaboard.domain.entity.vote.VoteId;
 
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static scra.qnaboard.domain.entity.vote.QVote.vote;
 
@@ -26,5 +27,36 @@ public class VoteSimpleQueryRepository {
                 .fetchOne();
 
         return Optional.ofNullable(findVote);
+    }
+
+    public long voteScore(long postId) {
+        List<VoteResultDTO> voteCountResult = queryFactory
+                .select(new QVoteResultDTO(
+                        vote.post.id,
+                        vote.count(),
+                        vote.voteType
+                )).from(vote)
+                .where(vote.post.id.eq(postId))
+                .groupBy(vote.voteType)
+                .fetch();
+
+        return VoteResultDTO.countVoteScore(voteCountResult);
+    }
+
+    public Map<Long, Long> voteScoreByPostIdList(List<Long> postId) {
+        List<VoteResultDTO> voteCountResult = queryFactory
+                .select(new QVoteResultDTO(
+                        vote.post.id,
+                        vote.count(),
+                        vote.voteType
+                )).from(vote)
+                .where(vote.post.id.in(postId))
+                .groupBy(vote.post.id, vote.voteType)
+                .fetch();
+
+        return voteCountResult.stream()
+                .collect(Collectors.groupingBy(VoteResultDTO::getPostId))
+                .entrySet().stream()
+                .collect(Collectors.toMap(Map.Entry::getKey, v -> VoteResultDTO.countVoteScore(v.getValue())));
     }
 }

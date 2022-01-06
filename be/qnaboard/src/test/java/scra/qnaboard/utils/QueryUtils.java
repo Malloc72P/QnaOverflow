@@ -62,4 +62,9 @@ public class QueryUtils {
                 .setParameter("postId", postId)
                 .getSingleResult();
     }
+
+    public static long numberOfMember(EntityManager em) {
+        return em.createQuery("select count(m) from Member m", Long.class)
+                .getSingleResult();
+    }
 }
