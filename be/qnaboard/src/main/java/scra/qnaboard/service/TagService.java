@@ -94,22 +94,6 @@ public class TagService {
         return tagSimpleQueryRepository.tagsByIdIn(tagIds);
     }
 
-    public void createQuestionTags(Question question, List<Long> tagIds) {
-        List<Tag> tags = tagSimpleQueryRepository.tagsByIdIn(tagIds);
-
-        List<QuestionTag> questionTags = tags.stream()
-                .map(tag -> new QuestionTag(tag, question))
-                .collect(Collectors.toList());
-
-        questionTagRepository.saveAll(questionTags);
-    }
-
-    @Transactional
-    public void updateQuestionTags(Question question, List<Long> tagIds) {
-        questionTagSimpleQueryRepository.deleteByQuestionId(question.getId());
-        createQuestionTags(question, tagIds);
-    }
-
     private Tag tagWithAuthor(long tagId) {
         return tagSimpleQueryRepository.tagWithAuthor(tagId)
                 .orElseThrow(() -> new TagNotFoundException(tagId));

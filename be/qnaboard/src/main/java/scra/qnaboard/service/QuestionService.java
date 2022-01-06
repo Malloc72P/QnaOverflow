@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import scra.qnaboard.domain.entity.Member;
-import scra.qnaboard.domain.entity.Tag;
 import scra.qnaboard.domain.entity.post.Question;
 import scra.qnaboard.domain.repository.question.QuestionRepository;
 import scra.qnaboard.domain.repository.question.QuestionSearchDetailRepository;
@@ -30,6 +29,7 @@ public class QuestionService {
 
     private final MemberService memberService;
     private final TagService tagService;
+    private final QuestionTagService questionTagService;
     private final QuestionRepository questionRepository;
     private final QuestionSimpleQueryRepository questionSimpleQueryRepository;
     private final QuestionSearchDetailRepository questionSearchDetailRepository;
@@ -73,7 +73,7 @@ public class QuestionService {
         Question question = new Question(author, content, title);
 
         //필요한 태그를 전부 조회하고, 질문글에 추가한다
-        tagService.createQuestionTags(question, tagIds);
+        questionTagService.createQuestionTags(question, tagIds);
 
         //질문글을 저장하고 아이디를 반환한다
         questionRepository.save(question);
@@ -122,7 +122,7 @@ public class QuestionService {
         question.update(title, content);
 
         //태그 정보 수정
-        tagService.updateQuestionTags(question, tagIds);
+        questionTagService.updateQuestionTags(question, tagIds);
     }
 
     public Question findQuestion(long questionId) {
