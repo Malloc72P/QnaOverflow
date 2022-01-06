@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import scra.qnaboard.domain.entity.BaseTimeEntity;
 import scra.qnaboard.domain.entity.Comment;
-import scra.qnaboard.domain.entity.Member;
+import scra.qnaboard.domain.entity.member.Member;
 
 import javax.persistence.*;
 import java.util.ArrayList;

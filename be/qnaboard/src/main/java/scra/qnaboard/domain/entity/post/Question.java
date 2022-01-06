@@ -4,18 +4,15 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.util.StringUtils;
-import scra.qnaboard.domain.entity.Member;
-import scra.qnaboard.domain.entity.Tag;
+import scra.qnaboard.domain.entity.member.Member;
 import scra.qnaboard.domain.entity.questiontag.QuestionTag;
 import scra.qnaboard.service.exception.question.edit.QuestionPropertyIsEmptyException;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 /**
  * 질문글에 대한 엔티티 <br>

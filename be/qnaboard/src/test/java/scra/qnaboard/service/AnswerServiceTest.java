@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
-import scra.qnaboard.domain.entity.Member;
+import scra.qnaboard.domain.entity.member.Member;
 import scra.qnaboard.domain.entity.post.Answer;
 import scra.qnaboard.domain.entity.post.Question;
 import scra.qnaboard.service.exception.answer.delete.AnswerDeleteFailedException;
@@ -65,7 +65,7 @@ class AnswerServiceTest {
                 findAnswer.getContent(),
                 findAnswer.getCreatedDate(),
                 findAnswer.getLastModifiedDate(),
-                findAnswer.getUpVoteCount() - findAnswer.getDownVoteCount(),
+                0L,
                 findAnswer.getAuthor().getId(),
                 findAnswer.getAuthor().getNickname()
         );

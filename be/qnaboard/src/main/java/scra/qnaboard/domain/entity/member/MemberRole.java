@@ -1,4 +1,4 @@
-package scra.qnaboard.domain.entity;
+package scra.qnaboard.domain.entity.member;
 
 public enum MemberRole {
     ADMIN, NORMAL

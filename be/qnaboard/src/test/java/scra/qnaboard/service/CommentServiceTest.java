@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 import scra.qnaboard.domain.entity.Comment;
-import scra.qnaboard.domain.entity.Member;
+import scra.qnaboard.domain.entity.member.Member;
 import scra.qnaboard.service.exception.comment.delete.CommentDeleteFailedException;
 import scra.qnaboard.service.exception.comment.edit.CommentEditFailedException;
 import scra.qnaboard.service.exception.comment.edit.CommentPropertyIsEmptyException;

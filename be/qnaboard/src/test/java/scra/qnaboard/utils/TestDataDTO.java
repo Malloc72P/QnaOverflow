@@ -1,7 +1,7 @@
 package scra.qnaboard.utils;
 
 import scra.qnaboard.domain.entity.Comment;
-import scra.qnaboard.domain.entity.Member;
+import scra.qnaboard.domain.entity.member.Member;
 import scra.qnaboard.domain.entity.Tag;
 import scra.qnaboard.domain.entity.post.Answer;
 import scra.qnaboard.domain.entity.post.Question;

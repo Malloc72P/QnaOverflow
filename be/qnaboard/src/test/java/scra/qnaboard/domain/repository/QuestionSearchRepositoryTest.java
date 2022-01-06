@@ -56,7 +56,7 @@ class QuestionSearchRepositoryTest {
                 question.getId(),
                 question.getTitle(),
                 question.getContent(),
-                question.getUpVoteCount() - question.getDownVoteCount(),
+                detailDTO.getVoteScore(),
                 question.getViewCount(),
                 question.getAuthor().getNickname()
         );

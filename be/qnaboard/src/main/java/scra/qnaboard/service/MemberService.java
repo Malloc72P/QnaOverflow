@@ -3,7 +3,7 @@ package scra.qnaboard.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import scra.qnaboard.domain.entity.Member;
+import scra.qnaboard.domain.entity.member.Member;
 import scra.qnaboard.domain.repository.MemberRepository;
 import scra.qnaboard.service.exception.member.MemberNotFoundException;
 

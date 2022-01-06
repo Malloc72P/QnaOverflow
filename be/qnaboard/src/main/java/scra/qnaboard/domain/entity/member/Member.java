@@ -1,8 +1,9 @@
-package scra.qnaboard.domain.entity;
+package scra.qnaboard.domain.entity.member;
 
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import scra.qnaboard.domain.entity.BaseTimeEntity;
 
 import javax.persistence.*;
 import java.util.Objects;
