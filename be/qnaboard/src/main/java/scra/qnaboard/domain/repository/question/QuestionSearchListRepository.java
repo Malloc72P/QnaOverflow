@@ -47,7 +47,7 @@ public class QuestionSearchListRepository {
                 .select(new QQuestionSummaryDTO(
                         question.id,
                         question.title,
-                        question.upVoteCount.subtract(question.downVoteCount),
+                        question.id,
                         JPAExpressions.select(answer.id.count().intValue())
                                 .from(answer)
                                 .where(answer.question.id.eq(question.id)),

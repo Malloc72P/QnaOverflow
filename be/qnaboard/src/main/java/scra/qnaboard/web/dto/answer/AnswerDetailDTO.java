@@ -51,7 +51,7 @@ public class AnswerDetailDTO {
         AnswerDetailDTO answerDTO = new AnswerDetailDTO();
         answerDTO.answerId = answer.getId();
         answerDTO.content = answer.getContent();
-        answerDTO.voteScore = answer.getUpVoteCount() - answer.getDownVoteCount();
+        answerDTO.voteScore = 0;
         answerDTO.createdDate = answer.getCreatedDate();
         answerDTO.lastModifiedDate = answer.getLastModifiedDate();
         answerDTO.authorId = answer.getAuthor().getId();

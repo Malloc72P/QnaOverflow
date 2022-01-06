@@ -68,7 +68,7 @@ public class QuestionDetailDTO {
         detailDTO.questionId = question.getId();
         detailDTO.title = question.getTitle();
         detailDTO.content = question.getContent();
-        detailDTO.voteScore = question.getUpVoteCount() - question.getDownVoteCount();
+        detailDTO.voteScore = 0;
         detailDTO.viewCount = question.getViewCount();
         detailDTO.createdDate = question.getCreatedDate();
         detailDTO.lastModifiedDate = question.getLastModifiedDate();

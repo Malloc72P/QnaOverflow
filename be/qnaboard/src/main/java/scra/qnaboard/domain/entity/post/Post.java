@@ -35,9 +35,6 @@ public abstract class Post extends BaseTimeEntity {
 
     protected String content;
 
-    protected Long upVoteCount = 0L;
-    protected Long downVoteCount = 0L;
-
     @OneToMany(mappedBy = "parentPost", fetch = FetchType.LAZY)
     protected List<Comment> comments = new ArrayList<>();
 
@@ -61,14 +58,11 @@ public abstract class Post extends BaseTimeEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Post post = (Post) o;
-        return Objects.equals(getId(), post.getId()) &&
-                Objects.equals(getContent(), post.getContent()) &&
-                Objects.equals(getUpVoteCount(), post.getUpVoteCount()) &&
-                Objects.equals(getDownVoteCount(), post.getDownVoteCount());
+        return Objects.equals(getId(), post.getId());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getContent(), getUpVoteCount(), getDownVoteCount());
+        return Objects.hash(getId());
     }
 }

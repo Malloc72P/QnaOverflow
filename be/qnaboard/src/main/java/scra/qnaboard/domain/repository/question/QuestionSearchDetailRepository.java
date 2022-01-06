@@ -132,7 +132,7 @@ public class QuestionSearchDetailRepository {
                 .select(new QAnswerDetailDTO(
                         answer.id,
                         answer.content,
-                        answer.upVoteCount.subtract(answer.downVoteCount),
+                        answer.id,
                         answer.createdDate,
                         answer.lastModifiedDate,
                         answer.author.id,
@@ -173,7 +173,7 @@ public class QuestionSearchDetailRepository {
                         question.id,
                         question.title,
                         question.content,
-                        question.upVoteCount.subtract(question.downVoteCount),
+                        question.id,
                         question.viewCount,
                         question.createdDate,
                         question.lastModifiedDate,
