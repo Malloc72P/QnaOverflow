@@ -34,14 +34,12 @@ public class AnswerDetailDTO {
     @QueryProjection
     public AnswerDetailDTO(long answerId,
                            String content,
-                           long voteScore,
                            LocalDateTime createdDate,
                            LocalDateTime lastModifiedDate,
                            long authorId,
                            String authorName) {
         this.answerId = answerId;
         this.content = content;
-        this.voteScore = voteScore;
         this.createdDate = createdDate;
         this.lastModifiedDate = lastModifiedDate;
         this.authorId = authorId;
@@ -52,7 +50,6 @@ public class AnswerDetailDTO {
         AnswerDetailDTO answerDTO = new AnswerDetailDTO();
         answerDTO.answerId = answer.getId();
         answerDTO.content = answer.getContent();
-        answerDTO.voteScore = 0;
         answerDTO.createdDate = answer.getCreatedDate();
         answerDTO.lastModifiedDate = answer.getLastModifiedDate();
         answerDTO.authorId = answer.getAuthor().getId();

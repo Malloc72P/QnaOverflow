@@ -41,7 +41,7 @@ class VoteServiceTest {
         List<Question> questions = testDataDTO.getQuestions();
         List<Member> members = testDataDTO.getMembers();
 
-        testLayout(questions, members, this::doUpVote, this::testVoteCreation);
+        testTemplate(questions, members, this::doUpVote, this::testVoteCreation);
     }
 
     private void testVoteCreation(Question question, Member member) {
@@ -57,7 +57,7 @@ class VoteServiceTest {
         List<Question> questions = testDataDTO.getQuestions();
         List<Member> members = testDataDTO.getMembers();
 
-        testLayout(questions, members, this::doUpVote, this::testDuplicatedVote);
+        testTemplate(questions, members, this::doUpVote, this::testDuplicatedVote);
     }
 
     private void testDuplicatedVote(Question question, Member member) {
@@ -71,7 +71,7 @@ class VoteServiceTest {
         List<Question> questions = testDataDTO.getQuestions();
         List<Member> members = testDataDTO.getMembers();
 
-        testLayout(questions, members, this::doUpVote, this::testReverseVote);
+        testTemplate(questions, members, this::doUpVote, this::testReverseVote);
     }
 
     private void testReverseVote(Question question, Member member) {
@@ -136,10 +136,10 @@ class VoteServiceTest {
         }
     }
 
-    private void testLayout(List<Question> questions,
-                            List<Member> members,
-                            BiConsumer<Question, Member> peekBehavior,
-                            BiConsumer<Question, Member> testBehavior) {
+    private void testTemplate(List<Question> questions,
+                              List<Member> members,
+                              BiConsumer<Question, Member> peekBehavior,
+                              BiConsumer<Question, Member> testBehavior) {
         for (Question question : questions) {
             members.stream()
                     .peek(member -> peekBehavior.accept(question, member))

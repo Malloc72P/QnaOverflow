@@ -3,11 +3,13 @@ package scra.qnaboard.web.dto.question.list;
 import com.querydsl.core.annotations.QueryProjection;
 import lombok.Getter;
 import org.springframework.format.annotation.DateTimeFormat;
+import scra.qnaboard.web.dto.exception.DtoUpdateException;
 import scra.qnaboard.web.dto.question.tag.QuestionTagDTO;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import static scra.qnaboard.utils.DateTimeUtil.MY_FORMAT;
 
@@ -36,21 +38,24 @@ public class QuestionSummaryDTO {
     @QueryProjection
     public QuestionSummaryDTO(long questionId,
                               String title,
-                              long voteScore,
                               int answerCount,
                               long viewCount,
                               LocalDateTime createDate,
                               String authorName) {
         this.questionId = questionId;
         this.title = title;
-        this.voteScore = voteScore;
         this.answerCount = answerCount;
         this.viewCount = viewCount;
         this.createDate = createDate;
         this.authorName = authorName;
     }
 
-    public void setTags(List<QuestionTagDTO> tags) {
-        this.tags = tags;
+    public void update(Map<Long, List<QuestionTagDTO>> questionTagMap,
+                       Map<Long, Long> voteScoreMap) {
+        if (questionTagMap == null || voteScoreMap == null) {
+            throw new DtoUpdateException();
+        }
+        tags = questionTagMap.get(questionId);
+        voteScore = voteScoreMap.get(questionId);
     }
 }

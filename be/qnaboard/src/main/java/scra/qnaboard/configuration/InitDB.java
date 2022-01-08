@@ -12,10 +12,14 @@ import scra.qnaboard.domain.entity.post.Answer;
 import scra.qnaboard.domain.entity.post.Post;
 import scra.qnaboard.domain.entity.post.Question;
 import scra.qnaboard.domain.entity.questiontag.QuestionTag;
+import scra.qnaboard.domain.entity.vote.Vote;
+import scra.qnaboard.domain.entity.vote.VoteType;
 
 import javax.annotation.PostConstruct;
 import javax.persistence.EntityManager;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * 로컬에서 개발할 때 데이터를 초기화 하기 위한 클래스.
@@ -61,67 +65,100 @@ public class InitDB {
             log.info("데이터베이스 초기화 시작");
 
             //1. 멤버 생성
-            Member author = new Member("member1", MemberRole.NORMAL);
-            em.persist(author);
+            List<Member> members = new ArrayList<>();
+            members.add(new Member("member1", MemberRole.NORMAL));
+            members.add(new Member("Admin1", MemberRole.ADMIN));
+            members.add(new Member("Admin2", MemberRole.ADMIN));
+            members.add(new Member("member2", MemberRole.NORMAL));
+            members.add(new Member("member3", MemberRole.NORMAL));
+            members.add(new Member("member4", MemberRole.NORMAL));
+            members.add(new Member("member5", MemberRole.NORMAL));
+            members.add(new Member("member6", MemberRole.NORMAL));
+            members.add(new Member("member7", MemberRole.NORMAL));
+
+            members.forEach(em::persist);
 
             //2. 태그 생성
-            Tag[] tags = {
-                    new Tag(author, "Angular", "구글에서 만든 웹 프론트엔드 프레임워크인 Angular"),
-                    new Tag(author, "Web", "웹에 관련된 질문은 해당 태그를 사용해주세요"),
-                    new Tag(author, "JQuery", "자바스크립트를 좀 더 편하게 사용할 수 있게 도와주는 라이브러리입니다"),
-                    new Tag(author, "ReactJS", "페이스북에서 만든 웹 프론트엔드 프레임워크입니다. SPA를 보다 쉽게 만들 수 있도록 도와줍니다"),
-                    new Tag(author, "VueJS", "프로그레시브 자바스크립트 프레임워크입니다. 접근하기 쉽고 높은 성능을 자랑합니다"),
-                    new Tag(author, "SpringBoot", "스프링 프레임워크를 보다 더 쉽게 사용할 수 있게 만든 프레임워크입니다")
-            };
-            Arrays.stream(tags).forEach(em::persist);
+            List<Tag> tags = new ArrayList<>();
+            tags.add(new Tag(members.get(1), "Angular", "description-Angular"));
+            tags.add(new Tag(members.get(1), "Web", "description-Web"));
+            tags.add(new Tag(members.get(1), "JQuery", "description-JQuery"));
+            tags.add(new Tag(members.get(2), "ReactJS", "description-ReactJS"));
+            tags.add(new Tag(members.get(2), "VueJS", "description-VueJS"));
+            tags.add(new Tag(members.get(1), "SpringBoot", "description-SpringBoot"));
+            tags.forEach(em::persist);
 
             //3. 질문글 생성
-            Question[] questions = {
-                    new Question(author, "target-content", "target-title"),
-                    new Question(author, "no-tag-no-answer", "title-2"),
-                    new Question(author, "content-3", "title-3"),
-                    new Question(author, "content-4", "title-4"),
-                    new Question(author, "content-5", "title-5"),
-            };
-            Arrays.stream(questions).forEach(em::persist);
-            Question testTargetQuestion = questions[0];
+            List<Question> questions = new ArrayList<>();
+            questions.add(new Question(members.get(1), "target-content", "target-title"));
+            questions.add(new Question(members.get(1), "no-tag-no-answer", "title-2"));
+            questions.add(new Question(members.get(0), "content-3", "title-3"));
+            questions.add(new Question(members.get(3), "content-4", "title-4"));
+            questions.add(new Question(members.get(0), "content-5", "title-5"));
+            questions.forEach(em::persist);
+            Question testTargetQuestion = questions.get(0);
 
             //4. 답변글 생성
-            Answer[] answers = {
-                    new Answer(author, "content1", testTargetQuestion),
-                    new Answer(author, "content2", testTargetQuestion),
-                    new Answer(author, "content3", testTargetQuestion),
-                    new Answer(author, "content4", testTargetQuestion),
-                    new Answer(author, "content5", testTargetQuestion),
-                    new Answer(author, "content6", testTargetQuestion),
-                    new Answer(author, "content7", testTargetQuestion),
-            };
-            Arrays.stream(answers).forEach(em::persist);
+            List<Answer> answers = new ArrayList<>();
+            answers.add(new Answer(members.get(4), "content1", testTargetQuestion));
+            answers.add(new Answer(members.get(4), "content2", testTargetQuestion));
+            answers.add(new Answer(members.get(2), "content3", testTargetQuestion));
+            answers.add(new Answer(members.get(1), "content4", testTargetQuestion));
+            answers.add(new Answer(members.get(1), "content5", testTargetQuestion));
+            answers.add(new Answer(members.get(0), "content6", testTargetQuestion));
+            answers.add(new Answer(members.get(0), "content7", testTargetQuestion));
+            answers.forEach(em::persist);
+
+            Answer testTargetAnswer = answers.get(0);
 
             //5. 질문글에 태그 등록
-            Arrays.stream(tags)
+            tags.stream()
                     .map(tag -> new QuestionTag(tag, testTargetQuestion))
                     .forEach(em::persist);
 
             //6. 질문글에 대댓글 등록
-            Comment c7 = createComment(em, author, testTargetQuestion, "q-content-7", null);
-            Comment c8 = createComment(em, author, testTargetQuestion, "q-content-8", null);
-            Comment c1 = createComment(em, author, testTargetQuestion, "q-content-1", null);
-            Comment c2 = createComment(em, author, testTargetQuestion, "q-content-2", c1);
-            Comment c3 = createComment(em, author, testTargetQuestion, "q-content-3", c2);
-            Comment c4 = createComment(em, author, testTargetQuestion, "q-content-4", c3);
-            Comment c5 = createComment(em, author, testTargetQuestion, "q-content-5", c4);
-            Comment c6 = createComment(em, author, testTargetQuestion, "q-content-6", c4);
+            Comment c7 = createComment(em, members.get(0), testTargetQuestion, "content-7", null);
+            Comment c8 = createComment(em, members.get(1), testTargetQuestion, "content-8", null);
+            Comment c1 = createComment(em, members.get(1), testTargetQuestion, "content-1", null);
+            Comment c2 = createComment(em, members.get(1), testTargetQuestion, "content-2", c1);
+            Comment c3 = createComment(em, members.get(0), testTargetQuestion, "content-3", c2);
+            Comment c4 = createComment(em, members.get(3), testTargetQuestion, "content-4", c3);
+            Comment c5 = createComment(em, members.get(3), testTargetQuestion, "content-5", c4);
+            Comment c6 = createComment(em, members.get(0), testTargetQuestion, "content-6", c4);
+
+            List<Comment> commentList = new ArrayList<>();
+            commentList.add(c1);
+            commentList.add(c2);
+            commentList.add(c3);
+            commentList.add(c4);
+            commentList.add(c5);
+            commentList.add(c6);
+            commentList.add(c7);
+            commentList.add(c8);
 
             //7. 답변글에 대댓글 등록
-            Arrays.stream(answers).forEach(answer -> {
-                Comment ac4 = createComment(em, author, answer, answer.getId() + "content-4", null);
-                Comment ac5 = createComment(em, author, answer, answer.getId() + "content-5", null);
-                Comment ac6 = createComment(em, author, answer, answer.getId() + "content-6", ac5);
-                Comment ac1 = createComment(em, author, answer, answer.getId() + "content-1", null);
-                Comment ac2 = createComment(em, author, answer, answer.getId() + "content-2", ac1);
-                Comment ac3 = createComment(em, author, answer, answer.getId() + "content-3", ac1);
+            answers.forEach(answer -> {
+                Comment ac4 = createComment(em, members.get(0), answer, answer.getId() + "content-4", null);
+                Comment ac5 = createComment(em, members.get(1), answer, answer.getId() + "content-5", null);
+                Comment ac6 = createComment(em, members.get(2), answer, answer.getId() + "content-6", ac5);
+                Comment ac1 = createComment(em, members.get(0), answer, answer.getId() + "content-1", null);
+                Comment ac2 = createComment(em, members.get(1), answer, answer.getId() + "content-2", ac1);
+                Comment ac3 = createComment(em, members.get(0), answer, answer.getId() + "content-3", ac1);
+                commentList.add(ac1);
+                commentList.add(ac2);
+                commentList.add(ac3);
+                commentList.add(ac4);
+                commentList.add(ac5);
+                commentList.add(ac6);
             });
+
+            members.stream()
+                    .map(member -> new Vote(member, testTargetQuestion, VoteType.UP))
+                    .forEach(em::persist);
+
+            members.stream()
+                    .map(member -> new Vote(member, testTargetAnswer, VoteType.UP))
+                    .forEach(em::persist);
 
             log.info("데이터베이스 초기화 완료");
         }

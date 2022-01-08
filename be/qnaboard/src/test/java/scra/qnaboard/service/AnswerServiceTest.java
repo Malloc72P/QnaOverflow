@@ -52,7 +52,6 @@ class AnswerServiceTest {
                 AnswerDetailDTO::getContent,
                 AnswerDetailDTO::getCreatedDate,
                 AnswerDetailDTO::getLastModifiedDate,
-                AnswerDetailDTO::getVoteScore,
                 AnswerDetailDTO::getAuthorId,
                 AnswerDetailDTO::getAuthorName
         ).containsExactly(
@@ -60,7 +59,6 @@ class AnswerServiceTest {
                 findAnswer.getContent(),
                 findAnswer.getCreatedDate(),
                 findAnswer.getLastModifiedDate(),
-                0L,
                 findAnswer.getAuthor().getId(),
                 findAnswer.getAuthor().getNickname()
         );

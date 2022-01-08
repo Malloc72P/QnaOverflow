@@ -6,20 +6,18 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import scra.qnaboard.domain.repository.tag.QuestionTagSimpleQueryRepository;
+import scra.qnaboard.domain.repository.vote.VoteSimpleQueryRepository;
 import scra.qnaboard.web.dto.question.list.QQuestionSummaryDTO;
 import scra.qnaboard.web.dto.question.list.QuestionSummaryDTO;
-import scra.qnaboard.web.dto.question.tag.QQuestionTagDTO;
 import scra.qnaboard.web.dto.question.tag.QuestionTagDTO;
 
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import static scra.qnaboard.domain.entity.QTag.tag;
 import static scra.qnaboard.domain.entity.member.QMember.member;
 import static scra.qnaboard.domain.entity.post.QAnswer.answer;
 import static scra.qnaboard.domain.entity.post.QQuestion.question;
-import static scra.qnaboard.domain.entity.questiontag.QQuestionTag.questionTag;
 
 /**
  * 복잡한 동적쿼리 작성을 위해 QueryDSL을 사용하는 리포지토리
@@ -32,7 +30,8 @@ public class QuestionSearchListRepository {
 
     private final QuestionBooleanExpressionSupplier expressionSupplier;
 
-    private final QuestionTagSimpleQueryRepository questionTagSimpleQueryRepository;
+    private final QuestionTagSimpleQueryRepository questionTagRepository;
+    private final VoteSimpleQueryRepository voteRepository;
 
     /**
      * 질문 목록 조회 메서드 <br>
@@ -50,7 +49,6 @@ public class QuestionSearchListRepository {
                 .select(new QQuestionSummaryDTO(
                         question.id,
                         question.title,
-                        question.id,
                         JPAExpressions.select(answer.id.count().intValue())
                                 .from(answer)
                                 .where(answer.question.id.eq(question.id)),
@@ -68,14 +66,17 @@ public class QuestionSearchListRepository {
                 .collect(Collectors.toList());
 
         //3. 질문목록에서 참조하는 태그정보 조회(QuestionTag와 Tag까지 조인해서 가져오되, in 절을 사용해서 최적화함)
-        List<QuestionTagDTO> tags = questionTagSimpleQueryRepository.questionTagsBy(questionIds);
+        List<QuestionTagDTO> tags = questionTagRepository.questionTagsBy(questionIds);
 
         //4. 태그의 Question ID값을 가지고 Map으로 그룹화 함
         Map<Long, List<QuestionTagDTO>> tagMap = tags.stream()
                 .collect(Collectors.groupingBy(QuestionTagDTO::getQuestionId));
 
-        //5. 4번에서 만든 맵을 가지고 Question DTO에 태그정보를 입력함
-        questions.forEach(question -> question.setTags(tagMap.get(question.getQuestionId())));
+        //5. 투표점수 정보를 조회
+        Map<Long, Long> voteScoreMap = voteRepository.voteScoreByPostIdList(questionIds);
+
+        //6. 태그정보와 투표점수를 입력
+        questions.forEach(question -> question.update(tagMap, voteScoreMap));
 
         return questions;
     }

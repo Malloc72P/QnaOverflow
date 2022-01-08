@@ -49,14 +49,12 @@ class QuestionSearchRepositoryTest {
                 QuestionDetailDTO::getQuestionId,
                 QuestionDetailDTO::getTitle,
                 QuestionDetailDTO::getContent,
-                QuestionDetailDTO::getVoteScore,
                 QuestionDetailDTO::getViewCount,
                 QuestionDetailDTO::getAuthorName
         ).containsExactly(
                 question.getId(),
                 question.getTitle(),
                 question.getContent(),
-                detailDTO.getVoteScore(),
                 question.getViewCount(),
                 question.getAuthor().getNickname()
         );

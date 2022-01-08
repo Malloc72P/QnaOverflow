@@ -37,14 +37,15 @@ class QuestionServiceTest {
     @Autowired
     private QuestionService questionService;
 
-    /**
-     * 서비스의 질문상세보기 기능을 테스트함
-     */
+    @Autowired
+    private VoteService voteService;
+
     @Test
     @DisplayName("아이디로 질문글 엔티티를 찾고 DTO로 변환할 수 있어야 함")
     void testQuestionDetail() {
-        testTemplate1(
+        testTemplate(
                 (question, testDataDTO) -> {
+                    //질문글 상세조회를 하고, 실제 엔티티와 데이터가 같은지 검사함
                     QuestionDetailDTO detailDTO = questionService.questionDetail(question.getId());
                     QuestionDetailDTOTestUtil.testQuestionDetailDTO(em, question, detailDTO);
                 }
@@ -52,9 +53,23 @@ class QuestionServiceTest {
     }
 
     @Test
+    @DisplayName("상세조회 기능의 투표점수 테스트")
+    void testQuestionDetailVoteScore() {
+        TestDataDTO testDataDTO = TestDataInit.init(em);
+
+        Question question = testDataDTO.question();
+        List<Member> members = testDataDTO.getMembers();
+        members.forEach(member -> voteService.voteUp(member.getId(), question.getId()));
+        int numberOfMembers = members.size();
+
+        QuestionDetailDTO detailDTO = questionService.questionDetail(question.getId());
+        assertThat(detailDTO.getVoteScore()).isEqualTo(numberOfMembers);
+    }
+
+    @Test
     @DisplayName("작성자는 질문글을 삭제할 수 있어야 함")
     void authorCanDeleteOwnQuestion() {
-        testTemplate1(
+        testTemplate(
                 (question, testDataDTO) -> {//삭제 기능 테스트
                     questionService.deleteQuestion(question.getAuthor().getId(), question.getId());
                     testDeleteSuccess(question);
@@ -65,7 +80,7 @@ class QuestionServiceTest {
     @Test
     @DisplayName("관리자는 모든 질문글을 삭제할 수 있어야 함")
     void adminCanDeleteAllQuestion() {
-        testTemplate1(
+        testTemplate(
                 (question, testDataDTO) -> {
                     //관리자 권한으로 질문글 삭제
                     Member admin = testDataDTO.adminMember();
@@ -79,7 +94,7 @@ class QuestionServiceTest {
     @Test
     @DisplayName("관리자가 아닌 사용자는 다른 사용자의 질문글을 지울 수 없어야 함")
     void memberCanNotDeleteOtherMembersQuestion() {
-        testTemplate1(
+        testTemplate(
                 (question, testDataDTO) -> {
                     //잘못된 삭제요청시 예외가 발생하는테 확인
                     Member author = question.getAuthor();
@@ -93,7 +108,7 @@ class QuestionServiceTest {
     @Test
     @DisplayName("자기가 작성한 게시글을 수정할 수 있어야 함")
     void memberCanEditOwnQuestion() {
-        testTemplate1(
+        testTemplate(
                 (question, testDataDTO) -> {
                     editQuestion(question, question.getAuthor());
                     testEditSuccess(question);
@@ -104,7 +119,7 @@ class QuestionServiceTest {
     @Test
     @DisplayName("자기가 작성한 게시글을 수정할 수 있어야 함")
     void adminCanEditAllQuestion() {
-        testTemplate1(
+        testTemplate(
                 (question, testDataDTO) -> {
                     editQuestion(question, testDataDTO.adminMember());
                     testEditSuccess(question);
@@ -115,7 +130,7 @@ class QuestionServiceTest {
     @Test
     @DisplayName("일반 유저는 다른 사용자의 질문글을 수정할 수 없어야 함")
     void memberCanNotEditAnotherMembersQuestion() {
-        testTemplate1(
+        testTemplate(
                 (question, testDataDTO) -> {//다른 사용자의 질문글을 일반 사용자가 수정하려고 하면 예외 터지는지 테스트함
                     Member author = question.getAuthor();
                     Member anotherMemberAndNotAdmin = testDataDTO.anotherMemberAndNotAdmin(author);
@@ -157,10 +172,8 @@ class QuestionServiceTest {
         }
     }
 
-    //1형 테스트 템플릿
-    private void testTemplate1(
-            BiConsumer<Question, TestDataDTO> testFunction
-    ) {
+    //테스트 템플릿
+    private void testTemplate(BiConsumer<Question, TestDataDTO> testFunction) {
         TestDataDTO dataDTO = TestDataInit.init(em);
         List<Question> questions = dataDTO.getQuestions();
 
@@ -177,9 +190,7 @@ class QuestionServiceTest {
     }
 
     private void testEditSuccess(Question question) {
-        Question findQuestion = em.createQuery("select q from Question q where q.id = :id", Question.class)
-                .setParameter("id", question.getId())
-                .getSingleResult();
+        Question findQuestion = QueryUtils.questionById(em, question);
 
         assertThat(findQuestion).extracting(
                 Question::getTitle,

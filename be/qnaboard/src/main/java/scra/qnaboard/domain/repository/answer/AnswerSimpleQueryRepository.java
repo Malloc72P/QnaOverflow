@@ -33,7 +33,8 @@ public class AnswerSimpleQueryRepository {
     }
 
     /**
-     * 답변게시글 DTO 리스트를 질문글 아이디로 조회
+     * 답변게시글 DTO 리스트를 질문글 아이디로 조회 <br>
+     * 투표점수는 조회하지 않는 점에 주의!
      *
      * @param questionId 질문글 아이디
      * @return 답변게시글 DTO 리스트
@@ -43,7 +44,6 @@ public class AnswerSimpleQueryRepository {
                 .select(new QAnswerDetailDTO(
                         answer.id,
                         answer.content,
-                        answer.id,
                         answer.createdDate,
                         answer.lastModifiedDate,
                         answer.author.id,
