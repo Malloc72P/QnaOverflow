@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 import scra.qnaboard.domain.repository.answer.AnswerSimpleQueryRepository;
 import scra.qnaboard.domain.repository.comment.CommentSimpleQueryRepository;
 import scra.qnaboard.domain.repository.tag.QuestionTagSimpleQueryRepository;
+import scra.qnaboard.domain.repository.vote.VoteSimpleQueryRepository;
 import scra.qnaboard.service.exception.question.search.QuestionNotFoundException;
 import scra.qnaboard.web.dto.answer.AnswerDetailDTO;
 import scra.qnaboard.web.dto.comment.CommentDTO;
@@ -31,9 +32,10 @@ public class QuestionSearchDetailRepository {
 
     private final JPAQueryFactory queryFactory;
 
-    private final CommentSimpleQueryRepository commentSimpleQueryRepository;
-    private final AnswerSimpleQueryRepository answerSimpleQueryRepository;
-    private final QuestionTagSimpleQueryRepository questionTagSimpleQueryRepository;
+    private final CommentSimpleQueryRepository commentRepository;
+    private final AnswerSimpleQueryRepository answerRepository;
+    private final QuestionTagSimpleQueryRepository questionTagRepository;
+    private final VoteSimpleQueryRepository voteRepository;
 
     private final QuestionBooleanExpressionSupplier expressionSupplier;
 
@@ -48,10 +50,10 @@ public class QuestionSearchDetailRepository {
         QuestionDetailDTO detailDTO = questionDetailDtoByQuestionId(questionId);
 
         //2. 질문글태그(QuestionTag)랑 태그(Tag)만 가져옴
-        List<QuestionTagDTO> tags = questionTagSimpleQueryRepository.tagDtosByQuestionId(questionId);
+        List<QuestionTagDTO> tags = questionTagRepository.tagDtosByQuestionId(questionId);
 
         //3. 답변글과 답변글 작성자만 가져옴
-        List<AnswerDetailDTO> answers = answerSimpleQueryRepository.answerDtosByQuestionId(questionId);
+        List<AnswerDetailDTO> answers = answerRepository.answerDtosByQuestionId(questionId);
 
         //4. 대댓글 목록을 가져오기 위해 질문글과 답변글의 아이디를 컬렉션으로 모음
         List<Long> postIds = answers.stream()
@@ -60,16 +62,18 @@ public class QuestionSearchDetailRepository {
         postIds.add(questionId);
 
         //5. 대댓글 조회
-        Map<Long, List<CommentDTO>> newCommentMap = commentSimpleQueryRepository.commentMap(postIds);
+        Map<Long, List<CommentDTO>> commentMap = commentRepository.commentMap(postIds);
+        List<CommentDTO> questionComments = commentMap.get(questionId);
 
-        //6. detailDTO의 부품 조립(태그목록, 답변게시글목록, 대댓글 목록)
-        detailDTO.updateTags(tags);
-        detailDTO.updateAnswer(answers);
-        detailDTO.updateComments(newCommentMap.get(detailDTO.getQuestionId()));
+        //6. 게시글 투표점수 조회
+        Map<Long, Long> voteScoreMap = voteRepository.voteScoreByPostIdList(postIds);
+        Long questionVoteScore = voteScoreMap.get(questionId);
 
-        //7. 답변 게시글의 부품 조립(대댓글 목록)
-        detailDTO.getAnswers()
-                .forEach(answerDTO -> answerDTO.updateComments(newCommentMap.get(answerDTO.getAnswerId())));
+        //7. detailDTO의 부품 조립(태그목록, 답변게시글목록, 대댓글 목록)
+        detailDTO.update(answers, tags, questionComments, questionVoteScore);
+
+        //8. 답변 게시글의 부품 조립(대댓글 목록)
+        detailDTO.getAnswers().forEach(answer -> answer.update(commentMap, voteScoreMap));
 
         return detailDTO;
     }
@@ -86,7 +90,6 @@ public class QuestionSearchDetailRepository {
                         question.id,
                         question.title,
                         question.content,
-                        question.id,
                         question.viewCount,
                         question.createdDate,
                         question.lastModifiedDate,

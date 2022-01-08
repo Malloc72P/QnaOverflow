@@ -40,7 +40,6 @@ public class QuestionDetailDTO {
     public QuestionDetailDTO(long questionId,
                              String title,
                              String content,
-                             long voteScore,
                              long viewCount,
                              LocalDateTime createdDate,
                              LocalDateTime lastModifiedDate,
@@ -49,7 +48,6 @@ public class QuestionDetailDTO {
         this.questionId = questionId;
         this.title = title;
         this.content = content;
-        this.voteScore = voteScore;
         this.viewCount = viewCount;
         this.createdDate = createdDate;
         this.lastModifiedDate = lastModifiedDate;
@@ -78,24 +76,38 @@ public class QuestionDetailDTO {
         return detailDTO;
     }
 
-    public void updateAnswer(List<AnswerDetailDTO> answers) {
+    public void update(List<AnswerDetailDTO> answers,
+                       List<QuestionTagDTO> tags,
+                       List<CommentDTO> comments,
+                       long voteScore) {
+        updateAnswer(answers);
+        updateTags(tags);
+        updateComments(comments);
+        updateVoteScore(voteScore);
+    }
+
+    private void updateAnswer(List<AnswerDetailDTO> answers) {
         if (answers == null) {
             return;
         }
         this.answers = answers;
     }
 
-    public void updateTags(List<QuestionTagDTO> tags) {
+    private void updateTags(List<QuestionTagDTO> tags) {
         if (tags == null) {
             return;
         }
         this.tags = tags;
     }
 
-    public void updateComments(List<CommentDTO> comments) {
+    private void updateComments(List<CommentDTO> comments) {
         if (comments == null) {
             return;
         }
         this.comments = comments;
+    }
+
+    private void updateVoteScore(long voteScore) {
+        this.voteScore = voteScore;
     }
 }

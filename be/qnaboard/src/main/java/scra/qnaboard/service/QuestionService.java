@@ -28,7 +28,6 @@ import java.util.List;
 public class QuestionService {
 
     private final MemberService memberService;
-    private final TagService tagService;
     private final QuestionTagService questionTagService;
     private final QuestionRepository questionRepository;
     private final QuestionSimpleQueryRepository questionSimpleQueryRepository;

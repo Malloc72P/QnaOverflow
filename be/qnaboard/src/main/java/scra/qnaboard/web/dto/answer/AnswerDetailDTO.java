@@ -10,6 +10,7 @@ import scra.qnaboard.web.dto.comment.CommentDTO;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 답변 게시글을 위한 DTO
@@ -60,10 +61,23 @@ public class AnswerDetailDTO {
         return answerDTO;
     }
 
-    public void updateComments(List<CommentDTO> comments) {
+    public void update(Map<Long, List<CommentDTO>> newCommentMap,
+                        Map<Long, Long> voteScoreMap) {
+        List<CommentDTO> comments = newCommentMap.get(answerId);
+        Long voteScore = voteScoreMap.get(answerId);
+
+        updateComments(comments);
+        updateVoteScore(voteScore);
+    }
+
+    private void updateComments(List<CommentDTO> comments) {
         if (comments == null) {
             return;
         }
         this.comments = comments;
+    }
+
+    private void updateVoteScore(long voteScore) {
+        this.voteScore = voteScore;
     }
 }

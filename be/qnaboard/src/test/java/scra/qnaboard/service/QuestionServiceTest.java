@@ -16,11 +16,12 @@ import scra.qnaboard.utils.QueryUtils;
 import scra.qnaboard.utils.TestDataDTO;
 import scra.qnaboard.utils.TestDataInit;
 import scra.qnaboard.web.dto.question.detail.QuestionDetailDTO;
+import scra.qnaboard.web.dto.question.detail.QuestionDetailDTOTestUtil;
 
 import javax.persistence.EntityManager;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
+import java.util.function.BiConsumer;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -42,179 +43,95 @@ class QuestionServiceTest {
     @Test
     @DisplayName("아이디로 질문글 엔티티를 찾고 DTO로 변환할 수 있어야 함")
     void testQuestionDetail() {
-        List<Question> questions = TestDataInit.init(em).getQuestions();
-
-        em.flush();
-        em.clear();
-
-        questions.forEach(question -> {
-            QuestionDetailDTO detailDTO = questionService.questionDetail(question.getId());
-            testDetailDTO(detailDTO, question);
-        });
-    }
-
-    /**
-     * DTO가 엔티티의 값을 잘 가지고 있는지 테스트함
-     */
-    private void testDetailDTO(QuestionDetailDTO detailDTO, Question question) {
-        assertThat(detailDTO).extracting(
-                QuestionDetailDTO::getQuestionId,
-                QuestionDetailDTO::getTitle,
-                QuestionDetailDTO::getContent,
-                QuestionDetailDTO::getVoteScore,
-                QuestionDetailDTO::getViewCount,
-                QuestionDetailDTO::getAuthorName
-        ).containsExactly(
-                question.getId(),
-                question.getTitle(),
-                question.getContent(),
-                detailDTO.getVoteScore(),
-                question.getViewCount(),
-                question.getAuthor().getNickname()
+        testTemplate1(
+                (question, testDataDTO) -> {
+                    QuestionDetailDTO detailDTO = questionService.questionDetail(question.getId());
+                    QuestionDetailDTOTestUtil.testQuestionDetailDTO(em, question, detailDTO);
+                }
         );
-
-        int sizeOfQuestionTag = QueryUtils.sizeOfQuestionTagsByQuestionId(em, question.getId());
-        assertThat(detailDTO.getTags().size()).isEqualTo(sizeOfQuestionTag);
-        int sizeOfAnswer = QueryUtils.sizeOfAnswerByQuestionId(em, question.getId());
-        assertThat(detailDTO.getAnswers().size()).isEqualTo(sizeOfAnswer);
     }
 
     @Test
     @DisplayName("작성자는 질문글을 삭제할 수 있어야 함")
     void authorCanDeleteOwnQuestion() {
-        List<Question> questions = TestDataInit.init(em).getQuestions();
-
-        em.flush();
-        em.clear();
-
-        for (Question question : questions) {
-            questionService.deleteQuestion(question.getAuthor().getId(), question.getId());
-            assertThat(isDeletedPost(em, question)).isTrue();
-        }
+        testTemplate1(
+                (question, testDataDTO) -> {//삭제 기능 테스트
+                    questionService.deleteQuestion(question.getAuthor().getId(), question.getId());
+                    testDeleteSuccess(question);
+                }
+        );
     }
 
     @Test
     @DisplayName("관리자는 모든 질문글을 삭제할 수 있어야 함")
     void adminCanDeleteAllQuestion() {
-        TestDataDTO dataDTO = TestDataInit.init(em);
-        List<Question> questions = dataDTO.getQuestions();
-        Member admin = dataDTO.adminMember();
-
-        em.flush();
-        em.clear();
-
-        for (Question question : questions) {
-            questionService.deleteQuestion(admin.getId(), question.getId());
-            assertThat(isDeletedPost(em, question)).isTrue();
-        }
+        testTemplate1(
+                (question, testDataDTO) -> {
+                    //관리자 권한으로 질문글 삭제
+                    Member admin = testDataDTO.adminMember();
+                    questionService.deleteQuestion(admin.getId(), question.getId());
+                    //삭제완료되었는지 확인
+                    testDeleteSuccess(question);
+                }
+        );
     }
 
     @Test
     @DisplayName("관리자가 아닌 사용자는 다른 사용자의 질문글을 지울 수 없어야 함")
     void memberCanNotDeleteOtherMembersQuestion() {
-        TestDataDTO dataDTO = TestDataInit.init(em);
-        List<Question> questions = dataDTO.getQuestions();
-
-        em.flush();
-        em.clear();
-
-        for (Question question : questions) {
-            Member author = question.getAuthor();
-            Member anotherMember = dataDTO.anotherMemberAndNotAdmin(author);
-            assertThatThrownBy(() -> questionService.deleteQuestion(anotherMember.getId(), question.getId()))
-                    .isInstanceOf(QuestionDeleteFailedException.class);
-        }
+        testTemplate1(
+                (question, testDataDTO) -> {
+                    //잘못된 삭제요청시 예외가 발생하는테 확인
+                    Member author = question.getAuthor();
+                    Member anotherMember = testDataDTO.anotherMemberAndNotAdmin(author);
+                    assertThatThrownBy(() -> questionService.deleteQuestion(anotherMember.getId(), question.getId()))
+                            .isInstanceOf(QuestionDeleteFailedException.class);
+                }
+        );
     }
 
     @Test
     @DisplayName("자기가 작성한 게시글을 수정할 수 있어야 함")
     void memberCanEditOwnQuestion() {
-        TestDataDTO dataDTO = TestDataInit.init(em);
-        List<Question> questions = dataDTO.getQuestions();
-
-        em.flush();
-        em.clear();
-
-        for (Question question : questions) {
-            Member author = question.getAuthor();
-            String editTitle = "edited-title-" + question.getId();
-            String editContent = "edited-content-" + question.getId();
-            List<Long> tagIds = EntityConverter.getTagIds(question);
-
-            questionService.editQuestion(author.getId(), question.getId(), editTitle, editContent, tagIds);
-
-            Question findQuestion = em.createQuery("select q from Question q where q.id = :id", Question.class)
-                    .setParameter("id", question.getId())
-                    .getSingleResult();
-
-            assertThat(findQuestion).extracting(
-                    Question::getTitle,
-                    Question::getContent
-            ).containsExactly(
-                    editTitle,
-                    editContent
-            );
-        }
+        testTemplate1(
+                (question, testDataDTO) -> {
+                    editQuestion(question, question.getAuthor());
+                    testEditSuccess(question);
+                }
+        );
     }
 
     @Test
     @DisplayName("자기가 작성한 게시글을 수정할 수 있어야 함")
     void adminCanEditAllQuestion() {
-        TestDataDTO dataDTO = TestDataInit.init(em);
-        List<Question> questions = dataDTO.getQuestions();
-        Member admin = dataDTO.adminMember();
-
-        em.flush();
-        em.clear();
-
-        for (Question question : questions) {
-            String editTitle = "edited-title-" + question.getId();
-            String editContent = "edited-content-" + question.getId();
-            List<Long> tagIds = EntityConverter.getTagIds(question);
-
-            questionService.editQuestion(admin.getId(), question.getId(), editTitle, editContent, tagIds);
-
-            Question findQuestion = em.createQuery("select q from Question q where q.id = :id", Question.class)
-                    .setParameter("id", question.getId())
-                    .getSingleResult();
-
-            assertThat(findQuestion).extracting(
-                    Question::getTitle,
-                    Question::getContent
-            ).containsExactly(
-                    editTitle,
-                    editContent
-            );
-        }
+        testTemplate1(
+                (question, testDataDTO) -> {
+                    editQuestion(question, testDataDTO.adminMember());
+                    testEditSuccess(question);
+                }
+        );
     }
 
     @Test
     @DisplayName("일반 유저는 다른 사용자의 질문글을 수정할 수 없어야 함")
     void memberCanNotEditAnotherMembersQuestion() {
-        TestDataDTO dataDTO = TestDataInit.init(em);
-        List<Question> questions = dataDTO.getQuestions();
+        testTemplate1(
+                (question, testDataDTO) -> {//다른 사용자의 질문글을 일반 사용자가 수정하려고 하면 예외 터지는지 테스트함
+                    Member author = question.getAuthor();
+                    Member anotherMemberAndNotAdmin = testDataDTO.anotherMemberAndNotAdmin(author);
 
-        em.flush();
-        em.clear();
+                    //수정시도
+                    assertThatThrownBy(() -> editQuestion(question, anotherMemberAndNotAdmin))
+                            .isInstanceOf(QuestionEditFailedException.class)
+                            .isInstanceOf(UnauthorizedQuestionEditException.class);
 
-        for (Question question : questions) {
-            Member author = question.getAuthor();
-            Long anotherMemberId = dataDTO.anotherMemberAndNotAdmin(author).getId();
-            String editTitle = "edited-title-" + question.getId();
-            String editContent = "edited-content-" + question.getId();
-            List<Long> tagIds = EntityConverter.getTagIds(question);
+                    //대상 질문글을 조회해서 값이 바뀌었는지 확인(바뀌지 않아야 통과)
+                    Question findQuestion = QueryUtils.questionById(em, question);
+                    assertThat(findQuestion.getTitle()).isNotEqualTo(editTitle(question));
+                    assertThat(findQuestion.getContent()).isNotEqualTo(editContent(question));
 
-            assertThatThrownBy(() -> questionService.editQuestion(anotherMemberId, question.getId(), editTitle, editContent, tagIds))
-                    .isInstanceOf(QuestionEditFailedException.class)
-                    .isInstanceOf(UnauthorizedQuestionEditException.class);
-
-            Question findQuestion = em.createQuery("select q from Question q where q.id = :id", Question.class)
-                    .setParameter("id", question.getId())
-                    .getSingleResult();
-
-            assertThat(findQuestion.getTitle()).isNotEqualTo(editTitle);
-            assertThat(findQuestion.getContent()).isNotEqualTo(editContent);
-        }
+                }
+        );
     }
 
     @Test
@@ -238,6 +155,55 @@ class QuestionServiceTest {
                     .isInstanceOf(QuestionEditFailedException.class)
                     .isInstanceOf(QuestionPropertyIsEmptyException.class);
         }
+    }
+
+    //1형 테스트 템플릿
+    private void testTemplate1(
+            BiConsumer<Question, TestDataDTO> testFunction
+    ) {
+        TestDataDTO dataDTO = TestDataInit.init(em);
+        List<Question> questions = dataDTO.getQuestions();
+
+        em.flush();
+        em.clear();
+
+        for (Question question : questions) {
+            testFunction.accept(question, dataDTO);
+        }
+    }
+
+    private void testDeleteSuccess(Question question) {
+        assertThat(isDeletedPost(em, question)).isTrue();
+    }
+
+    private void testEditSuccess(Question question) {
+        Question findQuestion = em.createQuery("select q from Question q where q.id = :id", Question.class)
+                .setParameter("id", question.getId())
+                .getSingleResult();
+
+        assertThat(findQuestion).extracting(
+                Question::getTitle,
+                Question::getContent
+        ).containsExactly(
+                editTitle(question),
+                editContent(question)
+        );
+    }
+
+    private void editQuestion(Question question, Member member) {
+        String editTitle = editTitle(question);
+        String editContent = editContent(question);
+        List<Long> tagIds = EntityConverter.getTagIds(question);
+
+        questionService.editQuestion(member.getId(), question.getId(), editTitle, editContent, tagIds);
+    }
+
+    private String editTitle(Question question) {
+        return "edited-title-" + question.getId();
+    }
+
+    private String editContent(Question question) {
+        return "edited-content-" + question.getId();
     }
 
 }

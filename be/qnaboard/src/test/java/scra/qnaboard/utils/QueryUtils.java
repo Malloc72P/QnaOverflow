@@ -2,6 +2,7 @@ package scra.qnaboard.utils;
 
 import scra.qnaboard.domain.entity.Tag;
 import scra.qnaboard.domain.entity.post.Post;
+import scra.qnaboard.domain.entity.post.Question;
 import scra.qnaboard.domain.entity.vote.Vote;
 
 import javax.persistence.EntityManager;
@@ -65,6 +66,12 @@ public class QueryUtils {
 
     public static long numberOfMember(EntityManager em) {
         return em.createQuery("select count(m) from Member m", Long.class)
+                .getSingleResult();
+    }
+
+    public static Question questionById(EntityManager em, Question question) {
+        return em.createQuery("select q from Question q where q.id = :id", Question.class)
+                .setParameter("id", question.getId())
                 .getSingleResult();
     }
 }
