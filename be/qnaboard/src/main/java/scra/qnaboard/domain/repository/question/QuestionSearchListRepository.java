@@ -5,6 +5,7 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+import scra.qnaboard.domain.repository.tag.QuestionTagSimpleQueryRepository;
 import scra.qnaboard.web.dto.question.list.QQuestionSummaryDTO;
 import scra.qnaboard.web.dto.question.list.QuestionSummaryDTO;
 import scra.qnaboard.web.dto.question.tag.QQuestionTagDTO;
@@ -30,6 +31,8 @@ public class QuestionSearchListRepository {
     private final JPAQueryFactory queryFactory;
 
     private final QuestionBooleanExpressionSupplier expressionSupplier;
+
+    private final QuestionTagSimpleQueryRepository questionTagSimpleQueryRepository;
 
     /**
      * 질문 목록 조회 메서드 <br>
@@ -65,15 +68,7 @@ public class QuestionSearchListRepository {
                 .collect(Collectors.toList());
 
         //3. 질문목록에서 참조하는 태그정보 조회(QuestionTag와 Tag까지 조인해서 가져오되, in 절을 사용해서 최적화함)
-        List<QuestionTagDTO> tags = queryFactory
-                .select(new QQuestionTagDTO(
-                        tag.id,
-                        questionTag.question.id,
-                        tag.name
-                )).from(questionTag)
-                .innerJoin(questionTag.tag, tag)
-                .where(questionTag.question.id.in(questionIds).and(tag.deleted.isFalse()))
-                .fetch();
+        List<QuestionTagDTO> tags = questionTagSimpleQueryRepository.questionTagsBy(questionIds);
 
         //4. 태그의 Question ID값을 가지고 Map으로 그룹화 함
         Map<Long, List<QuestionTagDTO>> tagMap = tags.stream()
