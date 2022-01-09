@@ -1,7 +1,5 @@
 package scra.qnaboard.domain.repository.vote;
 
-import com.querydsl.jpa.JPAExpressions;
-import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -29,6 +27,13 @@ public class VoteSimpleQueryRepository {
                 .fetchOne();
 
         return Optional.ofNullable(findVote);
+    }
+
+    public List<Vote> findAllById(Member member, Post post) {
+        return queryFactory.selectFrom(vote)
+                .where(vote.member.id.eq(member.getId())
+                        .and(vote.post.id.eq(post.getId())))
+                .fetch();
     }
 
     public long voteScore(long postId) {

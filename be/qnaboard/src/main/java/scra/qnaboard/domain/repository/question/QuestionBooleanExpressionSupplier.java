@@ -3,7 +3,6 @@ package scra.qnaboard.domain.repository.question;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import org.springframework.stereotype.Component;
 
-import static scra.qnaboard.domain.entity.post.QAnswer.answer;
 import static scra.qnaboard.domain.entity.post.QQuestion.question;
 
 @Component

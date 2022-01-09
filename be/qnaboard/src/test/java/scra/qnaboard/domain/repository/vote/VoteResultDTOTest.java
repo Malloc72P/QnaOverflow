@@ -16,8 +16,8 @@ class VoteResultDTOTest {
     void testVoteScore() {
         List<VoteResultDTO> voteResultDTOS = new ArrayList<>();
 
-        voteResultDTOS.add(new VoteResultDTO(0L,10L, VoteType.UP));
-        voteResultDTOS.add(new VoteResultDTO(0L,10L, VoteType.DOWN));
+        voteResultDTOS.add(new VoteResultDTO(0L, 10L, VoteType.UP));
+        voteResultDTOS.add(new VoteResultDTO(0L, 10L, VoteType.DOWN));
 
         test(voteResultDTOS, 0);
     }
@@ -27,7 +27,7 @@ class VoteResultDTOTest {
     void testVoteScoreWhenOnlyUpVote() {
         List<VoteResultDTO> voteResultDTOS = new ArrayList<>();
 
-        voteResultDTOS.add(new VoteResultDTO(0L,10L, VoteType.UP));
+        voteResultDTOS.add(new VoteResultDTO(0L, 10L, VoteType.UP));
 
         test(voteResultDTOS, 10);
     }
@@ -37,7 +37,7 @@ class VoteResultDTOTest {
     void testVoteScoreWhenOnlyDownVote() {
         List<VoteResultDTO> voteResultDTOS = new ArrayList<>();
 
-        voteResultDTOS.add(new VoteResultDTO(0L,10L, VoteType.DOWN));
+        voteResultDTOS.add(new VoteResultDTO(0L, 10L, VoteType.DOWN));
 
         test(voteResultDTOS, -10);
     }

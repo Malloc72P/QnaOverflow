@@ -8,7 +8,6 @@ import org.springframework.transaction.annotation.Transactional;
 import scra.qnaboard.domain.entity.member.Member;
 import scra.qnaboard.domain.entity.post.Question;
 import scra.qnaboard.domain.entity.vote.Vote;
-import scra.qnaboard.domain.entity.vote.VoteId;
 import scra.qnaboard.domain.entity.vote.VoteType;
 import scra.qnaboard.service.exception.vote.DuplicateVoteException;
 import scra.qnaboard.utils.QueryUtils;
@@ -45,9 +44,13 @@ class VoteServiceTest {
     }
 
     private void testVoteCreation(Question question, Member member) {
-        Vote findVote = QueryUtils.findVoteById(em, member.getId(), question.getId());
-        VoteId expectedId = new VoteId(member.getId(), question.getId());
-        assertThat(findVote.getId()).isEqualTo(expectedId);
+        Long memberId = member.getId();
+        Long postId = question.getId();
+
+        Vote findVote = QueryUtils.findVoteById(em, memberId, postId);
+
+        assertThat(findVote.getMember().getId()).isEqualTo(memberId);
+        assertThat(findVote.getPost().getId()).isEqualTo(postId);
     }
 
     @Test
@@ -65,7 +68,7 @@ class VoteServiceTest {
     }
 
     @Test
-    @DisplayName("반대로 투표하면 결과가 바뀌어야 함")
+    @DisplayName("반대로 투표하는 것을 허용해야 함")
     void testReverseVote() {
         TestDataDTO testDataDTO = TestDataInit.init(em);
         List<Question> questions = testDataDTO.getQuestions();
@@ -79,9 +82,8 @@ class VoteServiceTest {
         VoteType reverseType = findVote.getVoteType() == VoteType.UP ? VoteType.DOWN : VoteType.UP;
 
         voteService.vote(member.getId(), question.getId(), reverseType);
-        Vote result = QueryUtils.findVoteById(em, member.getId(), question.getId());
-        assertThat(findVote.getVoteType()).isEqualTo(reverseType);
-        assertThat(result.getVoteType()).isEqualTo(reverseType);
+        List<Vote> allVoteById = QueryUtils.findAllVoteById(em, member.getId(), question.getId());
+        assertThat(allVoteById.size()).isEqualTo(2);
     }
 
     @Test
@@ -108,7 +110,7 @@ class VoteServiceTest {
         long voteScore2 = voteService.voteScore(question.getId());
 
         //모두가 downvote했으니 (-인원수)가 되어야 함(0이 아닌 이유는, up으로 투표했던 애들이 down으로 바꿔서 그렇다)
-        assertThat(voteScore2).isEqualTo(-1 * members.size());
+        assertThat(voteScore2).isEqualTo(0);
     }
 
     @Test

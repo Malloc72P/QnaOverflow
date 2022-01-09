@@ -57,11 +57,20 @@ public class QueryUtils {
 
     public static Vote findVoteById(EntityManager em, long memberId, long postId) {
         return em.createQuery("select v from Vote v " +
-                                "where v.id.memberId = :memberId and v.id.postId = : postId",
+                                "where v.member.id = :memberId and v.post.id = : postId",
                         Vote.class)
                 .setParameter("memberId", memberId)
                 .setParameter("postId", postId)
                 .getSingleResult();
+    }
+
+    public static List<Vote> findAllVoteById(EntityManager em, long memberId, long postId) {
+        return em.createQuery("select v from Vote v " +
+                                "where v.member.id = :memberId and v.post.id = : postId",
+                        Vote.class)
+                .setParameter("memberId", memberId)
+                .setParameter("postId", postId)
+                .getResultList();
     }
 
     public static long numberOfMember(EntityManager em) {

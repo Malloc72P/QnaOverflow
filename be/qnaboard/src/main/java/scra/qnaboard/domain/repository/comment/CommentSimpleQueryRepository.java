@@ -34,6 +34,7 @@ public class CommentSimpleQueryRepository {
     /**
      * 게시글 아이디로 대댓글을 전부 조회해서 정리한 다음, 맵에 저장해서 반환하는 메서드 <br>
      * 맵의 키는 게시글의 아이디이고, 값은 대댓글 List이다.
+     *
      * @param postIds 댓글을 조회할 게시글의 아이디 리스트
      * @return 댓글 맵
      */

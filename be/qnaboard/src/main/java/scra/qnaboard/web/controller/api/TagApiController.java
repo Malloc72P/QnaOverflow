@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import scra.qnaboard.service.TagService;
-import scra.qnaboard.web.dto.tag.search.AcceptedTagsDTO;
 import scra.qnaboard.web.dto.tag.search.TagSearchParameter;
 import scra.qnaboard.web.dto.tag.search.TagSearchResultDTO;
 

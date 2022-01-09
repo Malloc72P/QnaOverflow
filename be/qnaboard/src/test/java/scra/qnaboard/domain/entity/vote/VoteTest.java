@@ -32,13 +32,10 @@ class VoteTest {
         Vote vote = new Vote(member, question, VoteType.UP);
         em.persist(vote);
 
-        VoteId id = vote.getId();
-        assertThat(id).extracting(
-                VoteId::getMemberId,
-                VoteId::getPostId
-        ).containsExactly(
-                member.getId(),
-                question.getId()
-        );
+        Long memberId = vote.getMember().getId();
+        Long postId = vote.getPost().getId();
+
+        assertThat(memberId).isEqualTo(member.getId());
+        assertThat(postId).isEqualTo(question.getId());
     }
 }

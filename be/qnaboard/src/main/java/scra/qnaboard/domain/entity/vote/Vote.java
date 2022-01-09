@@ -4,7 +4,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import scra.qnaboard.domain.entity.member.Member;
 import scra.qnaboard.domain.entity.post.Post;
-import scra.qnaboard.service.exception.vote.DuplicateVoteException;
 
 import javax.persistence.*;
 import java.util.Objects;
@@ -14,15 +13,18 @@ import java.util.Objects;
 @NoArgsConstructor
 public class Vote {
 
-    @EmbeddedId
-    private VoteId id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-    @MapsId("memberId")
+    //    @MapsId("memberId")
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id")
     private Member member;
 
-    @MapsId("postId")
+    //    @MapsId("postId")
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "post_id")
     private Post post;
 
     @Enumerated(EnumType.STRING)
@@ -31,7 +33,7 @@ public class Vote {
     public Vote(Member member, Post post, VoteType voteType) {
         this.member = member;
         this.post = post;
-        this.id = new VoteId(member.getId(), post.getId());
+//        this.id = new VoteId(member.getId(), post.getId());
         this.voteType = voteType;
     }
 
@@ -39,15 +41,15 @@ public class Vote {
         return this.voteType.equals(voteType);
     }
 
-    public void changeVoteType(VoteType newVote) {
-        if (isSameVote(newVote)) {
-            //동일한 표로 변경을 시도하면 예외를 발생시킨다
-            throw new DuplicateVoteException();
-        }
-
-        //동일한 표가 아니라면 수정한다
-        this.voteType = newVote;
-    }
+//    public void changeVoteType(VoteType newVote) {
+//        if (isSameVote(newVote)) {
+//            //동일한 표로 변경을 시도하면 예외를 발생시킨다
+//            throw new DuplicateVoteException();
+//        }
+//
+//        //동일한 표가 아니라면 수정한다
+//        this.voteType = newVote;
+//    }
 
     @Override
     public boolean equals(Object o) {

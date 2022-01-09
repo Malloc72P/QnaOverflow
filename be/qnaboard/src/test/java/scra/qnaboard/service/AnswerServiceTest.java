@@ -17,7 +17,6 @@ import scra.qnaboard.utils.TestDataInit;
 import scra.qnaboard.web.dto.answer.AnswerDetailDTO;
 
 import javax.persistence.EntityManager;
-import java.util.Arrays;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;

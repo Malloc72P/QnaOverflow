@@ -8,14 +8,10 @@ import scra.qnaboard.domain.entity.post.Answer;
 import scra.qnaboard.domain.entity.post.Post;
 import scra.qnaboard.domain.entity.post.Question;
 import scra.qnaboard.domain.entity.questiontag.QuestionTag;
-import scra.qnaboard.domain.entity.vote.Vote;
-import scra.qnaboard.domain.entity.vote.VoteType;
 
 import javax.persistence.EntityManager;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class TestDataInit {
 

@@ -19,12 +19,13 @@ const alertWhenCreateCommentIsFailed = () => {
 
 const createComment = async (event) => {
     event.preventDefault();
+    debugger
     const commentTextArea = event.target[0];
     const content = commentTextArea.value;
     const commentWrapper = commentTextArea.closest(".comment-wrapper");
     const commentList = commentWrapper.querySelector(".comment-list");
 
-    const postId = commentWrapper.id.substring(2);
+    const postId = commentTextArea.closest(".post").dataset.postid;
 
     const url = `http://localhost:8080/posts/${postId}/comments`;
 
@@ -56,7 +57,7 @@ const replyComment = async (event) => {
     const commentWrapper = commentTextArea.closest(".comment-wrapper");
     const commentList = parentComment.querySelector(".child-comment-wrapper");
 
-    const postId = commentWrapper.id.substring(2);
+    const postId = commentTextArea.closest(".post").dataset.postid;
 
     const url = `http://localhost:8080/posts/${postId}/comments`;
 
@@ -82,7 +83,7 @@ const deleteComment = async (event) => {
     const comment = event.target.closest(".comment");
     const commentId = comment.id.substr(2);
     const commentWrapper = event.target.closest(".comment-wrapper");
-    const postId = commentWrapper.id.substring(2);
+    const postId = comment.closest(".post").dataset.postid;
 
     const url = `http://localhost:8080/posts/${postId}/comments/${commentId}`;
     try {
@@ -100,8 +101,7 @@ const editComment = async (event) => {
     const commentTextArea = event.target[0];
     const content = commentTextArea.value;
     //wrapper 태그 찾고 거기 들어있는 postId꺼내기
-    const commentWrapper = commentTextArea.closest(".comment-wrapper");
-    const postId = commentWrapper.id.substring(2);
+    const postId = commentTextArea.closest(".post").dataset.postid;
     //댓글 컴포넌트 찾고 아이디 꺼내기
     const comment = event.target.closest(".comment");
     const commentId = comment.id.substr(2);

@@ -23,15 +23,15 @@ public class VoteResultDTO {
         this.voteType = voteType;
     }
 
-    public long value() {
-        long sign = voteType == VoteType.UP ? POSITIVE : NEGATIVE;
-        return sign * count;
-    }
-
     public static long countVoteScore(List<VoteResultDTO> voteResult) {
         //점수 계산하고 반환
         return voteResult.stream()
                 .mapToLong(VoteResultDTO::value)
                 .sum();
+    }
+
+    public long value() {
+        long sign = voteType == VoteType.UP ? POSITIVE : NEGATIVE;
+        return sign * count;
     }
 }

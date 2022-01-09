@@ -8,16 +8,16 @@
 
 <div class="mb-3" th:fragment="tag_inputer(tag)">
     <div id="tag-search-form">
-        <input id="selected-tag-id-list" name="tags" value="" class="d-none">
+        <input class="d-none" id="selected-tag-id-list" name="tags" value="">
         <label class="form-label d-block" for="tag-input">태그 검색</label>
         <div id="selected-tag-wrapper">
         </div>
         <div class="d-flex">
-            <input id="tag-input" type="text" class="form-control d-inline-block"
-                   placeholder="..." autocomplete="off">
-            <a id="tag-search-button" class="btn btn-primary" style="min-width: 8rem;">태그 검색</a>
+            <input autocomplete="off" class="form-control d-inline-block" id="tag-input"
+                   placeholder="..." type="text">
+            <a class="btn btn-primary" id="tag-search-button" style="min-width: 8rem;">태그 검색</a>
         </div>
-        <div id="tag-suggestions" class="tag-suggestions px-3 py-3 border border-1">
+        <div class="tag-suggestions px-3 py-3 border border-1" id="tag-suggestions">
         </div>
         <div class="form-text">찾고자 하는 태그를 검색해주세요</div>
     </div>

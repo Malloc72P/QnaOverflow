@@ -5,7 +5,6 @@ import scra.qnaboard.domain.entity.Tag;
 import scra.qnaboard.domain.entity.member.Member;
 import scra.qnaboard.domain.entity.post.Answer;
 import scra.qnaboard.domain.entity.post.Question;
-import scra.qnaboard.domain.entity.vote.Vote;
 
 import java.util.List;
 

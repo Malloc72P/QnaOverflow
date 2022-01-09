@@ -59,7 +59,7 @@ public class AnswerDetailDTO {
     }
 
     public void update(Map<Long, List<CommentDTO>> newCommentMap,
-                        Map<Long, Long> voteScoreMap) {
+                       Map<Long, Long> voteScoreMap) {
         List<CommentDTO> comments = newCommentMap.get(answerId);
         Long voteScore = voteScoreMap.get(answerId);
 

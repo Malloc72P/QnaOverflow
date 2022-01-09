@@ -1,6 +1,5 @@
 package scra.qnaboard.web.dto.question.edit;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.ToString;
 import scra.qnaboard.web.dto.question.QuestionTagForm;
