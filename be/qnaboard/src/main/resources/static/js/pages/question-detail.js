@@ -1,19 +1,23 @@
+//답변게시글 처리
 const deleteAnswerButtons = document.querySelectorAll(".answer-delete");
-
 for (const deleteAnswerButton of deleteAnswerButtons) {
     deleteAnswerButton.addEventListener("pointerdown", deleteAnswer);
 }
 
-const editAnswerButtons = document.querySelectorAll(".answer-edit");
-const editAnswerForms = document.querySelectorAll(".answer-edit-form");
+const submitAnswerButton = document.getElementById("submit-answer-button");
+submitAnswerButton.addEventListener("click", createAnswer);
 
+const editAnswerButtons = document.querySelectorAll(".answer-edit");
 for (const button of editAnswerButtons) {
     button.addEventListener("pointerdown", toggleEditAnswerForm);
 }
 
+const editAnswerForms = document.querySelectorAll(".answer-edit-form");
 for (const form of editAnswerForms) {
     form.addEventListener("submit", editAnswer);
 }
+
+//댓글 처리
 
 const createCommentForms = document.querySelectorAll(".create-comment-form");
 for (const commentForm of createCommentForms) {
@@ -44,3 +48,4 @@ const editCommentForms = document.querySelectorAll(".edit-comment-form");
 for (const editCommentForm of editCommentForms) {
     editCommentForm.addEventListener("submit", editComment);
 }
+

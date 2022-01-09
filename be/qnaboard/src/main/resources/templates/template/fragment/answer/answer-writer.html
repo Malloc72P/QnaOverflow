@@ -21,39 +21,6 @@
             </button>
         </div>
     </form>
-    <script th:inline="javascript">
-        const submitAnswer = async (event) => {
-            event.preventDefault();
-            let textAreaElement = document.getElementById("textarea-submit-answer");
-            let content = textAreaElement.value;
-            let questionId = [[${questionId}]];
-            let url = `http://localhost:8080/${questionId}/answers`;
-            let body = {"content": content};
-
-            try {
-                let response = await request(url, PUT, body, MODE_TEXT);
-
-                let parser = new DOMParser();
-                let answerElementWrapper = parser.parseFromString(response, "text/html");
-                let answerElement = answerElementWrapper.querySelector(".answer");
-                answerElement.querySelector(".answer-delete").addEventListener("click", deleteAnswer);
-                console.log(answerElement);
-
-                let answerWrapper = document.getElementById("answer-wrapper");
-                answerWrapper.appendChild(answerElement);
-
-                increaseAnswerCount();
-
-                textAreaElement.value = "";
-            } catch (error) {
-                alert("답변의 내용은 6자보다 길어야 합니다");
-            }
-
-        };
-
-        let submitAnswerButton = document.getElementById("submit-answer-button");
-        submitAnswerButton.addEventListener("click", submitAnswer);
-    </script>
 </div>
 
 </body>

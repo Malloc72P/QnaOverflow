@@ -19,7 +19,6 @@ const alertWhenCreateCommentIsFailed = () => {
 
 const createComment = async (event) => {
     event.preventDefault();
-    debugger
     const commentTextArea = event.target[0];
     const content = commentTextArea.value;
     const commentWrapper = commentTextArea.closest(".comment-wrapper");

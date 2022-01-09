@@ -1,3 +1,35 @@
+const createAnswer = async (event) => {
+    event.preventDefault();
+    let textAreaElement = document.getElementById("textarea-submit-answer");
+    let content = textAreaElement.value;
+    let questionId = textAreaElement.closest(".content-root").dataset.questionid;
+    let url = `http://localhost:8080/${questionId}/answers`;
+    let body = {"content": content};
+
+    try {
+        let response = await request(url, PUT, body, MODE_TEXT);
+
+        let parser = new DOMParser();
+        let answerElementWrapper = parser.parseFromString(response, "text/html");
+        let answerElement = answerElementWrapper.querySelector(".answer");
+
+        answerElement.querySelector(".answer-delete").addEventListener("click", deleteAnswer);
+        answerElement.querySelector(".answer-edit").addEventListener("click", toggleEditAnswerForm);
+        answerElement.querySelector(".answer-edit-form").addEventListener("submit", editAnswer);
+        answerElement.querySelector(".up-vote-button").addEventListener("pointerdown", vote);
+        answerElement.querySelector(".down-vote-button").addEventListener("pointerdown", vote);
+
+        let answerWrapper = document.getElementById("answer-wrapper");
+        answerWrapper.appendChild(answerElement);
+
+        increaseAnswerCount();
+        textAreaElement.value = "";
+    } catch (error) {
+        alert("답변의 내용은 6자보다 길어야 합니다");
+    }
+
+};
+
 const deleteAnswer = async (event) => {
     const section = event.target.closest("section");
     const questionId = section.querySelector(".question").id.substring(2);
