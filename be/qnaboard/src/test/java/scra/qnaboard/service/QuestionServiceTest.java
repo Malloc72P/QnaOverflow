@@ -48,10 +48,10 @@ class QuestionServiceTest {
         testTemplate(
                 (question, testDataDTO) -> {
                     ParsedSearchQuestionDTO searchQuestionDTO = new ParsedSearchQuestionDTO();
-                    searchQuestionDTO.setAnswers(3);
-                    searchQuestionDTO.setScore(3);
+                    searchQuestionDTO.setAnswers(3L);
+                    searchQuestionDTO.setScore(3L);
                     searchQuestionDTO.setTitle("target");
-                    searchQuestionDTO.setAuthorId(2);
+                    searchQuestionDTO.setAuthorId(2L);
                     searchQuestionDTO.addTag("Angular");
                     searchQuestionDTO.addTag("Web");
                     QuestionListDTO questionListDTO = questionService.searchQuestions(searchQuestionDTO);

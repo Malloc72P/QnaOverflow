@@ -5,9 +5,6 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-import scra.qnaboard.domain.entity.QTag;
-import scra.qnaboard.domain.entity.questiontag.QQuestionTag;
-import scra.qnaboard.domain.entity.vote.QVote;
 import scra.qnaboard.domain.repository.tag.QuestionTagSimpleQueryRepository;
 import scra.qnaboard.domain.repository.vote.VoteSimpleQueryRepository;
 import scra.qnaboard.web.dto.question.list.QQuestionSummaryDTO;
@@ -19,12 +16,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import static scra.qnaboard.domain.entity.QTag.tag;
 import static scra.qnaboard.domain.entity.member.QMember.member;
 import static scra.qnaboard.domain.entity.post.QAnswer.answer;
 import static scra.qnaboard.domain.entity.post.QQuestion.question;
-import static scra.qnaboard.domain.entity.questiontag.QQuestionTag.questionTag;
-import static scra.qnaboard.domain.entity.vote.QVote.vote;
 
 /**
  * 복잡한 동적쿼리 작성을 위해 QueryDSL을 사용하는 리포지토리
@@ -101,20 +95,7 @@ public class QuestionSearchListRepository {
                         question.author.nickname
                 )).from(question)
                 .innerJoin(question.author, member)
-                .where(question.deleted.isFalse()
-                        .and(question.title.like("%" + searchQuestionDTO.getTitle() + "%"))
-                        .and(question.author.id.eq(searchQuestionDTO.getAuthorId()))
-                        .and(JPAExpressions.select(answer.count())
-                                .from(answer)
-                                .where(answer.question.id.eq(question.id)).goe(searchQuestionDTO.getAnswers()))
-                        .and(question.score.goe(searchQuestionDTO.getScore()))
-                        .and(JPAExpressions.select(questionTag)
-                                .from(questionTag)
-                                .innerJoin(questionTag.tag, tag)
-                                .where(questionTag.question.id.eq(question.id)
-                                        .and(tag.name.in(searchQuestionDTO.getTags()))).exists()
-                        )
-                )
+                .where(expressionSupplier.searchQuestions(searchQuestionDTO))
                 .fetch();
 
         //2. 연관된 태그정보 조회쿼리의 In절에서 사용할 ID 컬렉션을 스트림으로 생성한다
