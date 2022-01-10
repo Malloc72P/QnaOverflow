@@ -154,11 +154,22 @@ public class InitDB {
 
             members.stream()
                     .map(member -> new Vote(member, testTargetQuestion, VoteType.UP))
-                    .forEach(em::persist);
+                    .peek(em::persist)
+                    .forEach(vote -> testTargetQuestion.increaseScore());
 
             members.stream()
                     .map(member -> new Vote(member, testTargetAnswer, VoteType.UP))
-                    .forEach(em::persist);
+                    .peek(em::persist)
+                    .forEach(vote -> testTargetAnswer.increaseScore());
+
+            em.persist(new Vote(members.get(1), testTargetQuestion, VoteType.DOWN));
+            testTargetQuestion.decreaseScore();
+            em.persist(new Vote(members.get(2), testTargetQuestion, VoteType.DOWN));
+            testTargetQuestion.decreaseScore();
+            em.persist(new Vote(members.get(3), testTargetQuestion, VoteType.DOWN));
+            testTargetQuestion.decreaseScore();
+            em.persist(new Vote(members.get(4), testTargetQuestion, VoteType.DOWN));
+            testTargetQuestion.decreaseScore();
 
             log.info("데이터베이스 초기화 완료");
         }

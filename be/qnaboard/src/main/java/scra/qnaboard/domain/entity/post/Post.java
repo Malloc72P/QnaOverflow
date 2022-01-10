@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import scra.qnaboard.domain.entity.BaseTimeEntity;
 import scra.qnaboard.domain.entity.Comment;
 import scra.qnaboard.domain.entity.member.Member;
+import scra.qnaboard.domain.entity.vote.VoteType;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -40,9 +41,28 @@ public abstract class Post extends BaseTimeEntity {
 
     protected boolean deleted = false;
 
+    protected long score = 0L;
+
     public Post(Member author, String content) {
         this.author = author;
         this.content = content;
+    }
+
+    public void updateScore(VoteType voteType) {
+        if (voteType == VoteType.UP) {
+            increaseScore();
+        } else if (voteType == VoteType.DOWN) {
+            decreaseScore();
+        }
+
+    }
+
+    public void increaseScore() {
+        score++;
+    }
+
+    public void decreaseScore() {
+        score--;
     }
 
     public boolean isNotOwner(Member member) {

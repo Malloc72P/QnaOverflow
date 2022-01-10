@@ -17,6 +17,8 @@ import scra.qnaboard.utils.TestDataDTO;
 import scra.qnaboard.utils.TestDataInit;
 import scra.qnaboard.web.dto.question.detail.QuestionDetailDTO;
 import scra.qnaboard.web.dto.question.detail.QuestionDetailDTOTestUtil;
+import scra.qnaboard.web.dto.question.list.QuestionListDTO;
+import scra.qnaboard.web.dto.question.search.ParsedSearchQuestionDTO;
 
 import javax.persistence.EntityManager;
 import java.util.ArrayList;
@@ -39,6 +41,23 @@ class QuestionServiceTest {
 
     @Autowired
     private VoteService voteService;
+
+    @Test
+    @DisplayName("검색 기능 테스트")
+    void testSearchQuestion() {
+        testTemplate(
+                (question, testDataDTO) -> {
+                    ParsedSearchQuestionDTO searchQuestionDTO = new ParsedSearchQuestionDTO();
+                    searchQuestionDTO.setAnswers(3);
+                    searchQuestionDTO.setScore(3);
+                    searchQuestionDTO.setTitle("target");
+                    searchQuestionDTO.setAuthorId(2);
+                    searchQuestionDTO.addTag("Angular");
+                    searchQuestionDTO.addTag("Web");
+                    QuestionListDTO questionListDTO = questionService.searchQuestions(searchQuestionDTO);
+                }
+        );
+    }
 
     @Test
     @DisplayName("아이디로 질문글 엔티티를 찾고 DTO로 변환할 수 있어야 함")

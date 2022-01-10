@@ -41,6 +41,7 @@ public class QuestionDetailDTO {
                              String title,
                              String content,
                              long viewCount,
+                             long voteScore,
                              LocalDateTime createdDate,
                              LocalDateTime lastModifiedDate,
                              long authorId,
@@ -49,6 +50,7 @@ public class QuestionDetailDTO {
         this.title = title;
         this.content = content;
         this.viewCount = viewCount;
+        this.voteScore = voteScore;
         this.createdDate = createdDate;
         this.lastModifiedDate = lastModifiedDate;
         this.authorId = authorId;
@@ -77,12 +79,10 @@ public class QuestionDetailDTO {
 
     public void update(List<AnswerDetailDTO> answers,
                        List<QuestionTagDTO> tags,
-                       List<CommentDTO> comments,
-                       long voteScore) {
+                       List<CommentDTO> comments) {
         updateAnswer(answers);
         updateTags(tags);
         updateComments(comments);
-        updateVoteScore(voteScore);
     }
 
     private void updateAnswer(List<AnswerDetailDTO> answers) {
@@ -106,7 +106,4 @@ public class QuestionDetailDTO {
         this.comments = comments;
     }
 
-    private void updateVoteScore(long voteScore) {
-        this.voteScore = voteScore;
-    }
 }

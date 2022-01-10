@@ -33,12 +33,14 @@ public class AnswerDetailDTO {
 
     @QueryProjection
     public AnswerDetailDTO(long answerId,
+                           long voteScore,
                            String content,
                            LocalDateTime createdDate,
                            LocalDateTime lastModifiedDate,
                            long authorId,
                            String authorName) {
         this.answerId = answerId;
+        this.voteScore = voteScore;
         this.content = content;
         this.createdDate = createdDate;
         this.lastModifiedDate = lastModifiedDate;
@@ -58,13 +60,10 @@ public class AnswerDetailDTO {
         return answerDTO;
     }
 
-    public void update(Map<Long, List<CommentDTO>> newCommentMap,
-                       Map<Long, Long> voteScoreMap) {
+    public void update(Map<Long, List<CommentDTO>> newCommentMap) {
         List<CommentDTO> comments = newCommentMap.get(answerId);
-        Long voteScore = voteScoreMap.get(answerId);
 
         updateComments(comments);
-        updateVoteScore(voteScore);
     }
 
     private void updateComments(List<CommentDTO> comments) {
@@ -72,9 +71,5 @@ public class AnswerDetailDTO {
             return;
         }
         this.comments = comments;
-    }
-
-    private void updateVoteScore(long voteScore) {
-        this.voteScore = voteScore;
     }
 }

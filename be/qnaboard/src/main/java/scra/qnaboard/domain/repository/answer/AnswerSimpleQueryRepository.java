@@ -43,6 +43,7 @@ public class AnswerSimpleQueryRepository {
         return queryFactory
                 .select(new QAnswerDetailDTO(
                         answer.id,
+                        answer.score,
                         answer.content,
                         answer.createdDate,
                         answer.lastModifiedDate,

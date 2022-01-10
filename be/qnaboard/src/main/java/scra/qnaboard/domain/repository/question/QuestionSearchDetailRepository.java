@@ -65,16 +65,13 @@ public class QuestionSearchDetailRepository {
         Map<Long, List<CommentDTO>> commentMap = commentRepository.commentMap(postIds);
         List<CommentDTO> questionComments = commentMap.get(questionId);
 
-        //6. 게시글 투표점수 조회
-        Map<Long, Long> voteScoreMap = voteRepository.voteScoreByPostIdList(postIds);
-        Long questionVoteScore = voteScoreMap.get(questionId);
-
         //7. detailDTO의 부품 조립(태그목록, 답변게시글목록, 대댓글 목록)
-        detailDTO.update(answers, tags, questionComments, questionVoteScore);
+        detailDTO.update(answers, tags, questionComments);
 
         //8. 답변 게시글의 부품 조립(대댓글 목록)
-        detailDTO.getAnswers().forEach(answer -> answer.update(commentMap, voteScoreMap));
+        detailDTO.getAnswers().forEach(answer -> answer.update(commentMap));
 
+        //9. 조회수 올림
         increaseViewCount(questionId);
 
         return detailDTO;
@@ -100,6 +97,7 @@ public class QuestionSearchDetailRepository {
                         question.title,
                         question.content,
                         question.viewCount,
+                        question.score,
                         question.createdDate,
                         question.lastModifiedDate,
                         question.author.id,

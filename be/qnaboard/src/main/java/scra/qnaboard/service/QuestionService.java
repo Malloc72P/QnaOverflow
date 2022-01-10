@@ -16,6 +16,7 @@ import scra.qnaboard.service.exception.question.search.QuestionNotFoundException
 import scra.qnaboard.web.dto.question.detail.QuestionDetailDTO;
 import scra.qnaboard.web.dto.question.list.QuestionListDTO;
 import scra.qnaboard.web.dto.question.list.QuestionSummaryDTO;
+import scra.qnaboard.web.dto.question.search.ParsedSearchQuestionDTO;
 
 import java.util.List;
 
@@ -42,6 +43,11 @@ public class QuestionService {
      */
     public QuestionListDTO questionList() {
         List<QuestionSummaryDTO> questionSummaryDTOS = questionSearchListRepository.search();
+        return new QuestionListDTO(questionSummaryDTOS);
+    }
+
+    public QuestionListDTO searchQuestions(ParsedSearchQuestionDTO searchQuestionDTO) {
+        List<QuestionSummaryDTO> questionSummaryDTOS = questionSearchListRepository.search(searchQuestionDTO);
         return new QuestionListDTO(questionSummaryDTOS);
     }
 

@@ -40,22 +40,22 @@ public class QuestionSummaryDTO {
                               String title,
                               int answerCount,
                               long viewCount,
+                              long voteScore,
                               LocalDateTime createDate,
                               String authorName) {
         this.questionId = questionId;
         this.title = title;
         this.answerCount = answerCount;
         this.viewCount = viewCount;
+        this.voteScore = voteScore;
         this.createDate = createDate;
         this.authorName = authorName;
     }
 
-    public void update(Map<Long, List<QuestionTagDTO>> questionTagMap,
-                       Map<Long, Long> voteScoreMap) {
-        if (questionTagMap == null || voteScoreMap == null) {
+    public void update(Map<Long, List<QuestionTagDTO>> questionTagMap) {
+        if (questionTagMap == null) {
             throw new DtoUpdateException();
         }
         tags = questionTagMap.get(questionId);
-        voteScore = voteScoreMap.get(questionId);
     }
 }

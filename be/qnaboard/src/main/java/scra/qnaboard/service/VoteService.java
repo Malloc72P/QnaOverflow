@@ -12,7 +12,6 @@ import scra.qnaboard.domain.repository.vote.VoteSimpleQueryRepository;
 import scra.qnaboard.service.exception.vote.DuplicateVoteException;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -24,14 +23,6 @@ public class VoteService {
     private final VoteSimpleQueryRepository voteSimpleQueryRepository;
     private final MemberService memberService;
     private final PostService postService;
-
-    public long voteScore(long postId) {
-        return voteSimpleQueryRepository.voteScore(postId);
-    }
-
-    public Map<Long, Long> voteScoreByPostIdList(List<Long> postIdList) {
-        return voteSimpleQueryRepository.voteScoreByPostIdList(postIdList);
-    }
 
     @Transactional
     public void voteUp(Long requesterId, Long postId) {
@@ -54,6 +45,8 @@ public class VoteService {
 
         //투표 저장
         saveVote(votes, member, post, voteType);
+
+        post.updateScore(voteType);
     }
 
     private void saveVote(List<Vote> votes, Member member, Post post, VoteType voteType) {
