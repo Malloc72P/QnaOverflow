@@ -51,6 +51,7 @@ public class QuestionService {
      * @param questionId 조회할 질문글의 아이디
      * @return 질문글 상세조회 DTO
      */
+    @Transactional
     public QuestionDetailDTO questionDetail(long questionId) {
         return questionSearchDetailRepository.questionDetail(questionId);
     }

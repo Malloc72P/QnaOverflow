@@ -75,7 +75,16 @@ public class QuestionSearchDetailRepository {
         //8. 답변 게시글의 부품 조립(대댓글 목록)
         detailDTO.getAnswers().forEach(answer -> answer.update(commentMap, voteScoreMap));
 
+        increaseViewCount(questionId);
+
         return detailDTO;
+    }
+
+    private void increaseViewCount(long questionId) {
+        queryFactory.update(question)
+                .set(question.viewCount, question.viewCount.add(1))
+                .where(question.id.eq(questionId))
+                .execute();
     }
 
     /**
