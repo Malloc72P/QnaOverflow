@@ -15,6 +15,7 @@ import scra.qnaboard.web.dto.question.create.CreateQuestionForm;
 import scra.qnaboard.web.dto.question.detail.QuestionDetailDTO;
 import scra.qnaboard.web.dto.question.edit.EditQuestionForm;
 import scra.qnaboard.web.dto.question.list.QuestionListDTO;
+import scra.qnaboard.web.dto.question.search.SearchQuestionDTO;
 
 import java.util.List;
 import java.util.Locale;
@@ -42,6 +43,12 @@ public class QuestionController {
 
         model.addAttribute("username", null);
         model.addAttribute("dto", questionListDTO);
+        return "/question/question-list";
+    }
+
+    @GetMapping("/search")
+    public String search(SearchQuestionDTO searchDTO, Model model) {
+        log.info("searchDTO = {}", searchDTO);
         return "/question/question-list";
     }
 
