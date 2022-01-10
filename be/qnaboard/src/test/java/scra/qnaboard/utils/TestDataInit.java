@@ -52,6 +52,10 @@ public class TestDataInit {
         questions.add(new Question(members.get(0), "content-3", "title-3"));
         questions.add(new Question(members.get(3), "content-4", "title-4"));
         questions.add(new Question(members.get(0), "content-5", "title-5"));
+        questions.add(new Question(members.get(0), "content-6", "title-6"));
+        questions.add(new Question(members.get(0), "content-7", "title-7"));
+        questions.add(new Question(members.get(0), "content-8", "title-8"));
+        questions.add(new Question(members.get(0), "content-9", "title-9"));
         questions.forEach(em::persist);
         Question testTargetQuestion = questions.get(0);
 

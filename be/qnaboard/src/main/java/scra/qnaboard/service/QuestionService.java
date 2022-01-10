@@ -1,6 +1,8 @@
 package scra.qnaboard.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import scra.qnaboard.domain.entity.member.Member;
@@ -46,9 +48,9 @@ public class QuestionService {
         return new QuestionListDTO(questionSummaryDTOS);
     }
 
-    public QuestionListDTO searchQuestions(ParsedSearchQuestionDTO searchQuestionDTO) {
-        List<QuestionSummaryDTO> questionSummaryDTOS = questionSearchListRepository.search(searchQuestionDTO);
-        return new QuestionListDTO(questionSummaryDTOS);
+    public Page<QuestionSummaryDTO> searchQuestions(ParsedSearchQuestionDTO searchQuestionDTO, int pageNumber, int pageSize) {
+        PageRequest pageRequest = PageRequest.of(pageNumber, pageSize);
+        return questionSearchListRepository.search(searchQuestionDTO, pageRequest);
     }
 
     /**

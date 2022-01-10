@@ -4,6 +4,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
 import org.springframework.transaction.annotation.Transactional;
 import scra.qnaboard.domain.entity.member.Member;
 import scra.qnaboard.domain.entity.post.Question;
@@ -18,6 +19,7 @@ import scra.qnaboard.utils.TestDataInit;
 import scra.qnaboard.web.dto.question.detail.QuestionDetailDTO;
 import scra.qnaboard.web.dto.question.detail.QuestionDetailDTOTestUtil;
 import scra.qnaboard.web.dto.question.list.QuestionListDTO;
+import scra.qnaboard.web.dto.question.list.QuestionSummaryDTO;
 import scra.qnaboard.web.dto.question.search.ParsedSearchQuestionDTO;
 
 import javax.persistence.EntityManager;
@@ -45,18 +47,14 @@ class QuestionServiceTest {
     @Test
     @DisplayName("검색 기능 테스트")
     void testSearchQuestion() {
-        testTemplate(
-                (question, testDataDTO) -> {
-                    ParsedSearchQuestionDTO searchQuestionDTO = new ParsedSearchQuestionDTO();
-                    searchQuestionDTO.setAnswers(3L);
-                    searchQuestionDTO.setScore(3L);
-                    searchQuestionDTO.setTitle("target");
-                    searchQuestionDTO.setAuthorId(2L);
-                    searchQuestionDTO.addTag("Angular");
-                    searchQuestionDTO.addTag("Web");
-                    QuestionListDTO questionListDTO = questionService.searchQuestions(searchQuestionDTO);
-                }
-        );
+        TestDataDTO init = TestDataInit.init(em);
+        ParsedSearchQuestionDTO searchQuestionDTO = new ParsedSearchQuestionDTO();
+//                    searchQuestionDTO.setAnswers(3L);
+//                    searchQuestionDTO.setTitle("target");
+//                    searchQuestionDTO.setAuthorId(2L);
+//                    searchQuestionDTO.addTag("Angular");
+//                    searchQuestionDTO.addTag("Web");
+        Page<QuestionSummaryDTO> questionPage = questionService.searchQuestions(searchQuestionDTO, 1, 5);
     }
 
     @Test

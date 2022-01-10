@@ -1,8 +1,12 @@
 package scra.qnaboard.domain.repository.question;
 
 import com.querydsl.jpa.JPAExpressions;
+import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import scra.qnaboard.domain.repository.tag.QuestionTagSimpleQueryRepository;
@@ -80,7 +84,7 @@ public class QuestionSearchListRepository {
         return questions;
     }
 
-    public List<QuestionSummaryDTO> search(ParsedSearchQuestionDTO searchQuestionDTO) {
+    public Page<QuestionSummaryDTO> search(ParsedSearchQuestionDTO searchQuestionDTO, Pageable pageable) {
         //1. 질문목록 조회( 추가로 질문의 답글개수와 유저 이름을 같이 가져옴 )
         List<QuestionSummaryDTO> questions = queryFactory
                 .select(new QQuestionSummaryDTO(
@@ -96,6 +100,8 @@ public class QuestionSearchListRepository {
                 )).from(question)
                 .innerJoin(question.author, member)
                 .where(expressionSupplier.searchQuestions(searchQuestionDTO))
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
                 .fetch();
 
         //2. 연관된 태그정보 조회쿼리의 In절에서 사용할 ID 컬렉션을 스트림으로 생성한다
@@ -113,6 +119,13 @@ public class QuestionSearchListRepository {
         //5. 태그정보 입력
         questions.forEach(question -> question.update(tagMap));
 
-        return questions;
+        return PageableExecutionUtils.getPage(questions, pageable, createCountQuery(searchQuestionDTO)::fetchOne);
+    }
+
+    private JPAQuery<Long> createCountQuery(ParsedSearchQuestionDTO searchQuestionDTO) {
+        return queryFactory.select(question.id.count())
+                .from(question)
+                .innerJoin(question.author, member)
+                .where(expressionSupplier.searchQuestions(searchQuestionDTO));
     }
 }
