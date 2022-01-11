@@ -28,9 +28,13 @@
         </button>
 
         <!--/*검색 폼*/-->
-        <input aria-label="Search" class="form-control w-100 form-control-dark me-auto" placeholder="Search"
-               type="text">
-
+        <form id="search-question-form" th:action="@{/questions/search}" method="get" style="display: contents;">
+            <input type="text" name="searchInput" placeholder="Search"
+                   class="form-control w-100 form-control-dark me-auto">
+            <input type="number" name="pageNumber" value="0" class="d-none">
+            <input type="number" name="pageSize" value="5" class="d-none">
+            <input type="submit" class="d-none">
+        </form>
         <!--/*로그인, 회원기능을 위한 영역*/-->
         <div class="navbar-nav nav-user">
             <ul class="navbar-nav">

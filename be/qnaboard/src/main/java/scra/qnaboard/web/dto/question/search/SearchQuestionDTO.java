@@ -8,4 +8,6 @@ import lombok.Getter;
 public class SearchQuestionDTO {
 
     private String searchInput;
+    private int pageNumber;
+    private int pageSize;
 }

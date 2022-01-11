@@ -3,6 +3,7 @@ package scra.qnaboard.web.controller;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.MessageSource;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -10,11 +11,14 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import scra.qnaboard.service.QuestionService;
+import scra.qnaboard.service.SearchInputService;
 import scra.qnaboard.service.dto.QuestionWithTagDTO;
 import scra.qnaboard.web.dto.question.create.CreateQuestionForm;
 import scra.qnaboard.web.dto.question.detail.QuestionDetailDTO;
 import scra.qnaboard.web.dto.question.edit.EditQuestionForm;
 import scra.qnaboard.web.dto.question.list.QuestionListDTO;
+import scra.qnaboard.web.dto.question.list.QuestionSummaryDTO;
+import scra.qnaboard.web.dto.question.search.ParsedSearchQuestionDTO;
 import scra.qnaboard.web.dto.question.search.SearchQuestionDTO;
 
 import java.util.List;
@@ -29,6 +33,7 @@ import java.util.Locale;
 @RequestMapping("/questions")
 public class QuestionController {
 
+    private final SearchInputService searchInputService;
     private final QuestionService questionService;
     private final MessageSource message;
 
@@ -49,6 +54,12 @@ public class QuestionController {
     @GetMapping("/search")
     public String search(SearchQuestionDTO searchDTO, Model model) {
         log.info("searchDTO = {}", searchDTO);
+        ParsedSearchQuestionDTO parsedInput = searchInputService.parse(searchDTO);
+        Page<QuestionSummaryDTO> questionPage = questionService.searchQuestions(parsedInput,
+                searchDTO.getPageNumber(),
+                searchDTO.getPageSize());
+
+        model.addAttribute("questionPage", questionPage);
         return "/question/question-list";
     }
 
