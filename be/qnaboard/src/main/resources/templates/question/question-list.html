@@ -21,17 +21,17 @@ dto.question.list 패키지의 QuestionListDTO를 모델로 받아서 랜더링�
     <nav class="mt-4">
         <ul class="pagination justify-content-center">
             <li th:if="${paging.hasPreviousBlock()}" class="page-item">
-                <a th:href="@{/questions(searchInput=${''}, pageNumber=${paging.getLastPageOfPreviousBlock()})}"
+                <a th:href="@{/questions(searchInput=${paging.getSearchInput()}, pageNumber=${paging.getLastPageOfPreviousBlock()})}"
                    class="page-link">Previous</a>
             </li>
             <li class="page-item" th:classappend="${pageNumber == paging.getCurrentPageNumber()} ? active : ''"
                 th:each="pageNumber : ${paging.pageNumbers}">
                 <a class="page-link"
-                   th:href="@{/questions(searchInput=${''}, pageNumber=${pageNumber})}"
+                   th:href="@{/questions(searchInput=${paging.getSearchInput()}, pageNumber=${pageNumber})}"
                    th:text="${pageNumber}">1</a>
             </li>
             <li th:if="${paging.hasNextBlock}" class="page-item">
-                <a th:href="@{/questions(searchInput=${''}, pageNumber=${paging.getFirstPageOfNextBlock()})}"
+                <a th:href="@{/questions(searchInput=${paging.getSearchInput()}, pageNumber=${paging.getFirstPageOfNextBlock()})}"
                    class="page-link">Next</a>
             </li>
         </ul>

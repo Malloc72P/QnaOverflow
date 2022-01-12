@@ -42,6 +42,8 @@ class SearchInputServiceTest {
                 "user:516389 score:30",
                 "user:516389",
                 "",
+                "\"asdf\"",
+                "\"title-2\"",
         };
         Object[][] expecteds = {
                 {516389L, 30L, 10L, "asdf", 2},
@@ -50,6 +52,8 @@ class SearchInputServiceTest {
                 {516389L, 30L, DEFAULT_ANSWERS, DEFAULT_TITLE, 0},
                 {516389L, DEFAULT_SCORE, DEFAULT_ANSWERS, DEFAULT_TITLE, 0},
                 {DEFAULT_AUTHOR_ID, DEFAULT_SCORE, DEFAULT_ANSWERS, DEFAULT_TITLE, 0},
+                {DEFAULT_AUTHOR_ID, DEFAULT_SCORE, DEFAULT_ANSWERS, "asdf", 0},
+                {DEFAULT_AUTHOR_ID, DEFAULT_SCORE, DEFAULT_ANSWERS, "title-2", 0},
         };
 
         for (int i = 0; i < testcases.length; i++) {

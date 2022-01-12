@@ -53,7 +53,7 @@ public class QuestionController {
         ParsedSearchQuestionDTO parsedInput = searchInputService.parse(searchDTO);
         Page<QuestionSummaryDTO> questionPage = questionService.searchQuestions(parsedInput, pageNumber, pageSize);
 
-        Paging<QuestionSummaryDTO> paging = Paging.buildPaging(questionPage);
+        Paging<QuestionSummaryDTO> paging = Paging.buildPaging(questionPage, parsedInput.searchInput());
 
 
         model.addAttribute("paging", paging);

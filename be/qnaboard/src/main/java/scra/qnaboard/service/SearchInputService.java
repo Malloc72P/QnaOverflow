@@ -23,7 +23,7 @@ public class SearchInputService {
             "(?<answers>answers:[0-9]{1,})|" +
             "(?<user>user:[0-9]{1,})|" +
             "(?<tags>\\[[a-z,0-9,ㄱ-ㅎ,ㅏ-ㅣ,가-힣]{1,}\\])|" +
-            "(?<title>\\\"[a-z,0-9,ㄱ-ㅎ,ㅏ-ㅣ,가-힣]{1,}\\\")";
+            "(?<title>\\\"[a-z,0-9,ㄱ-ㅎ,ㅏ-ㅣ,가-힣,+-]{1,}\\\")";
 
     private final Pattern pattern;
 

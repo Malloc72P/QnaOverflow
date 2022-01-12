@@ -44,4 +44,26 @@ public class ParsedSearchQuestionDTO {
     public boolean hasTags() {
         return tags.size() > 0;
     }
+
+    public String searchInput() {
+        StringBuilder sb = new StringBuilder();
+        if (hasTitle()) {
+            sb.append("\"").append(title).append("\" ");
+        }
+        if (hasScore()) {
+            sb.append("score:").append(score).append(" ");
+        }
+        if (hasAnswers()) {
+            sb.append("answers:").append(answers).append(" ");
+        }
+        if (hasAuthorId()) {
+            sb.append("user").append(authorId).append(" ");
+        }
+        if (hasTags()) {
+            for (String tag : tags) {
+                sb.append("[").append(tag).append("] ");
+            }
+        }
+        return sb.toString();
+    }
 }
