@@ -28,7 +28,7 @@ class MemberTest {
     void testSaveMember() {
         Member[] testcases = {
                 new Member("member1", MemberRole.ADMIN),
-                new Member("member2", MemberRole.NORMAL),
+                new Member("member2", MemberRole.USER),
         };
 
         Arrays.stream(testcases).forEach(em::persist);

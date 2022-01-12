@@ -66,15 +66,15 @@ public class InitDB {
 
             //1. 멤버 생성
             List<Member> members = new ArrayList<>();
-            members.add(new Member("member1", MemberRole.NORMAL));
+            members.add(new Member("member1", MemberRole.USER));
             members.add(new Member("Admin1", MemberRole.ADMIN));
             members.add(new Member("Admin2", MemberRole.ADMIN));
-            members.add(new Member("member2", MemberRole.NORMAL));
-            members.add(new Member("member3", MemberRole.NORMAL));
-            members.add(new Member("member4", MemberRole.NORMAL));
-            members.add(new Member("member5", MemberRole.NORMAL));
-            members.add(new Member("member6", MemberRole.NORMAL));
-            members.add(new Member("member7", MemberRole.NORMAL));
+            members.add(new Member("member2", MemberRole.USER));
+            members.add(new Member("member3", MemberRole.USER));
+            members.add(new Member("member4", MemberRole.USER));
+            members.add(new Member("member5", MemberRole.USER));
+            members.add(new Member("member6", MemberRole.USER));
+            members.add(new Member("member7", MemberRole.USER));
 
             members.forEach(em::persist);
 

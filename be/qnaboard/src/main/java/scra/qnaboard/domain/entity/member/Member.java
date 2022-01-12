@@ -17,6 +17,8 @@ import java.util.Objects;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Member extends BaseTimeEntity {
 
+    private static final String NO_EMAIL = "no-email";
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "members_id")
@@ -24,12 +26,26 @@ public class Member extends BaseTimeEntity {
 
     private String nickname;
 
+    private String email;
+
     @Enumerated(EnumType.STRING)
     private MemberRole role;
 
     public Member(String nickname, MemberRole role) {
         this.nickname = nickname;
         this.role = role;
+        email = NO_EMAIL;
+    }
+
+    public Member(String nickname, String email, MemberRole role) {
+        this.nickname = nickname;
+        this.email = email;
+        this.role = role;
+    }
+
+    public Member update(String nickname) {
+        this.nickname = nickname;
+        return this;
     }
 
     public boolean isAdmin() {

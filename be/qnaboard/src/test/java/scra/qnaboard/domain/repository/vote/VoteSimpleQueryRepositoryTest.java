@@ -12,9 +12,6 @@ import scra.qnaboard.domain.entity.vote.Vote;
 import scra.qnaboard.domain.entity.vote.VoteType;
 
 import javax.persistence.EntityManager;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -84,7 +81,7 @@ class VoteSimpleQueryRepositoryTest {
     }
 
     private Member createMember() {
-        Member member = new Member("member", MemberRole.NORMAL);
+        Member member = new Member("member", MemberRole.USER);
         em.persist(member);
         return member;
     }

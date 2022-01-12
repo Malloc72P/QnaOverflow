@@ -28,7 +28,7 @@ class QuestionTest {
     @Test
     @DisplayName("질문글을 생성할 수 있어야 함")
     void testSaveQuestion() {
-        Member member1 = new Member("member1", MemberRole.NORMAL);
+        Member member1 = new Member("member1", MemberRole.USER);
         em.persist(member1);
 
         Question question = new Question(member1, "content1", "title");
@@ -48,7 +48,7 @@ class QuestionTest {
     @Test
     @DisplayName("질문글로 답변글을 가지고 올 수 있어야 함")
     void testGetAnswers() {
-        Member member1 = new Member("member1", MemberRole.NORMAL);
+        Member member1 = new Member("member1", MemberRole.USER);
         em.persist(member1);
 
         Question question = new Question(member1, "content1", "title");
