@@ -43,15 +43,6 @@ public class QuestionService {
      *
      * @return 질문목록조회를 위한 DTO
      */
-    public QuestionListDTO questionList() {
-        List<QuestionSummaryDTO> questionSummaryDTOS = questionSearchListRepository.search();
-        return new QuestionListDTO(questionSummaryDTOS);
-    }
-
-    public Page<QuestionSummaryDTO> searchQuestions(int pageNumber, int pageSize) {
-        return searchQuestions(new ParsedSearchQuestionDTO(), pageNumber, pageSize);
-    }
-
     public Page<QuestionSummaryDTO> searchQuestions(ParsedSearchQuestionDTO searchQuestionDTO, int pageNumber, int pageSize) {
         PageRequest pageRequest = PageRequest.of(pageNumber, pageSize);
         return questionSearchListRepository.search(searchQuestionDTO, pageRequest);

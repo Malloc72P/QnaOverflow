@@ -48,42 +48,6 @@ public class QuestionSearchListRepository {
      *
      * @return 질문목록 DTO List
      */
-    public List<QuestionSummaryDTO> search() {
-        //1. 질문목록 조회( 추가로 질문의 답글개수와 유저 이름을 같이 가져옴 )
-        List<QuestionSummaryDTO> questions = queryFactory
-                .select(new QQuestionSummaryDTO(
-                        question.id,
-                        question.title,
-                        JPAExpressions.select(answer.id.count().intValue())
-                                .from(answer)
-                                .where(answer.question.id.eq(question.id)),
-                        question.viewCount,
-                        question.score,
-                        question.createdDate,
-                        question.author.nickname
-                )).from(question)
-                .innerJoin(question.author, member)
-                .where(question.deleted.isFalse())
-                .fetch();
-
-        //2. 연관된 태그정보 조회쿼리의 In절에서 사용할 ID 컬렉션을 스트림으로 생성한다
-        List<Long> questionIds = questions.stream()
-                .map(QuestionSummaryDTO::getQuestionId)
-                .collect(Collectors.toList());
-
-        //3. 질문목록에서 참조하는 태그정보 조회(QuestionTag와 Tag까지 조인해서 가져오되, in 절을 사용해서 최적화함)
-        List<QuestionTagDTO> tags = questionTagRepository.questionTagsBy(questionIds);
-
-        //4. 태그의 Question ID값을 가지고 Map으로 그룹화 함
-        Map<Long, List<QuestionTagDTO>> tagMap = tags.stream()
-                .collect(Collectors.groupingBy(QuestionTagDTO::getQuestionId));
-
-        //5. 태그정보와 투표점수를 입력
-        questions.forEach(question -> question.update(tagMap));
-
-        return questions;
-    }
-
     public Page<QuestionSummaryDTO> search(ParsedSearchQuestionDTO searchQuestionDTO, Pageable pageable) {
         //1. 질문목록 조회( 추가로 질문의 답글개수와 유저 이름을 같이 가져옴 )
         List<QuestionSummaryDTO> questions = queryFactory
@@ -100,6 +64,7 @@ public class QuestionSearchListRepository {
                 )).from(question)
                 .innerJoin(question.author, member)
                 .where(expressionSupplier.searchQuestions(searchQuestionDTO))
+                .orderBy(question.createdDate.desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();
@@ -126,6 +91,7 @@ public class QuestionSearchListRepository {
         return queryFactory.select(question.id.count())
                 .from(question)
                 .innerJoin(question.author, member)
-                .where(expressionSupplier.searchQuestions(searchQuestionDTO));
+                .where(expressionSupplier.searchQuestions(searchQuestionDTO))
+                .orderBy(question.createdDate.desc());
     }
 }
