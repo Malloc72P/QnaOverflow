@@ -44,6 +44,7 @@ class SearchInputServiceTest {
                 "",
                 "\"asdf\"",
                 "\"title-2\"",
+                "[Angular] \"Title-2\"",
         };
         Object[][] expecteds = {
                 {516389L, 30L, 10L, "asdf", 2},
@@ -54,7 +55,9 @@ class SearchInputServiceTest {
                 {DEFAULT_AUTHOR_ID, DEFAULT_SCORE, DEFAULT_ANSWERS, DEFAULT_TITLE, 0},
                 {DEFAULT_AUTHOR_ID, DEFAULT_SCORE, DEFAULT_ANSWERS, "asdf", 0},
                 {DEFAULT_AUTHOR_ID, DEFAULT_SCORE, DEFAULT_ANSWERS, "title-2", 0},
+                {DEFAULT_AUTHOR_ID, DEFAULT_SCORE, DEFAULT_ANSWERS, "Title-2", 1},
         };
+        assertThat(testcases.length).isEqualTo(expecteds.length);
 
         for (int i = 0; i < testcases.length; i++) {
             String testcase = testcases[i];
