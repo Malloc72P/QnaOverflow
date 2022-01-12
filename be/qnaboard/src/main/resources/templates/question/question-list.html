@@ -17,7 +17,7 @@
          th:insert="template/fragment/question/question-item-summary ::
             question_item_summary(${question})">
     </div>
-    <nav class="mt-4">
+    <nav class="mt-4" th:if="${paging.getTotalPage() > 1}">
         <ul class="pagination justify-content-center">
             <li th:if="${paging.hasPreviousBlock()}" class="page-item">
                 <a th:href="@{/questions(searchInput=${paging.getSearchInput()}, pageNumber=${paging.getLastPageOfPreviousBlock()})}"
