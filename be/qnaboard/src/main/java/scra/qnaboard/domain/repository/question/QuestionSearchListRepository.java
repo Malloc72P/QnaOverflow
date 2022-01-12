@@ -91,7 +91,6 @@ public class QuestionSearchListRepository {
         return queryFactory.select(question.id.count())
                 .from(question)
                 .innerJoin(question.author, member)
-                .where(expressionSupplier.searchQuestions(searchQuestionDTO))
-                .orderBy(question.createdDate.desc());
+                .where(expressionSupplier.searchQuestions(searchQuestionDTO));
     }
 }
