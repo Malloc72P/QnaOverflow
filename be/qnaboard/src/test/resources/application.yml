@@ -1,24 +1,36 @@
+#database_url: localhost:3306
+#database_username: dev
+#database_password: dev1234
+
 spring:
+  devtools:
+    add-properties: false
+  thymeleaf:
+    prefix: classpath:/templates/
+    suffix: .html
+    encoding: UTF-8
+  profiles:
+    active: local
+    include: oauth
   datasource:
     url: jdbc:h2:mem:qnaboard;MODE=MYSQL;DB_CLOSE_ON_EXIT=FALSE
-
-  jpa:
-    hibernate:
-      ddl-auto: create
-    properties:
-      hibernate:
-        dialect: org.hibernate.dialect.MySQL8Dialect
-        default_batch_fetch_size: 100
-logging:
-  level:
-    org.hibernate.SQL: debug
-
 #    url: jdbc:mysql://${database_url}/qnaboard
 #    username: ${database_username}
 #    password: ${database_password}
 #    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: none
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
+        default_batch_fetch_size: 100
+  messages:
+    basename: i18n/messages, i18n/errors
+    encoding: UTF-8
+app:
+  default:
+    page-size: 10
 
-#database_url: localhost:3306
-#database_username: dev
-#database_password: dev1234
 

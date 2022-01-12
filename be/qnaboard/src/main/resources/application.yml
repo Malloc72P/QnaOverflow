@@ -7,6 +7,7 @@ spring:
     encoding: UTF-8
   profiles:
     active: local
+    include: oauth
   datasource:
     url: jdbc:mysql://${database_url}/qnaboard
     username: ${database_username}
