@@ -57,7 +57,7 @@ public class ParsedSearchQuestionDTO {
             sb.append("answers:").append(answers).append(" ");
         }
         if (hasAuthorId()) {
-            sb.append("user").append(authorId).append(" ");
+            sb.append("user:").append(authorId).append(" ");
         }
         if (hasTags()) {
             for (String tag : tags) {

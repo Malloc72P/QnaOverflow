@@ -10,7 +10,7 @@
 <body>
 
 <nav class="navbar navbar-expand-md navbar-dark bg-dark shadow-sm p-0 my-navbar"
-     th:fragment="navibar(username)">
+     th:fragment="navibar(username, searchInput='')">
     <!--/*
         네비바 컨테이너 - PowerOverflow와 로그인버튼 등의 모든 네비바 아이템은 이 안에 있어야 함
     */-->
@@ -30,7 +30,7 @@
         <!--/*검색 폼*/-->
         <form id="search-question-form" th:action="@{/questions}" method="get" style="display: contents;">
             <input type="text" name="searchInput" placeholder="Search"
-                   class="form-control w-100 form-control-dark me-auto">
+                   class="form-control w-100 form-control-dark me-auto" th:value="${searchInput}">
             <input type="submit" class="d-none">
         </form>
         <!--/*로그인, 회원기능을 위한 영역*/-->

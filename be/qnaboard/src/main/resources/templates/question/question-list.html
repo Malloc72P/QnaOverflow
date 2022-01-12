@@ -2,7 +2,7 @@
 질문목록조회의 뷰(QuestionController.list)
 */-->
 <!DOCTYPE html>
-<html lang="kr" th:replace="~{/template/layout-main :: layout (~{::title}, ~{::section}, ${username}, ~{::script})}"
+<html lang="kr" th:replace="~{/template/layout-main :: layout (~{::title}, ~{::section}, ${username}, ~{::script}, ${paging.searchInput})}"
       xmlns:th="http://www.thymeleaf.org">
 
 <title th:text="#{ui.main.title}">제목</title>
