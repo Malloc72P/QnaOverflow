@@ -95,6 +95,9 @@ public class InitDB {
             questions.add(new Question(members.get(0), "content-3", "title-3"));
             questions.add(new Question(members.get(3), "content-4", "title-4"));
             questions.add(new Question(members.get(0), "content-5", "title-5"));
+            for (int i = 6; i < 126; i++) {
+                questions.add(new Question(members.get(0), "content-" + i, "title-" + i));
+            }
             questions.forEach(em::persist);
             Question testTargetQuestion = questions.get(0);
 

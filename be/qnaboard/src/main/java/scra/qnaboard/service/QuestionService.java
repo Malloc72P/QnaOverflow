@@ -48,6 +48,10 @@ public class QuestionService {
         return new QuestionListDTO(questionSummaryDTOS);
     }
 
+    public Page<QuestionSummaryDTO> searchQuestions(int pageNumber, int pageSize) {
+        return searchQuestions(new ParsedSearchQuestionDTO(), pageNumber, pageSize);
+    }
+
     public Page<QuestionSummaryDTO> searchQuestions(ParsedSearchQuestionDTO searchQuestionDTO, int pageNumber, int pageSize) {
         PageRequest pageRequest = PageRequest.of(pageNumber, pageSize);
         return questionSearchListRepository.search(searchQuestionDTO, pageRequest);

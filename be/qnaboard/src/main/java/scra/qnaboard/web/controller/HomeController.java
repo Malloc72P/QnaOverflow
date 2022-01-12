@@ -10,6 +10,6 @@ public class HomeController {
 
     @GetMapping
     public String home() {
-        return "forward:/questions";
+        return "forward:/questions?searchInput=&pageNumber=0&pageSize=5";
     }
 }

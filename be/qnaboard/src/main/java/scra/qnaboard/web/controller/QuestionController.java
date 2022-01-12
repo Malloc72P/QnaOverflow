@@ -13,10 +13,10 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import scra.qnaboard.service.QuestionService;
 import scra.qnaboard.service.SearchInputService;
 import scra.qnaboard.service.dto.QuestionWithTagDTO;
+import scra.qnaboard.web.dto.page.Paging;
 import scra.qnaboard.web.dto.question.create.CreateQuestionForm;
 import scra.qnaboard.web.dto.question.detail.QuestionDetailDTO;
 import scra.qnaboard.web.dto.question.edit.EditQuestionForm;
-import scra.qnaboard.web.dto.question.list.QuestionListDTO;
 import scra.qnaboard.web.dto.question.list.QuestionSummaryDTO;
 import scra.qnaboard.web.dto.question.search.ParsedSearchQuestionDTO;
 import scra.qnaboard.web.dto.question.search.SearchQuestionDTO;
@@ -33,9 +33,12 @@ import java.util.Locale;
 @RequestMapping("/questions")
 public class QuestionController {
 
-    private final SearchInputService searchInputService;
-    private final QuestionService questionService;
+    private static final String defaultPageNumber = "0";
+    private static final String defaultPageSize = "5";
+
     private final MessageSource message;
+    private final QuestionService questionService;
+    private final SearchInputService searchInputService;
 
     /**
      * 질문글 목록조회 요청을 처리하는 핸들러
@@ -43,23 +46,18 @@ public class QuestionController {
      * @return 질문글 목록조회 페이지
      */
     @GetMapping
-    public String list(Model model) {
-        QuestionListDTO questionListDTO = questionService.questionList();
-
-        model.addAttribute("username", null);
-        model.addAttribute("dto", questionListDTO);
-        return "/question/question-list";
-    }
-
-    @GetMapping("/search")
-    public String search(SearchQuestionDTO searchDTO, Model model) {
-        log.info("searchDTO = {}", searchDTO);
+    public String search(@RequestParam(defaultValue = defaultPageNumber) int pageNumber,
+                         @RequestParam(defaultValue = defaultPageSize) int pageSize,
+                         SearchQuestionDTO searchDTO,
+                         Model model) {
         ParsedSearchQuestionDTO parsedInput = searchInputService.parse(searchDTO);
-        Page<QuestionSummaryDTO> questionPage = questionService.searchQuestions(parsedInput,
-                searchDTO.getPageNumber(),
-                searchDTO.getPageSize());
+        Page<QuestionSummaryDTO> questionPage = questionService.searchQuestions(parsedInput, pageNumber, pageSize);
 
-        model.addAttribute("questionPage", questionPage);
+        Paging<QuestionSummaryDTO> paging = Paging.buildPaging(questionPage);
+
+
+        model.addAttribute("paging", paging);
+
         return "/question/question-list";
     }
 

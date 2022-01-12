@@ -1,7 +1,9 @@
 package scra.qnaboard.web.dto.question.list;
 
 import com.querydsl.core.annotations.QueryProjection;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import scra.qnaboard.web.dto.exception.DtoUpdateException;
 import scra.qnaboard.web.dto.question.tag.QuestionTagDTO;
@@ -19,6 +21,7 @@ import static scra.qnaboard.utils.DateTimeUtil.MY_FORMAT;
  * createDate를 원하는 포맷으로 뷰에 출력하기 위해 Formatter를 사용한다(@DateTimeFormat)
  */
 @Getter
+@NoArgsConstructor
 public class QuestionSummaryDTO {
 
     private long questionId;
