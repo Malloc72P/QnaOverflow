@@ -10,7 +10,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @Service
-public class SearchInputService {
+public class SearchInputParserService {
 
     private final List<String> groupNames = new ArrayList<>();
 
@@ -22,12 +22,12 @@ public class SearchInputService {
     private final String regex = "(?<score>score:[+-]?[0-9]{1,})|" +
             "(?<answers>answers:[0-9]{1,})|" +
             "(?<user>user:[0-9]{1,})|" +
-            "(?<tags>\\[[a-z,A-Z,0-9,ㄱ-ㅎ,ㅏ-ㅣ,가-힣]{1,}\\])|" +
+            "(?<tags>\\[[a-z,A-Z,0-9,ㄱ-ㅎ,ㅏ-ㅣ,가-힣,+-]{1,}\\])|" +
             "(?<title>\\\"[a-z,A-Z,0-9,ㄱ-ㅎ,ㅏ-ㅣ,가-힣,+-]{1,}\\\")";
 
     private final Pattern pattern;
 
-    public SearchInputService() {
+    public SearchInputParserService() {
         this.pattern = Pattern.compile(regex);
         groupNames.add(groupNameScore);
         groupNames.add(groupNameTitle);

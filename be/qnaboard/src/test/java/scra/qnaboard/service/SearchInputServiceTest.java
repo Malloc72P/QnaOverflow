@@ -15,11 +15,11 @@ import static scra.qnaboard.web.dto.question.search.ParsedSearchQuestionDTO.*;
 
 class SearchInputServiceTest {
 
-    private SearchInputService searchInputService;
+    private SearchInputParserService searchInputService;
 
     @BeforeEach
     void init() {
-        searchInputService = new SearchInputService();
+        searchInputService = new SearchInputParserService();
     }
 
     @Test

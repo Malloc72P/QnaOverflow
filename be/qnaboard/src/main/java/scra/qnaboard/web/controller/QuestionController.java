@@ -11,7 +11,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import scra.qnaboard.service.QuestionService;
-import scra.qnaboard.service.SearchInputService;
+import scra.qnaboard.service.SearchInputParserService;
 import scra.qnaboard.service.dto.QuestionWithTagDTO;
 import scra.qnaboard.web.dto.page.Paging;
 import scra.qnaboard.web.dto.question.create.CreateQuestionForm;
@@ -38,7 +38,7 @@ public class QuestionController {
 
     private final MessageSource message;
     private final QuestionService questionService;
-    private final SearchInputService searchInputService;
+    private final SearchInputParserService searchInputService;
 
     /**
      * 질문글 목록조회 요청을 처리하는 핸들러
