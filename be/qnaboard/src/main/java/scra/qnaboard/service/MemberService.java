@@ -15,6 +15,12 @@ public class MemberService {
     private final MemberRepository memberRepository;
 
     public Member findMember(long memberId) {
-        return memberRepository.findById(memberId).orElseThrow(() -> new MemberNotFoundException(memberId));
+        return memberRepository.findByIdAndDeletedFalse(memberId)
+                .orElseThrow(() -> new MemberNotFoundException(memberId));
+    }
+
+    @Transactional
+    public void deleteMember(long memberId) {
+        memberRepository.deleteMemberById(memberId);
     }
 }

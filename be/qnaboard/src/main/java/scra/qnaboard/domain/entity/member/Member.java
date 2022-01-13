@@ -28,6 +28,8 @@ public class Member extends BaseTimeEntity {
 
     private String email;
 
+    private boolean deleted = false;
+
     @Enumerated(EnumType.STRING)
     private MemberRole role;
 
@@ -45,6 +47,11 @@ public class Member extends BaseTimeEntity {
 
     public Member update(String nickname) {
         this.nickname = nickname;
+        return this;
+    }
+
+    public Member activate() {
+        this.deleted = false;
         return this;
     }
 
