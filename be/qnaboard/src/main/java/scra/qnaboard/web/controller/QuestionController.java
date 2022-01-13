@@ -10,6 +10,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import scra.qnaboard.configuration.auth.LoginUser;
+import scra.qnaboard.configuration.auth.SessionUser;
 import scra.qnaboard.service.QuestionService;
 import scra.qnaboard.service.SearchInputParserService;
 import scra.qnaboard.service.dto.QuestionWithTagDTO;
@@ -21,7 +23,6 @@ import scra.qnaboard.web.dto.question.list.QuestionSummaryDTO;
 import scra.qnaboard.web.dto.question.search.ParsedSearchQuestionDTO;
 import scra.qnaboard.web.dto.question.search.SearchQuestionDTO;
 
-import java.util.List;
 import java.util.Locale;
 
 /**
@@ -98,17 +99,19 @@ public class QuestionController {
     @PostMapping
     public String createQuestion(@ModelAttribute("questionForm") @Validated CreateQuestionForm form,
                                  BindingResult bindingResult,
+                                 @LoginUser SessionUser sessionUser,
                                  RedirectAttributes redirectAttributes) {
         //생성 폼에 문제가 있는지 확인함. 문제가 있다면 생성 페이지로 돌려보냄
         if (bindingResult.hasErrors()) {
             return "/question/question-form";
         }
 
-        //폼에서 태그 아이디를 꺼냄
-        List<Long> tagIds = form.extractTagIds();
-
         //질문글을 생성하고, 생성된 질문글의 아이디에 대한 상세 페이지 요청을 하도록 리다이렉션시킴
-        long newQuestionId = questionService.createQuestion(1L, form.getTitle(), form.getContent(), tagIds);
+        long newQuestionId = questionService.createQuestion(sessionUser.getId(),
+                form.getTitle(),
+                form.getContent(),
+                form.extractTagIds());
+
         redirectAttributes.addAttribute("questionId", newQuestionId);
         return "redirect:/questions/{questionId}";
     }
@@ -122,9 +125,13 @@ public class QuestionController {
      * @return 결과를 통보하는 뷰
      */
     @PostMapping("{questionId}/delete")
-    public String delete(@PathVariable long questionId, RedirectAttributes redirectAttributes, Locale locale) {
+    public String delete(
+            @PathVariable long questionId,
+            RedirectAttributes redirectAttributes,
+            @LoginUser SessionUser sessionUser,
+            Locale locale) {
         //질문글 삭제
-        questionService.deleteQuestion(1L, questionId);
+        questionService.deleteQuestion(sessionUser.getId(), questionId);
 
         //삭제완료를 알리는 페이지로 리다이렉션 시킴. 필요한 정보는 요청 파라미터에 넣어줌
         redirectAttributes.addAttribute("title", message.getMessage("ui.notify.question.delete.title", null, locale));
@@ -166,20 +173,27 @@ public class QuestionController {
      * @param redirectAttributes 예외처리를 위해 존재함. 이거 덕분에 리다이렉션할때 데이터를 전달할 수 있음
      * @return 질문 상세보기 페이지
      */
-    @PostMapping("edit/{questionId}")
-    public String editQuestion(@ModelAttribute("questionEditForm") @Validated EditQuestionForm form,
-                               @PathVariable("questionId") long questionId,
-                               BindingResult bindingResult,
-                               RedirectAttributes redirectAttributes) {
+    @PostMapping("{questionId}/edit")
+    public String editQuestion(
+            @ModelAttribute("questionEditForm") @Validated EditQuestionForm form,
+            BindingResult bindingResult,
+            @PathVariable("questionId") long questionId,
+            @LoginUser SessionUser sessionUser,
+            RedirectAttributes redirectAttributes) {
+
         //입력 폼에 문제가 있는지 확인
         if (bindingResult.hasErrors()) {
             return "/question/question-edit-form";
         }
 
-        List<Long> tagIds = form.extractTagIds();
-
         //질문글 수정 후 상세 페이지로 리다이렉션
-        questionService.editQuestion(1L, questionId, form.getTitle(), form.getContent(), tagIds);
+        questionService.editQuestion(
+                sessionUser.getId(),
+                questionId,
+                form.getTitle(),
+                form.getContent(),
+                form.extractTagIds());
+
         redirectAttributes.addAttribute("questionId", questionId);
         return "redirect:/questions/{questionId}";
     }

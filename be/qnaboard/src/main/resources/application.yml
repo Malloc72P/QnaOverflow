@@ -1,6 +1,6 @@
 spring:
-  session:
-    store-type: jdbc
+#  session:
+#    store-type: jdbc
   devtools:
     add-properties: false
   thymeleaf:
@@ -26,6 +26,3 @@ spring:
   messages:
     basename: i18n/messages, i18n/errors
     encoding: UTF-8
-app:
-  default:
-    page-size: 10

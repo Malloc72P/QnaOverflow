@@ -13,7 +13,7 @@
     </div>
     <hr/>
 
-    <form method="post" th:action="@{/questions/edit/{questionId}(questionId=${questionId})}"
+    <form method="post" th:action="@{/questions/{questionId}/edit(questionId=${questionId})}"
           th:object="${questionEditForm}">
         <div class="mb-3">
             <label class="form-label" for="title" th:text="#{ui.question.edit-form.input-title}">질문 제목</label>

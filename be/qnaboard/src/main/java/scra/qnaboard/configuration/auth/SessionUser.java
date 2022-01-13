@@ -1,8 +1,6 @@
 package scra.qnaboard.configuration.auth;
 
 import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 import scra.qnaboard.domain.entity.member.Member;
 
 import java.io.Serializable;

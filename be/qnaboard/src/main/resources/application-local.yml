@@ -1,7 +1,7 @@
 spring:
-  session:
-    jdbc:
-      initialize-schema: always
+#  session:
+#    jdbc:
+#      initialize-schema: always
   devtools:
     add-properties: true
     livereload:
