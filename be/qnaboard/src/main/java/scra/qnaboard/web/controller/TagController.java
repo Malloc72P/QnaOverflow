@@ -9,6 +9,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import scra.qnaboard.configuration.auth.LoginUser;
+import scra.qnaboard.configuration.auth.SessionUser;
 import scra.qnaboard.service.TagService;
 import scra.qnaboard.web.dto.tag.create.CreateTagForm;
 import scra.qnaboard.web.dto.tag.edit.EditTagForm;
@@ -42,13 +44,14 @@ public class TagController {
     @PostMapping
     public String create(@ModelAttribute("tagForm") @Validated CreateTagForm form,
                          BindingResult bindingResult,
+                         @LoginUser SessionUser sessionUser,
                          RedirectAttributes redirectAttributes,
                          Locale locale) {
         if (bindingResult.hasErrors()) {
             return "/tag/tag-form";
         }
 
-        tagService.createTag(1L, form.getName(), form.getDescription());
+        tagService.createTag(sessionUser.getId(), form.getName(), form.getDescription());
 
         redirectAttributes.addAttribute("title", message.getMessage("ui.notify.tag.create.title", null, locale));
         redirectAttributes.addAttribute("content", message.getMessage("ui.notify.tag.create.content", null, locale));
