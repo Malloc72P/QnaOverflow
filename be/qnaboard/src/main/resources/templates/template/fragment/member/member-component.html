@@ -1,0 +1,20 @@
+<!--/*
+회원 카드
+*/-->
+<!DOCTYPE html>
+<html lang="kr" xmlns:th="http://www.thymeleaf.org">
+
+<body>
+
+<div class="card me-md-3 mb-3 tag-card" th:fragment="member_component(member)">
+    <div class="card-body">
+        <h5 class="card-title">
+            <a th:href="@{/questions(searchInput='user:' + ${member.memberId})}"
+               th:text="${member.memberName}">Card title</a>
+        </h5>
+    </div>
+</div>
+
+</body>
+
+</html>

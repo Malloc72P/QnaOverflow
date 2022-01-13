@@ -3,6 +3,8 @@ package scra.qnaboard.web.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -10,6 +12,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import scra.qnaboard.configuration.auth.LoginUser;
 import scra.qnaboard.configuration.auth.SessionUser;
 import scra.qnaboard.service.MemberService;
+import scra.qnaboard.web.dto.member.MemberListDTO;
 import scra.qnaboard.web.exception.member.NotLoggedInException;
 
 import javax.servlet.http.HttpSession;
@@ -23,6 +26,14 @@ public class MemberController {
     private final MemberService memberService;
     private final MessageSource message;
     private final HttpSession session;
+
+    @GetMapping
+    public String memberList(Model model) {
+        MemberListDTO memberListDTO = memberService.findAllMember();
+        model.addAttribute("memberListDTO", memberListDTO);
+
+        return "/member/member-list";
+    }
 
     @PostMapping("/sign-out")
     public String signOut(@LoginUser SessionUser sessionUser,
