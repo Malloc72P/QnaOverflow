@@ -20,7 +20,7 @@ public class MemberService {
     private final MemberRepository memberRepository;
 
     public MemberListDTO findAllMember() {
-        List<MemberDTO> collect = memberRepository.findAll()
+        List<MemberDTO> collect = memberRepository.findAllByDeletedFalse()
                 .stream()
                 .map(MemberDTO::from)
                 .collect(Collectors.toList());

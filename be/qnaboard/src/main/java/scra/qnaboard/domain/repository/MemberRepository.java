@@ -6,9 +6,12 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import scra.qnaboard.domain.entity.member.Member;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface MemberRepository extends JpaRepository<Member, Long> {
+
+    List<Member> findAllByDeletedFalse();
 
     Optional<Member> findByEmail(String email);
 
