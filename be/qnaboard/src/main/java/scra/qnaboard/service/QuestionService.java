@@ -72,14 +72,14 @@ public class QuestionService {
         //작성자를 조회한다
         Member author = memberService.findMember(authorId);
 
-        //질문글 생성
+        //질문글 생성 및 저장
         Question question = new Question(author, content, title);
+        questionRepository.save(question);
 
         //필요한 태그를 전부 조회하고, 질문글에 추가한다
         questionTagService.createQuestionTags(question, tagIds);
 
-        //질문글을 저장하고 아이디를 반환한다
-        questionRepository.save(question);
+        //아이디를 반환한다
         return question.getId();
     }
 

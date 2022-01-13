@@ -74,12 +74,13 @@ public class TagController {
                        @ModelAttribute("editTagForm") @Validated EditTagForm form,
                        BindingResult bindingResult,
                        RedirectAttributes redirectAttributes,
+                       @LoginUser SessionUser sessionUser,
                        Locale locale) {
         if (bindingResult.hasErrors()) {
             return "/tag/tag-edit-form";
         }
 
-        tagService.editTag(1L, tagId, form.getName(), form.getDescription());
+        tagService.editTag(sessionUser.getId(), tagId, form.getName(), form.getDescription());
 
         redirectAttributes.addAttribute("title", message.getMessage("ui.notify.tag.edit.title", null, locale));
         redirectAttributes.addAttribute("content", message.getMessage("ui.notify.tag.edit.content", null, locale));
@@ -91,8 +92,9 @@ public class TagController {
     @PostMapping("{tagId}/delete")
     public String delete(@PathVariable("tagId") long tagId,
                          RedirectAttributes redirectAttributes,
+                         @LoginUser SessionUser sessionUser,
                          Locale locale) {
-        tagService.deleteTag(1L, tagId);
+        tagService.deleteTag(sessionUser.getId(), tagId);
 
         redirectAttributes.addAttribute("title", message.getMessage("ui.notify.tag.delete.title", null, locale));
         redirectAttributes.addAttribute("content", message.getMessage("ui.notify.tag.delete.content", null, locale));
