@@ -1,4 +1,6 @@
 spring:
+  session:
+    store-type: jdbc
   devtools:
     add-properties: false
   thymeleaf:

@@ -3,6 +3,10 @@
 #database_password: dev1234
 
 spring:
+  session:
+    store-type: jdbc
+    jdbc:
+      initialize-schema: always
   devtools:
     add-properties: false
   thymeleaf:

@@ -1,4 +1,7 @@
 spring:
+  session:
+    jdbc:
+      initialize-schema: always
   devtools:
     add-properties: true
     livereload:
@@ -9,7 +12,6 @@ spring:
   sql:
     init:
       mode: always
-
 
 database_url: localhost:3306
 database_username: dev
