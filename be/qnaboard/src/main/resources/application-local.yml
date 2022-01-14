@@ -6,9 +6,9 @@ spring:
     add-properties: true
     livereload:
       enabled: true
-  jpa:
-    hibernate:
-      ddl-auto: create-drop
+#  jpa:
+#    hibernate:
+#      ddl-auto: create-drop
   sql:
     init:
       mode: always
