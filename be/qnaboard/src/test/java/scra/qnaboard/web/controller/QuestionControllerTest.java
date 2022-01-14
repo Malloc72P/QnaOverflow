@@ -61,12 +61,15 @@ class QuestionControllerTest {
                 .authorName("author-name-1")
                 .build();
 
+        //given
         List<QuestionSummaryDTO> list = new ArrayList<>();
         list.add(questionSummaryDTO);
 
+        //given
         given(parserService.parse(new SearchQuestionDTO("")))
                 .willReturn(new ParsedSearchQuestionDTO());
 
+        //given
         given(questionService.searchQuestions(new ParsedSearchQuestionDTO(), 0, 5))
                 .willReturn(new PageImpl<>(list));
 
@@ -91,7 +94,6 @@ class QuestionControllerTest {
                 .content("question-content-1")
                 .authorName("authorName")
                 .build();
-
         given(questionService.questionDetail(1L))
                 .willReturn(detailDTO);
 
@@ -169,14 +171,15 @@ class QuestionControllerTest {
     @WithMockUser(roles = "USER")
     void 질문_삭제_테스트() throws Exception {
         //given
-        long newQuestionId = 1L;
+        long requesterId = 1L;
+        long questionId = 2L;
 
         //when
         ResultActions resultActions = mockMvc.perform(
-                post("/questions/1/delete")
+                post("/questions/" + questionId + "/delete")
                         .accept(MediaType.APPLICATION_FORM_URLENCODED)
                         .with(csrf())
-                        .sessionAttr("user", new SessionUser(1L, "", ""))
+                        .sessionAttr("user", new SessionUser(requesterId, "", ""))
                         .secure(true));
 
         //then
@@ -189,21 +192,23 @@ class QuestionControllerTest {
     @WithMockUser(roles = "USER")
     void 질문_수정_테스트() throws Exception {
         //given
+        long requesterId = 1L;
+        long questionId = 2L;
 
         //when
         ResultActions resultActions = mockMvc.perform(
-                post("/questions/1/edit")
+                post("/questions/"+questionId+"/edit")
                         .accept(MediaType.APPLICATION_FORM_URLENCODED)
                         .param("title", "title-1")
                         .param("content", "content-1")
                         .param("tags", "")
                         .with(csrf())
-                        .sessionAttr("user", new SessionUser(1L, "", ""))
+                        .sessionAttr("user", new SessionUser(requesterId, "", ""))
                         .secure(true));
 
         //then
         resultActions
                 .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/questions/1"));
+                .andExpect(redirectedUrl("/questions/"+questionId));
     }
 }
