@@ -40,14 +40,4 @@ public class QuestionSimpleQueryRepository {
 
         return Optional.ofNullable(findQuestion);
     }
-
-    public Optional<Question> questionWithTag(long questionId) {
-        Question question = queryFactory.selectFrom(QQuestion.question)
-                .leftJoin(QQuestion.question.questionTags, questionTag).fetchJoin()
-                .innerJoin(questionTag.tag, tag).fetchJoin()
-                .where(QQuestion.question.id.eq(questionId))
-                .fetchOne();
-
-        return Optional.ofNullable(question);
-    }
 }
