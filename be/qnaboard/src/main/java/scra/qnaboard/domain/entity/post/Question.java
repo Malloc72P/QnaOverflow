@@ -46,6 +46,10 @@ public class Question extends Post {
         this.content = content;
     }
 
+    public void addQuestionTag(QuestionTag questionTag) {
+        questionTags.add(questionTag);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -58,5 +62,9 @@ public class Question extends Post {
     @Override
     public int hashCode() {
         return Objects.hash(super.hashCode(), getViewCount(), getTitle());
+    }
+
+    public void resetTags() {
+        questionTags.clear();
     }
 }

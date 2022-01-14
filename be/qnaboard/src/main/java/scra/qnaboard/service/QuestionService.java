@@ -12,6 +12,7 @@ import scra.qnaboard.domain.repository.question.QuestionSearchDetailRepository;
 import scra.qnaboard.domain.repository.question.QuestionSearchListRepository;
 import scra.qnaboard.domain.repository.question.QuestionSimpleQueryRepository;
 import scra.qnaboard.service.dto.QuestionWithTagDTO;
+import scra.qnaboard.service.exception.question.AlreadyDeletedQuestionException;
 import scra.qnaboard.service.exception.question.delete.QuestionDeleteFailedException;
 import scra.qnaboard.service.exception.question.edit.UnauthorizedQuestionEditException;
 import scra.qnaboard.service.exception.question.search.QuestionNotFoundException;
@@ -102,7 +103,7 @@ public class QuestionService {
 
         //관리자이거나 질문게시글의 소유자면 질문게시글 삭제함
         //관리자는 다른 관리자의 게시글을 지울 수 있음
-        questionRepository.deleteById(questionId);
+        question.delete();
     }
 
     public QuestionWithTagDTO questionWithTag(long questionId) {
@@ -129,8 +130,14 @@ public class QuestionService {
     }
 
     public Question findQuestion(long questionId) {
-        return questionRepository.findById(questionId)
+        Question question = questionRepository.findById(questionId)
                 .orElseThrow(() -> new QuestionNotFoundException(questionId));
+
+        if (question.isDeleted()) {
+            throw new AlreadyDeletedQuestionException();
+        }
+
+        return question;
     }
 
     /**

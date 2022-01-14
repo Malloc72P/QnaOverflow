@@ -34,6 +34,7 @@ public class QuestionTagService {
 
         List<QuestionTag> questionTags = tags.stream()
                 .map(tag -> new QuestionTag(tag, question))
+                .peek(question::addQuestionTag)
                 .collect(Collectors.toList());
 
         questionTagRepository.saveAll(questionTags);
@@ -49,6 +50,7 @@ public class QuestionTagService {
     @Transactional
     public void updateQuestionTags(Question question, List<Long> tagIds) {
         questionTagSimpleQueryRepository.deleteByQuestionId(question.getId());
+        question.resetTags();
         createQuestionTags(question, tagIds);
     }
 }
