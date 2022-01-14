@@ -74,7 +74,7 @@ public class QuestionService {
 
         //질문글 생성 및 저장
         Question question = new Question(author, content, title);
-        questionRepository.save(question);
+        question = questionRepository.save(question);
 
         //필요한 태그를 전부 조회하고, 질문글에 추가한다
         questionTagService.createQuestionTags(question, tagIds);
