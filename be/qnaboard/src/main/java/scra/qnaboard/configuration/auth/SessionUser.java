@@ -17,4 +17,10 @@ public class SessionUser implements Serializable {
         this.name = member.getNickname();
         this.email = member.getEmail();
     }
+
+    public SessionUser(Long id, String name, String email) {
+        this.id = id;
+        this.name = name;
+        this.email = email;
+    }
 }

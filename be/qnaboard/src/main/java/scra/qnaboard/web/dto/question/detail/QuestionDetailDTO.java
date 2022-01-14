@@ -2,6 +2,7 @@ package scra.qnaboard.web.dto.question.detail;
 
 import com.querydsl.core.annotations.QueryProjection;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import scra.qnaboard.domain.entity.post.Question;
@@ -36,6 +37,7 @@ public class QuestionDetailDTO {
     private List<QuestionTagDTO> tags = new ArrayList<>();
     private List<CommentDTO> comments = new ArrayList<>();
 
+    @Builder
     @QueryProjection
     public QuestionDetailDTO(long questionId,
                              String title,

@@ -1,6 +1,7 @@
 package scra.qnaboard.domain.entity.post;
 
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.util.StringUtils;
@@ -31,6 +32,7 @@ public class Question extends Post {
     private long viewCount = 0;
     private String title;
 
+    @Builder
     public Question(Member author, String content, String title) {
         super(author, content);
         this.title = title;

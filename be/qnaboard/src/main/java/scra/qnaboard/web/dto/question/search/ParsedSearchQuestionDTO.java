@@ -5,6 +5,7 @@ import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Getter
 @Setter
@@ -65,5 +66,18 @@ public class ParsedSearchQuestionDTO {
             }
         }
         return sb.toString();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ParsedSearchQuestionDTO that = (ParsedSearchQuestionDTO) o;
+        return getAuthorId() == that.getAuthorId() && getAnswers() == that.getAnswers() && getScore() == that.getScore() && Objects.equals(getTitle(), that.getTitle()) && Objects.equals(getTags(), that.getTags());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getAuthorId(), getAnswers(), getScore(), getTitle(), getTags());
     }
 }

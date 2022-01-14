@@ -1,6 +1,7 @@
 package scra.qnaboard.domain.entity;
 
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.util.StringUtils;
@@ -33,6 +34,7 @@ public class Tag extends BaseTimeEntity {
 
     private boolean deleted = false;
 
+    @Builder
     public Tag(Member author, String name, String description) {
         this.author = author;
         this.name = name;

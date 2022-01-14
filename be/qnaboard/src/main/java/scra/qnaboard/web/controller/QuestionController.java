@@ -56,7 +56,6 @@ public class QuestionController {
 
         Paging<QuestionSummaryDTO> paging = Paging.buildPaging(questionPage, parsedInput.searchInput());
 
-
         model.addAttribute("paging", paging);
 
         return "/question/question-list";

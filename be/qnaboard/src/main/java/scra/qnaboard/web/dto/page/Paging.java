@@ -32,6 +32,7 @@ public class Paging<T> {
     public static <T> Paging<T> buildPaging(Page<T> page, String searchInput) {
         Paging<T> newPaging = new Paging<>();
         int pageSize = page.getSize();
+
         int blockNumber = page.getNumber() / pageSize;
         int pageStart = pageSize * blockNumber;
         int pageEnd = pageStart + defaultBlockSize - 1;

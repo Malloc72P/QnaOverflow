@@ -1,6 +1,7 @@
 package scra.qnaboard.domain.entity.member;
 
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import scra.qnaboard.domain.entity.BaseTimeEntity;
@@ -39,6 +40,7 @@ public class Member extends BaseTimeEntity {
         email = NO_EMAIL;
     }
 
+    @Builder
     public Member(String nickname, String email, MemberRole role) {
         this.nickname = nickname;
         this.email = email;

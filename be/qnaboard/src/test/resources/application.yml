@@ -7,14 +7,15 @@ spring:
 #    store-type: jdbc
 #    jdbc:
 #      initialize-schema: always
-  devtools:
-    add-properties: false
+  sql:
+    init:
+      mode: never
   thymeleaf:
     prefix: classpath:/templates/
     suffix: .html
     encoding: UTF-8
   profiles:
-    active: local
+    active: test
     include: oauth
   datasource:
     url: jdbc:h2:mem:qnaboard;MODE=MYSQL;DB_CLOSE_ON_EXIT=FALSE
@@ -25,7 +26,7 @@ spring:
   jpa:
     open-in-view: false
     hibernate:
-      ddl-auto: none
+      ddl-auto: create-drop
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQL8Dialect
