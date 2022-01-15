@@ -153,7 +153,7 @@ class QuestionControllerTest {
         //when
         ResultActions resultActions = mockMvc.perform(
                 post("/questions")
-                        .accept(MediaType.APPLICATION_FORM_URLENCODED)
+                        .contentType(MediaType.APPLICATION_FORM_URLENCODED)
                         .param("title", "title-1")
                         .param("content", "content-1")
                         .param("tags", "")
@@ -177,7 +177,7 @@ class QuestionControllerTest {
         //when
         ResultActions resultActions = mockMvc.perform(
                 post("/questions/" + questionId + "/delete")
-                        .accept(MediaType.APPLICATION_FORM_URLENCODED)
+                        .contentType(MediaType.APPLICATION_FORM_URLENCODED)
                         .with(csrf())
                         .sessionAttr("user", new SessionUser(requesterId, "", ""))
                         .secure(true));
@@ -198,7 +198,7 @@ class QuestionControllerTest {
         //when
         ResultActions resultActions = mockMvc.perform(
                 post("/questions/"+questionId+"/edit")
-                        .accept(MediaType.APPLICATION_FORM_URLENCODED)
+                        .contentType(MediaType.APPLICATION_FORM_URLENCODED)
                         .param("title", "title-1")
                         .param("content", "content-1")
                         .param("tags", "")

@@ -3,7 +3,7 @@ const createAnswer = async (event) => {
     let textAreaElement = document.getElementById("textarea-submit-answer");
     let content = textAreaElement.value;
     let questionId = textAreaElement.closest(".content-root").dataset.questionid;
-    let url = `http://localhost:8080/${questionId}/answers`;
+    let url = `http://localhost:8080/questions/${questionId}/answers`;
     let body = {"content": content};
 
     try {
@@ -36,7 +36,7 @@ const deleteAnswer = async (event) => {
     const answer = event.target.closest(".answer");
     const answerId = answer.id.substring(2);
 
-    const url = `http://localhost:8080/${questionId}/answers/${answerId}`;
+    const url = `http://localhost:8080/questions/${questionId}/answers/${answerId}`;
 
     let body = {};
 
@@ -59,7 +59,7 @@ const editAnswer = async (event) => {
     const answerId = answer.id.substring(2);
     const content = answer.querySelector(".answer-edit-form")[0].value;
 
-    const url = `http://localhost:8080/${questionId}/answers/${answerId}`;
+    const url = `http://localhost:8080/questions/${questionId}/answers/${answerId}`;
 
     let body = {
         "content": content

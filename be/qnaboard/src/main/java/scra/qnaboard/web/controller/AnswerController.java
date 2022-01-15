@@ -15,7 +15,7 @@ import scra.qnaboard.web.dto.answer.edit.EditAnswerResultDTO;
 
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/{questionId}/answers")
+@RequestMapping("/questions/{questionId}/answers")
 public class AnswerController {
 
     private final AnswerService answerService;
