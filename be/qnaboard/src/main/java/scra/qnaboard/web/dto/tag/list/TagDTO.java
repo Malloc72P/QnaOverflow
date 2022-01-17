@@ -1,6 +1,8 @@
 package scra.qnaboard.web.dto.tag.list;
 
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import scra.qnaboard.domain.entity.Tag;
 import scra.qnaboard.utils.DateTimeUtil;
@@ -8,6 +10,7 @@ import scra.qnaboard.utils.DateTimeUtil;
 import java.time.LocalDateTime;
 
 @Getter
+@NoArgsConstructor
 public class TagDTO {
 
     private long tagId;
@@ -17,6 +20,16 @@ public class TagDTO {
     private String tagDescription;
     @DateTimeFormat(pattern = DateTimeUtil.MY_FORMAT)
     private LocalDateTime createdDate;
+
+    @Builder
+    public TagDTO(long tagId, long authorId, String authorName, String tagName, String tagDescription, LocalDateTime createdDate) {
+        this.tagId = tagId;
+        this.authorId = authorId;
+        this.authorName = authorName;
+        this.tagName = tagName;
+        this.tagDescription = tagDescription;
+        this.createdDate = createdDate;
+    }
 
     public static TagDTO from(Tag tag) {
         TagDTO tagDTO = new TagDTO();

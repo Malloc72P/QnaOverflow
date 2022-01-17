@@ -10,16 +10,13 @@ import scra.qnaboard.domain.entity.member.MemberRole;
 import scra.qnaboard.domain.entity.post.Question;
 import scra.qnaboard.domain.repository.MemberRepository;
 import scra.qnaboard.domain.repository.question.QuestionRepository;
-import scra.qnaboard.service.CommentService;
 import scra.qnaboard.web.dto.comment.CommentDTO;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Transactional
