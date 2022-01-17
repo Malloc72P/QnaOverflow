@@ -33,7 +33,6 @@ public class TagService {
      *
      * @param keyword 검색 키워드
      * @return 태그검색정보를 담은 DTO
-     * @TODO 성능 개선 필요
      */
     public TagSearchResultDTO search(String keyword) {
         List<Tag> tags = tagSimpleQueryRepository.searchTags(keyword);
@@ -81,7 +80,7 @@ public class TagService {
         Member author = memberService.findMember(requesterId);
 
         Tag tag = new Tag(author, name, description);
-        tagRepository.save(tag);
+        tag = tagRepository.save(tag);
 
         return tag.getId();
     }

@@ -1,197 +1,257 @@
 package scra.qnaboard.service;
 
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.transaction.annotation.Transactional;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.test.util.ReflectionTestUtils;
 import scra.qnaboard.domain.entity.Tag;
 import scra.qnaboard.domain.entity.member.Member;
+import scra.qnaboard.domain.entity.member.MemberRole;
+import scra.qnaboard.domain.repository.tag.QuestionTagSimpleQueryRepository;
+import scra.qnaboard.domain.repository.tag.TagRepository;
+import scra.qnaboard.domain.repository.tag.TagSimpleQueryRepository;
 import scra.qnaboard.service.exception.tag.delete.TagDeleteFailedException;
 import scra.qnaboard.service.exception.tag.edit.TagEditFailedException;
 import scra.qnaboard.service.exception.tag.edit.UnauthorizedTagEditException;
-import scra.qnaboard.utils.QueryUtils;
-import scra.qnaboard.utils.TestDataDTO;
-import scra.qnaboard.utils.TestDataInit;
 import scra.qnaboard.web.dto.tag.search.TagSearchResultDTO;
 import scra.qnaboard.web.dto.tag.search.TagSimpleDTO;
 
-import javax.persistence.EntityManager;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.BDDMockito.given;
 
-@SpringBootTest
-@Transactional
+@ExtendWith(MockitoExtension.class)
 class TagServiceTest {
 
-    @Autowired
-    private EntityManager em;
-
-    @Autowired
+    @InjectMocks
     private TagService tagService;
 
+    @Mock
+    private MemberService memberService;
+    @Mock
+    private TagRepository tagRepository;
+    @Mock
+    private QuestionTagSimpleQueryRepository questionTagSimpleQueryRepository;
+    @Mock
+    private TagSimpleQueryRepository tagSimpleQueryRepository;
+
+
     @Test
-    @DisplayName("태그 서비스로 태그를 생성할 수 있어야 함")
-    void testCreateTag() {
-        TestDataDTO dataDTO = TestDataInit.init(em);
-        Member member = dataDTO.noneAdminMember();
-        String name = "test-name";
-        String description = "test-description";
+    void 태그생성_테스트() throws Exception {
+        //given
+        long authorId = 1L;
+        long tagId = 3L;
+        String tagName = "tag-name";
+        String tagDescription = "tag-desc";
+        //given
+        Member author = new Member("nickname", "email", MemberRole.USER);
+        ReflectionTestUtils.setField(author, "id", authorId);
+        //given
+        Tag tagNoId = new Tag(author, tagName, tagDescription);
+        Tag tag = new Tag(author, tagName, tagDescription);
+        ReflectionTestUtils.setField(tag, "id", tagId);
+        //given
+        given(memberService.findMember(authorId)).willReturn(author);
+        given(tagRepository.save(tagNoId)).willReturn(tag);
 
-        long tagId = tagService.createTag(member.getId(), name, description);
+        //when
+        long savedTagId = tagService.createTag(authorId, tagName, tagDescription);
 
-        Tag findTag = QueryUtils.tagById(em, tagId);
-
-        assertThat(findTag).extracting(
-                Tag::getName, Tag::getDescription
-        ).containsExactly(
-                name, description
-        );
+        //then
+        assertThat(savedTagId).isEqualTo(tagId);
     }
 
     @Test
-    @DisplayName("관리자는 모든 태그를 삭제할 수 있어야 함")
-    void testDeleteTag() {
-        TestDataDTO dataDTO = TestDataInit.init(em);
-
-        Member admin = dataDTO.adminMember();
-        List<Tag> tags = dataDTO.getTags();
-
-        for (Tag tag : tags) {
-            tagService.deleteTag(admin.getId(), tag.getId());
-
-            assertThat(QueryUtils.isDeletedTag(em, tag)).isTrue();
-            assertThat(QueryUtils.hasQuestionTags(em, tag.getId())).isFalse();
-        }
-    }
-
-    @Test
-    @DisplayName("작성자는 자신의 태그를 삭제할 수 있어야 함")
-    void authorCanDeleteOwnTag() {
-        TestDataDTO dataDTO = TestDataInit.init(em);
-
-        List<Tag> tags = dataDTO.getTags();
-
-        for (Tag tag : tags) {
-            Member author = tag.getAuthor();
-            tagService.deleteTag(author.getId(), tag.getId());
-
-            assertThat(QueryUtils.isDeletedTag(em, tag)).isTrue();
-            assertThat(QueryUtils.hasQuestionTags(em, tag.getId())).isFalse();
-        }
-    }
-
-    @Test
-    @DisplayName("관리자가 아닌 사용자는 다른 이가 생성한 태그를 삭제할 수 없어야 함")
-    void noneAdminMemberCanNotDeleteTag() {
-        TestDataDTO dataDTO = TestDataInit.init(em);
-
-        List<Tag> tags = dataDTO.getTags();
-
-        for (Tag tag : tags) {
-            Member member = dataDTO.anotherMemberAndNotAdmin(tag.getAuthor());
-            assertThatThrownBy(() -> tagService.deleteTag(member.getId(), tag.getId()))
-                    .isInstanceOf(TagDeleteFailedException.class);
-
-            assertThat(QueryUtils.isDeletedTag(em, tag)).isFalse();
-        }
-    }
-
-    @Test
-    @DisplayName("관리자는 모든 태그를 수정할 수 있어야 함")
-    void adminCanEditAllTag() {
-        TestDataDTO dataDTO = TestDataInit.init(em);
-
-        Member adminMember = dataDTO.adminMember();
-        List<Tag> tags = dataDTO.getTags();
-
+    void 태그수정_테스트() throws Exception {
+        //given
+        long authorId = 1L;
+        long tagId = 3L;
+        String tagName = "tag-name";
+        String tagDescription = "tag-desc";
         String newTagName = "new-tag-name";
-        String newTagDescription = "new-tag-description";
+        String newTagDescription = "new-tag-desc";
+        //given
+        Member author = new Member("nickname", "email", MemberRole.USER);
+        ReflectionTestUtils.setField(author, "id", authorId);
+        //given
+        Tag tag = new Tag(author, tagName, tagDescription);
+        ReflectionTestUtils.setField(tag, "id", tagId);
+        //given
+        given(memberService.findMember(authorId)).willReturn(author);
+        given(tagSimpleQueryRepository.tagWithAuthor(tagId)).willReturn(Optional.of(tag));
 
-        for (Tag tag : tags) {
-            tagService.editTag(adminMember.getId(), tag.getId(), newTagName, newTagDescription);
-            Tag findTag = QueryUtils.tagById(em, tag.getId());
-
-            assertThat(findTag.getName()).isEqualTo(newTagName);
-            assertThat(findTag.getDescription()).isEqualTo(newTagDescription);
-        }
+        //when & then
+        tagService.editTag(authorId, tagId, newTagName, newTagDescription);
     }
 
     @Test
-    @DisplayName("작성자는 자신의 태그를 수정할 수 있어야 함")
-    void authorCanEditOwnTag() {
-        TestDataDTO dataDTO = TestDataInit.init(em);
-
-        List<Tag> tags = dataDTO.getTags();
-
+    void 태그수정_실패_테스트_관리자및작성자아님() throws Exception {
+        //given
+        long authorId = 1L;
+        long anotherAuthorId = 2L;
+        long tagId = 3L;
+        String tagName = "tag-name";
+        String tagDescription = "tag-desc";
         String newTagName = "new-tag-name";
-        String newTagDescription = "new-tag-description";
+        String newTagDescription = "new-tag-desc";
+        //given
+        Member author = new Member("nickname", "email", MemberRole.USER);
+        ReflectionTestUtils.setField(author, "id", authorId);
+        Member anotherAuthor = new Member("nickname", "email", MemberRole.USER);
+        ReflectionTestUtils.setField(anotherAuthor, "id", anotherAuthorId);
+        //given
+        Tag tag = new Tag(author, tagName, tagDescription);
+        ReflectionTestUtils.setField(tag, "id", tagId);
+        //given
+        given(memberService.findMember(anotherAuthorId)).willReturn(anotherAuthor);
+        given(tagSimpleQueryRepository.tagWithAuthor(tagId)).willReturn(Optional.of(tag));
 
-        for (Tag tag : tags) {
-            Member author = tag.getAuthor();
-            tagService.editTag(author.getId(), tag.getId(), newTagName, newTagDescription);
-            Tag findTag = QueryUtils.tagById(em, tag.getId());
-
-            assertThat(findTag.getName()).isEqualTo(newTagName);
-            assertThat(findTag.getDescription()).isEqualTo(newTagDescription);
-        }
+        //when & then
+        assertThatThrownBy(() -> tagService.editTag(anotherAuthorId, tagId, newTagName, newTagDescription))
+                .isInstanceOf(UnauthorizedTagEditException.class)
+                .isInstanceOf(TagEditFailedException.class);
     }
 
     @Test
-    @DisplayName("일반 사용자는 타인이 작성한 태그를 수정할 수 없어야 함")
-    void noneAdminCanNotEditTag() {
-        TestDataDTO dataDTO = TestDataInit.init(em);
-
-        List<Tag> tags = dataDTO.getTags();
-
+    void 태그수정_테스트_관리자는성공해야함() throws Exception {
+        //given
+        long authorId = 1L;
+        long anotherAuthorId = 2L;
+        long tagId = 3L;
+        String tagName = "tag-name";
+        String tagDescription = "tag-desc";
         String newTagName = "new-tag-name";
-        String newTagDescription = "new-tag-description";
+        String newTagDescription = "new-tag-desc";
+        //given
+        Member author = new Member("nickname", "email", MemberRole.USER);
+        ReflectionTestUtils.setField(author, "id", authorId);
+        Member anotherAuthor = new Member("nickname", "email", MemberRole.ADMIN);
+        ReflectionTestUtils.setField(anotherAuthor, "id", anotherAuthorId);
+        //given
+        Tag tag = new Tag(author, tagName, tagDescription);
+        ReflectionTestUtils.setField(tag, "id", tagId);
+        //given
+        given(memberService.findMember(anotherAuthorId)).willReturn(anotherAuthor);
+        given(tagSimpleQueryRepository.tagWithAuthor(tagId)).willReturn(Optional.of(tag));
 
-        for (Tag tag : tags) {
-            Member noneAdminMember = dataDTO.noneAdminMember();
-
-            assertThatThrownBy(() -> tagService.editTag(noneAdminMember.getId(), tag.getId(), newTagName, newTagDescription))
-                    .isInstanceOf(TagEditFailedException.class)
-                    .isInstanceOf(UnauthorizedTagEditException.class);
-            Tag findTag = QueryUtils.tagById(em, tag.getId());
-
-            assertThat(findTag.getName()).isNotEqualTo(newTagName);
-            assertThat(findTag.getDescription()).isNotEqualTo(newTagDescription);
-        }
-
+        //when & then
+        tagService.editTag(anotherAuthorId, tagId, newTagName, newTagDescription);
     }
 
     @Test
-    @DisplayName("키워드로 태그를 검색할 수 있어야 함")
-    void testSearchTag() {
-        TestDataDTO dataDTO = TestDataInit.init(em);
+    void 태그삭제_테스트() throws Exception {
+        //given
+        long authorId = 1L;
+        long anotherAuthorId = 1L;
+        long tagId = 3L;
+        String tagName = "tag-name";
+        String tagDescription = "tag-desc";
+        //given
+        Member author = new Member("nickname", "email", MemberRole.USER);
+        ReflectionTestUtils.setField(author, "id", authorId);
+        Member anotherAuthor = new Member("nickname", "email", MemberRole.ADMIN);
+        ReflectionTestUtils.setField(author, "id", anotherAuthorId);
+        //given
+        Tag tag = new Tag(author, tagName, tagDescription);
+        ReflectionTestUtils.setField(tag, "id", tagId);
+        //given
+        given(memberService.findMember(anotherAuthorId)).willReturn(anotherAuthor);
+        given(tagSimpleQueryRepository.tagWithAuthor(tagId)).willReturn(Optional.of(tag));
 
-        List<Tag> tags = dataDTO.getTags();
+        //when & then
+        tagService.deleteTag(authorId, tagId);
+    }
 
-        String[] testcases = {
-                "a", "b", "c", "d", "e"
-        };
+    @Test
+    void 태그삭제_실패_테스트_작성자및관리자아님() throws Exception {
+        //given
+        long authorId = 1L;
+        long anotherAuthorId = 2L;
+        long tagId = 3L;
+        String tagName = "tag-name";
+        String tagDescription = "tag-desc";
+        //given
+        Member author = new Member("nickname", "email", MemberRole.USER);
+        ReflectionTestUtils.setField(author, "id", authorId);
+        Member anotherAuthor = new Member("nickname", "email", MemberRole.USER);
+        ReflectionTestUtils.setField(anotherAuthor, "id", anotherAuthorId);
+        //given
+        Tag tag = new Tag(author, tagName, tagDescription);
+        ReflectionTestUtils.setField(tag, "id", tagId);
+        //given
+        given(memberService.findMember(anotherAuthorId)).willReturn(anotherAuthor);
+        given(tagSimpleQueryRepository.tagWithAuthor(tagId)).willReturn(Optional.of(tag));
 
-        for (String testcase : testcases) {
-            TagSearchResultDTO searchResult = tagService.search(testcase);
-            List<Tag> expectedResult = QueryUtils.tagByNameLike(em, testcase);
+        //when & then
+        assertThatThrownBy(() -> tagService.deleteTag(anotherAuthorId, tagId))
+                .isInstanceOf(TagDeleteFailedException.class);
+    }
 
-            assertThat(searchResult.getTags().size()).isEqualTo(expectedResult.size());
+    @Test
+    void 태그삭제_테스트_관리자는성공해야함() throws Exception {
+        //given
+        long authorId = 1L;
+        long anotherAuthorId = 2L;
+        long tagId = 3L;
+        String tagName = "tag-name";
+        String tagDescription = "tag-desc";
+        //given
+        Member author = new Member("nickname", "email", MemberRole.USER);
+        ReflectionTestUtils.setField(author, "id", authorId);
+        Member anotherAuthor = new Member("nickname", "email", MemberRole.ADMIN);
+        ReflectionTestUtils.setField(anotherAuthor, "id", anotherAuthorId);
+        //given
+        Tag tag = new Tag(author, tagName, tagDescription);
+        ReflectionTestUtils.setField(tag, "id", tagId);
+        //given
+        given(memberService.findMember(anotherAuthorId)).willReturn(anotherAuthor);
+        given(tagSimpleQueryRepository.tagWithAuthor(tagId)).willReturn(Optional.of(tag));
 
-            List<String> searchResultNames = searchResult.getTags().stream()
-                    .map(TagSimpleDTO::getName)
-                    .sorted(String::compareTo)
-                    .collect(Collectors.toList());
+        //when & then
+        tagService.deleteTag(anotherAuthorId, tagId);
+    }
 
-            List<String> realResultNames = expectedResult.stream()
-                    .map(Tag::getName)
-                    .sorted(String::compareTo)
-                    .collect(Collectors.toList());
+    @Test
+    void 태그검색기능_테스트() throws Exception {
+        //given
+        long authorId = 1L;
+        String keyword = "tag-";
+        String tagName = "tag-name";
+        String tagDescription = "tag-desc";
+        //given
+        Member author = new Member("nickname", "email", MemberRole.USER);
+        ReflectionTestUtils.setField(author, "id", authorId);
+        //given
+        List<Tag> tags = new ArrayList<>();
+        for (int i = 0; i < 3; i++) {
+            Tag tag = new Tag(author, tagName + i, tagDescription + i);
+            ReflectionTestUtils.setField(tag, "id", (long) i);
+            tags.add(tag);
+        }
+        Map<Long, Tag> tagMap = tags.stream()
+                .collect(Collectors.toMap(Tag::getId, Function.identity()));
+        //given
+        given(tagSimpleQueryRepository.searchTags(keyword)).willReturn(tags);
 
-            assertThat(searchResultNames).isEqualTo(realResultNames);
+        //when
+        TagSearchResultDTO searchResultDTO = tagService.search(keyword);
+
+        //then
+        assertThat(searchResultDTO.getTags().size()).isEqualTo(tags.size());
+        assertThat(searchResultDTO.getSearchKeyword()).isEqualTo(keyword);
+        for (TagSimpleDTO tag : searchResultDTO.getTags()) {
+            Tag expected = tagMap.get(tag.getId());
+            assertThat(tag.getName()).isEqualTo(expected.getName());
+            assertThat(tag.getDescription()).isEqualTo(expected.getDescription());
         }
     }
 }
