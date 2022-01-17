@@ -2,6 +2,7 @@ package scra.qnaboard.web.dto.comment;
 
 import com.querydsl.core.annotations.QueryProjection;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -29,6 +30,7 @@ public class CommentDTO implements Comparable<CommentDTO> {
     private boolean deleted;
     private List<CommentDTO> children = new ArrayList<>();
 
+    @Builder
     @QueryProjection
     public CommentDTO(long commentId,
                       long authorId,

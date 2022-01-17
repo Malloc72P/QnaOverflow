@@ -1,11 +1,17 @@
 package scra.qnaboard.web.dto.comment.delete;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 
 @Getter
-@AllArgsConstructor
 public class CommentDeleteResultDTO {
     private String deletedAuthorName;
     private String deletedContentName;
+
+    @Builder
+    public CommentDeleteResultDTO(String deletedAuthorName, String deletedContentName) {
+        this.deletedAuthorName = deletedAuthorName;
+        this.deletedContentName = deletedContentName;
+    }
 }
