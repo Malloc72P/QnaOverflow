@@ -27,7 +27,7 @@ public class AnswerService {
         Member author = memberService.findMember(authorId);
         Question question = questionService.findQuestion(questionId);
         Answer answer = new Answer(author, content, question);
-        answerRepository.save(answer);
+        answer = answerRepository.save(answer);
 
         return AnswerDetailDTO.from(answer);
     }
@@ -51,7 +51,7 @@ public class AnswerService {
 
         //관리자이거나 질문게시글의 소유자면 질문게시글 삭제함
         //관리자는 다른 관리자의 게시글을 지울 수 있음
-        answerRepository.deleteById(answerId);
+        answer.delete();
     }
 
     /**

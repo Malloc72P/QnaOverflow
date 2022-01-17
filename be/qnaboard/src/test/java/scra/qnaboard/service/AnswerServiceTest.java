@@ -1,194 +1,269 @@
 package scra.qnaboard.service;
 
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.transaction.annotation.Transactional;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.test.util.ReflectionTestUtils;
 import scra.qnaboard.domain.entity.member.Member;
+import scra.qnaboard.domain.entity.member.MemberRole;
 import scra.qnaboard.domain.entity.post.Answer;
 import scra.qnaboard.domain.entity.post.Question;
+import scra.qnaboard.domain.repository.answer.AnswerRepository;
+import scra.qnaboard.domain.repository.answer.AnswerSimpleQueryRepository;
 import scra.qnaboard.service.exception.answer.delete.AnswerDeleteFailedException;
 import scra.qnaboard.service.exception.answer.edit.AnswerEditFailedException;
-import scra.qnaboard.service.exception.answer.edit.AnswerPropertyIsEmptyException;
 import scra.qnaboard.service.exception.answer.edit.UnauthorizedAnswerEditException;
-import scra.qnaboard.utils.TestDataDTO;
-import scra.qnaboard.utils.TestDataInit;
+import scra.qnaboard.service.exception.member.MemberNotFoundException;
 import scra.qnaboard.web.dto.answer.AnswerDetailDTO;
+import scra.qnaboard.web.dto.answer.edit.EditAnswerResultDTO;
 
-import javax.persistence.EntityManager;
-import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static scra.qnaboard.utils.QueryUtils.isDeletedPost;
+import static org.mockito.BDDMockito.given;
 
-@SpringBootTest
-@Transactional
+@ExtendWith(MockitoExtension.class)
 class AnswerServiceTest {
 
-    @Autowired
+    @InjectMocks
     private AnswerService answerService;
 
-    @Autowired
-    private EntityManager em;
+    @Mock
+    private MemberService memberService;
+    @Mock
+    private QuestionService questionService;
+    @Mock
+    private AnswerRepository answerRepository;
+    @Mock
+    private AnswerSimpleQueryRepository answerSimpleQueryRepository;
 
     @Test
-    @DisplayName("AnswerService로 답변게시글을 생성할 수 있어야 함")
-    void testCreateAnswer() {
-        TestDataDTO testData = TestDataInit.init(em);
+    void 답변글_생성_테스트() {
+        //given
+        long authorId = 1L;
+        long questionId = 2L;
+        long answerId = 3L;
+        //given
+        Member author = new Member("nickname", "email", MemberRole.USER);
+        ReflectionTestUtils.setField(author, "id", authorId);
+        //given
+        String title = "title-1";
+        String content = "content-1";
+        //given
+        Question question = new Question(author, content, title);
+        ReflectionTestUtils.setField(question, "id", questionId);
+        //given
+        Answer answerNoId = new Answer(author, content, question);
+        Answer answer = new Answer(author, content, question);
+        ReflectionTestUtils.setField(answer, "id", answerId);
+        //given
+        given(memberService.findMember(authorId)).willReturn(author);
+        given(questionService.findQuestion(questionId)).willReturn(question);
+        given(answerRepository.save(answerNoId)).willReturn(answer);
 
-        Member author = testData.noneAdminMember();
-        Question question = testData.question();
+        //when
+        AnswerDetailDTO answerDetailDTO = answerService.createAnswer(authorId, questionId, content);
 
-        AnswerDetailDTO createAnswerDTO = answerService.createAnswer(author.getId(), question.getId(), "content-1");
-        Answer findAnswer = em.createQuery("select a from Answer a where a.id = :id", Answer.class)
-                .setParameter("id", createAnswerDTO.getAnswerId())
-                .getSingleResult();
-
-        assertThat(createAnswerDTO).extracting(
-                AnswerDetailDTO::getAnswerId,
-                AnswerDetailDTO::getContent,
-                AnswerDetailDTO::getCreatedDate,
-                AnswerDetailDTO::getLastModifiedDate,
-                AnswerDetailDTO::getAuthorId,
-                AnswerDetailDTO::getAuthorName
-        ).containsExactly(
-                findAnswer.getId(),
-                findAnswer.getContent(),
-                findAnswer.getCreatedDate(),
-                findAnswer.getLastModifiedDate(),
-                findAnswer.getAuthor().getId(),
-                findAnswer.getAuthor().getNickname()
-        );
+        //then
+        assertThat(answerDetailDTO.getAnswerId()).isEqualTo(answer.getId());
+        assertThat(answerDetailDTO.getContent()).isEqualTo(answer.getContent());
     }
 
     @Test
-    @DisplayName("답변게시글을 수정할 수 있어야 함")
-    void authorCanEditOwnAnswer() {
-        TestDataDTO testData = TestDataInit.init(em);
+    void 답변글생성_실패_테스트() {
+        //given
+        long authorId = 1L;
+        given(memberService.findMember(authorId)).willThrow(new MemberNotFoundException(authorId));
 
-        List<Answer> answers = testData.getAnswers();
-        for (Answer answer : answers) {
-            String newContent = "aaaaaaaaaaaaaaaaaaa";
-            Member author = answer.getAuthor();
-            answerService.editAnswer(author.getId(), answer.getId(), newContent);
-
-            Answer findAnswer = em.createQuery("select a from Answer a where a.id = :id", Answer.class)
-                    .setParameter("id", answer.getId())
-                    .getSingleResult();
-
-            assertThat(findAnswer.getContent()).isEqualTo(newContent);
-        }
+        //when & then
+        assertThatThrownBy(() -> answerService.createAnswer(authorId, 2L, "content-1"))
+                .isInstanceOf(MemberNotFoundException.class);
     }
 
     @Test
-    @DisplayName("다른 사용자가 작성한 답변게시글을 수정할 수 없어야 함")
-    void memberCanNotEditOtherMembersAnswer() {
-        TestDataDTO testData = TestDataInit.init(em);
+    void 답변글_삭제_테스트() {
+        //given
+        long authorId = 1L;
+        long questionId = 2L;
+        long answerId = 3L;
+        //given
+        Member author = new Member("nickname", "email", MemberRole.USER);
+        ReflectionTestUtils.setField(author, "id", authorId);
+        //given
+        String title = "title-1";
+        String content = "content-1";
+        //given
+        Question question = new Question(author, content, title);
+        ReflectionTestUtils.setField(question, "id", questionId);
+        //given
+        Answer answer = new Answer(author, content, question);
+        ReflectionTestUtils.setField(answer, "id", answerId);
+        //given
+        given(memberService.findMember(authorId)).willReturn(author);
+        given(answerSimpleQueryRepository.answerWithAuthor(answerId)).willReturn(Optional.of(answer));
 
-        List<Answer> answers = testData.getAnswers();
-        for (Answer answer : answers) {
-            String prevContent = answer.getContent();
-            String newContent = "aaaaaaaaaaaaaaaaaaa";
-            Member author = answer.getAuthor();
-            Member otherMember = testData.anotherMemberAndNotAdmin(author);
-
-            assertThatThrownBy(() -> answerService.editAnswer(otherMember.getId(), answer.getId(), newContent))
-                    .isInstanceOf(AnswerEditFailedException.class)
-                    .isInstanceOf(UnauthorizedAnswerEditException.class);
-
-            Answer findAnswer = em.createQuery("select a from Answer a where a.id = :id", Answer.class)
-                    .setParameter("id", answer.getId())
-                    .getSingleResult();
-
-            assertThat(findAnswer.getContent())
-                    .isNotEqualTo(newContent)
-                    .isEqualTo(prevContent);
-        }
+        //when & then
+        answerService.deleteAnswer(authorId, answerId);
     }
 
     @Test
-    @DisplayName("관리자는 모든 답변게시글을 수정할 수 있어야 함")
-    void adminCanEditAllAnswer() {
-        TestDataDTO testData = TestDataInit.init(em);
-        Member admin = testData.adminMember();
+    void 답변글_삭제_실패_테스트_작성자및관리자아님() {
+        //given
+        long authorId = 1L;
+        long questionId = 2L;
+        long answerId = 3L;
+        long anotherAuthorId = 4L;
+        //given
+        Member anotherAuthor = new Member("nickname", "email", MemberRole.USER);
+        ReflectionTestUtils.setField(anotherAuthor, "id", anotherAuthorId);
+        //given
+        Member author = new Member("nickname", "email", MemberRole.USER);
+        ReflectionTestUtils.setField(author, "id", authorId);
+        //given
+        String title = "title-1";
+        String content = "content-1";
+        //given
+        Question question = new Question(author, content, title);
+        ReflectionTestUtils.setField(question, "id", questionId);
+        //given
+        Answer answer = new Answer(author, content, question);
+        ReflectionTestUtils.setField(answer, "id", answerId);
+        //given
+        given(memberService.findMember(anotherAuthorId)).willReturn(anotherAuthor);
+        given(answerSimpleQueryRepository.answerWithAuthor(answerId)).willReturn(Optional.of(answer));
 
-        List<Answer> answers = testData.getAnswers();
-        for (Answer answer : answers) {
-            String newContent = "aaaaaaaaaaaaaaaaaaa";
-
-            answerService.editAnswer(admin.getId(), answer.getId(), newContent);
-
-            Answer findAnswer = em.createQuery("select a from Answer a where a.id = :id", Answer.class)
-                    .setParameter("id", answer.getId())
-                    .getSingleResult();
-
-            assertThat(findAnswer.getContent())
-                    .isEqualTo(newContent);
-        }
+        //when & then
+        assertThatThrownBy(() -> answerService.deleteAnswer(anotherAuthorId, answerId))
+                .isInstanceOf(AnswerDeleteFailedException.class);
     }
 
     @Test
-    @DisplayName("답변게시글을 빈 내용으로 수정할 수 없어야 함")
-    void answerCanNotBeEditedWithEmptyContent() {
-        TestDataDTO testData = TestDataInit.init(em);
+    void 답변글_삭제_테스트_관리자는_성공해야함() {
+        //given
+        long authorId = 1L;
+        long questionId = 2L;
+        long answerId = 3L;
+        long anotherAuthorId = 4L;
+        //given
+        Member anotherAuthor = new Member("nickname", "email", MemberRole.ADMIN);
+        ReflectionTestUtils.setField(anotherAuthor, "id", anotherAuthorId);
+        //given
+        Member author = new Member("nickname", "email", MemberRole.USER);
+        ReflectionTestUtils.setField(author, "id", authorId);
+        //given
+        String title = "title-1";
+        String content = "content-1";
+        //given
+        Question question = new Question(author, content, title);
+        ReflectionTestUtils.setField(question, "id", questionId);
+        //given
+        Answer answer = new Answer(author, content, question);
+        ReflectionTestUtils.setField(answer, "id", answerId);
+        //given
+        given(memberService.findMember(anotherAuthorId)).willReturn(anotherAuthor);
+        given(answerSimpleQueryRepository.answerWithAuthor(answerId)).willReturn(Optional.of(answer));
 
-        List<Answer> answers = testData.getAnswers();
-        for (Answer answer : answers) {
-            String prevContent = answer.getContent();
-            String newContent = "";
-            Member author = answer.getAuthor();
-
-            assertThatThrownBy(() -> answerService.editAnswer(author.getId(), answer.getId(), newContent))
-                    .isInstanceOf(AnswerEditFailedException.class)
-                    .isInstanceOf(AnswerPropertyIsEmptyException.class);
-
-            Answer findAnswer = em.createQuery("select a from Answer a where a.id = :id", Answer.class)
-                    .setParameter("id", answer.getId())
-                    .getSingleResult();
-
-            assertThat(findAnswer.getContent())
-                    .isNotEqualTo(newContent)
-                    .isEqualTo(prevContent);
-        }
+        //when & then
+        answerService.deleteAnswer(anotherAuthorId, answerId);
     }
 
     @Test
-    @DisplayName("작성자는 답변글을 삭제할 수 있어야 함")
-    void authorCanDeleteOwnAnswer() {
-        List<Answer> answers = TestDataInit.init(em).getAnswers();
+    void 답변글_수정_테스트() {
+        //given
+        long authorId = 1L;
+        long questionId = 2L;
+        long answerId = 3L;
+        //given
+        Member author = new Member("nickname", "email", MemberRole.USER);
+        ReflectionTestUtils.setField(author, "id", authorId);
+        //given
+        String title = "title-1";
+        String content = "content-1";
+        String newContent = "new-content-1";
+        //given
+        Question question = new Question(author, content, title);
+        ReflectionTestUtils.setField(question, "id", questionId);
+        //given
+        Answer answer = new Answer(author, content, question);
+        ReflectionTestUtils.setField(answer, "id", answerId);
+        //given
+        given(answerSimpleQueryRepository.answerWithAuthor(answerId)).willReturn(Optional.of(answer));
+        given(memberService.findMember(authorId)).willReturn(author);
 
-        for (Answer answer : answers) {
-            answerService.deleteAnswer(answer.getAuthor().getId(), answer.getId());
-            assertThat(isDeletedPost(em, answer)).isTrue();
-        }
+        //when
+        EditAnswerResultDTO editAnswerResultDTO = answerService.editAnswer(authorId, answerId, newContent);
+
+        //then
+        assertThat(editAnswerResultDTO.getContent()).isEqualTo(newContent);
     }
 
     @Test
-    @DisplayName("관리자는 모든 답변글을 삭제할 수 있어야 함")
-    void adminCanDeleteAllAnswer() {
-        TestDataDTO dataDTO = TestDataInit.init(em);
-        List<Answer> answers = dataDTO.getAnswers();
-        Member admin = dataDTO.adminMember();
+    void 답변글_수정_실패_테스트_작성자및관리자아님() {
+        //given
+        long authorId = 1L;
+        long questionId = 2L;
+        long answerId = 3L;
+        long anotherAuthorId = 4L;
+        //given
+        Member author = new Member("nickname", "email", MemberRole.USER);
+        ReflectionTestUtils.setField(author, "id", authorId);
+        //given
+        Member anotherAuthor = new Member("nickname", "email", MemberRole.USER);
+        ReflectionTestUtils.setField(anotherAuthor, "id", anotherAuthorId);
+        //given
+        String title = "title-1";
+        String content = "content-1";
+        String newContent = "new-content-1";
+        //given
+        Question question = new Question(author, content, title);
+        ReflectionTestUtils.setField(question, "id", questionId);
+        //given
+        Answer answer = new Answer(author, content, question);
+        ReflectionTestUtils.setField(answer, "id", answerId);
+        //given
+        given(answerSimpleQueryRepository.answerWithAuthor(answerId)).willReturn(Optional.of(answer));
+        given(memberService.findMember(anotherAuthorId)).willReturn(anotherAuthor);
 
-        for (Answer answer : answers) {
-            answerService.deleteAnswer(admin.getId(), answer.getId());
-            assertThat(isDeletedPost(em, answer)).isTrue();
-        }
+        //when & then
+        assertThatThrownBy(() -> answerService.editAnswer(anotherAuthorId, answerId, newContent))
+                .isInstanceOf(AnswerEditFailedException.class)
+                .isInstanceOf(UnauthorizedAnswerEditException.class);
     }
 
     @Test
-    @DisplayName("관리자가 아닌 사용자는 다른 사용자의 답변글을 지울 수 없어야 함")
-    void memberCanNotDeleteOtherMembersAnswer() {
-        TestDataDTO dataDTO = TestDataInit.init(em);
-        List<Answer> answers = dataDTO.getAnswers();
+    void 답변글_수정_테스트_관리자는성공해야함() {
+        //given
+        long authorId = 1L;
+        long questionId = 2L;
+        long answerId = 3L;
+        long anotherAuthorId = 4L;
+        //given
+        Member author = new Member("nickname", "email", MemberRole.USER);
+        ReflectionTestUtils.setField(author, "id", authorId);
+        //given
+        Member anotherAuthor = new Member("nickname", "email", MemberRole.ADMIN);
+        ReflectionTestUtils.setField(anotherAuthor, "id", anotherAuthorId);
+        //given
+        String title = "title-1";
+        String content = "content-1";
+        String newContent = "new-content-1";
+        //given
+        Question question = new Question(author, content, title);
+        ReflectionTestUtils.setField(question, "id", questionId);
+        //given
+        Answer answer = new Answer(author, content, question);
+        ReflectionTestUtils.setField(answer, "id", answerId);
+        //given
+        given(answerSimpleQueryRepository.answerWithAuthor(answerId)).willReturn(Optional.of(answer));
+        given(memberService.findMember(anotherAuthorId)).willReturn(anotherAuthor);
 
-        for (Answer answer : answers) {
-            Member author = answer.getAuthor();
-            Member anotherMember = dataDTO.anotherMemberAndNotAdmin(author);
-            assertThatThrownBy(() -> answerService.deleteAnswer(anotherMember.getId(), answer.getId()))
-                    .isInstanceOf(AnswerDeleteFailedException.class);
-        }
+        //when
+        EditAnswerResultDTO editAnswerResultDTO = answerService.editAnswer(anotherAuthorId, answerId, newContent);
+
+        //then
+        assertThat(editAnswerResultDTO.getContent()).isEqualTo(newContent);
     }
 }

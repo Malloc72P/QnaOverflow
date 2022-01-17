@@ -119,19 +119,15 @@ public class QuestionServiceTest {
         long anotherAuthorId = 3L;
         Member anotherAuthor = new Member("nickname", "email", MemberRole.USER);
         ReflectionTestUtils.setField(anotherAuthor, "id", anotherAuthorId);
-
         given(memberService.findMember(anotherAuthorId))
                 .willReturn(anotherAuthor);
-
         //given
         long authorId = 1L;
         Member author = new Member("nickname", "email", MemberRole.USER);
         ReflectionTestUtils.setField(author, "id", authorId);
-
         long questionId = 2L;
         Question question = new Question(author, "content-1", "title-1");
         ReflectionTestUtils.setField(question, "id", questionId);
-
         given(questionSimpleQueryRepository.questionWithAuthor(questionId))
                 .willReturn(Optional.of(question));
 
