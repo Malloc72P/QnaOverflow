@@ -31,7 +31,7 @@ public class CommentService {
         Comment parentComment = findCommentParentById(parentCommentId);
 
         Comment comment = new Comment(member, content, parentPost, parentComment);
-        commentRepository.save(comment);
+        comment = commentRepository.save(comment);
 
         return CommentDTO.from(comment);
     }
