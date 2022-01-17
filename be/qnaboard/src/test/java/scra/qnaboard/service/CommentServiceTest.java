@@ -114,8 +114,6 @@ class CommentServiceTest {
         Comment comment = new Comment(member, commentContent, question, null);
         ReflectionTestUtils.setField(comment, "id", commentId);
         //given
-        EditCommentResultDTO editCommentResultDTO = new EditCommentResultDTO(newCommentContent);
-        //given
         given(memberService.findMember(memberId)).willReturn(member);
         given(commentSimpleQueryRepository.commentWithAuthor(commentId)).willReturn(Optional.of(comment));
 
@@ -123,7 +121,7 @@ class CommentServiceTest {
         EditCommentResultDTO result = commentService.editComment(memberId, commentId, newCommentContent);
 
         //then
-        assertThat(result.getContent()).isEqualTo(editCommentResultDTO.getContent());
+        assertThat(result.getContent()).isEqualTo(newCommentContent);
 
     }
 
@@ -182,15 +180,13 @@ class CommentServiceTest {
         Comment comment = new Comment(member, commentContent, question, null);
         ReflectionTestUtils.setField(comment, "id", commentId);
         //given
-        EditCommentResultDTO editCommentResultDTO = new EditCommentResultDTO(newCommentContent);
-        //given
         given(memberService.findMember(anotherMemberId)).willReturn(anotherMember);
         given(commentSimpleQueryRepository.commentWithAuthor(commentId)).willReturn(Optional.of(comment));
 
         //when
         EditCommentResultDTO result = commentService.editComment(anotherMemberId, commentId, newCommentContent);
         //then
-        assertThat(result.getContent()).isEqualTo(editCommentResultDTO.getContent());
+        assertThat(result.getContent()).isEqualTo(newCommentContent);
     }
 
     @Test
