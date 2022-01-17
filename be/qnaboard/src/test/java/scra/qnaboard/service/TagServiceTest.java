@@ -44,7 +44,6 @@ class TagServiceTest {
     @Mock
     private TagSimpleQueryRepository tagSimpleQueryRepository;
 
-
     @Test
     void 태그생성_테스트() throws Exception {
         //given
