@@ -3,18 +3,22 @@ package scra.qnaboard.service;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
 import org.springframework.transaction.annotation.Transactional;
 import scra.qnaboard.domain.entity.Tag;
 import scra.qnaboard.domain.entity.member.Member;
 import scra.qnaboard.domain.entity.member.MemberRole;
 import scra.qnaboard.domain.entity.post.Question;
 import scra.qnaboard.domain.repository.MemberRepository;
+import scra.qnaboard.domain.repository.question.QuestionRepository;
 import scra.qnaboard.domain.repository.tag.TagRepository;
 import scra.qnaboard.service.exception.member.MemberNotFoundException;
 import scra.qnaboard.service.exception.question.AlreadyDeletedQuestionException;
 import scra.qnaboard.service.exception.question.delete.QuestionDeleteFailedException;
 import scra.qnaboard.service.exception.question.edit.QuestionEditFailedException;
 import scra.qnaboard.service.exception.question.edit.UnauthorizedQuestionEditException;
+import scra.qnaboard.web.dto.question.list.QuestionSummaryDTO;
+import scra.qnaboard.web.dto.question.search.ParsedSearchQuestionDTO;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,6 +39,34 @@ class QuestionServiceIntegrationTest {
     private MemberRepository memberRepository;
     @Autowired
     private TagRepository tagRepository;
+    @Autowired
+    private QuestionRepository questionRepository;
+
+    @Test
+    void 질문_검색_테스트() {
+        //given
+        int pageNumber = 0;
+        int pageSize = 5;
+        //given
+        Member member = memberRepository.save(new Member("nickname", "email", MemberRole.USER));
+        //given
+        List<Question> questions = new ArrayList<>();
+        questions.add(questionRepository.save(new Question(member, "content-1", "title-1")));
+        questions.add(questionRepository.save(new Question(member, "content-2", "title-2")));
+        questions.add(questionRepository.save(new Question(member, "content-3", "title-3")));
+        questions.add(questionRepository.save(new Question(member, "aaaaaaaaaaa", "asdfaaa")));
+        questions.add(questionRepository.save(new Question(member, "aaaaaaaaaa", "asdfaaa")));
+        //given
+        ParsedSearchQuestionDTO searchQuestionDTO = new ParsedSearchQuestionDTO();
+        searchQuestionDTO.setTitle("title-");
+
+        //when
+        Page<QuestionSummaryDTO> questionPage = questionService.searchQuestions(searchQuestionDTO, pageNumber, pageSize);
+
+        //then
+        assertThat(questionPage.getTotalElements()).isEqualTo(3);
+        assertThat(questionPage.getTotalPages()).isEqualTo(1);
+    }
 
     @Test
     void 질문생성_테스트() throws Exception {

@@ -25,15 +25,6 @@ public class ParsedSearchQuestionDTO {
     private String title = DEFAULT_TITLE;
     private List<String> tags = new ArrayList<>();
 
-    @Builder
-    public ParsedSearchQuestionDTO(long authorId, long answers, long score, String title, List<String> tags) {
-        this.authorId = authorId;
-        this.answers = answers;
-        this.score = score;
-        this.title = title;
-        this.tags = tags;
-    }
-
     public void addTag(String tag) {
         tags.add(tag);
     }
