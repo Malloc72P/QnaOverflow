@@ -53,9 +53,6 @@ class QuestionControllerIntegrationTest {
     @WithMockUser
     void 질문_목록조회_테스트() throws Exception {
         //given
-        int pageNumber = 0;
-        int pageSize = 5;
-        //given
         Member member = memberRepository.save(new Member("nickname", "email", MemberRole.USER));
         //given
         List<Question> questions = new ArrayList<>();
