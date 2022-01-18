@@ -27,8 +27,8 @@ class MemberTest {
     @DisplayName("맴버 엔티티를 저장할 수 있어야함")
     void testSaveMember() {
         Member[] testcases = {
-                new Member("member1", MemberRole.ADMIN),
-                new Member("member2", MemberRole.USER),
+                new Member("member1","email", MemberRole.ADMIN),
+                new Member("member2","email", MemberRole.USER),
         };
 
         Arrays.stream(testcases).forEach(em::persist);

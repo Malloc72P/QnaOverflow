@@ -10,7 +10,7 @@ const vote = async (event) => {
     const prevScore = Number.parseInt(voteScore.innerText);
     const postId = voteButton.closest(".post").dataset.postid;
     const voteType = voteButton.dataset.votetype;
-    const url = `http://localhost:8080/posts/${postId}/votes?voteType=${voteType}`;
+    const url = `http://localhost:8080/api/posts/${postId}/votes?voteType=${voteType}`;
 
     try {
         await request(url, PUT, null, MODE_NONE);

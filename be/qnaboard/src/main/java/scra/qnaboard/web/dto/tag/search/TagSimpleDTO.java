@@ -3,6 +3,8 @@ package scra.qnaboard.web.dto.tag.search;
 import lombok.Getter;
 import scra.qnaboard.domain.entity.Tag;
 
+import java.util.Objects;
+
 @Getter
 public class TagSimpleDTO {
 

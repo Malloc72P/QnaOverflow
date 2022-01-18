@@ -27,7 +27,7 @@ class QuestionTagTest {
     @Test
     @DisplayName("태그를 생성할 수 있어야 함")
     void testSaveQuestionTag() {
-        Member member = new Member("member1", MemberRole.USER);
+        Member member = new Member("member1","email", MemberRole.USER);
         em.persist(member);
 
         Tag tag = new Tag(member, "tag1", "description");

@@ -81,7 +81,7 @@ class VoteSimpleQueryRepositoryTest {
     }
 
     private Member createMember() {
-        Member member = new Member("member", MemberRole.USER);
+        Member member = new Member("member","email", MemberRole.USER);
         em.persist(member);
         return member;
     }

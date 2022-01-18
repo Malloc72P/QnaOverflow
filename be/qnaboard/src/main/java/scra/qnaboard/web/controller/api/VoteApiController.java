@@ -9,7 +9,7 @@ import scra.qnaboard.service.VoteService;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/posts/{postId}/votes")
+@RequestMapping("/api/posts/{postId}/votes")
 public class VoteApiController {
 
     private final VoteService voteService;
