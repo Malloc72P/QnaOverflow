@@ -53,7 +53,7 @@ class CommentControllerTest {
     private MessageSource messageSource;
 
     @Test
-    @WithMockUser(roles = "USER")
+    @WithMockUser
     void 댓글_생성_테스트() throws Exception {
         //given
         long commentId = 1L;
@@ -87,7 +87,7 @@ class CommentControllerTest {
                         .content(new ObjectMapper().writeValueAsString(createCommentDTO))
                         .with(csrf())
                         .sessionAttr("user", new SessionUser(authorId, authorName, ""))
-                        .secure(true));
+        );
 
         //then
         resultActions
@@ -101,7 +101,7 @@ class CommentControllerTest {
     }
 
     @Test
-    @WithMockUser(roles = "USER")
+    @WithMockUser
     void 댓글_삭제_테스트() throws Exception {
         //given
         long commentId = 1L;
@@ -120,7 +120,7 @@ class CommentControllerTest {
                         .header("Accept-Language", "ko,en-US;q=0.9,en;q=0.8,ko-KR;q=0.7")
                         .with(csrf())
                         .sessionAttr("user", new SessionUser(authorId, "authorName", ""))
-                        .secure(true));
+        );
 
         //then
         resultActions.andExpect(status().isOk())
@@ -131,7 +131,7 @@ class CommentControllerTest {
     }
 
     @Test
-    @WithMockUser(roles = "USER")
+    @WithMockUser
     void 댓글_수정_테스트() throws Exception {
         //given
         long commentId = 1L;
@@ -155,7 +155,7 @@ class CommentControllerTest {
                         .content(new ObjectMapper().writeValueAsString(editCommentDTO))
                         .with(csrf())
                         .sessionAttr("user", new SessionUser(authorId, authorName, ""))
-                        .secure(true));
+        );
 
         //then
         resultActions

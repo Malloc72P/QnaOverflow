@@ -25,7 +25,7 @@ class AnswerTest {
     @Test
     @DisplayName("답변글을 생성할 수 있어야 함")
     void testSaveAnswer() {
-        Member member1 = new Member("member1","email", MemberRole.USER);
+        Member member1 = new Member("member1", "email", MemberRole.USER);
         em.persist(member1);
 
         Question question = new Question(member1, "content1", "title");

@@ -51,7 +51,7 @@ class TagControllerTest {
     private TagService tagService;
 
     @Test
-    @WithMockUser("GUEST")
+    @WithMockUser
     void 태그목록조회_테스트() throws Exception {
         //given
         List<TagDTO> tags = new ArrayList<>();
@@ -63,7 +63,7 @@ class TagControllerTest {
         ResultActions resultActions = mockMvc.perform(
                 get("/tags")
                         .with(csrf())
-                        .secure(true));
+        );
 
         //then
         resultActions
@@ -75,20 +75,20 @@ class TagControllerTest {
     }
 
     @Test
-    @WithMockUser("GUEST")
+    @WithMockUser
     void 태그생성폼_테스트() throws Exception {
         //given
         //when
         ResultActions resultActions = mockMvc.perform(
                 get("/tags/form")
                         .with(csrf())
-                        .secure(true));
+        );
         //then
         resultActions.andExpect(status().isOk());
     }
 
     @Test
-    @WithMockUser("GUEST")
+    @WithMockUser
     void 태그수정폼_테스트() throws Exception {
         //given
         long tagId = 1L;
@@ -102,7 +102,7 @@ class TagControllerTest {
         ResultActions resultActions = mockMvc.perform(
                 get("/tags/" + tagId + "/edit-form")
                         .with(csrf())
-                        .secure(true));
+        );
         //then
         resultActions.andExpect(status().isOk())
                 .andExpectAll(
@@ -112,7 +112,7 @@ class TagControllerTest {
     }
 
     @Test
-    @WithMockUser("USER")
+    @WithMockUser
     void 태그생성_테스트() throws Exception {
         //given
         Locale locale = Locale.KOREA;
@@ -131,7 +131,7 @@ class TagControllerTest {
                         .param("description", "tag-description")
                         .with(csrf())
                         .sessionAttr("user", new SessionUser(1L, "", ""))
-                        .secure(true));
+        );
 
         //then
         resultActions
@@ -140,7 +140,7 @@ class TagControllerTest {
     }
 
     @Test
-    @WithMockUser("USER")
+    @WithMockUser
     void 태그수정_테스트() throws Exception {
         //given
         long tagId = 1L;
@@ -153,14 +153,14 @@ class TagControllerTest {
 
         //when
         ResultActions resultActions = mockMvc.perform(
-                post("/tags/" +tagId + "/edit")
+                post("/tags/" + tagId + "/edit")
                         .header("Accept-Language", "ko,en-US;q=0.9,en;q=0.8,ko-KR;q=0.7")
                         .contentType(MediaType.APPLICATION_FORM_URLENCODED)
                         .param("name", "new-tag-name")
                         .param("description", "new-tag-description")
                         .with(csrf())
                         .sessionAttr("user", new SessionUser(1L, "", ""))
-                        .secure(true));
+        );
 
         //then
         resultActions
@@ -169,7 +169,7 @@ class TagControllerTest {
     }
 
     @Test
-    @WithMockUser("USER")
+    @WithMockUser
     void 태그삭제_테스트() throws Exception {
         //given
         long tagId = 1L;
@@ -182,11 +182,11 @@ class TagControllerTest {
 
         //when
         ResultActions resultActions = mockMvc.perform(
-                post("/tags/" +tagId + "/delete")
+                post("/tags/" + tagId + "/delete")
                         .header("Accept-Language", "ko,en-US;q=0.9,en;q=0.8,ko-KR;q=0.7")
                         .with(csrf())
                         .sessionAttr("user", new SessionUser(1L, "", ""))
-                        .secure(true));
+        );
 
         //then
         resultActions

@@ -53,7 +53,7 @@ class QuestionControllerTest {
     private SearchInputParserService parserService;
 
     @Test
-    @WithMockUser(roles = "GUEST")
+    @WithMockUser
     void 질문_목록조회_테스트() throws Exception {
         //given
         QuestionSummaryDTO questionSummaryDTO = QuestionSummaryDTO.builder()
@@ -74,7 +74,7 @@ class QuestionControllerTest {
                 .willReturn(new PageImpl<>(list));
 
         //when
-        ResultActions resultActions = mockMvc.perform(get("/questions").secure(true));
+        ResultActions resultActions = mockMvc.perform(get("/questions"));
 
         //then
         resultActions
@@ -86,7 +86,7 @@ class QuestionControllerTest {
     }
 
     @Test
-    @WithMockUser(roles = "GUEST")
+    @WithMockUser
     void 질문_상세조회_테스트() throws Exception {
         //given
         QuestionDetailDTO detailDTO = QuestionDetailDTO.builder()
@@ -98,7 +98,7 @@ class QuestionControllerTest {
                 .willReturn(detailDTO);
 
         //when
-        ResultActions resultActions = mockMvc.perform(get("/questions/" + 1L).secure(true));
+        ResultActions resultActions = mockMvc.perform(get("/questions/" + 1L));
 
         //then
         resultActions
@@ -111,7 +111,7 @@ class QuestionControllerTest {
     }
 
     @Test
-    @WithMockUser(roles = "GUEST")
+    @WithMockUser
     void 질문_생성폼_테스트() throws Exception {
         //given
         //when
@@ -121,7 +121,7 @@ class QuestionControllerTest {
     }
 
     @Test
-    @WithMockUser(roles = "GUEST")
+    @WithMockUser
     void 질문_수정폼_테스트() throws Exception {
         //given
         QuestionWithTagDTO questionWithTagDTO = QuestionWithTagDTO.builder()
@@ -143,7 +143,7 @@ class QuestionControllerTest {
     }
 
     @Test
-    @WithMockUser(roles = "USER")
+    @WithMockUser
     void 질문_생성_테스트() throws Exception {
         //given
         long newQuestionId = 1L;
@@ -159,7 +159,7 @@ class QuestionControllerTest {
                         .param("tags", "")
                         .with(csrf())
                         .sessionAttr("user", new SessionUser(1L, "", ""))
-                        .secure(true));
+        );
 
         //then
         resultActions
@@ -168,7 +168,7 @@ class QuestionControllerTest {
     }
 
     @Test
-    @WithMockUser(roles = "USER")
+    @WithMockUser
     void 질문_삭제_테스트() throws Exception {
         //given
         long requesterId = 1L;
@@ -180,7 +180,7 @@ class QuestionControllerTest {
                         .contentType(MediaType.APPLICATION_FORM_URLENCODED)
                         .with(csrf())
                         .sessionAttr("user", new SessionUser(requesterId, "", ""))
-                        .secure(true));
+        );
 
         //then
         resultActions
@@ -189,7 +189,7 @@ class QuestionControllerTest {
     }
 
     @Test
-    @WithMockUser(roles = "USER")
+    @WithMockUser
     void 질문_수정_테스트() throws Exception {
         //given
         long requesterId = 1L;
@@ -197,18 +197,18 @@ class QuestionControllerTest {
 
         //when
         ResultActions resultActions = mockMvc.perform(
-                post("/questions/"+questionId+"/edit")
+                post("/questions/" + questionId + "/edit")
                         .contentType(MediaType.APPLICATION_FORM_URLENCODED)
                         .param("title", "title-1")
                         .param("content", "content-1")
                         .param("tags", "")
                         .with(csrf())
                         .sessionAttr("user", new SessionUser(requesterId, "", ""))
-                        .secure(true));
+        );
 
         //then
         resultActions
                 .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/questions/"+questionId));
+                .andExpect(redirectedUrl("/questions/" + questionId));
     }
 }

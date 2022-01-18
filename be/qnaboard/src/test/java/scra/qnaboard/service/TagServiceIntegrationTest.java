@@ -8,8 +8,6 @@ import scra.qnaboard.domain.entity.Tag;
 import scra.qnaboard.domain.entity.member.Member;
 import scra.qnaboard.domain.entity.member.MemberRole;
 import scra.qnaboard.domain.repository.MemberRepository;
-import scra.qnaboard.domain.repository.answer.AnswerRepository;
-import scra.qnaboard.domain.repository.question.QuestionRepository;
 import scra.qnaboard.domain.repository.tag.TagRepository;
 import scra.qnaboard.service.exception.tag.delete.TagDeleteFailedException;
 import scra.qnaboard.service.exception.tag.edit.TagEditFailedException;

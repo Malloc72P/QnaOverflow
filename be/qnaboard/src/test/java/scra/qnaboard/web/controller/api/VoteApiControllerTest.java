@@ -36,7 +36,7 @@ class VoteApiControllerTest {
     private VoteService voteService;
 
     @Test
-    @WithMockUser("USER")
+    @WithMockUser
     void 투표_테스트() throws Exception {
         //given
         long postId = 1L;
@@ -46,7 +46,7 @@ class VoteApiControllerTest {
                 put("/api/posts/" + postId + "/votes/?voteType=" + VoteType.UP)
                         .with(csrf())
                         .sessionAttr("user", new SessionUser(2L, "name", "email"))
-                        .secure(true));
+        );
 
         //then
         resultActions.andExpect(status().isOk());

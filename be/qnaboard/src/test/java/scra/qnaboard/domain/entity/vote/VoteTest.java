@@ -23,7 +23,7 @@ class VoteTest {
     @Test
     @DisplayName("투표 엔티티를 생성할 수 있어야 함")
     void testCreateVote() {
-        Member member = new Member("member","email", MemberRole.USER);
+        Member member = new Member("member", "email", MemberRole.USER);
         em.persist(member);
 
         Question question = new Question(member, "content", "title");

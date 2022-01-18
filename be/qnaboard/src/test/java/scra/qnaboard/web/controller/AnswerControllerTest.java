@@ -50,7 +50,7 @@ class AnswerControllerTest {
     private AnswerService answerService;
 
     @Test
-    @WithMockUser(roles = "USER")
+    @WithMockUser
     void 답변글_생성_테스트() throws Exception {
         //given
         String authorName = "answer-author-name";
@@ -84,7 +84,7 @@ class AnswerControllerTest {
                         .content(new ObjectMapper().writeValueAsString(createAnswerDTO))
                         .with(csrf())
                         .sessionAttr("user", new SessionUser(memberId, authorName, ""))
-                        .secure(true));
+        );
 
         //then
         resultActions
@@ -99,7 +99,7 @@ class AnswerControllerTest {
     }
 
     @Test
-    @WithMockUser(roles = "USER")
+    @WithMockUser
     void 답변글_삭제_테스트() throws Exception {
         //given
         String authorName = "answer-author-name";
@@ -119,7 +119,7 @@ class AnswerControllerTest {
                 delete("/questions/" + questionId + "/answers/" + answerId)
                         .with(csrf())
                         .sessionAttr("user", new SessionUser(memberId, authorName, ""))
-                        .secure(true));
+        );
 
         //then
         resultActions
@@ -127,7 +127,7 @@ class AnswerControllerTest {
     }
 
     @Test
-    @WithMockUser(roles = "USER")
+    @WithMockUser
     void 답변글_수정_테스트() throws Exception {
         //given
         String authorName = "answer-author-name";
@@ -159,7 +159,7 @@ class AnswerControllerTest {
                         .content(new ObjectMapper().writeValueAsString(editAnswerDTO))
                         .with(csrf())
                         .sessionAttr("user", new SessionUser(memberId, authorName, ""))
-                        .secure(true));
+        );
 
         //then
         resultActions

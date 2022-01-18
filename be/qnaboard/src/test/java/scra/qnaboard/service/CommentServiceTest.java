@@ -50,7 +50,7 @@ class CommentServiceTest {
         String content = "question-content";
         String commentContent = "comment-content";
         //given
-        Member member = new Member("member","email", MemberRole.USER);
+        Member member = new Member("member", "email", MemberRole.USER);
         ReflectionTestUtils.setField(member, "id", memberId);
         //given
         Question question = new Question(member, content, title);
@@ -105,7 +105,7 @@ class CommentServiceTest {
         String commentContent = "comment-content";
         String newCommentContent = "new-comment-content";
         //given
-        Member member = new Member("member","email", MemberRole.USER);
+        Member member = new Member("member", "email", MemberRole.USER);
         ReflectionTestUtils.setField(member, "id", memberId);
         //given
         Question question = new Question(member, content, title);
@@ -137,9 +137,9 @@ class CommentServiceTest {
         String commentContent = "comment-content";
         String newCommentContent = "new-comment-content";
         //given
-        Member member = new Member("member","email", MemberRole.USER);
+        Member member = new Member("member", "email", MemberRole.USER);
         ReflectionTestUtils.setField(member, "id", memberId);
-        Member anotherMember = new Member("member","email", MemberRole.USER);
+        Member anotherMember = new Member("member", "email", MemberRole.USER);
         ReflectionTestUtils.setField(member, "id", anotherMemberId);
         //given
         Question question = new Question(member, content, title);
@@ -169,9 +169,9 @@ class CommentServiceTest {
         String commentContent = "comment-content";
         String newCommentContent = "new-comment-content";
         //given
-        Member member = new Member("member","email", MemberRole.USER);
+        Member member = new Member("member", "email", MemberRole.USER);
         ReflectionTestUtils.setField(member, "id", memberId);
-        Member anotherMember = new Member("member","email", MemberRole.ADMIN);
+        Member anotherMember = new Member("member", "email", MemberRole.ADMIN);
         ReflectionTestUtils.setField(member, "id", anotherMemberId);
         //given
         Question question = new Question(member, content, title);
@@ -199,7 +199,7 @@ class CommentServiceTest {
         String content = "question-content";
         String commentContent = "comment-content";
         //given
-        Member member = new Member("member","email", MemberRole.USER);
+        Member member = new Member("member", "email", MemberRole.USER);
         ReflectionTestUtils.setField(member, "id", memberId);
         //given
         Question question = new Question(member, content, title);
@@ -227,9 +227,9 @@ class CommentServiceTest {
         String content = "question-content";
         String commentContent = "comment-content";
         //given
-        Member member = new Member("member","email", MemberRole.USER);
+        Member member = new Member("member", "email", MemberRole.USER);
         ReflectionTestUtils.setField(member, "id", memberId);
-        Member anotherMember = new Member("member","email", MemberRole.USER);
+        Member anotherMember = new Member("member", "email", MemberRole.USER);
         ReflectionTestUtils.setField(member, "id", anotherMemberId);
         //given
         Question question = new Question(member, content, title);
@@ -259,9 +259,9 @@ class CommentServiceTest {
         String content = "question-content";
         String commentContent = "comment-content";
         //given
-        Member member = new Member("member","email", MemberRole.USER);
+        Member member = new Member("member", "email", MemberRole.USER);
         ReflectionTestUtils.setField(member, "id", memberId);
-        Member anotherMember = new Member("member","email", MemberRole.ADMIN);
+        Member anotherMember = new Member("member", "email", MemberRole.ADMIN);
         ReflectionTestUtils.setField(member, "id", anotherMemberId);
         //given
         Question question = new Question(member, content, title);

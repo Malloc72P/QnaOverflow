@@ -5,10 +5,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.test.util.ReflectionTestUtils;
 import scra.qnaboard.domain.entity.member.Member;
 import scra.qnaboard.domain.entity.member.MemberRole;
@@ -21,13 +17,10 @@ import scra.qnaboard.service.exception.member.MemberNotFoundException;
 import scra.qnaboard.service.exception.question.delete.QuestionDeleteFailedException;
 import scra.qnaboard.service.exception.question.edit.QuestionEditFailedException;
 import scra.qnaboard.service.exception.question.edit.UnauthorizedQuestionEditException;
-import scra.qnaboard.web.dto.question.list.QuestionSummaryDTO;
-import scra.qnaboard.web.dto.question.search.ParsedSearchQuestionDTO;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;

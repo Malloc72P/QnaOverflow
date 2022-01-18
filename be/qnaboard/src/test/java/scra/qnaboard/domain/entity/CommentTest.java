@@ -42,7 +42,7 @@ class CommentTest {
     @Test
     @DisplayName("대댓글을 생성할 수 있어야 하며 답변글 엔티티로 연관된 모든 대댓글을 가지고 올 수 있어야 함")
     void testCommentOnAnswer() {
-        Member member = new Member("member","email", MemberRole.USER);
+        Member member = new Member("member", "email", MemberRole.USER);
         em.persist(member);
 
         Question question = new Question(member, "content1", "title");

@@ -7,13 +7,11 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.FilterType;
-import org.springframework.mock.web.MockHttpSession;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import scra.qnaboard.configuration.auth.SecurityConfig;
 import scra.qnaboard.configuration.auth.SessionUser;
-import scra.qnaboard.domain.entity.member.Member;
 import scra.qnaboard.service.MemberService;
 import scra.qnaboard.web.dto.member.MemberDTO;
 import scra.qnaboard.web.dto.member.MemberListDTO;
@@ -24,10 +22,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.containsString;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.mockitoSession;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -54,7 +50,7 @@ class MemberControllerTest {
     private MemberService memberService;
 
     @Test
-    @WithMockUser(roles = "USER")
+    @WithMockUser
     void 회원목록조회테스트() throws Exception {
         //given
         List<MemberDTO> memberDTOS = new ArrayList<>();
@@ -67,7 +63,7 @@ class MemberControllerTest {
         ResultActions resultActions = mockMvc.perform(
                 get("/members")
                         .with(csrf())
-                        .secure(true));
+        );
 
         //then
         resultActions
@@ -79,7 +75,7 @@ class MemberControllerTest {
     }
 
     @Test
-    @WithMockUser(roles = "USER")
+    @WithMockUser
     void 회원탈퇴하면_알림페이지로_리다이렉션해야함() throws Exception {
         //given
         long memberId = 1L;
@@ -96,7 +92,7 @@ class MemberControllerTest {
                 post("/members/sign-out")
                         .with(csrf())
                         .sessionAttr("user", new SessionUser(memberId, "name", "email"))
-                        .secure(true));
+        );
 
         //then
         resultActions.andExpect(status().is3xxRedirection())
@@ -104,7 +100,7 @@ class MemberControllerTest {
     }
 
     @Test
-    @WithMockUser(roles = "USER")
+    @WithMockUser
     void 로그아웃하면_질문목록조회페이지로_리다이렉션해야함() throws Exception {
         //given
         long memberId = 1L;
@@ -114,7 +110,7 @@ class MemberControllerTest {
                 post("/members/log-out")
                         .with(csrf())
                         .sessionAttr("user", new SessionUser(memberId, "name", "email"))
-                        .secure(true));
+        );
 
         //then
         resultActions.andExpect(status().is3xxRedirection())

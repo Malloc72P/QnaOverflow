@@ -16,10 +16,8 @@ import scra.qnaboard.domain.entity.Tag;
 import scra.qnaboard.domain.entity.member.Member;
 import scra.qnaboard.domain.entity.member.MemberRole;
 import scra.qnaboard.domain.entity.post.Question;
-import scra.qnaboard.domain.entity.questiontag.QuestionTag;
 import scra.qnaboard.domain.repository.MemberRepository;
 import scra.qnaboard.domain.repository.question.QuestionRepository;
-import scra.qnaboard.domain.repository.tag.QuestionTagRepository;
 import scra.qnaboard.domain.repository.tag.TagRepository;
 import scra.qnaboard.web.dto.question.search.ParsedSearchQuestionDTO;
 
@@ -28,7 +26,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -66,7 +63,7 @@ class QuestionControllerIntegrationTest {
         searchQuestionDTO.setTitle("title-");
 
         //when
-        ResultActions resultActions = mockMvc.perform(get("/questions").secure(true));
+        ResultActions resultActions = mockMvc.perform(get("/questions"));
 
         //then
         resultActions.andExpect(status().isOk());
@@ -79,7 +76,6 @@ class QuestionControllerIntegrationTest {
     }
 
     @Test
-    @WithMockUser
     void 질문_생성_테스트() throws Exception {
         //given
         Member author = memberRepository.save(new Member("nickname", "email", MemberRole.USER));
@@ -104,7 +100,7 @@ class QuestionControllerIntegrationTest {
                         .param("title", title)
                         .param("content", content)
                         .param("tags", tagIds)
-                        .sessionAttr("user", new SessionUser(1L, "", tagIds)));
+                        .sessionAttr("user", new SessionUser(author)));
 
         //then
         resultActions.andExpect(status().is3xxRedirection())

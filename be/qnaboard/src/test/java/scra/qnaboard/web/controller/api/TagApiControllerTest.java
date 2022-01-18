@@ -46,7 +46,7 @@ class TagApiControllerTest {
     private TagService tagService;
 
     @Test
-    @WithMockUser("GUEST")
+    @WithMockUser
     void 태그_검색_API_테스트() throws Exception {
         //given
         Member member = new Member("member", "email", MemberRole.USER);
@@ -67,7 +67,7 @@ class TagApiControllerTest {
         ResultActions resultActions = mockMvc.perform(
                 get("/api/tags?keyword=" + keyword)
                         .with(csrf())
-                        .secure(true));
+        );
 
         //then
         resultActions.andExpect(status().isOk())
