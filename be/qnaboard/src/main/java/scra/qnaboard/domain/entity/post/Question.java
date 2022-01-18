@@ -50,6 +50,10 @@ public class Question extends Post {
         questionTags.add(questionTag);
     }
 
+    public void resetTags() {
+        questionTags.clear();
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -62,9 +66,5 @@ public class Question extends Post {
     @Override
     public int hashCode() {
         return Objects.hash(super.hashCode(), getViewCount(), getTitle());
-    }
-
-    public void resetTags() {
-        questionTags.clear();
     }
 }

@@ -15,6 +15,7 @@ import scra.qnaboard.web.dto.question.detail.QQuestionDetailDTO;
 import scra.qnaboard.web.dto.question.detail.QuestionDetailDTO;
 import scra.qnaboard.web.dto.question.tag.QuestionTagDTO;
 
+import javax.persistence.EntityManager;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -31,11 +32,11 @@ import static scra.qnaboard.domain.entity.post.QQuestion.question;
 public class QuestionSearchDetailRepository {
 
     private final JPAQueryFactory queryFactory;
+    private final EntityManager entityManager;
 
     private final CommentSimpleQueryRepository commentRepository;
     private final AnswerSimpleQueryRepository answerRepository;
     private final QuestionTagSimpleQueryRepository questionTagRepository;
-    private final VoteSimpleQueryRepository voteRepository;
 
     private final QuestionBooleanExpressionSupplier expressionSupplier;
 
@@ -46,6 +47,9 @@ public class QuestionSearchDetailRepository {
      * @return 질문글 DTO를 감싼 옵셔널 객체
      */
     public QuestionDetailDTO questionDetail(long questionId) {
+        //0. 조회수 올림
+        increaseViewCount(questionId);
+
         //1. 질문글 상세조회 - 질문글 작성자만 조인해서 가져옴
         QuestionDetailDTO detailDTO = questionDetailDtoByQuestionId(questionId);
 
@@ -71,8 +75,8 @@ public class QuestionSearchDetailRepository {
         //8. 답변 게시글의 부품 조립(대댓글 목록)
         detailDTO.getAnswers().forEach(answer -> answer.update(commentMap));
 
-        //9. 조회수 올림
-        increaseViewCount(questionId);
+        entityManager.clear();
+        entityManager.flush();
 
         return detailDTO;
     }

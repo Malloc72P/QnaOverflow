@@ -1,22 +1,23 @@
 package scra.qnaboard.domain.repository;
 
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 import scra.qnaboard.domain.entity.Comment;
+import scra.qnaboard.domain.entity.Tag;
+import scra.qnaboard.domain.entity.member.Member;
+import scra.qnaboard.domain.entity.member.MemberRole;
+import scra.qnaboard.domain.entity.post.Answer;
 import scra.qnaboard.domain.entity.post.Question;
+import scra.qnaboard.domain.repository.answer.AnswerRepository;
+import scra.qnaboard.domain.repository.comment.CommentRepository;
+import scra.qnaboard.domain.repository.question.QuestionRepository;
 import scra.qnaboard.domain.repository.question.QuestionSearchDetailRepository;
-import scra.qnaboard.utils.QueryUtils;
-import scra.qnaboard.utils.TestDataInit;
+import scra.qnaboard.domain.repository.tag.TagRepository;
+import scra.qnaboard.web.dto.answer.AnswerDetailDTO;
 import scra.qnaboard.web.dto.comment.CommentDTO;
 import scra.qnaboard.web.dto.question.detail.QuestionDetailDTO;
-
-import javax.persistence.EntityManager;
-import java.util.ArrayDeque;
-import java.util.List;
-import java.util.Queue;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -28,23 +29,44 @@ class QuestionSearchRepositoryTest {
     private QuestionSearchDetailRepository repository;
 
     @Autowired
-    private EntityManager em;
+    private QuestionRepository questionRepository;
+    @Autowired
+    private MemberRepository memberRepository;
+    @Autowired
+    private TagRepository tagRepository;
+    @Autowired
+    private CommentRepository commentRepository;
+    @Autowired
+    private AnswerRepository answerRepository;
 
     @Test
-    @DisplayName("질문 상세보기를 할 수 있어야 함")
-    void questionDetailV2() {
-        List<Question> questions = TestDataInit.init(em).getQuestions();
+    void 질문_상세보기를_할수있어야함() {
+        //given
+        Member member = memberRepository.save(new Member("nickname", "email", MemberRole.USER));
+        //given
+        Question question = questionRepository.save(new Question(member, "q-content", "q-title"));
+        long prevViewCount = question.getViewCount();
+        //given
+        Tag tag1 = tagRepository.save(new Tag(member, "tag-name1", "tag-desc2"));
+        Tag tag2 = tagRepository.save(new Tag(member, "tag-name1", "tag-desc2"));
+        //given
+        int answerCount = 2;
+        Answer answer1 = answerRepository.save(new Answer(member, "a-content1", question));
+        Answer answer2 = answerRepository.save(new Answer(member, "a-content2", question));
+        //given
+        Comment comment1 = commentRepository.save(new Comment(member, "c-content1", question, null));
+        Comment comment2 = commentRepository.save(new Comment(member, "c-content2", question, comment1));
+        Comment comment3 = commentRepository.save(new Comment(member, "c-content3", question, comment1));
+        Comment comment4 = commentRepository.save(new Comment(member, "c-content4", question, null));
+        //given
+        Comment comment5 = commentRepository.save(new Comment(member, "c-content5", answer1, null));
+        Comment comment6 = commentRepository.save(new Comment(member, "c-content6", answer1, null));
 
-        for (Question question : questions) {
-            QuestionDetailDTO detailDTO = repository.questionDetail(question.getId());
-            testDetailDTO(detailDTO, question);
-        }
-    }
+        //when
+        QuestionDetailDTO detailDTO = repository.questionDetail(question.getId());
+        question = questionRepository.findById(question.getId()).orElseThrow(IllegalStateException::new);
 
-    /**
-     * DTO가 엔티티의 값을 잘 가지고 있는지 테스트함
-     */
-    private void testDetailDTO(QuestionDetailDTO detailDTO, Question question) {
+        //then 질문게시글 데이터 검사
         assertThat(detailDTO).extracting(
                 QuestionDetailDTO::getQuestionId,
                 QuestionDetailDTO::getTitle,
@@ -58,112 +80,25 @@ class QuestionSearchRepositoryTest {
                 question.getViewCount(),
                 question.getAuthor().getNickname()
         );
-
-        int sizeOfQuestionTag = QueryUtils.sizeOfQuestionTagsByQuestionId(em, question.getId());
-        assertThat(detailDTO.getTags().size()).isEqualTo(sizeOfQuestionTag);
-        int sizeOfAnswer = QueryUtils.sizeOfAnswerByQuestionId(em, question.getId());
-        assertThat(detailDTO.getAnswers().size()).isEqualTo(sizeOfAnswer);
+        //then 조회수 검사(1 만큼 증가해야함)
+        assertThat(detailDTO.getViewCount()).isEqualTo(prevViewCount + 1);
+        //then 질문게시글에 달린 답변게시글 개수 검사
+        assertThat(detailDTO.getAnswers().size()).isEqualTo(answerCount);
+        //then 댓글 검사
+        assertThat(detailDTO.getComments().size()).isEqualTo(2);
+        //then 대댓글 검사
+        CommentDTO firstQuestionComment = detailDTO.getComments().stream()
+                .filter(commentDTO -> commentDTO.getCommentId() == comment1.getId())
+                .findFirst()
+                .orElse(null);
+        assertThat(firstQuestionComment).isNotNull();
+        assertThat(firstQuestionComment.getChildren().size()).isEqualTo(2);
+        //then 답변게시글에 달린 댓글 검사
+        AnswerDetailDTO firstAnswerDTO = detailDTO.getAnswers().stream()
+                .filter(answerDetailDTO -> answerDetailDTO.getAnswerId() == answer1.getId())
+                .findFirst()
+                .orElse(null);
+        assertThat(firstAnswerDTO).isNotNull();
+        assertThat(firstAnswerDTO.getComments().size()).isEqualTo(2);
     }
-
-    @Test
-    @DisplayName("코멘트의 계층구조를 조립해서 가지고 올 수 있어야 함")
-    void commentsByParentPostId() {
-        List<Question> questions = TestDataInit.init(em).getQuestions();
-
-        for (Question question : questions) {
-            //질문 상세조회
-            QuestionDetailDTO detailDTO = repository.questionDetail(question.getId());
-
-            //대댓글 전체  테스트
-            testComments(commentsByParentPostId(question.getId()), detailDTO.getComments());
-
-            //게시글에 딸려있는 답변게시글도 테스트
-            detailDTO.getAnswers()
-                    .forEach(answerDTO -> {
-                        List<Comment> comments = commentsByParentPostId(answerDTO.getAnswerId());
-                        List<CommentDTO> commentDTOS = answerDTO.getComments();
-                        testComments(comments, commentDTOS);
-                    });
-        }
-    }
-
-    /**
-     * 질문상세보기 DTO 안에 있는 댓글에 대한 테스트 메서드. <br>
-     * 최상위 댓글 및 그 하위에 있는 모든 댓글을 테스트함
-     *
-     * @param comments    댓글 엔티티
-     * @param commentDTOS 댓글 DTO
-     */
-    private void testComments(List<Comment> comments, List<CommentDTO> commentDTOS) {
-        //최상위에 있는 댓글의 개수와 순서를 비교
-        compareCommentAndDTO(comments, commentDTOS);
-
-        //최상위 댓글의 아래에 있는 댓글 비교
-        testCommentChildren(commentDTOS);
-    }
-
-    /**
-     * 넓이 우선탐색을 하면서 자식 댓글의 순서와 개수를 비교
-     *
-     * @param commentDTOS 테스트 대상 질문상세보기 DTO(안에 댓글있음)
-     */
-    private void testCommentChildren(List<CommentDTO> commentDTOS) {
-        Queue<CommentDTO> queue = new ArrayDeque<>(commentDTOS);
-        while (!queue.isEmpty()) {
-            CommentDTO poll = queue.poll();
-            List<CommentDTO> dtoChildren = poll.getChildren();
-            queue.addAll(poll.getChildren());
-
-            List<Comment> comments = commentsByParentCommentId(poll.getCommentId());
-            compareCommentAndDTO(comments, dtoChildren);
-        }
-    }
-
-    /**
-     * 댓글 엔티티와 DTO List를 비교함(개수 + 내용물)
-     *
-     * @param comments    엔티티 list
-     * @param dtoComments dto list
-     */
-    private void compareCommentAndDTO(List<Comment> comments, List<CommentDTO> dtoComments) {
-        assertThat(comments.size()).isEqualTo(dtoComments.size());
-        for (int i = 0; i < comments.size(); i++) {
-            Comment expected = comments.get(i);
-            CommentDTO actual = dtoComments.get(i);
-            assertThat(actual.getCommentId()).isEqualTo(expected.getId());
-        }
-    }
-
-    /**
-     * 게시글의 최상위 댓글을 생성일로 오름차순 정렬해서 가져옴
-     *
-     * @param parentPostId 게시글 아이디
-     * @return 댓글 목록
-     */
-    private List<Comment> commentsByParentPostId(long parentPostId) {
-        return em.createQuery(
-                        "select c from Comment c " +
-                                "where c.parentPost.id = :parentPostId and c.parentComment.id is null " +
-                                "order by c.createdDate",
-                        Comment.class)
-                .setParameter("parentPostId", parentPostId)
-                .getResultList();
-    }
-
-    /**
-     * 댓글의 자식 댓글을 생성일로 오름차순 정렬해서 가져옴
-     *
-     * @param parentCommentId 부모댓글의 아이디
-     * @return 댓글 목록
-     */
-    private List<Comment> commentsByParentCommentId(long parentCommentId) {
-        return em.createQuery(
-                        "select c from Comment c " +
-                                "where c.parentComment.id = :parentCommentId " +
-                                "order by c.createdDate",
-                        Comment.class)
-                .setParameter("parentCommentId", parentCommentId)
-                .getResultList();
-    }
-
 }

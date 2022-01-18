@@ -7,7 +7,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 import scra.qnaboard.domain.entity.member.Member;
 import scra.qnaboard.domain.entity.member.MemberRole;
-import scra.qnaboard.utils.QueryUtils;
 
 import javax.persistence.EntityManager;
 import java.util.ArrayList;
@@ -64,8 +63,8 @@ class QuestionTest {
         em.flush();
         em.clear();
 
-        Question findQuestion = em.find(Question.class, question.getId());
-        int size = QueryUtils.sizeOfAnswerByQuestionId(em, findQuestion.getId());
+        int size = em.createQuery("select count(a) from Answer a where a.question.id = :id", Long.class)
+                .setParameter("id", question.getId()).getSingleResult().intValue();
         assertThat(size).isEqualTo(answers.size());
     }
 }
