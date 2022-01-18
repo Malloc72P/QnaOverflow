@@ -34,11 +34,7 @@ public class TagServiceIntegrationTest {
     private TagService tagService;
 
     @Autowired
-    private QuestionRepository questionRepository;
-    @Autowired
     private MemberRepository memberRepository;
-    @Autowired
-    private AnswerRepository answerRepository;
     @Autowired
     private TagRepository tagRepository;
 
