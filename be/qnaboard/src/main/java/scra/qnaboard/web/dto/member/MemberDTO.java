@@ -1,11 +1,10 @@
 package scra.qnaboard.web.dto.member;
 
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import scra.qnaboard.domain.entity.member.Member;
 
 @Getter
+@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class MemberDTO {
 

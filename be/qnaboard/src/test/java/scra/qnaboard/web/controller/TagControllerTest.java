@@ -57,10 +57,8 @@ class TagControllerTest {
         List<TagDTO> tags = new ArrayList<>();
         tags.add(TagDTO.builder().tagName("tag-1").build());
         tags.add(TagDTO.builder().tagName("tag-2").build());
-
         //given
         given(tagService.tagList()).willReturn(new TagListDTO(tags));
-
         //when
         ResultActions resultActions = mockMvc.perform(
                 get("/tags")

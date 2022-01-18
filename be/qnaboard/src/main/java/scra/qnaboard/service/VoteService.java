@@ -25,16 +25,6 @@ public class VoteService {
     private final PostService postService;
 
     @Transactional
-    public void voteUp(Long requesterId, Long postId) {
-        vote(requesterId, postId, VoteType.UP);
-    }
-
-    @Transactional
-    public void voteDown(Long requesterId, Long postId) {
-        vote(requesterId, postId, VoteType.DOWN);
-    }
-
-    @Transactional
     public void vote(Long requesterId, Long postId, VoteType voteType) {
         //투표자와 대상 게시글 검색
         Member member = memberService.findMember(requesterId);
