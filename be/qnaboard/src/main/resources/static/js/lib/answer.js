@@ -7,7 +7,7 @@ const createAnswer = async (event) => {
     let body = {"content": content};
 
     try {
-        let response = await request(url, PUT, body, MODE_TEXT);
+        let response = await request(url, POST, body, MODE_TEXT);
 
         let parser = new DOMParser();
         let answerElementWrapper = parser.parseFromString(response, "text/html");

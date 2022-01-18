@@ -78,7 +78,7 @@ class AnswerControllerTest {
 
         //when
         ResultActions resultActions = mockMvc.perform(
-                put("/questions/" + questionId + "/answers")
+                post("/questions/" + questionId + "/answers")
                         .contentType(MediaType.APPLICATION_JSON)
                         .header("Accept-Language", "ko,en-US;q=0.9,en;q=0.8,ko-KR;q=0.7")
                         .content(new ObjectMapper().writeValueAsString(createAnswerDTO))

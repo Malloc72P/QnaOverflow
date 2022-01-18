@@ -20,7 +20,7 @@ public class AnswerController {
 
     private final AnswerService answerService;
 
-    @PutMapping
+    @PostMapping
     public String createAnswer(@PathVariable("questionId") long questionId,
                                @RequestBody @Validated CreateAnswerDTO createAnswerDTO,
                                @LoginUser SessionUser sessionUser,
