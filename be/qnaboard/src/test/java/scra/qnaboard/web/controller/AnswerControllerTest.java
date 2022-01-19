@@ -162,8 +162,7 @@ class AnswerControllerTest {
         );
 
         //then
-        resultActions
-                .andExpect(status().isOk())
+        resultActions.andExpect(status().isOk())
                 .andExpectAll(
                         jsonPath("$.content", is(content)),
                         jsonPath("$.lastModifiedDate", is(localeFormatter(Locale.KOREA).format(lastModifiedDate)))
