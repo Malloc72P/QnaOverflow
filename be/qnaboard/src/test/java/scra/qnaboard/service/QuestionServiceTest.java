@@ -14,7 +14,7 @@ import scra.qnaboard.domain.repository.question.QuestionSearchDetailRepository;
 import scra.qnaboard.domain.repository.question.QuestionSearchListRepository;
 import scra.qnaboard.domain.repository.question.QuestionSimpleQueryRepository;
 import scra.qnaboard.service.exception.member.MemberNotFoundException;
-import scra.qnaboard.service.exception.question.delete.QuestionDeleteFailedException;
+import scra.qnaboard.service.exception.question.delete.UnauthorizedQuestionDeletionException;
 import scra.qnaboard.service.exception.question.edit.QuestionEditFailedException;
 import scra.qnaboard.service.exception.question.edit.UnauthorizedQuestionEditException;
 
@@ -133,7 +133,7 @@ public class QuestionServiceTest {
 
         //when & then
         assertThatThrownBy(() -> questionService.deleteQuestion(anotherAuthorId, questionId))
-                .isInstanceOf(QuestionDeleteFailedException.class);
+                .isInstanceOf(UnauthorizedQuestionDeletionException.class);
     }
 
     @Test

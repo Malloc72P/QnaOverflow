@@ -9,7 +9,7 @@ import scra.qnaboard.domain.entity.member.Member;
 import scra.qnaboard.domain.entity.member.MemberRole;
 import scra.qnaboard.domain.repository.MemberRepository;
 import scra.qnaboard.domain.repository.tag.TagRepository;
-import scra.qnaboard.service.exception.tag.delete.TagDeleteFailedException;
+import scra.qnaboard.service.exception.tag.delete.UnauthorizedTagDeletionException;
 import scra.qnaboard.service.exception.tag.edit.TagEditFailedException;
 import scra.qnaboard.service.exception.tag.edit.UnauthorizedTagEditException;
 import scra.qnaboard.web.dto.tag.search.TagSearchResultDTO;
@@ -86,7 +86,7 @@ public class TagServiceIntegrationTest {
 
         //when & then
         assertThatThrownBy(() -> tagService.deleteTag(anotherAuthor.getId(), tag.getId()))
-                .isInstanceOf(TagDeleteFailedException.class);
+                .isInstanceOf(UnauthorizedTagDeletionException.class);
 
         //then
         Tag findTag = tagRepository.findById(tag.getId()).orElse(null);

@@ -11,7 +11,7 @@ import scra.qnaboard.domain.entity.post.Question;
 import scra.qnaboard.domain.repository.MemberRepository;
 import scra.qnaboard.domain.repository.comment.CommentRepository;
 import scra.qnaboard.domain.repository.question.QuestionRepository;
-import scra.qnaboard.service.exception.comment.delete.CommentDeleteFailedException;
+import scra.qnaboard.service.exception.comment.delete.UnauthorizedCommentDeletionException;
 import scra.qnaboard.service.exception.comment.edit.CommentEditFailedException;
 import scra.qnaboard.service.exception.comment.edit.UnauthorizedCommentEditException;
 import scra.qnaboard.web.dto.comment.CommentDTO;
@@ -84,7 +84,7 @@ public class CommentServiceIntegrationTest {
 
         //when & then
         assertThatThrownBy(() -> commentService.deleteComment(anotherAuthor.getId(), comment.getId()))
-                .isInstanceOf(CommentDeleteFailedException.class);
+                .isInstanceOf(UnauthorizedCommentDeletionException.class);
     }
 
     @Test

@@ -12,7 +12,7 @@ import scra.qnaboard.domain.entity.post.Answer;
 import scra.qnaboard.domain.entity.post.Question;
 import scra.qnaboard.domain.repository.answer.AnswerRepository;
 import scra.qnaboard.domain.repository.answer.AnswerSimpleQueryRepository;
-import scra.qnaboard.service.exception.answer.delete.AnswerDeleteFailedException;
+import scra.qnaboard.service.exception.answer.delete.UnauthorizedAnswerDeletionException;
 import scra.qnaboard.service.exception.answer.edit.AnswerEditFailedException;
 import scra.qnaboard.service.exception.answer.edit.UnauthorizedAnswerEditException;
 import scra.qnaboard.service.exception.member.MemberNotFoundException;
@@ -137,7 +137,7 @@ class AnswerServiceTest {
 
         //when & then
         assertThatThrownBy(() -> answerService.deleteAnswer(anotherAuthorId, answerId))
-                .isInstanceOf(AnswerDeleteFailedException.class);
+                .isInstanceOf(UnauthorizedAnswerDeletionException.class);
     }
 
     @Test

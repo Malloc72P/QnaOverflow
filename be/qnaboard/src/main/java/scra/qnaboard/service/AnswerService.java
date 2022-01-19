@@ -8,7 +8,7 @@ import scra.qnaboard.domain.entity.post.Answer;
 import scra.qnaboard.domain.entity.post.Question;
 import scra.qnaboard.domain.repository.answer.AnswerRepository;
 import scra.qnaboard.domain.repository.answer.AnswerSimpleQueryRepository;
-import scra.qnaboard.service.exception.answer.delete.AnswerDeleteFailedException;
+import scra.qnaboard.service.exception.answer.delete.UnauthorizedAnswerDeletionException;
 import scra.qnaboard.service.exception.answer.edit.UnauthorizedAnswerEditException;
 import scra.qnaboard.service.exception.answer.search.AnswerNotFoundException;
 import scra.qnaboard.web.dto.answer.AnswerDetailDTO;
@@ -46,7 +46,7 @@ public class AnswerService {
 
         //관리자가 아니면서 소유자도 아니면 실패해야함
         if (requester.isNotAdmin() && answer.isNotOwner(requester)) {
-            throw new AnswerDeleteFailedException(AnswerDeleteFailedException.UNAUTHORIZED, answerId, requesterId);
+            throw new UnauthorizedAnswerDeletionException(answerId, requesterId);
         }
 
         //관리자이거나 질문게시글의 소유자면 질문게시글 삭제함

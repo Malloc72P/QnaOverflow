@@ -12,7 +12,7 @@ import scra.qnaboard.domain.entity.member.MemberRole;
 import scra.qnaboard.domain.entity.post.Question;
 import scra.qnaboard.domain.repository.comment.CommentRepository;
 import scra.qnaboard.domain.repository.comment.CommentSimpleQueryRepository;
-import scra.qnaboard.service.exception.comment.delete.CommentDeleteFailedException;
+import scra.qnaboard.service.exception.comment.delete.UnauthorizedCommentDeletionException;
 import scra.qnaboard.service.exception.comment.edit.CommentEditFailedException;
 import scra.qnaboard.service.exception.comment.edit.UnauthorizedCommentEditException;
 import scra.qnaboard.web.dto.comment.CommentDTO;
@@ -244,7 +244,7 @@ class CommentServiceTest {
 
         //when & then
         assertThatThrownBy(() -> commentService.deleteComment(memberId, commentId))
-                .isInstanceOf(CommentDeleteFailedException.class);
+                .isInstanceOf(UnauthorizedCommentDeletionException.class);
 
     }
 

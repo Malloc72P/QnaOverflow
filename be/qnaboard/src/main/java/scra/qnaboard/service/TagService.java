@@ -8,7 +8,7 @@ import scra.qnaboard.domain.entity.member.Member;
 import scra.qnaboard.domain.repository.tag.QuestionTagSimpleQueryRepository;
 import scra.qnaboard.domain.repository.tag.TagRepository;
 import scra.qnaboard.domain.repository.tag.TagSimpleQueryRepository;
-import scra.qnaboard.service.exception.tag.delete.TagDeleteFailedException;
+import scra.qnaboard.service.exception.tag.delete.UnauthorizedTagDeletionException;
 import scra.qnaboard.service.exception.tag.edit.UnauthorizedTagEditException;
 import scra.qnaboard.service.exception.tag.search.TagNotFoundException;
 import scra.qnaboard.web.dto.tag.list.TagDTO;
@@ -122,7 +122,7 @@ public class TagService {
 
         //관리자가 아니면 실패해야함
         if (requester.isNotAdmin() && tag.isNotOwner(requester)) {
-            throw new TagDeleteFailedException(TagDeleteFailedException.UNAUTHORIZED, tagId, requesterId);
+            throw new UnauthorizedTagDeletionException(tagId, requesterId);
         }
 
         tag.delete();

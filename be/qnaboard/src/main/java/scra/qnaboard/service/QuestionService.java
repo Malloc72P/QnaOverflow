@@ -13,11 +13,10 @@ import scra.qnaboard.domain.repository.question.QuestionSearchListRepository;
 import scra.qnaboard.domain.repository.question.QuestionSimpleQueryRepository;
 import scra.qnaboard.service.dto.QuestionWithTagDTO;
 import scra.qnaboard.service.exception.question.AlreadyDeletedQuestionException;
-import scra.qnaboard.service.exception.question.delete.QuestionDeleteFailedException;
+import scra.qnaboard.service.exception.question.delete.UnauthorizedQuestionDeletionException;
 import scra.qnaboard.service.exception.question.edit.UnauthorizedQuestionEditException;
 import scra.qnaboard.service.exception.question.search.QuestionNotFoundException;
 import scra.qnaboard.web.dto.question.detail.QuestionDetailDTO;
-import scra.qnaboard.web.dto.question.list.QuestionListDTO;
 import scra.qnaboard.web.dto.question.list.QuestionSummaryDTO;
 import scra.qnaboard.web.dto.question.search.ParsedSearchQuestionDTO;
 
@@ -98,7 +97,7 @@ public class QuestionService {
 
         //관리자가 아니면서 소유자도 아니면 실패해야함
         if (requester.isNotAdmin() && question.isNotOwner(requester)) {
-            throw new QuestionDeleteFailedException(QuestionDeleteFailedException.UNAUTHORIZED, questionId, requesterId);
+            throw new UnauthorizedQuestionDeletionException(questionId, requesterId);
         }
 
         //관리자이거나 질문게시글의 소유자면 질문게시글 삭제함

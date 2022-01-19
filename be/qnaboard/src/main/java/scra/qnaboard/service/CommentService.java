@@ -9,7 +9,7 @@ import scra.qnaboard.domain.entity.post.Post;
 import scra.qnaboard.domain.repository.comment.CommentRepository;
 import scra.qnaboard.domain.repository.comment.CommentSimpleQueryRepository;
 import scra.qnaboard.service.exception.comment.CommentNotFoundException;
-import scra.qnaboard.service.exception.comment.delete.CommentDeleteFailedException;
+import scra.qnaboard.service.exception.comment.delete.UnauthorizedCommentDeletionException;
 import scra.qnaboard.service.exception.comment.edit.UnauthorizedCommentEditException;
 import scra.qnaboard.web.dto.comment.CommentDTO;
 import scra.qnaboard.web.dto.comment.edit.EditCommentResultDTO;
@@ -52,7 +52,7 @@ public class CommentService {
 
         //관리자가 아니면서 소유자도 아니면 실패해야함
         if (requester.isNotAdmin() && comment.isNotOwner(requester)) {
-            throw new CommentDeleteFailedException(CommentDeleteFailedException.UNAUTHORIZED, commentId, requesterId);
+            throw new UnauthorizedCommentDeletionException(commentId, requesterId);
         }
 
         //관리자이거나 질문게시글의 소유자면 질문게시글 삭제함

@@ -11,7 +11,7 @@ import scra.qnaboard.domain.entity.post.Question;
 import scra.qnaboard.domain.repository.MemberRepository;
 import scra.qnaboard.domain.repository.answer.AnswerRepository;
 import scra.qnaboard.domain.repository.question.QuestionRepository;
-import scra.qnaboard.service.exception.answer.delete.AnswerDeleteFailedException;
+import scra.qnaboard.service.exception.answer.delete.UnauthorizedAnswerDeletionException;
 import scra.qnaboard.service.exception.answer.edit.AnswerEditFailedException;
 import scra.qnaboard.service.exception.answer.edit.UnauthorizedAnswerEditException;
 import scra.qnaboard.service.exception.member.MemberNotFoundException;
@@ -95,7 +95,7 @@ public class AnswerServiceIntegrationTest {
 
         //when
         assertThatThrownBy(() -> answerService.deleteAnswer(anotherAuthor.getId(), answer.getId()))
-                .isInstanceOf(AnswerDeleteFailedException.class);
+                .isInstanceOf(UnauthorizedAnswerDeletionException.class);
 
         //then
         Answer findAnswer = answerRepository.findById(answer.getId()).orElse(null);
