@@ -19,6 +19,7 @@ import scra.qnaboard.domain.entity.post.Question;
 import scra.qnaboard.domain.repository.MemberRepository;
 import scra.qnaboard.domain.repository.question.QuestionRepository;
 import scra.qnaboard.domain.repository.tag.TagRepository;
+import scra.qnaboard.service.exception.question.AlreadyDeletedQuestionException;
 import scra.qnaboard.web.dto.question.search.ParsedSearchQuestionDTO;
 
 import java.util.ArrayList;
@@ -26,6 +27,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -114,5 +117,65 @@ class QuestionControllerIntegrationTest {
         assertThat(findQuestion.getContent()).isEqualTo(content);
         assertThat(findQuestion.getAuthor().getId()).isEqualTo(author.getId());
         assertThat(findQuestion.getQuestionTags().size()).isEqualTo(tags.size());
+    }
+
+    @Test
+    @WithMockUser
+    void 질문_삭제_테스트() throws Exception {
+        //given
+        Member author = memberRepository.save(new Member("nickname", "email", MemberRole.USER));
+        //given
+        Question question = questionRepository.save(new Question(author, "content-1", "title-1"));
+
+        //when
+        ResultActions resultActions = mockMvc.perform(
+                post("/questions/" + question.getId() + "/delete")
+                        .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                        .with(csrf())
+                        .sessionAttr("user", new SessionUser(author)));
+
+        //then
+        resultActions
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrlPattern("/notify?title={.+}&content={.+}"));
+        //then
+        Question findQuestion = questionRepository.findById(question.getId()).orElse(null);
+        assertThat(findQuestion).isNotNull();
+        assertThat(findQuestion.isDeleted()).isTrue();
+    }
+
+    @Test
+    @WithMockUser
+    void 질문_수정_테스트() throws Exception {
+        //given
+        Member author = memberRepository.save(new Member("nickname", "email", MemberRole.USER));
+        //given
+        String title = "title-1";
+        String content = "content-1";
+        String newTitle = "new-title-1";
+        String newContent = "new-content-1";
+        //given
+        Question question = questionRepository.save(new Question(author, title, content));
+
+        //when
+        ResultActions resultActions = mockMvc.perform(
+                post("/questions/" + question.getId() + "/edit")
+                        .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                        .param("title", newTitle)
+                        .param("content", newContent)
+                        .param("tags", "")
+                        .with(csrf())
+                        .sessionAttr("user", new SessionUser(author)));
+
+        //then
+        resultActions
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/questions/" + question.getId()));
+        //then
+        Question findQuestion = questionRepository.findById(question.getId()).orElse(null);
+        assertThat(findQuestion).isNotNull();
+        assertThat(findQuestion.getTitle()).isEqualTo(newTitle);
+        assertThat(findQuestion.getContent()).isEqualTo(newContent);
+        assertThat(findQuestion.getAuthor().getId()).isEqualTo(author.getId());
     }
 }
