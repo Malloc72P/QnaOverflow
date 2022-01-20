@@ -49,7 +49,7 @@ public class GlobalErrorControllerAdvice {
 
     @ResponseStatus(HttpStatus.FORBIDDEN)
     @ExceptionHandler(EditFailedException.class)
-    public String notLoggedInUser(EditFailedException exception, Model model, Locale locale) {
+    public String editFailed(EditFailedException exception, Model model, Locale locale) {
         ErrorDTO errorDTO = ErrorDTO.builder()
                 .title(messageSource.getMessage("ui.error.page-title-entity-edit-failed", null, locale))
                 .reason(messageSource.getMessage("ui.error.page-reason-entity-edit-failed", null, locale))
