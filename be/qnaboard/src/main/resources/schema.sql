@@ -41,7 +41,6 @@ create table post
     content            varchar(255),
     deleted            bit         not null,
     score              bigint      not null,
-    accepted           bit,
     title              varchar(255),
     view_count         bigint,
     author_id          bigint,

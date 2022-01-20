@@ -13,6 +13,8 @@ import scra.qnaboard.web.dto.answer.create.CreateAnswerDTO;
 import scra.qnaboard.web.dto.answer.edit.EditAnswerDTO;
 import scra.qnaboard.web.dto.answer.edit.EditAnswerResultDTO;
 
+import javax.validation.Valid;
+
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/questions/{questionId}/answers")
@@ -33,21 +35,21 @@ public class AnswerApiController {
     }
 
     @ResponseBody
+    @PatchMapping("{answerId}")
+    public EditAnswerResultDTO editAnswer(@PathVariable("questionId") long questionId,
+                                          @PathVariable("answerId") long answerId,
+                                          @RequestBody @Validated EditAnswerDTO editAnswerDTO,
+                                          @LoginUser SessionUser sessionUser) {
+        return answerService.editAnswer(sessionUser.getId(),
+                answerId,
+                editAnswerDTO.getContent());
+    }
+
+    @ResponseBody
     @DeleteMapping("{answerId}")
     public void deleteAnswer(@PathVariable("questionId") long questionId,
                              @PathVariable("answerId") long answerId,
                              @LoginUser SessionUser sessionUser) {
         answerService.deleteAnswer(sessionUser.getId(), answerId);
-    }
-
-    @ResponseBody
-    @PatchMapping("{answerId}")
-    public EditAnswerResultDTO editAnswer(@PathVariable("questionId") long questionId,
-                                          @PathVariable("answerId") long answerId,
-                                          @RequestBody EditAnswerDTO editAnswerDTO,
-                                          @LoginUser SessionUser sessionUser) {
-        return answerService.editAnswer(sessionUser.getId(),
-                answerId,
-                editAnswerDTO.getContent());
     }
 }

@@ -24,53 +24,56 @@ public class GlobalErrorControllerAdvice {
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(EntityNotFoundException.class)
     public String entityNotFound(EntityNotFoundException exception, Model model, Locale locale) {
-        ErrorDTO errorDTO = ErrorDTO.builder()
-                .title(messageSource.getMessage("ui.error.page-title-entity-not-found", null, locale))
-                .reason(messageSource.getMessage("ui.error.page-reason-entity-not-found", null, locale))
-                .description(messageSource.getMessage(exception.descriptionMessageCode(), null, locale))
-                .build();
-
-        model.addAttribute("error", errorDTO);
+        updateModelByException(model,
+                locale,
+                "ui.error.page-title-entity-not-found",
+                "ui.error.page-reason-entity-not-found",
+                exception.descriptionMessageCode());
         return "/error/error-page";
     }
 
     @ResponseStatus(HttpStatus.FORBIDDEN)
     @ExceptionHandler(DeleteFailedException.class)
     public String deleteFailed(DeleteFailedException exception, Model model, Locale locale) {
-        ErrorDTO errorDTO = ErrorDTO.builder()
-                .title(messageSource.getMessage("ui.error.page-title-entity-delete-failed", null, locale))
-                .reason(messageSource.getMessage("ui.error.page-reason-entity-delete-failed", null, locale))
-                .description(messageSource.getMessage(exception.descriptionMessageCode(), null, locale))
-                .build();
-
-        model.addAttribute("error", errorDTO);
+        updateModelByException(model,
+                locale,
+                "ui.error.page-title-entity-delete-failed",
+                "ui.error.page-reason-entity-delete-failed",
+                exception.descriptionMessageCode());
         return "/error/error-page";
     }
 
     @ResponseStatus(HttpStatus.FORBIDDEN)
     @ExceptionHandler(EditFailedException.class)
     public String editFailed(EditFailedException exception, Model model, Locale locale) {
-        ErrorDTO errorDTO = ErrorDTO.builder()
-                .title(messageSource.getMessage("ui.error.page-title-entity-edit-failed", null, locale))
-                .reason(messageSource.getMessage("ui.error.page-reason-entity-edit-failed", null, locale))
-                .description(messageSource.getMessage(exception.descriptionMessageCode(), null, locale))
-                .build();
-
-        model.addAttribute("error", errorDTO);
+        updateModelByException(model,
+                locale,
+                "ui.error.page-title-entity-edit-failed",
+                "ui.error.page-reason-entity-edit-failed",
+                exception.descriptionMessageCode());
         return "/error/error-page";
     }
 
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     @ExceptionHandler(NoSessionUserException.class)
     public String notLoggedInUser(NoSessionUserException exception, Model model, Locale locale) {
+        updateModelByException(model,
+                locale,
+                "ui.error.page-title-no-log-in",
+                "ui.error.page-reason-no-log-in",
+                exception.descriptionMessageCode());
+        return "/error/error-page";
+    }
+
+    private void updateModelByException(Model model, Locale locale,
+                                        String titleCode, String reasonCode, String descriptionCode) {
         ErrorDTO errorDTO = ErrorDTO.builder()
-                .title(messageSource.getMessage("ui.error.page-title-no-log-in", null, locale))
-                .reason(messageSource.getMessage("ui.error.page-reason-no-log-in", null, locale))
-                .description(messageSource.getMessage(exception.descriptionMessageCode(), null, locale))
+                .title(messageSource.getMessage(titleCode, null, locale))
+                .reason(messageSource.getMessage(reasonCode, null, locale))
+                .description(messageSource.getMessage(descriptionCode, null, locale))
                 .build();
 
         model.addAttribute("error", errorDTO);
-        return "/error/error-page";
     }
 
 }

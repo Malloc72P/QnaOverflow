@@ -22,8 +22,6 @@ import java.util.Objects;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Answer extends Post {
 
-    private boolean accepted = false;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "question_id")
     private Question question;
@@ -38,19 +36,5 @@ public class Answer extends Post {
             throw new AnswerPropertyIsEmptyException(content);
         }
         this.content = content;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
-        Answer answer = (Answer) o;
-        return isAccepted() == answer.isAccepted();
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(super.hashCode(), isAccepted());
     }
 }
