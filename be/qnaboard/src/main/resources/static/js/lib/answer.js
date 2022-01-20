@@ -73,7 +73,8 @@ const editAnswer = async (event) => {
         const lastModifiedDate = answer.querySelector(".post-controller .last-modified-date");
         lastModifiedDate.innerText = response.lastModifiedDate;
 
-        answer.querySelector(".answer-edit").dispatchEvent(new Event("pointerdown"));
+        // answer.querySelector(".answer-edit").dispatchEvent(new Event("pointerdown"));
+        answer.querySelector(".answer-edit-form").classList.toggle("d-none");
     } catch (error) {
         alertError(error);
     }

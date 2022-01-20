@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
 @Getter
@@ -13,6 +14,7 @@ public class CreateCommentDTO {
 
     private Long parentCommentId;
 
+    @NotBlank
     @Size(min = 6, max = 1000, message = "{Size.createCommentDTO.content}")
     private String content;
 
