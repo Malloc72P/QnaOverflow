@@ -34,7 +34,7 @@ const createComment = async (event) => {
     };
 
     try {
-        const response = await request(url, PUT, body, MODE_TEXT);
+        const response = await request(url, PUT, body);
         const domParser = new DOMParser();
         const comment = domParser.parseFromString(response, "text/html").querySelector(".comment");
         setCommentEventListener(comment);
@@ -66,7 +66,7 @@ const replyComment = async (event) => {
     };
 
     try {
-        const response = await request(url, PUT, body, MODE_TEXT);
+        const response = await request(url, PUT, body);
         const domParser = new DOMParser();
         const comment = domParser.parseFromString(response, "text/html").querySelector(".comment");
         setCommentEventListener(comment);
@@ -86,7 +86,7 @@ const deleteComment = async (event) => {
 
     const url = `http://localhost:8080/posts/${postId}/comments/${commentId}`;
     try {
-        const response = await request(url, DELETE, {}, MODE_JSON);
+        const response = await request(url, DELETE, null);
         comment.querySelector(".comment-author").innerText = response.deletedAuthorName;
         comment.querySelector(".comment-content").innerText = response.deletedContentName;
     } catch (error) {
@@ -124,7 +124,7 @@ const editComment = async (event) => {
     };
 
     try {
-        const response = await request(url, PATCH, body, MODE_JSON);
+        const response = await request(url, PATCH, body);
 
         //댓글 내용 바꾸고 입력폼의 내용도 최신화하기
         comment.querySelector(".comment-content").innerText = response.content;
@@ -143,4 +143,5 @@ const setCommentEventListener = (comment) => {
     comment.querySelector(".reply-comment-form").addEventListener("submit", replyComment);
     comment.querySelector(".toggle-comment-editor").addEventListener("pointerdown", toggleCommentEditor);
     comment.querySelector(".edit-comment-form").addEventListener("submit", editComment);
+    comment.querySelector(".delete-comment-button").addEventListener("pointerdown", deleteComment);
 }

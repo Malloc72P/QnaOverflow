@@ -82,7 +82,7 @@ const searchTag = async (event) => {
     const url = `http://localhost:8080/api/tags?keyword=${keyword}`;
 
     try {
-        let response = await request(url, GET, null, MODE_JSON);
+        let response = await request(url, GET, null);
         tagSuggestions.textContent = "";
         for (const tag of response.tags) {
             addSuggestion(tag.id, tag.name);

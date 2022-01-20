@@ -22,7 +22,7 @@ const commonHeader = {
  * @param responseType 응답 타입(html은 MODE_TEXT, json은 MODE_JSON)
  * @returns {Promise<string|any>} 프로미스, await하면 메세지 바디가 text 또는 json으로 파싱되어 반환된다
  */
-const request = async (url, method, body, responseType) => {
+const request = async (url, method, body) => {
     let requestMessage = {
         method: method,
         headers: commonHeader
@@ -32,20 +32,21 @@ const request = async (url, method, body, responseType) => {
     }
 
     let response = await fetch(url, requestMessage);
+    let content = null;
+
+    switch (response.headers.get("content-type")) {
+        case "application/json":
+            content = await response.json();
+            break;
+        case "text/html;charset=UTF-8":
+            content = await response.text();
+            break;
+    }
+
     if (!response.ok) {
-        throw new Error(response.statusText);
-
-    }
-    switch (responseType) {
-        case MODE_JSON:
-            return await response.json();
-        case MODE_TEXT:
-            return await response.text()
-        case MODE_NONE:
-            return response;
-        default:
-            throw new Error("unknown response type")
+        throw content;
     }
 
+    return content;
 };
 

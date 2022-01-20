@@ -7,7 +7,7 @@ const createAnswer = async (event) => {
     let body = {"content": content};
 
     try {
-        let response = await request(url, POST, body, MODE_TEXT);
+        let response = await request(url, POST, body);
 
         let parser = new DOMParser();
         let answerElementWrapper = parser.parseFromString(response, "text/html");
@@ -41,7 +41,7 @@ const deleteAnswer = async (event) => {
     let body = {};
 
     try {
-        const response = await request(url, DELETE, body, MODE_NONE);
+        const response = await request(url, DELETE, body);
         answer.remove();
         decreaseAnswerCount();
 
@@ -66,7 +66,7 @@ const editAnswer = async (event) => {
     };
 
     try {
-        const response = await request(url, PATCH, body, MODE_JSON);
+        const response = await request(url, PATCH, body);
         const answerContent = answer.querySelector(".post-content-wrapper");
         answerContent.innerText = response.content;
 
