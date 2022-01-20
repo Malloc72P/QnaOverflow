@@ -11,6 +11,6 @@ public class UnauthorizedCommentDeletionException extends DeleteFailedException 
 
     @Override
     public String descriptionMessageCode() {
-        return "ui.error.page-reason-delete-failed-comment";
+        return "ui.error.page-desc-delete-failed-comment";
     }
 }

@@ -6,4 +6,9 @@ public class CommentPropertyIsEmptyException extends CommentEditFailedException 
     public CommentPropertyIsEmptyException(String content) {
         super(PROPERTY_IS_EMPTY + " content : " + content);
     }
+
+    @Override
+    public String descriptionMessageCode() {
+        return "ui.error.page-desc-edit-failed-comment-property-empty";
+    }
 }

@@ -1,18 +1,13 @@
-package scra.qnaboard.web.controller.api;
+package scra.qnaboard.web.api;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.FilterType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.transaction.annotation.Transactional;
-import scra.qnaboard.configuration.auth.SecurityConfig;
 import scra.qnaboard.configuration.auth.SessionUser;
 import scra.qnaboard.domain.entity.member.Member;
 import scra.qnaboard.domain.entity.member.MemberRole;
@@ -21,9 +16,7 @@ import scra.qnaboard.domain.entity.vote.Vote;
 import scra.qnaboard.domain.entity.vote.VoteType;
 import scra.qnaboard.domain.repository.MemberRepository;
 import scra.qnaboard.domain.repository.question.QuestionRepository;
-import scra.qnaboard.domain.repository.vote.VoteRepository;
 import scra.qnaboard.domain.repository.vote.VoteSimpleQueryRepository;
-import scra.qnaboard.service.VoteService;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;

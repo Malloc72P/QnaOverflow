@@ -11,6 +11,6 @@ public class UnauthorizedTagDeletionException extends DeleteFailedException {
 
     @Override
     public String descriptionMessageCode() {
-        return "ui.error.page-reason-delete-failed-tag";
+        return "ui.error.page-desc-delete-failed-tag";
     }
 }

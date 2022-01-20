@@ -1,6 +1,8 @@
 package scra.qnaboard.service.exception.question.edit;
 
-public class QuestionEditFailedException extends RuntimeException {
+import scra.qnaboard.service.exception.EditFailedException;
+
+public abstract class QuestionEditFailedException extends EditFailedException {
 
     protected QuestionEditFailedException(String message) {
         super(message);

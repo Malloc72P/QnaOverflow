@@ -11,6 +11,6 @@ public class UnauthorizedAnswerDeletionException extends DeleteFailedException {
 
     @Override
     public String descriptionMessageCode() {
-        return "ui.error.page-reason-delete-failed-answer";
+        return "ui.error.page-desc-delete-failed-answer";
     }
 }

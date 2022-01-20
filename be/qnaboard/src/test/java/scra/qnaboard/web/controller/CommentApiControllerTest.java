@@ -16,6 +16,7 @@ import org.springframework.test.web.servlet.ResultActions;
 import scra.qnaboard.configuration.auth.SecurityConfig;
 import scra.qnaboard.configuration.auth.SessionUser;
 import scra.qnaboard.service.CommentService;
+import scra.qnaboard.web.api.CommentApiController;
 import scra.qnaboard.web.dto.comment.CommentDTO;
 import scra.qnaboard.web.dto.comment.create.CreateCommentDTO;
 import scra.qnaboard.web.dto.comment.delete.CommentDeleteResultDTO;
@@ -33,7 +34,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static scra.qnaboard.web.utils.LocalDateTimeUtils.localeFormatter;
 
 @WebMvcTest(
-        controllers = CommentController.class,
+        controllers = CommentApiController.class,
         excludeFilters = {
                 @ComponentScan.Filter(
                         type = FilterType.ASSIGNABLE_TYPE,
@@ -41,7 +42,7 @@ import static scra.qnaboard.web.utils.LocalDateTimeUtils.localeFormatter;
                 )
         }
 )
-class CommentControllerTest {
+class CommentApiControllerTest {
 
     @Autowired
     private MockMvc mockMvc;

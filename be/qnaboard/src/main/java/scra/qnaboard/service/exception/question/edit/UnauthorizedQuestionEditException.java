@@ -6,4 +6,9 @@ public class UnauthorizedQuestionEditException extends QuestionEditFailedExcepti
     public UnauthorizedQuestionEditException(long questionId, long requesterId) {
         super(UNAUTHORIZED + " questionId : " + questionId + " requesterId : " + requesterId);
     }
+
+    @Override
+    public String descriptionMessageCode() {
+        return "ui.error.page-desc-edit-failed-question-unauthorized";
+    }
 }

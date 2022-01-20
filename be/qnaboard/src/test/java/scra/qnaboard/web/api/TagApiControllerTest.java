@@ -1,4 +1,4 @@
-package scra.qnaboard.web.controller.api;
+package scra.qnaboard.web.api;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

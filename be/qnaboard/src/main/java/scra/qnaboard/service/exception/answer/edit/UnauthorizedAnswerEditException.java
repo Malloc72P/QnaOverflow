@@ -6,4 +6,9 @@ public class UnauthorizedAnswerEditException extends AnswerEditFailedException {
     public UnauthorizedAnswerEditException(long answerId, long requesterId) {
         super(UNAUTHORIZED + " answerId : " + answerId + " requesterId : " + requesterId);
     }
+
+    @Override
+    public String descriptionMessageCode() {
+        return "ui.error.page-desc-edit-failed-answer-unauthorized";
+    }
 }

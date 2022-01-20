@@ -37,7 +37,7 @@ import static scra.qnaboard.web.utils.LocalDateTimeUtils.localeFormatter;
 @SpringBootTest
 @Transactional
 @AutoConfigureMockMvc
-class AnswerControllerIntegrationTest {
+class AnswerApiControllerIntegrationTest {
 
     @Autowired
     private MockMvc mockMvc;

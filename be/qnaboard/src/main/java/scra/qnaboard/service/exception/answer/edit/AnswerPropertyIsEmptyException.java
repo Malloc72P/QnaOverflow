@@ -6,4 +6,9 @@ public class AnswerPropertyIsEmptyException extends AnswerEditFailedException {
     public AnswerPropertyIsEmptyException(String content) {
         super(PROPERTY_IS_EMPTY + " content : " + content);
     }
+
+    @Override
+    public String descriptionMessageCode() {
+        return "ui.error.page-desc-edit-failed-answer-property-empty";
+    }
 }

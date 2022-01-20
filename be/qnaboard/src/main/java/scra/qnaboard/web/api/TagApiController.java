@@ -1,4 +1,4 @@
-package scra.qnaboard.web.controller.api;
+package scra.qnaboard.web.api;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

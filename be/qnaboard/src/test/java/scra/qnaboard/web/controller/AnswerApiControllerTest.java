@@ -16,6 +16,7 @@ import org.springframework.test.web.servlet.ResultActions;
 import scra.qnaboard.configuration.auth.SecurityConfig;
 import scra.qnaboard.configuration.auth.SessionUser;
 import scra.qnaboard.service.AnswerService;
+import scra.qnaboard.web.api.AnswerApiController;
 import scra.qnaboard.web.dto.answer.AnswerDetailDTO;
 import scra.qnaboard.web.dto.answer.create.CreateAnswerDTO;
 import scra.qnaboard.web.dto.answer.edit.EditAnswerDTO;
@@ -33,7 +34,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static scra.qnaboard.web.utils.LocalDateTimeUtils.localeFormatter;
 
 @WebMvcTest(
-        controllers = AnswerController.class,
+        controllers = AnswerApiController.class,
         excludeFilters = {
                 @ComponentScan.Filter(
                         type = FilterType.ASSIGNABLE_TYPE,
@@ -41,7 +42,7 @@ import static scra.qnaboard.web.utils.LocalDateTimeUtils.localeFormatter;
                 )
         }
 )
-class AnswerControllerTest {
+class AnswerApiControllerTest {
 
     @Autowired
     private MockMvc mockMvc;

@@ -6,4 +6,9 @@ public class UnauthorizedCommentEditException extends CommentEditFailedException
     public UnauthorizedCommentEditException(long commentId, long requesterId) {
         super(UNAUTHORIZED + " commentId : " + commentId + " requesterId : " + requesterId);
     }
+
+    @Override
+    public String descriptionMessageCode() {
+        return "ui.error.page-desc-edit-failed-comment-unauthorized";
+    }
 }

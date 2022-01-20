@@ -5,7 +5,6 @@ import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -13,7 +12,6 @@ import scra.qnaboard.configuration.auth.LoginUser;
 import scra.qnaboard.configuration.auth.SessionUser;
 import scra.qnaboard.service.MemberService;
 import scra.qnaboard.web.dto.member.MemberListDTO;
-import scra.qnaboard.web.exception.member.NotLoggedInException;
 
 import javax.servlet.http.HttpSession;
 import java.util.Locale;
@@ -48,10 +46,7 @@ public class MemberController {
     }
 
     @PostMapping("/log-out")
-    public String logout(@LoginUser SessionUser sessionUser) {
-        if (sessionUser == null) {
-            throw new NotLoggedInException(NotLoggedInException.CAN_NOT_LOGOUT);
-        }
+    public String logout() {
         session.removeAttribute("user");
         return "redirect:/questions";
     }

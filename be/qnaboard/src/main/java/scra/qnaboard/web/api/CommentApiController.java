@@ -1,4 +1,4 @@
-package scra.qnaboard.web.controller;
+package scra.qnaboard.web.api;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.MessageSource;
@@ -20,7 +20,7 @@ import java.util.Locale;
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/posts/{postId}/comments")
-public class CommentController {
+public class CommentApiController {
 
     private final CommentService commentService;
     private final MessageSource messageSource;

@@ -1,4 +1,4 @@
-package scra.qnaboard.web.controller;
+package scra.qnaboard.web.api;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -16,7 +16,7 @@ import scra.qnaboard.web.dto.answer.edit.EditAnswerResultDTO;
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/questions/{questionId}/answers")
-public class AnswerController {
+public class AnswerApiController {
 
     private final AnswerService answerService;
 
@@ -32,23 +32,22 @@ public class AnswerController {
         return "/answer/answer-component";
     }
 
-    @DeleteMapping("{answerId}")
     @ResponseBody
+    @DeleteMapping("{answerId}")
     public void deleteAnswer(@PathVariable("questionId") long questionId,
                              @PathVariable("answerId") long answerId,
                              @LoginUser SessionUser sessionUser) {
         answerService.deleteAnswer(sessionUser.getId(), answerId);
     }
 
-    @PatchMapping("{answerId}")
     @ResponseBody
+    @PatchMapping("{answerId}")
     public EditAnswerResultDTO editAnswer(@PathVariable("questionId") long questionId,
                                           @PathVariable("answerId") long answerId,
                                           @RequestBody EditAnswerDTO editAnswerDTO,
                                           @LoginUser SessionUser sessionUser) {
-        EditAnswerResultDTO editAnswerResultDTO = answerService.editAnswer(sessionUser.getId(),
+        return answerService.editAnswer(sessionUser.getId(),
                 answerId,
                 editAnswerDTO.getContent());
-        return editAnswerResultDTO;
     }
 }
