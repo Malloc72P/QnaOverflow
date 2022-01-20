@@ -88,8 +88,8 @@ const searchTag = async (event) => {
             addSuggestion(tag.id, tag.name);
         }
         prevSearchTagValue = keyword;
-    } catch (e) {
-        console.log(e);
+    } catch (error) {
+        alertError(error);
     }
 
 

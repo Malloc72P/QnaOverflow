@@ -12,11 +12,6 @@ const toggleCommentEditor = (event) => {
     commentWriter.classList.toggle("d-none")
 };
 
-
-const alertWhenCreateCommentIsFailed = () => {
-    alert("댓글은 6자 이상이어야 합니다");
-};
-
 const createComment = async (event) => {
     event.preventDefault();
     const commentTextArea = event.target[0];
@@ -42,7 +37,7 @@ const createComment = async (event) => {
         commentTextArea.value = "";
 
     } catch (error) {
-        alertWhenCreateCommentIsFailed();
+        alertError(error);
     }
 };
 
@@ -53,7 +48,6 @@ const replyComment = async (event) => {
     const content = commentTextArea.value;
     const parentComment = event.target.closest(".comment");
     const parentCommentId = parentComment.id.substring(2);
-    const commentWrapper = commentTextArea.closest(".comment-wrapper");
     const commentList = parentComment.querySelector(".child-comment-wrapper");
 
     const postId = commentTextArea.closest(".post").dataset.postid;
@@ -74,14 +68,13 @@ const replyComment = async (event) => {
         commentTextArea.value = "";
         commentWriter.classList.toggle("d-none");
     } catch (error) {
-        alertWhenCreateCommentIsFailed();
+        alertError(error);
     }
 };
 
 const deleteComment = async (event) => {
     const comment = event.target.closest(".comment");
     const commentId = comment.id.substr(2);
-    const commentWrapper = event.target.closest(".comment-wrapper");
     const postId = comment.closest(".post").dataset.postid;
 
     const url = `http://localhost:8080/posts/${postId}/comments/${commentId}`;
@@ -90,7 +83,7 @@ const deleteComment = async (event) => {
         comment.querySelector(".comment-author").innerText = response.deletedAuthorName;
         comment.querySelector(".comment-content").innerText = response.deletedContentName;
     } catch (error) {
-        alertWhenCreateCommentIsFailed();
+        alertError(error);
     }
 }
 
@@ -133,7 +126,7 @@ const editComment = async (event) => {
         //댓글 수정 폼 숨기기
         commentEditor.classList.toggle("d-none");
     } catch (error) {
-        alertWhenCreateCommentIsFailed();
+        alertError(error);
     }
 };
 

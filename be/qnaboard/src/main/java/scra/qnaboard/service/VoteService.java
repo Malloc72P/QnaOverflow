@@ -45,7 +45,7 @@ public class VoteService {
                 .filter(vote -> vote.isSameVote(voteType))
                 .findAny();
         if (alreadyExistVote.isPresent()) {
-            throw new DuplicateVoteException();
+            throw new DuplicateVoteException(voteType);
         }
         //존재하지 않으면 새로운 투표를 생성한다
         Vote newVote = new Vote(member, post, voteType);

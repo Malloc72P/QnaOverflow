@@ -13,6 +13,6 @@ import javax.validation.constraints.Size;
 public class CreateAnswerDTO {
 
     @NotBlank
-    @Size(min = 6)
+    @Size(min = 6, max = 65536, message = "{Size.createAnswerDTO.content}")
     private String content;
 }

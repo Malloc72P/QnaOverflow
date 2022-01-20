@@ -50,3 +50,12 @@ const request = async (url, method, body) => {
     return content;
 };
 
+const alertError = (error) => {
+    if (error != null && error.description != null && error.description !== "") {
+        alert(error.description);
+    } else {
+        alert("unknown error");
+    }
+
+};
+

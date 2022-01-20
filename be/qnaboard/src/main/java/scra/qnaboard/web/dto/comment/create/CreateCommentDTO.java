@@ -13,7 +13,7 @@ public class CreateCommentDTO {
 
     private Long parentCommentId;
 
-    @Size(min = 6)
+    @Size(min = 6, max = 1000, message = "{Size.createCommentDTO.content}")
     private String content;
 
     @Builder

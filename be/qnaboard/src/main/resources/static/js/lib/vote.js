@@ -16,7 +16,7 @@ const vote = async (event) => {
         await request(url, PUT, null);
         voteScore.innerText = prevScore + valueByVoteType(voteType);
     } catch (error) {
-        alert(error.description);
+        alertError(error);
     }
 };
 

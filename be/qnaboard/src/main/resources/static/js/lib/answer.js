@@ -25,7 +25,7 @@ const createAnswer = async (event) => {
         increaseAnswerCount();
         textAreaElement.value = "";
     } catch (error) {
-        alert("답변의 내용은 6자보다 길어야 합니다");
+        alertError(error);
     }
 
 };
@@ -46,7 +46,7 @@ const deleteAnswer = async (event) => {
         decreaseAnswerCount();
 
     } catch (error) {
-        alert("자신이 작성한 답변만 삭제할 수 있습니다. 만약 당신이 관리자라면 서버 관리자에게 문의해주세요");
+        alertError(error);
     }
 
 };
@@ -75,7 +75,7 @@ const editAnswer = async (event) => {
 
         answer.querySelector(".answer-edit").dispatchEvent(new Event("pointerdown"));
     } catch (error) {
-        alert("자신이 작성한 답변만 삭제할 수 있습니다. 만약 당신이 관리자라면 서버 관리자에게 문의해주세요");
+        alertError(error);
     }
 };
 
