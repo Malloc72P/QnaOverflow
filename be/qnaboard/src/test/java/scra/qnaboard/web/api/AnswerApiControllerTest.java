@@ -1,4 +1,4 @@
-package scra.qnaboard.web.controller;
+package scra.qnaboard.web.api;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.hamcrest.Matchers;
