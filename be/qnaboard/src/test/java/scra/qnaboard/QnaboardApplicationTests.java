@@ -19,6 +19,8 @@ class QnaboardApplicationTests {
     @Value("${spring.security.oauth2.client.registration.google.scope}")
     private String scope;
 
+    @Value("${qnaoverflow.api.url}")
+    private String apiUrl;
 
     @Test
     @DisplayName("oauth 설정파일을 불러올 수 있어야 함")
@@ -28,4 +30,10 @@ class QnaboardApplicationTests {
         assertThat(scope).isNotNull().isNotEqualTo("");
     }
 
+
+    @Test
+    @DisplayName("API 설정을 불러올 수 있어야 함")
+    void testApiUrl() {
+        assertThat(apiUrl).isNotNull().isNotEqualTo("");
+    }
 }

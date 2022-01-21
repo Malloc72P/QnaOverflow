@@ -16,7 +16,7 @@ spring:
     encoding: UTF-8
   profiles:
     active: test
-    include: oauth
+    include: oauth, local
   datasource:
     url: jdbc:h2:mem:qnaboard;MODE=MYSQL;DB_CLOSE_ON_EXIT=FALSE
 #    url: jdbc:mysql://${database_url}/qnaboard
@@ -34,5 +34,7 @@ spring:
   messages:
     basename: i18n/messages, i18n/errors
     encoding: UTF-8
-
+qnaoverflow:
+  api:
+    url: ${api_url}
 
