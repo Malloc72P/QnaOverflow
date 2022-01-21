@@ -58,7 +58,7 @@ public class QuestionController {
 
         model.addAttribute("paging", paging);
 
-        return "question/question-list";
+        return "/question/question-list";
     }
 
     /**
