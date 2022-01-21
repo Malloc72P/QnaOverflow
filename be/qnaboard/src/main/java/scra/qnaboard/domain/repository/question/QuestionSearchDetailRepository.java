@@ -7,7 +7,6 @@ import org.springframework.transaction.annotation.Transactional;
 import scra.qnaboard.domain.repository.answer.AnswerSimpleQueryRepository;
 import scra.qnaboard.domain.repository.comment.CommentSimpleQueryRepository;
 import scra.qnaboard.domain.repository.tag.QuestionTagSimpleQueryRepository;
-import scra.qnaboard.domain.repository.vote.VoteSimpleQueryRepository;
 import scra.qnaboard.service.exception.question.search.QuestionNotFoundException;
 import scra.qnaboard.web.dto.answer.AnswerDetailDTO;
 import scra.qnaboard.web.dto.comment.CommentDTO;

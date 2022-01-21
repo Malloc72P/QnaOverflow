@@ -4,15 +4,12 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-import scra.qnaboard.domain.entity.post.QQuestion;
 import scra.qnaboard.domain.entity.post.Question;
 
 import java.util.Optional;
 
-import static scra.qnaboard.domain.entity.QTag.tag;
 import static scra.qnaboard.domain.entity.member.QMember.member;
 import static scra.qnaboard.domain.entity.post.QQuestion.question;
-import static scra.qnaboard.domain.entity.questiontag.QQuestionTag.questionTag;
 
 /**
  * JPQL을 직접 작성해야하지만, 복잡한 쿼리는 아닌경우 여기에서 처리함

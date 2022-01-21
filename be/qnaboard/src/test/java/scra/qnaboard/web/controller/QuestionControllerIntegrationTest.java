@@ -19,7 +19,6 @@ import scra.qnaboard.domain.entity.post.Question;
 import scra.qnaboard.domain.repository.MemberRepository;
 import scra.qnaboard.domain.repository.question.QuestionRepository;
 import scra.qnaboard.domain.repository.tag.TagRepository;
-import scra.qnaboard.service.exception.question.AlreadyDeletedQuestionException;
 import scra.qnaboard.web.dto.question.search.ParsedSearchQuestionDTO;
 
 import java.util.ArrayList;
@@ -27,7 +26,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;

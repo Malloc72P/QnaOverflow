@@ -1,6 +1,9 @@
 package scra.qnaboard.web.dto.member;
 
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import scra.qnaboard.domain.entity.member.Member;
 
 @Getter

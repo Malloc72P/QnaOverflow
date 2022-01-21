@@ -1,6 +1,5 @@
 package scra.qnaboard.web.dto.comment.delete;
 
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 

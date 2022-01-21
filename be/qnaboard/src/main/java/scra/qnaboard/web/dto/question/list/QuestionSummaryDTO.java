@@ -1,7 +1,6 @@
 package scra.qnaboard.web.dto.question.list;
 
 import com.querydsl.core.annotations.QueryProjection;
-import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

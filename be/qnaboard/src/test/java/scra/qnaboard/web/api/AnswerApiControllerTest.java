@@ -16,7 +16,6 @@ import org.springframework.test.web.servlet.ResultActions;
 import scra.qnaboard.configuration.auth.SecurityConfig;
 import scra.qnaboard.configuration.auth.SessionUser;
 import scra.qnaboard.service.AnswerService;
-import scra.qnaboard.web.api.AnswerApiController;
 import scra.qnaboard.web.dto.answer.AnswerDetailDTO;
 import scra.qnaboard.web.dto.answer.create.CreateAnswerDTO;
 import scra.qnaboard.web.dto.answer.edit.EditAnswerDTO;

@@ -16,7 +16,6 @@ import org.springframework.test.web.servlet.ResultActions;
 import scra.qnaboard.configuration.auth.SecurityConfig;
 import scra.qnaboard.configuration.auth.SessionUser;
 import scra.qnaboard.service.CommentService;
-import scra.qnaboard.web.api.CommentApiController;
 import scra.qnaboard.web.dto.comment.CommentDTO;
 import scra.qnaboard.web.dto.comment.create.CreateCommentDTO;
 import scra.qnaboard.web.dto.comment.delete.CommentDeleteResultDTO;

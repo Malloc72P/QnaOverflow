@@ -13,9 +13,6 @@ import scra.qnaboard.web.dto.answer.create.CreateAnswerDTO;
 import scra.qnaboard.web.dto.answer.edit.EditAnswerDTO;
 import scra.qnaboard.web.dto.answer.edit.EditAnswerResultDTO;
 
-import javax.validation.Valid;
-import java.util.Locale;
-
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/questions/{questionId}/answers")
