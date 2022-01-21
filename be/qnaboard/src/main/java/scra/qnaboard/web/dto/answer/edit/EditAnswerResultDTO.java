@@ -15,7 +15,6 @@ public class EditAnswerResultDTO {
 
     private String content;
 
-    @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonFormat(pattern = LocalDateTimeUtils.STRING_DATE_TIME_FORMAT)
     private LocalDateTime lastModifiedDate;
 

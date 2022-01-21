@@ -81,7 +81,7 @@ class AnswerApiControllerTest {
         ResultActions resultActions = mockMvc.perform(
                 post("/questions/" + questionId + "/answers")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .header("Accept-Language", "ko,en-US;q=0.9,en;q=0.8,ko-KR;q=0.7")
+                        .header("Accept-Language", "ko")
                         .content(new ObjectMapper().writeValueAsString(createAnswerDTO))
                         .with(csrf())
                         .sessionAttr("user", new SessionUser(memberId, authorName, ""))
@@ -156,7 +156,7 @@ class AnswerApiControllerTest {
         ResultActions resultActions = mockMvc.perform(
                 patch("/questions/" + questionId + "/answers/" + answerId)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .header("Accept-Language", "ko,en-US;q=0.9,en;q=0.8,ko-KR;q=0.7")
+                        .header("Accept-Language", "ko")
                         .content(new ObjectMapper().writeValueAsString(editAnswerDTO))
                         .with(csrf())
                         .sessionAttr("user", new SessionUser(memberId, authorName, ""))

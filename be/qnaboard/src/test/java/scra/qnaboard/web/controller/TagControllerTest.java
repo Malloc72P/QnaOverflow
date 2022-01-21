@@ -125,7 +125,7 @@ class TagControllerTest {
         //when
         ResultActions resultActions = mockMvc.perform(
                 post("/tags")
-                        .header("Accept-Language", "ko,en-US;q=0.9,en;q=0.8,ko-KR;q=0.7")
+                        .header("Accept-Language", "ko")
                         .contentType(MediaType.APPLICATION_FORM_URLENCODED)
                         .param("name", "tag-name")
                         .param("description", "tag-description")
@@ -154,7 +154,7 @@ class TagControllerTest {
         //when
         ResultActions resultActions = mockMvc.perform(
                 post("/tags/" + tagId + "/edit")
-                        .header("Accept-Language", "ko,en-US;q=0.9,en;q=0.8,ko-KR;q=0.7")
+                        .header("Accept-Language", "ko")
                         .contentType(MediaType.APPLICATION_FORM_URLENCODED)
                         .param("name", "new-tag-name")
                         .param("description", "new-tag-description")
@@ -183,7 +183,7 @@ class TagControllerTest {
         //when
         ResultActions resultActions = mockMvc.perform(
                 post("/tags/" + tagId + "/delete")
-                        .header("Accept-Language", "ko,en-US;q=0.9,en;q=0.8,ko-KR;q=0.7")
+                        .header("Accept-Language", "ko")
                         .with(csrf())
                         .sessionAttr("user", new SessionUser(1L, "", ""))
         );

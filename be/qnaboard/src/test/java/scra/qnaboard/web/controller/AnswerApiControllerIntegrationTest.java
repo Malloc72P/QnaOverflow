@@ -68,7 +68,7 @@ class AnswerApiControllerIntegrationTest {
         ResultActions resultActions = mockMvc.perform(
                 post("/questions/" + question.getId() + "/answers")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .header("Accept-Language", "ko,en-US;q=0.9,en;q=0.8,ko-KR;q=0.7")
+                        .header("Accept-Language", "ko")
                         .content(new ObjectMapper().writeValueAsString(createAnswerDTO))
                         .with(csrf())
                         .sessionAttr("user", new SessionUser(author.getId(), author.getNickname(), author.getEmail())));
@@ -135,7 +135,7 @@ class AnswerApiControllerIntegrationTest {
         ResultActions resultActions = mockMvc.perform(
                 patch("/questions/" + question.getId() + "/answers/" + answer.getId())
                         .contentType(MediaType.APPLICATION_JSON)
-                        .header("Accept-Language", "ko,en-US;q=0.9,en;q=0.8,ko-KR;q=0.7")
+                        .header("Accept-Language", "ko")
                         .content(new ObjectMapper().writeValueAsString(editAnswerDTO))
                         .with(csrf())
                         .sessionAttr("user", new SessionUser(author)));

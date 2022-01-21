@@ -68,7 +68,7 @@ class CommentApiControllerIntegrationTest {
         ResultActions resultActions = mockMvc.perform(
                 put("/posts/" + question.getId() + "/comments")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .header("Accept-Language", "ko,en-US;q=0.9,en;q=0.8,ko-KR;q=0.7")
+                        .header("Accept-Language", "ko")
                         .content(new ObjectMapper().writeValueAsString(createCommentDTO))
                         .with(csrf())
                         .sessionAttr("user", new SessionUser(author)));
@@ -106,7 +106,7 @@ class CommentApiControllerIntegrationTest {
         //when
         ResultActions resultActions = mockMvc.perform(
                 delete("/posts/" + question.getId() + "/comments/" + comment.getId())
-                        .header("Accept-Language", "ko,en-US;q=0.9,en;q=0.8,ko-KR;q=0.7")
+                        .header("Accept-Language", "ko")
                         .with(csrf())
                         .sessionAttr("user", new SessionUser(author)));
 
@@ -138,7 +138,7 @@ class CommentApiControllerIntegrationTest {
         ResultActions resultActions = mockMvc.perform(
                 patch("/posts/" + question.getId() + "/comments/" + comment.getId())
                         .contentType(MediaType.APPLICATION_JSON)
-                        .header("Accept-Language", "ko,en-US;q=0.9,en;q=0.8,ko-KR;q=0.7")
+                        .header("Accept-Language", "ko")
                         .content(new ObjectMapper().writeValueAsString(editCommentDTO))
                         .with(csrf())
                         .sessionAttr("user", new SessionUser(author)));
