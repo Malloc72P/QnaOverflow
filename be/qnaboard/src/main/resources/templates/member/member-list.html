@@ -16,7 +16,7 @@
     <div class="tag-list-wrapper d-flex flex-wrap">
         <!--/*회원 카드*/-->
         <div style="display: contents;" th:each="member : ${memberListDTO.members}">
-            <div th:replace="template/fragment/member/member-component :: member_component(${member})"></div>
+            <div th:replace="/template/fragment/member/member-component :: member_component(${member})"></div>
         </div>
     </div>
 </section>

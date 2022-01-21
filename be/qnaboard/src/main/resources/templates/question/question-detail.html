@@ -16,7 +16,7 @@ dto.question.detail 패키지의 QuestionDetailDTO를 모델로 받아서 랜더
     <!--/*질문 컨테이너 바디/-->
     <div class="container-fluid ps-0 pe-0">
         <!--/*질문 본문*/-->
-        <div th:replace="template/fragment/question/question-item-detail :: question_item_detail(${question})"></div>
+        <div th:replace="/template/fragment/question/question-item-detail :: question_item_detail(${question})"></div>
 
         <!--/*질문 답변 경계선*/-->
         <!--/*답글 개수*/-->
@@ -28,14 +28,14 @@ dto.question.detail 패키지의 QuestionDetailDTO를 모델로 받아서 랜더
             <!--답변게시글 목록-->
             <div class="answer-wrapper" id="answer-wrapper">
                 <div th:each="answer : ${question.answers}"
-                     th:insert="template/fragment/answer/answer-item-detail
+                     th:insert="/template/fragment/answer/answer-item-detail
                      :: answer_item_detail(${question.questionId}, ${answer})">
                 </div>
             </div>
         </div>
 
         <!--/*답변 컨테이너 종료 후 답변 작성하기 컨테이너*/-->
-        <div th:replace="template/fragment/answer/answer-writer :: answer_writer(${question.questionId})"></div>
+        <div th:replace="/template/fragment/answer/answer-writer :: answer_writer(${question.questionId})"></div>
     </div>
 </section>
 

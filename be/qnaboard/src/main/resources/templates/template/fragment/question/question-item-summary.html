@@ -33,7 +33,7 @@
                th:href="@{/questions/{questionId}(questionId=${question.questionId})}">
                 <h3 th:text="${question.title}">title</h3>
             </a>
-            <div th:replace="template/fragment/tag/tag-wrapper ::
+            <div th:replace="/template/fragment/tag/tag-wrapper ::
                     tag_wrapper(${question.tags})">
             </div>
         </div>

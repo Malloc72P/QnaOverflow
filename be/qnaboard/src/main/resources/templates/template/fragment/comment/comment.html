@@ -60,7 +60,7 @@
 
     <div class="child-comment-wrapper ms-2 ms-md-3">
         <div th:each="childComment : ${comment.children}">
-            <div th:replace="template/fragment/comment/comment :: comment_block(${childComment})"></div>
+            <div th:replace="/template/fragment/comment/comment :: comment_block(${childComment})"></div>
         </div>
     </div>
 </div>

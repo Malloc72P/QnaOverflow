@@ -9,7 +9,7 @@
 <div class="comment-wrapper" th:fragment="comment_wrapper(comments, postId)">
     <div class="comment-list mb-4">
         <div th:each="comment : ${comments}"
-             th:insert="template/fragment/comment/comment :: comment_block(${comment})"></div>
+             th:insert="/template/fragment/comment/comment :: comment_block(${comment})"></div>
     </div>
     <div class="comment-writer">
         <h4 class="mb-3">댓글 작성하기</h4>

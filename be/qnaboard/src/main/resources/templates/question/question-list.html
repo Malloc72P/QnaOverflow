@@ -14,7 +14,7 @@
     </div>
     <hr/>
     <div th:each="question : ${paging.content}"
-         th:insert="template/fragment/question/question-item-summary ::
+         th:insert="/template/fragment/question/question-item-summary ::
             question_item_summary(${question})">
     </div>
     <nav class="mt-4" th:if="${paging.getTotalPage() > 1}">

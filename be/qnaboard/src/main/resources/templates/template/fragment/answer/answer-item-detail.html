@@ -13,7 +13,7 @@
      th:fragment="answer_item_detail(questionId, answer)" th:id="'a-' + ${answer.answerId}">
     <div class="col-md-1 ps-0 pe-0">
         <!--/*좌측 투표 버튼 컨테이너*/-->
-        <div th:replace="template/fragment/post/vote-controller :: vote_controller(${answer.voteScore}, ${answer.answerId})"></div>
+        <div th:replace="/template/fragment/post/vote-controller :: vote_controller(${answer.voteScore}, ${answer.answerId})"></div>
     </div>
     <!--/*우측 게시글 컨테이너(컨텐츠, 태그, 게시글 컨트롤, 대댓글목록)*/-->
     <div class="col-md-11">
@@ -23,7 +23,7 @@
         </div>
 
         <!--/*게시글 컨트롤러(공유,수정, 수정,생성시간)*/-->
-        <div th:replace="template/fragment/post/post-controller
+        <div th:replace="/template/fragment/post/post-controller
              :: post_controller( ${answer.authorName},
                                  ${answer.createdDate},
                                  ${answer.lastModifiedDate},
@@ -47,7 +47,7 @@
             </div>
         </form>
         <!--/*대댓글 목록 컨테이너*/-->
-        <div th:replace="template/fragment/comment/comment-wrapper :: comment_wrapper(${answer.comments}, ${answer.answerId})"></div>
+        <div th:replace="/template/fragment/comment/comment-wrapper :: comment_wrapper(${answer.comments}, ${answer.answerId})"></div>
     </div>
     <hr class="mt-5 mb-3">
 </div>
