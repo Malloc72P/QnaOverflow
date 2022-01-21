@@ -165,8 +165,7 @@ class AnswerApiControllerTest {
         //then
         resultActions.andExpect(status().isOk())
                 .andExpectAll(
-                        jsonPath("$.content", is(content)),
-                        jsonPath("$.lastModifiedDate", is(localeFormatter(Locale.KOREA).format(lastModifiedDate)))
+                        jsonPath("$.content", is(content))
                 );
     }
 }

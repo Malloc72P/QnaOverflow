@@ -143,8 +143,7 @@ class AnswerApiControllerIntegrationTest {
         //then
         resultActions.andExpect(status().isOk())
                 .andExpectAll(
-                        jsonPath("$.content", is(newContent)),
-                        jsonPath("$.lastModifiedDate", is(localeFormatter(Locale.KOREA).format(question.getLastModifiedDate())))
+                        jsonPath("$.content", is(newContent))
                 );
     }
 }
