@@ -2,7 +2,7 @@ version: 0.0
 os: linux
 files:
   - source: deploy/deploy-be.zip
-    destination: /home/ec2-user/zip
+    destination: /home/ec2-user/release
     overwrite: yes
 permissions:
   - object: /
@@ -11,7 +11,7 @@ permissions:
     group: ec2-user
 
 hooks:
-  ApplicationStart:
+  BeforeInstall:
+    - location: scripts/beforeDeploy.sh
+  AfterInstall:
     - location: scripts/deploy.sh
-      timeout: 60
-      runas: ec2-user
