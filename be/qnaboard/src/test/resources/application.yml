@@ -3,8 +3,6 @@ spring:
     init:
       mode: never
   thymeleaf:
-    prefix: classpath:/templates/
-    suffix: .html
     encoding: UTF-8
   profiles:
     active: test

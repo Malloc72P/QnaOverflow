@@ -4,8 +4,6 @@ spring:
   devtools:
     add-properties: false
   thymeleaf:
-    prefix: classpath:/templates/
-    suffix: .html
     encoding: UTF-8
   profiles:
     active: dev
