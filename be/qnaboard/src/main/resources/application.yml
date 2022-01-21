@@ -8,7 +8,7 @@ spring:
     suffix: .html
     encoding: UTF-8
   profiles:
-    active: local
+    active: dev
     include: oauth
   datasource:
     url: jdbc:mysql://${database_url}/qnaboard
