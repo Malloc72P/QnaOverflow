@@ -1,0 +1,29 @@
+<!--/*
+태그목록조회의 뷰(TagController.list)
+dto.tag.list 패키지의 TagListDTO를 모델로 받아서 랜더링한다
+*/-->
+<!DOCTYPE html>
+<html lang="kr" th:replace="~{/template/layout-main :: layout (~{::title}, ~{::section}, ${username}, ~{::script}, '')}"
+      xmlns:th="http://www.thymeleaf.org">
+
+<title th:text="#{ui.main.title}">제목</title>
+
+<section>
+    <div class="clearfix">
+        <h2 class="float-start" th:text="#{ui.tag.list.page-title}">태그 목록</h2>
+        <a class="btn btn-primary float-end" th:href="@{/tags/form}">태그 생성하기</a>
+    </div>
+    <div>
+        <p>태그는 질문을 다른 유사한 질문과 함께 분류하는 키워드입니다.
+            올바른 태그를 사용하면 다른 사용자가 사용자의 질문에 더 쉽게 답할 수 있습니다.</p>
+    </div>
+    <hr/>
+    <div class="tag-list-wrapper d-flex flex-wrap">
+        <!--/*태그 카드*/-->
+        <div style="display: contents;" th:each="tag : ${tagListDTO.tags}">
+            <div th:replace="template/fragment/tag/tag-component :: tag_component(${tag})"></div>
+        </div>
+    </div>
+</section>
+
+</html>

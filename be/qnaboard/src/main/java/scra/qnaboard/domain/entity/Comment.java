@@ -3,7 +3,10 @@ package scra.qnaboard.domain.entity;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.util.StringUtils;
+import scra.qnaboard.domain.entity.member.Member;
 import scra.qnaboard.domain.entity.post.Post;
+import scra.qnaboard.service.exception.comment.edit.CommentPropertyIsEmptyException;
 
 import javax.persistence.*;
 import java.util.Objects;
@@ -40,11 +43,31 @@ public class Comment extends BaseTimeEntity {
     @JoinColumn(name = "parent_comment_id")
     private Comment parentComment;
 
+    private boolean deleted = false;
+
     public Comment(Member author, String content, Post parentPost, Comment parentComment) {
         this.author = author;
         this.content = content;
         this.parentPost = parentPost;
         this.parentComment = parentComment;
+    }
+
+    public void delete() {
+        deleted = true;
+    }
+
+    public boolean isNotOwner(Member member) {
+        return !member.equals(author);
+    }
+
+    public void update(String content) {
+        if (!StringUtils.hasText(content)) {
+            throw new CommentPropertyIsEmptyException(content);
+        }
+        if (this.content.equals(content)) {
+            return;
+        }
+        this.content = content;
     }
 
     @Override

@@ -1,0 +1,18 @@
+<!--/*
+태그 목록
+*/-->
+<!DOCTYPE html>
+<html lang="kr" xmlns:th="http://www.thymeleaf.org">
+
+<body>
+
+<div class="tag-wrapper" th:fragment="tag_wrapper(tags)">
+    <a class="btn btn-secondary btn-sm"
+       href="javascript:" role="button"
+       th:each="tag : ${tags}" th:text="${tag.name}"
+       th:href="@{/questions(searchInput='['+${tag.name}+']')}">tag name</a>
+</div>
+
+</body>
+
+</html>

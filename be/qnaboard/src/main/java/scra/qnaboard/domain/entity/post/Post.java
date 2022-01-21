@@ -5,7 +5,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import scra.qnaboard.domain.entity.BaseTimeEntity;
 import scra.qnaboard.domain.entity.Comment;
-import scra.qnaboard.domain.entity.Member;
+import scra.qnaboard.domain.entity.member.Member;
+import scra.qnaboard.domain.entity.vote.VoteType;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -27,23 +28,49 @@ public abstract class Post extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "post_id")
-    private Long id;
+    protected Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "author_id")
-    private Member author;
+    protected Member author;
 
-    private String content;
-
-    private Long upVoteCount = 0L;
-    private Long downVoteCount = 0L;
+    protected String content;
 
     @OneToMany(mappedBy = "parentPost", fetch = FetchType.LAZY)
-    private List<Comment> comments = new ArrayList<>();
+    protected List<Comment> comments = new ArrayList<>();
+
+    protected boolean deleted = false;
+
+    protected long score = 0L;
 
     public Post(Member author, String content) {
         this.author = author;
         this.content = content;
+    }
+
+    public void updateScore(VoteType voteType) {
+        if (voteType == VoteType.UP) {
+            increaseScore();
+        } else if (voteType == VoteType.DOWN) {
+            decreaseScore();
+        }
+
+    }
+
+    public void increaseScore() {
+        score++;
+    }
+
+    public void decreaseScore() {
+        score--;
+    }
+
+    public boolean isNotOwner(Member member) {
+        return !member.equals(author);
+    }
+
+    public void delete() {
+        deleted = true;
     }
 
     @Override
@@ -51,14 +78,11 @@ public abstract class Post extends BaseTimeEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Post post = (Post) o;
-        return Objects.equals(getId(), post.getId()) &&
-                Objects.equals(getContent(), post.getContent()) &&
-                Objects.equals(getUpVoteCount(), post.getUpVoteCount()) &&
-                Objects.equals(getDownVoteCount(), post.getDownVoteCount());
+        return Objects.equals(getId(), post.getId());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getContent(), getUpVoteCount(), getDownVoteCount());
+        return Objects.hash(getId());
     }
 }

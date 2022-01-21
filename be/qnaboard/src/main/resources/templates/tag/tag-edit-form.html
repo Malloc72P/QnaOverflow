@@ -1,0 +1,39 @@
+<!--/*
+태그생성 기능을 위한 뷰(TagController.tagForm)
+*/-->
+<!DOCTYPE html>
+<html lang="kr" th:replace="~{/template/layout-main :: layout (~{::title}, ~{::section}, ${username}, ~{script}, '')}"
+      xmlns:th="http://www.thymeleaf.org">
+
+<title th:text="#{ui.main.title}">제목</title>
+
+<section>
+    <div class="clearfix">
+        <h2 class="float-start" th:text="#{ui.tag.edit-form.page-title}">질문하기</h2>
+    </div>
+    <hr/>
+
+    <form method="post" th:action="@{/tags/{tagId}/edit(tagId=${tagId})}" th:object="${editTagForm}">
+        <div class="mb-3">
+            <label class="form-label" for="name" th:text="#{ui.tag.edit-form.input-name}">태그이름</label>
+            <input aria-describedby="nameHelp" class="form-control" id="name" name="name" required th:field="*{name}"
+                   type="text">
+            <div class="form-text" id="nameHelp" th:text="#{ui.tag.edit-form.input-name-help}">제목을 적어주세요</div>
+            <div class="text-danger" th:errors="*{name}">이름은 6자 이상이어야 합니다</div>
+        </div>
+        <div class="mb-3">
+            <label class="form-label" for="description" th:text="#{ui.tag.edit-form.input-description}">태그 설명</label>
+            <textarea aria-describedby="descriptionHelp" class="form-control" id="description" name="description"
+                      required
+                      style="min-height: 200px" th:field="*{description}" type="text"></textarea>
+            <div class="form-text" id="descriptionHelp" th:text="#{ui.tag.edit-form.input-description-help}">설명을 적어주세요
+            </div>
+            <div class="text-danger" th:errors="*{description}">설명은 6자 이상이어야 합니다</div>
+        </div>
+        <div class="clearfix">
+            <button class="btn btn-primary float-end" type="submit">Submit</button>
+        </div>
+    </form>
+</section>
+
+</html>

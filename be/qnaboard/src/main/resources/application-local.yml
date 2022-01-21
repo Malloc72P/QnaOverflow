@@ -1,12 +1,19 @@
 spring:
-  jpa:
-    properties:
-      hibernate:
-        ddl-auto: create-drop
-logging:
-  level:
-    org.hibernate.SQL: debug
+#  session:
+#    jdbc:
+#      initialize-schema: always
+  devtools:
+    add-properties: true
+    livereload:
+      enabled: true
+#  jpa:
+#    hibernate:
+#      ddl-auto: create-drop
+  sql:
+    init:
+      mode: always
 
 database_url: localhost:3306
 database_username: dev
 database_password: dev1234
+api_url: http://localhost:8080

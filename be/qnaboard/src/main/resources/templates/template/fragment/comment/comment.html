@@ -1,0 +1,71 @@
+<!--/*
+대댓글
+*/-->
+<!DOCTYPE html>
+<html lang="kr" xmlns:th="http://www.thymeleaf.org">
+
+<body>
+<div class="comment" th:fragment="comment_block(comment)" th:id="'c-' + ${comment.commentId}">
+    <div class="card mb-3">
+        <div class="card-header">
+            <div class="d-inline-block comment-author"
+                 th:text="(!${comment.deleted})? ${comment.authorName} : #{ui.comment.delete.author-name}">Edward Nygma
+            </div>
+            <div class="float-end">
+                <span th:text="${{comment.createdDate}}">2021-12-12 12:12PM</span>
+                <a class="toggle-comment-writer text-decoration-none text-black hover-underline"
+                   href="javascript:">답글</a>
+                <a class="toggle-comment-editor text-decoration-none text-black hover-underline"
+                   href="javascript:">수정</a>
+                <a class="delete-comment-button text-decoration-none text-black hover-underline"
+                   href="javascript:">삭제</a>
+            </div>
+        </div>
+        <div class="card-body">
+            <p class="card-text comment-content"
+               th:text="(!${comment.deleted})? ${comment.content} : #{ui.comment.delete.content}">
+                Some quick example text to build on the card title and make up
+                the bulk of the card's content.
+            </p>
+        </div>
+    </div>
+
+    <!--대댓글 수정 폼-->
+    <div class="comment-editor d-none">
+        <p class="mb-3">대댓글 수정하기</p>
+        <form class="edit-comment-form">
+            <div class="mb-3">
+                <textarea class="form-control" placeholder="대댓글의 새로운 내용을 입력해주세요"
+                          th:text="${comment.content}"></textarea>
+            </div>
+            <input class="prev-comment-content" th:value="${comment.content}" type="hidden"/>
+            <div class="text-end">
+                <button class="btn btn-sm btn-primary">대댓글 수정하기</button>
+            </div>
+        </form>
+    </div>
+
+    <!--대댓글 입력 폼-->
+    <div class="comment-writer d-none">
+        <p class="mb-3">대댓글 작성하기</p>
+        <form class="reply-comment-form">
+            <div class="mb-3">
+                <textarea class="form-control" placeholder="대댓글을 작성해주세요"></textarea>
+            </div>
+            <div class="text-end">
+                <button class="btn btn-sm btn-primary">대댓글작성</button>
+            </div>
+        </form>
+    </div>
+
+    <div class="child-comment-wrapper ms-2 ms-md-3">
+        <div th:each="childComment : ${comment.children}">
+            <div th:replace="template/fragment/comment/comment :: comment_block(${childComment})"></div>
+        </div>
+    </div>
+</div>
+
+
+</body>
+
+</html>

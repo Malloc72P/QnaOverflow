@@ -5,6 +5,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
+import scra.qnaboard.domain.entity.member.Member;
+import scra.qnaboard.domain.entity.member.MemberRole;
 import scra.qnaboard.domain.entity.post.Answer;
 import scra.qnaboard.domain.entity.post.Post;
 import scra.qnaboard.domain.entity.post.Question;
@@ -28,7 +30,7 @@ class CommentTest {
     @Test
     @DisplayName("대댓글을 생성할 수 있어야 하며 질문글 엔티티로 연관된 모든 대댓글을 가지고 올 수 있어야 함")
     void testCommentOnQuestion() {
-        Member member = new Member("member", MemberRole.NORMAL);
+        Member member = new Member("member", "email", MemberRole.USER);
         em.persist(member);
 
         Question question = new Question(member, "content1", "title");
@@ -40,7 +42,7 @@ class CommentTest {
     @Test
     @DisplayName("대댓글을 생성할 수 있어야 하며 답변글 엔티티로 연관된 모든 대댓글을 가지고 올 수 있어야 함")
     void testCommentOnAnswer() {
-        Member member = new Member("member", MemberRole.NORMAL);
+        Member member = new Member("member", "email", MemberRole.USER);
         em.persist(member);
 
         Question question = new Question(member, "content1", "title");

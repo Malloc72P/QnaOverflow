@@ -5,8 +5,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
-import scra.qnaboard.domain.entity.Member;
-import scra.qnaboard.domain.entity.MemberRole;
+import scra.qnaboard.domain.entity.member.Member;
+import scra.qnaboard.domain.entity.member.MemberRole;
 
 import javax.persistence.EntityManager;
 import java.util.ArrayList;
@@ -27,7 +27,7 @@ class QuestionTest {
     @Test
     @DisplayName("질문글을 생성할 수 있어야 함")
     void testSaveQuestion() {
-        Member member1 = new Member("member1", MemberRole.NORMAL);
+        Member member1 = new Member("member1", "email", MemberRole.USER);
         em.persist(member1);
 
         Question question = new Question(member1, "content1", "title");
@@ -47,7 +47,7 @@ class QuestionTest {
     @Test
     @DisplayName("질문글로 답변글을 가지고 올 수 있어야 함")
     void testGetAnswers() {
-        Member member1 = new Member("member1", MemberRole.NORMAL);
+        Member member1 = new Member("member1", "email", MemberRole.USER);
         em.persist(member1);
 
         Question question = new Question(member1, "content1", "title");
@@ -63,8 +63,8 @@ class QuestionTest {
         em.flush();
         em.clear();
 
-        Question findQuestion = em.find(Question.class, question.getId());
-        assertThat(findQuestion.getAnswers())
-                .contains(answers.get(0), answers.get(1), answers.get(2));
+        int size = em.createQuery("select count(a) from Answer a where a.question.id = :id", Long.class)
+                .setParameter("id", question.getId()).getSingleResult().intValue();
+        assertThat(size).isEqualTo(answers.size());
     }
 }

@@ -1,0 +1,54 @@
+<!--/*
+질문게시글 상세보기 프래그먼트.
+얘는 뷰가 아니라 프래그먼트이다.
+이 프래그먼트에는 질문글 상세보기에 대한 내용이 들어있다
+*/-->
+<!DOCTYPE html>
+<html lang="kr" xmlns:th="http://www.thymeleaf.org">
+
+<body>
+
+<!--/*@thymesVar id="voteScore" type="scra.qnaboard.web.dto.question.detail.QuestionDetailDTO"*/-->
+<div class="question row mb-5 post" th:attr="data-postId=${question.questionId}"
+     th:fragment="question_item_detail(question)" th:id="'q-' + ${question.questionId}">
+    <div class="col-md-1 ps-0 pe-0">
+        <!--/*좌측 투표 버튼 컨테이너*/-->
+        <div th:replace="template/fragment/post/vote-controller :: vote_controller(${question.voteScore}, ${question.questionId})"></div>
+    </div>
+    <!--/*우측 게시글 컨테이너(컨텐츠, 태그, 게시글 컨트롤, 대댓글목록)*/-->
+    <div class="col-md-11">
+        <!--/*게시글 컨텐츠*/-->
+        <div class="post-content-wrapper" th:text="${question.content}">
+            content
+        </div>
+        <div th:replace="template/fragment/tag/tag-wrapper :: tag_wrapper(${question.tags})">
+        </div>
+
+        <!--/*게시글 컨트롤러(공유,수정, 수정,생성시간)*/-->
+        <div th:replace="template/fragment/post/post-controller
+             :: post_controller( ${question.authorName},
+                                 ${question.createdDate},
+                                 ${question.lastModifiedDate},
+                                 ${question.questionId},
+                                 ~{::.edit-question},
+                                 ~{::.delete-question}
+                                 )">
+            <a class="edit-question btn btn-sm btn-outline-dark"
+               th:href="@{/questions/{questionId}/editForm(questionId=${question.questionId})}">수정하기
+            </a>
+            <form class="delete-question d-inline-block" method="post"
+                  th:action="@{/questions/{questionId}/delete(questionId=${question.questionId})}">
+                <button class="btn btn-sm btn-outline-dark" type="submit">삭제하기</button>
+            </form>
+        </div>
+        <hr>
+        <!--/*대댓글 목록 컨테이너*/-->
+        <div th:replace="template/fragment/comment/comment-wrapper
+         :: comment_wrapper(${question.comments}, ${question.questionId})"></div>
+    </div>
+
+</div>
+
+</body>
+
+</html>

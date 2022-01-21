@@ -1,0 +1,52 @@
+<!--/*
+질문하기 기능을 위한 뷰(QuestionController.questionForm)
+*/-->
+<!DOCTYPE html>
+<html lang="kr" th:replace="~{/template/layout-main :: layout (~{::title}, ~{::section}, ${username}, ~{::script}, '')}"
+      xmlns:th="http://www.thymeleaf.org">
+
+<title th:text="#{ui.main.title}">제목</title>
+
+<section>
+    <div class="clearfix">
+        <h2 class="float-start" th:text="#{ui.question.form.page-title}">질문하기</h2>
+    </div>
+    <hr/>
+
+    <form action="/questions" method="post" th:object="${questionForm}">
+        <div th:if="${#fields.hasGlobalErrors()}">
+            <p class="field-error"
+               th:each="err : ${#fields.globalErrors()}"
+               th:text="${err}">글로벌 오류 메세지</p>
+        </div>
+
+        <!--/*질문 제목*/-->
+        <div class="mb-3">
+            <label class="form-label" for="title" th:text="#{ui.question.form.input-title}">질문 제목</label>
+            <input aria-describedby="titleHelp" class="form-control" id="title" name="title" required
+                   th:field="*{title}"
+                   type="text">
+            <div class="form-text" id="titleHelp" th:text="#{ui.question.form.input-title-help}">질문의 제목을 적어주세요</div>
+            <div class="text-danger" th:errors="*{title}">제목은 6자 이상이어야 합니다</div>
+        </div>
+
+        <!--/*질문 내용*/-->
+        <div class="mb-3">
+            <label class="form-label" for="content">질문내용</label>
+            <textarea aria-describedby="contentHelp" class="form-control" id="content" name="content" required
+                      style="min-height: 200px" th:field="*{content}" type="text"></textarea>
+            <div class="form-text" id="contentHelp" th:text="#{ui.question.form.input-content-help}">내용을 적어주세요</div>
+            <div class="text-danger" th:errors="*{content}">제목은 6자 이상이어야 합니다</div>
+        </div>
+
+        <!--/*태그 입력기*/-->
+        <div th:replace="template/fragment/tag/tag-inputer :: tag_inputer(null)"></div>
+
+        <div class="clearfix">
+            <button class="btn btn-primary float-end" type="submit">Submit</button>
+        </div>
+    </form>
+
+</section>
+
+</html>

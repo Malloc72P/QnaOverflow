@@ -1,0 +1,18 @@
+<!--/*
+사이드바의 버튼을 위한 프래그먼트.
+질문게시판 페이지에 대한 링크버튼이라고 생각하면 된다.
+*/-->
+<!DOCTYPE html>
+<html lang="kr" xmlns:th="http://www.thymeleaf.org">
+
+<body>
+<ul>
+    <li class="nav-item" th:fragment="sidebar_item(title, link)">
+        <a class="nav-link sidebar-link" th:href="@{{target}(target=${link})}"
+           th:text="${title}">Orders</a>
+    </li>
+</ul>
+
+</body>
+
+</html>

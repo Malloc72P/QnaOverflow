@@ -5,8 +5,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
-import scra.qnaboard.domain.entity.Member;
-import scra.qnaboard.domain.entity.MemberRole;
+import scra.qnaboard.domain.entity.member.Member;
+import scra.qnaboard.domain.entity.member.MemberRole;
 
 import javax.persistence.EntityManager;
 
@@ -25,7 +25,7 @@ class AnswerTest {
     @Test
     @DisplayName("답변글을 생성할 수 있어야 함")
     void testSaveAnswer() {
-        Member member1 = new Member("member1", MemberRole.NORMAL);
+        Member member1 = new Member("member1", "email", MemberRole.USER);
         em.persist(member1);
 
         Question question = new Question(member1, "content1", "title");

@@ -5,6 +5,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
+import scra.qnaboard.domain.entity.member.Member;
+import scra.qnaboard.domain.entity.member.MemberRole;
 
 import javax.persistence.EntityManager;
 
@@ -23,10 +25,10 @@ class TagTest {
     @Test
     @DisplayName("태그를 생성할 수 있어야 함")
     void testSaveTag() {
-        Member member = new Member("member1", MemberRole.NORMAL);
+        Member member = new Member("member1", "email", MemberRole.USER);
         em.persist(member);
 
-        Tag tag = new Tag(member, "tag1", "FF5733");
+        Tag tag = new Tag(member, "tag1", "description");
         em.persist(tag);
 
         em.flush();

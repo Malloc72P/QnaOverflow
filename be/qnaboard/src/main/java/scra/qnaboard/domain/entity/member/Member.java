@@ -1,8 +1,10 @@
-package scra.qnaboard.domain.entity;
+package scra.qnaboard.domain.entity.member;
 
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import scra.qnaboard.domain.entity.BaseTimeEntity;
 
 import javax.persistence.*;
 import java.util.Objects;
@@ -16,6 +18,8 @@ import java.util.Objects;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Member extends BaseTimeEntity {
 
+    private static final String NO_EMAIL = "no-email";
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "members_id")
@@ -23,12 +27,40 @@ public class Member extends BaseTimeEntity {
 
     private String nickname;
 
+    private String email;
+
+    private boolean deleted = false;
+
     @Enumerated(EnumType.STRING)
     private MemberRole role;
 
-    public Member(String nickname, MemberRole role) {
+    @Builder
+    public Member(String nickname, String email, MemberRole role) {
         this.nickname = nickname;
+        this.email = email;
         this.role = role;
+    }
+
+    public Member update(String nickname) {
+        this.nickname = nickname;
+        return this;
+    }
+
+    public Member activate() {
+        this.deleted = false;
+        return this;
+    }
+
+    public boolean isAdmin() {
+        return role.equals(MemberRole.ADMIN);
+    }
+
+    public boolean isNotAdmin() {
+        return !role.equals(MemberRole.ADMIN);
+    }
+
+    public boolean isNotSame(Member another) {
+        return !id.equals(another.id);
     }
 
     @Override

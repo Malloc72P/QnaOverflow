@@ -1,0 +1,33 @@
+<!--/*
+태그 목록
+*/-->
+<!DOCTYPE html>
+<html lang="kr" xmlns:th="http://www.thymeleaf.org">
+
+<body>
+
+<div class="mb-3" th:fragment="tag_inputer(tag)">
+    <div id="tag-search-form">
+        <input class="d-none" id="selected-tag-id-list" name="tags" value="">
+        <label class="form-label d-block" for="tag-input">태그 검색</label>
+        <div id="selected-tag-wrapper">
+        </div>
+        <div class="d-flex">
+            <input autocomplete="off" class="form-control d-inline-block" id="tag-input"
+                   placeholder="..." type="text">
+            <a class="btn btn-primary" id="tag-search-button" style="min-width: 8rem;">태그 검색</a>
+        </div>
+        <div class="tag-suggestions px-3 py-3 border border-1" id="tag-suggestions">
+        </div>
+        <div class="form-text">찾고자 하는 태그를 검색해주세요</div>
+    </div>
+    <script th:inline="javascript">
+        const tagParam = [[${tags}]];
+        console.log(tagParam)
+    </script>
+    <script th:src="@{/js/components/tag-inputer.js}"></script>
+</div>
+
+</body>
+
+</html>

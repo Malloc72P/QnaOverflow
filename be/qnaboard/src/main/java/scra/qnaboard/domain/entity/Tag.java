@@ -1,8 +1,12 @@
 package scra.qnaboard.domain.entity;
 
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.util.StringUtils;
+import scra.qnaboard.domain.entity.member.Member;
+import scra.qnaboard.service.exception.tag.edit.TagPropertyIsEmptyException;
 
 import javax.persistence.*;
 import java.util.Objects;
@@ -26,12 +30,31 @@ public class Tag extends BaseTimeEntity {
 
     private String name;
 
-    private String color;
+    private String description;
 
-    public Tag(Member author, String name, String color) {
+    private boolean deleted = false;
+
+    @Builder
+    public Tag(Member author, String name, String description) {
         this.author = author;
         this.name = name;
-        this.color = color;
+        this.description = description;
+    }
+
+    public boolean isNotOwner(Member member) {
+        return !member.equals(author);
+    }
+
+    public void update(String name, String description) {
+        if (!StringUtils.hasText(name) || !StringUtils.hasText(description)) {
+            throw new TagPropertyIsEmptyException(name, description);
+        }
+        this.name = name;
+        this.description = description;
+    }
+
+    public void delete() {
+        deleted = true;
     }
 
     @Override
@@ -40,12 +63,12 @@ public class Tag extends BaseTimeEntity {
         if (o == null || getClass() != o.getClass()) return false;
         Tag tag = (Tag) o;
         return Objects.equals(getId(), tag.getId()) &&
-                Objects.equals(getName(), tag.getName()) &&
-                Objects.equals(getColor(), tag.getColor());
+                Objects.equals(getName(), tag.getName());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getName(), getColor());
+        return Objects.hash(getId(), getName());
     }
+
 }

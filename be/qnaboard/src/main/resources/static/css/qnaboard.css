@@ -1,0 +1,141 @@
+.content {
+    padding: 24px 16px;
+}
+
+.sidebar {
+    padding: 32px 0 0;
+    box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1);
+}
+
+@media (max-width: 768px) {
+    .sidebar {
+        padding: 0;
+    }
+
+    .nav-user {
+        width: 100%;
+    }
+
+    .navbar .form-control {
+        min-height: 48px !important;
+    }
+
+    .tag-card {
+        width: 100%;
+    }
+}
+
+@media (min-width: 768px) {
+    .tag-card {
+        width: 18rem;
+    }
+}
+
+.sidebar .nav-link {
+    font-weight: 500;
+    color: #333;
+}
+
+.question-list-item {
+    padding: 12px 8px 12px 8px;
+}
+
+.question-list-item .left-side {
+    display: flex;
+    color: #6c757d;
+}
+
+.question-list-item .left-side .left-button {
+    min-width: 38px;
+    padding: 6px 24px 6px 6px;
+}
+
+.question-list-item .left-side .left-button:hover {
+    min-width: 38px;
+    padding: 6px 24px 6px 6px;
+    color: black;
+}
+
+.question-list-item .left-side .left-button .up {
+    margin-bottom: 4px;
+    text-align: center;
+}
+
+.tag-wrapper a {
+    margin-right: 8px;
+}
+
+.tag-wrapper a {
+    margin-bottom: 6px;
+    display: inline-block;
+}
+
+.question-list-item .low {
+    display: flex;
+}
+
+.question-list-item .low .createBy {
+    text-align: right;
+}
+
+.question-list-item .low .createBy > div {
+    color: #6c757d;
+    display: inline-block;
+}
+
+.space {
+    flex: 1;
+}
+
+.navbar .navbar-brand {
+    padding-right: 12px;
+}
+
+.navbar .form-control {
+    padding: 0.75rem 1rem;
+    border-width: 0;
+    border-radius: 0;
+    min-height: 58px;
+}
+
+.form-control-dark {
+    color: #fff;
+    background-color: rgba(255, 255, 255, .1);
+    border-color: rgba(255, 255, 255, .1);
+}
+
+.my-navbar > .container-fluid {
+    padding: 0;
+
+}
+
+.my-navbar > .container-fluid .nav-link {
+    padding-left: 8px;
+
+}
+
+.hover-underline:hover {
+    text-decoration: underline !important;
+}
+
+.hover-bold:hover {
+    background-color: #5c636a;
+    border-color: #565e64;
+    border-radius: 50%;
+}
+
+.disable-btn-secondary-hover:hover {
+    background-color: #6c757d!important;
+    border-color: #6c757d!important;
+}
+
+.button-like-link {
+background: none !important;
+border: none;
+padding: 0 !important;
+color: #0d6efd;
+text-decoration: underline;
+font: inherit;
+cursor: pointer;
+}
+

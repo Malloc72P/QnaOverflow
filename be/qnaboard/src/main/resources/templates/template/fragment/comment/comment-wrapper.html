@@ -1,0 +1,29 @@
+<!--/*
+대댓글 목록
+*/-->
+<!DOCTYPE html>
+<html lang="kr" xmlns:th="http://www.thymeleaf.org">
+
+<body>
+
+<div class="comment-wrapper" th:fragment="comment_wrapper(comments, postId)">
+    <div class="comment-list mb-4">
+        <div th:each="comment : ${comments}"
+             th:insert="template/fragment/comment/comment :: comment_block(${comment})"></div>
+    </div>
+    <div class="comment-writer">
+        <h4 class="mb-3">댓글 작성하기</h4>
+        <form class="create-comment-form">
+            <div class="mb-3">
+                <textarea class="form-control" placeholder="댓글을 작성해주세요"></textarea>
+            </div>
+            <div class="text-end">
+                <button class="btn btn-sm btn-primary">댓글작성</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+</body>
+
+</html>

@@ -1,0 +1,57 @@
+<!--/*
+답변게시글 상세보기 프래그먼트.
+얘는 뷰가 아니라 프래그먼트이다.
+이 프래그먼트에는 답변글 상세보기에 대한 내용이 들어있다
+*/-->
+<!DOCTYPE html>
+<html lang="kr" xmlns:th="http://www.thymeleaf.org">
+
+<body>
+
+<!--/*@thymesVar id="voteScore" type="scra.qnaboard.web.dto.answer.AnswerDetailDTO"*/-->
+<div class="answer row mb-5 post" th:attr="data-postId=${answer.answerId}"
+     th:fragment="answer_item_detail(questionId, answer)" th:id="'a-' + ${answer.answerId}">
+    <div class="col-md-1 ps-0 pe-0">
+        <!--/*좌측 투표 버튼 컨테이너*/-->
+        <div th:replace="template/fragment/post/vote-controller :: vote_controller(${answer.voteScore}, ${answer.answerId})"></div>
+    </div>
+    <!--/*우측 게시글 컨테이너(컨텐츠, 태그, 게시글 컨트롤, 대댓글목록)*/-->
+    <div class="col-md-11">
+        <!--/*게시글 컨텐츠*/-->
+        <div class="post-content-wrapper" th:text="${answer.content}">
+            content
+        </div>
+
+        <!--/*게시글 컨트롤러(공유,수정, 수정,생성시간)*/-->
+        <div th:replace="template/fragment/post/post-controller
+             :: post_controller( ${answer.authorName},
+                                 ${answer.createdDate},
+                                 ${answer.lastModifiedDate},
+                                 ${answer.answerId},
+                                 ~{::.answer-edit},
+                                 ~{::.answer-delete})">
+            <button class="answer-edit btn btn-sm btn-outline-dark">수정하기</button>
+            <button class="answer-delete btn btn-sm btn-outline-dark">삭제하기</button>
+        </div>
+        <hr>
+        <form class="answer-edit-form d-none">
+            <div class="mb-3">
+                <label>답변 수정하기</label>
+                <textarea class="form-control" placeholder="답변을 작성해주세요"
+                          th:text="${answer.content}"></textarea>
+            </div>
+            <div class="clearfix">
+                <button class="float-end btn btn-primary"
+                        name="답변 제출" type="submit">답변 제출하기
+                </button>
+            </div>
+        </form>
+        <!--/*대댓글 목록 컨테이너*/-->
+        <div th:replace="template/fragment/comment/comment-wrapper :: comment_wrapper(${answer.comments}, ${answer.answerId})"></div>
+    </div>
+    <hr class="mt-5 mb-3">
+</div>
+
+</body>
+
+</html>

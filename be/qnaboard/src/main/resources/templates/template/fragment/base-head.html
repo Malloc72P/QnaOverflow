@@ -1,0 +1,16 @@
+<!--/*
+모든 페이지에 공통으로 적용할 헤드 태그.
+여기서 부트스트랩 css 적용 및 페이지의 제목을 설정한다
+페이지의 제목은 파라미터로 받아서 적용한다
+직접 작성한 css는 qnaboard.css에 넣으면 된다.
+자바스크립트는 여기서 추가하지 말고 layout-main.html에서 추가해야 한다.
+*/-->
+<html lang="kr" xmlns:th="http://www.thymeleaf.org">
+
+<head th:fragment="base_head(title)">
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1, minimum-scale=1" name="viewport"/>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" type="text/css">
+    <link rel="stylesheet" th:href="@{/css/qnaboard.css}" type="text/css">
+    <title th:replace="${title}">페이지 제목</title>
+</head>

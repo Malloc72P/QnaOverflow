@@ -1,0 +1,40 @@
+<!--/*
+질문목록조회의 뷰(QuestionController.list)
+*/-->
+<!DOCTYPE html>
+<html lang="kr" th:replace="~{/template/layout-main :: layout (~{::title}, ~{::section}, ${username}, ~{::script}, ${paging.searchInput})}"
+      xmlns:th="http://www.thymeleaf.org">
+
+<title th:text="#{ui.main.title}">제목</title>
+
+<section>
+    <div class="clearfix">
+        <h2 class="float-start" th:text="#{ui.question.list.page-title}">질문 목록</h2>
+        <a class="btn btn-primary float-end" th:href="@{/questions/form}">질문하기</a>
+    </div>
+    <hr/>
+    <div th:each="question : ${paging.content}"
+         th:insert="template/fragment/question/question-item-summary ::
+            question_item_summary(${question})">
+    </div>
+    <nav class="mt-4" th:if="${paging.getTotalPage() > 1}">
+        <ul class="pagination justify-content-center">
+            <li th:if="${paging.hasPreviousBlock()}" class="page-item">
+                <a th:href="@{/questions(searchInput=${paging.getSearchInput()}, pageNumber=${paging.getLastPageOfPreviousBlock()})}"
+                   class="page-link">Previous</a>
+            </li>
+            <li class="page-item" th:classappend="${pageNumber == paging.getCurrentPageNumber()} ? active : ''"
+                th:each="pageNumber : ${paging.pageNumbers}">
+                <a class="page-link"
+                   th:href="@{/questions(searchInput=${paging.getSearchInput()}, pageNumber=${pageNumber})}"
+                   th:text="${pageNumber}">1</a>
+            </li>
+            <li th:if="${paging.hasNextBlock}" class="page-item">
+                <a th:href="@{/questions(searchInput=${paging.getSearchInput()}, pageNumber=${paging.getFirstPageOfNextBlock()})}"
+                   class="page-link">Next</a>
+            </li>
+        </ul>
+    </nav>
+</section>
+
+</html>

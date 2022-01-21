@@ -1,0 +1,52 @@
+<!--/*
+질문게시판의 질문 아이템
+질문에 대해 요약한 정보만 가지고 있다
+누르면 질문 상세페이지로 이동한다
+*/-->
+<!DOCTYPE html>
+<html lang="kr" xmlns:th="http://www.thymeleaf.org">
+
+<body>
+
+<div class="question-list-item border-1 border-bottom container-fluid"
+     th:fragment="question_item_summary(question)">
+    <!--/*@thymesVar id="question" type="scra.qnaboard.web.dto.question.list.QuestionSummaryDTO"*/-->
+    <div class="row">
+        <div class="left-side col-lg-3 col-sm-5">
+            <div class="left-button">
+                <div class="up" th:text="${question.voteScore}">3</div>
+                <div>votes</div>
+            </div>
+
+            <div class="left-button">
+                <div class="up" th:text="${question.answerCount}">6</div>
+                <div>answers</div>
+            </div>
+
+            <div class="left-button">
+                <div class="up" th:text="${question.viewCount}">300</div>
+                <div>views</div>
+            </div>
+        </div>
+        <div class="right-side col-lg-9 col-sm-7">
+            <a class="d-inline-block text-decoration-none text-break"
+               th:href="@{/questions/{questionId}(questionId=${question.questionId})}">
+                <h3 th:text="${question.title}">title</h3>
+            </a>
+            <div th:replace="template/fragment/tag/tag-wrapper ::
+                    tag_wrapper(${question.tags})">
+            </div>
+        </div>
+    </div>
+    <div class="low">
+        <div class="space"></div>
+        <div class="createBy">
+            <div th:text="${{question.createDate}}">2021-12:22 18:01:23</div>
+            <div th:text="${question.authorName}">edward nygma</div>
+        </div>
+    </div>
+</div>
+
+</body>
+
+</html>

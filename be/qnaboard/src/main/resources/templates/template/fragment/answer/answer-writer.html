@@ -1,0 +1,28 @@
+<!--/*
+대댓글
+*/-->
+<!DOCTYPE html>
+<html lang="kr" xmlns:th="http://www.thymeleaf.org">
+
+<body>
+
+<div class="answer-writer mb-5" th:fragment="answer_writer(questionId)">
+    <div>
+        <h3>답변 작성하기</h3>
+    </div>
+    <form>
+        <div class="mb-3">
+            <label for="textarea-submit-answer">답변</label>
+            <textarea class="form-control" id="textarea-submit-answer" placeholder="답변을 작성해주세요"></textarea>
+        </div>
+        <div class="clearfix">
+            <button class="float-end btn btn-primary" id="submit-answer-button"
+                    name="답변 제출" type="submit">답변 제출하기
+            </button>
+        </div>
+    </form>
+</div>
+
+</body>
+
+</html>
