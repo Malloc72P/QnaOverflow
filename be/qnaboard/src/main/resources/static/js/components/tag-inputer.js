@@ -79,7 +79,7 @@ const searchTag = async (event) => {
         return;
     }
 
-    const url = `http://localhost:8080/api/tags?keyword=${keyword}`;
+    const url = `/api/tags?keyword=${keyword}`;
 
     try {
         let response = await request(url, GET, null);

@@ -21,7 +21,7 @@ const createComment = async (event) => {
 
     const postId = commentTextArea.closest(".post").dataset.postid;
 
-    const url = `http://localhost:8080/posts/${postId}/comments`;
+    const url = `/posts/${postId}/comments`;
 
     let body = {
         "parentCommentId": null,
@@ -52,7 +52,7 @@ const replyComment = async (event) => {
 
     const postId = commentTextArea.closest(".post").dataset.postid;
 
-    const url = `http://localhost:8080/posts/${postId}/comments`;
+    const url = `/posts/${postId}/comments`;
 
     let body = {
         "parentCommentId": parentCommentId,
@@ -77,7 +77,7 @@ const deleteComment = async (event) => {
     const commentId = comment.id.substr(2);
     const postId = comment.closest(".post").dataset.postid;
 
-    const url = `http://localhost:8080/posts/${postId}/comments/${commentId}`;
+    const url = `/posts/${postId}/comments/${commentId}`;
     try {
         const response = await request(url, DELETE, null);
         comment.querySelector(".comment-author").innerText = response.deletedAuthorName;
@@ -110,7 +110,7 @@ const editComment = async (event) => {
         return;
     }
 
-    const url = `http://localhost:8080/posts/${postId}/comments/${commentId}`;
+    const url = `/posts/${postId}/comments/${commentId}`;
 
     let body = {
         "content": content

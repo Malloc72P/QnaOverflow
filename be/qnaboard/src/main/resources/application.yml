@@ -26,3 +26,6 @@ spring:
   messages:
     basename: i18n/messages, i18n/errors
     encoding: UTF-8
+qnaoverflow:
+  api:
+    url: ${api_url}

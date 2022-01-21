@@ -35,7 +35,9 @@
 <script th:src="@{/js/lib/answer.js}"></script>
 <script th:src="@{/js/lib/comment.js}"></script>
 <script th:src="@{/js/lib/vote.js}"></script>
-<script>
+<script th:inline="javascript">
+
+    const serverAddress = [[${@environment.getProperty('qnaoverflow.api.url')}]];
 
     /**
      * 부트스트랩 버튼의 애니메이션을 고치기 위한 함수. 포커스를 대상 엘리먼트에 부여하고, 150초 후에 풀어버린다.
@@ -52,8 +54,7 @@
     for (const element of elements) {
         element.addEventListener("pointerdown", () => handleBtnClickEffect(element));
     }
-</script>
-<script>
+
     //사이드바 active 처리
     const sidebarLinks = document.querySelectorAll(".sidebar-link");
     const pathname = document.location.pathname;
@@ -72,7 +73,7 @@
     if (pathname === "/") {
         sidebarLinks[0].classList.add("active");
     }
-
 </script>
+
 <script th:replace="${scripts}?:_"></script>
 </html>

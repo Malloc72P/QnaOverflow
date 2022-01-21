@@ -16,3 +16,4 @@ spring:
 database_url: localhost:3306
 database_username: dev
 database_password: dev1234
+api_url: http://localhost:8080

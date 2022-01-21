@@ -1,10 +1,10 @@
 const createAnswer = async (event) => {
     event.preventDefault();
-    let textAreaElement = document.getElementById("textarea-submit-answer");
-    let content = textAreaElement.value;
-    let questionId = textAreaElement.closest(".content-root").dataset.questionid;
-    let url = `http://localhost:8080/questions/${questionId}/answers`;
-    let body = {"content": content};
+    const textAreaElement = document.getElementById("textarea-submit-answer");
+    const content = textAreaElement.value;
+    const questionId = textAreaElement.closest(".content-root").dataset.questionid;
+    const url = `/questions/${questionId}/answers`;
+    const body = {"content": content};
 
     try {
         let response = await request(url, POST, body);
@@ -36,12 +36,12 @@ const deleteAnswer = async (event) => {
     const answer = event.target.closest(".answer");
     const answerId = answer.id.substring(2);
 
-    const url = `http://localhost:8080/questions/${questionId}/answers/${answerId}`;
+    const url = `/questions/${questionId}/answers/${answerId}`;
 
     let body = {};
 
     try {
-        const response = await request(url, DELETE, body);
+        await request(url, DELETE, body);
         answer.remove();
         decreaseAnswerCount();
 
@@ -59,7 +59,7 @@ const editAnswer = async (event) => {
     const answerId = answer.id.substring(2);
     const content = answer.querySelector(".answer-edit-form")[0].value;
 
-    const url = `http://localhost:8080/questions/${questionId}/answers/${answerId}`;
+    const url = `/questions/${questionId}/answers/${answerId}`;
 
     let body = {
         "content": content
