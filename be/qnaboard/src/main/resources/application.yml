@@ -7,7 +7,7 @@ spring:
     encoding: UTF-8
     prefix: classpath:/templates
   profiles:
-    active: dev
+    active: local
     include: oauth
   datasource:
     url: jdbc:mysql://${database_url}/qnaboard

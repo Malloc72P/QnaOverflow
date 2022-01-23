@@ -73,6 +73,20 @@
     if (pathname === "/") {
         sidebarLinks[0].classList.add("active");
     }
+
+    //검색창에 focus가 생기면 검색 힌트를 보여주도록 설정
+    const searchInput = document.getElementById("question-search-input");
+    const searchHint = document.getElementById("search-question-hint");
+    //검색힌트를 눌러도 힌트가 사라지지 않도록 설정
+    searchHint.addEventListener("mousedown", (event) => event.preventDefault());
+    searchHint.addEventListener("pointerdown", (event) => event.preventDefault());
+    //검색힌트를 보여주거나 숨기는 이벤트리스너 등록
+    searchInput.addEventListener("focusin", () => {
+        searchHint.classList.remove("hide-search-hint")
+    });
+    searchInput.addEventListener("focusout", () => {
+        searchHint.classList.add("hide-search-hint")
+    });
 </script>
 
 <script th:replace="${scripts}?:_"></script>
