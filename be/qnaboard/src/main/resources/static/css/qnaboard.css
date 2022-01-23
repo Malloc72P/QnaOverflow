@@ -23,6 +23,14 @@
     .tag-card {
         width: 100%;
     }
+
+    .question-list-item .left-side {
+        flex: unset!important;
+    }
+
+    .question-list-item .right-side {
+        flex: unset!important;
+    }
 }
 
 @media (min-width: 768px) {
@@ -41,8 +49,13 @@
 }
 
 .question-list-item .left-side {
+    flex: 1;
     display: flex;
     color: #6c757d;
+}
+
+.question-list-item .right-side {
+    flex: 5;
 }
 
 .question-list-item .left-side .left-button {

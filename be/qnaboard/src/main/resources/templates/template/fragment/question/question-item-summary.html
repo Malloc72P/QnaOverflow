@@ -12,7 +12,7 @@
      th:fragment="question_item_summary(question)">
     <!--/*@thymesVar id="question" type="scra.qnaboard.web.dto.question.list.QuestionSummaryDTO"*/-->
     <div class="row">
-        <div class="left-side col-lg-4 col-sm-5">
+        <div class="left-side">
             <div class="left-button" style="white-space: nowrap">
                 <div class="up" th:text="${question.voteScore}">3</div>
                 <div th:text="#{ui.question.summary.votes}">votes</div>
@@ -26,7 +26,7 @@
                 <div th:text="#{ui.question.summary.views}">views</div>
             </div>
         </div>
-        <div class="right-side col-lg-8 col-sm-7">
+        <div class="right-side">
             <a class="d-inline-block text-decoration-none text-break"
                th:href="@{/questions/{questionId}(questionId=${question.questionId})}">
                 <h3 th:text="${question.title}">title</h3>
