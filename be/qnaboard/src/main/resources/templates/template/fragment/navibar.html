@@ -37,11 +37,11 @@
             <div id="search-question-hint"
                  class="card w-100 position-absolute mt-2 z p-3 shadow hide-search-hint"
                  style="z-index: 10000; transition: 0.3s;">
-                <p>[tag]<span class="text-muted">태그로 검색하기</span></p>
-                <p>"title"<span class="text-muted">질문게시글 제목으로 검색하기</span></p>
-                <p>user:1<span class="text-muted">유저 아이디로 검색하기</span></p>
-                <p>answers:3<span class="text-muted">답변게시글 개수로 검색하기</span></p>
-                <p>score:10<span class="text-muted">추천 점수로 검색하기</span></p>
+                <p class="fw-bold">[tag]<span class="text-muted ms-2" th:text="#{ui.question.search.hint.tag}">태그로 검색하기</span></p>
+                <p class="fw-bold">"title"<span class="text-muted ms-2" th:text="#{ui.question.search.hint.title}">질문게시글 제목으로 검색하기</span></p>
+                <p class="fw-bold">user:1<span class="text-muted ms-2" th:text="#{ui.question.search.hint.user}">유저 아이디로 검색하기</span></p>
+                <p class="fw-bold">answers:3<span class="text-muted ms-2" th:text="#{ui.question.search.hint.answers}">답변게시글 개수로 검색하기</span></p>
+                <p class="fw-bold">score:10<span class="text-muted ms-2" th:text="#{ui.question.search.hint.score}">추천 점수로 검색하기</span></p>
             </div>
         </form>
         <!--/*로그인, 회원기능을 위한 영역*/-->
