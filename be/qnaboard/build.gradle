@@ -42,9 +42,6 @@ dependencies {
     implementation "com.querydsl:querydsl-apt:${queryDslVersion}"
     //querydsl 추가 종료
 
-    //p6spy sql 로깅 라이브러리
-    implementation("com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.7.1")
-
     //mysql connector
     runtimeOnly 'mysql:mysql-connector-java'
 
