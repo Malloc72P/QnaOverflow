@@ -2,7 +2,7 @@
 
 > ** Q&A 게시판 프로젝트**
 >
-> demo : https://qnaboard.com
+> demo : https://qnaoverflow.dase.me
 
 
 
