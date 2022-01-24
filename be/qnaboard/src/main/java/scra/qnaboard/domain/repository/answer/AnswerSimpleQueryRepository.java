@@ -51,7 +51,7 @@ public class AnswerSimpleQueryRepository {
                         answer.author.nickname
                 )).from(answer)
                 .innerJoin(answer.author, member)
-                .where(expressionSupplier.answerNotDeletedAndEqualsId(questionId))
+                .where(expressionSupplier.answerNotDeletedAndEqualsQuestionId(questionId))
                 .fetch();
     }
 

@@ -3,7 +3,9 @@ package scra.qnaboard.domain.repository.question;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.JPAExpressions;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import scra.qnaboard.domain.repository.answer.AnswerBooleanExpressionSupplier;
 import scra.qnaboard.web.dto.question.search.ParsedSearchQuestionDTO;
 
 import static scra.qnaboard.domain.entity.QTag.tag;
@@ -12,7 +14,10 @@ import static scra.qnaboard.domain.entity.post.QQuestion.question;
 import static scra.qnaboard.domain.entity.questiontag.QQuestionTag.questionTag;
 
 @Component
+@RequiredArgsConstructor
 public class QuestionBooleanExpressionSupplier {
+
+    private final AnswerBooleanExpressionSupplier answerExpressions;
 
     /**
      * soft delete 되지 않았고 아이디가 같은지에 대한 BooleanExpression. 거의 모든 단건 검색 쿼리에서 사용한다
@@ -50,7 +55,8 @@ public class QuestionBooleanExpressionSupplier {
     public BooleanExpression answersCountGoe(ParsedSearchQuestionDTO dto) {
         return dto.hasAnswers() ? JPAExpressions.select(answer.count())
                 .from(answer)
-                .where(answer.question.id.eq(question.id)).goe(dto.getAnswers())
+                .where(answerExpressions.answerNotDeletedAndEqualsQuestionId())
+                .goe(dto.getAnswers())
                 : null;
     }
 

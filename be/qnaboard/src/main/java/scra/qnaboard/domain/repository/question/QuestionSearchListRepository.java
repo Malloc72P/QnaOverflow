@@ -9,6 +9,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+import scra.qnaboard.domain.repository.answer.AnswerBooleanExpressionSupplier;
 import scra.qnaboard.domain.repository.tag.QuestionTagSimpleQueryRepository;
 import scra.qnaboard.domain.repository.vote.VoteSimpleQueryRepository;
 import scra.qnaboard.web.dto.question.list.QQuestionSummaryDTO;
@@ -33,7 +34,8 @@ import static scra.qnaboard.domain.entity.post.QQuestion.question;
 public class QuestionSearchListRepository {
     private final JPAQueryFactory queryFactory;
 
-    private final QuestionBooleanExpressionSupplier expressionSupplier;
+    private final QuestionBooleanExpressionSupplier questionExpressions;
+    private final AnswerBooleanExpressionSupplier answerExpressions;
 
     private final QuestionTagSimpleQueryRepository questionTagRepository;
     private final VoteSimpleQueryRepository voteRepository;
@@ -56,14 +58,14 @@ public class QuestionSearchListRepository {
                         question.title,
                         JPAExpressions.select(answer.id.count().intValue())
                                 .from(answer)
-                                .where(answer.question.id.eq(question.id)),
+                                .where(answerExpressions.answerNotDeletedAndEqualsQuestionId()),
                         question.viewCount,
                         question.score,
                         question.createdDate,
                         question.author.nickname
                 )).from(question)
                 .innerJoin(question.author, member)
-                .where(expressionSupplier.searchQuestions(searchQuestionDTO))
+                .where(questionExpressions.searchQuestions(searchQuestionDTO))
                 .orderBy(question.createdDate.desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
@@ -91,6 +93,6 @@ public class QuestionSearchListRepository {
         return queryFactory.select(question.id.count())
                 .from(question)
                 .innerJoin(question.author, member)
-                .where(expressionSupplier.searchQuestions(searchQuestionDTO));
+                .where(questionExpressions.searchQuestions(searchQuestionDTO));
     }
 }
