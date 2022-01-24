@@ -28,3 +28,5 @@ spring:
 qnaoverflow:
   api:
     url: ${api_url}
+server:
+  forward-headers-strategy: native
