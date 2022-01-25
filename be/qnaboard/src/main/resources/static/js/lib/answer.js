@@ -7,27 +7,38 @@ const createAnswer = async (event) => {
     const body = {"content": content};
 
     try {
-        let response = await request(url, POST, body);
-
-        let parser = new DOMParser();
-        let answerElementWrapper = parser.parseFromString(response, "text/html");
-        let answerElement = answerElementWrapper.querySelector(".answer");
-
-        answerElement.querySelector(".answer-delete").addEventListener("click", deleteAnswer);
-        answerElement.querySelector(".answer-edit").addEventListener("click", toggleEditAnswerForm);
-        answerElement.querySelector(".answer-edit-form").addEventListener("submit", editAnswer);
-        answerElement.querySelector(".up-vote-button").addEventListener("click", vote);
-        answerElement.querySelector(".down-vote-button").addEventListener("click", vote);
-
-        let answerWrapper = document.getElementById("answer-wrapper");
-        answerWrapper.appendChild(answerElement);
-
-        increaseAnswerCount();
+        //필요한 엘리먼트 찾기
+        const response = await request(url, POST, body);
+        const parser = new DOMParser();
+        const answerElementWrapper = parser.parseFromString(response, "text/html");
+        const answerElement = answerElementWrapper.querySelector(".answer");
+        //새로 생성된 엘리먼트에 이벤트리스너 바인딩
+        setAnswerEventListener(answerElement);
+        //엘리먼트를 dom에 추가
+        appendAnswer(answerElement);
+        //답변게시글 입력 필드 초기화
         textAreaElement.value = "";
     } catch (error) {
         alertError(error);
     }
 
+};
+
+const appendAnswer = (answerElement) => {
+    //답변게시글 목록에 새로 생성한 답변게시글 추가
+    const answerWrapper = document.getElementById("answer-wrapper");
+    answerWrapper.appendChild(answerElement);
+    //답변게시글 개수 증가
+    increaseAnswerCount();
+};
+
+const setAnswerEventListener = (answerElement) => {
+    answerElement.querySelector(".answer-delete").addEventListener("click", deleteAnswer);
+    answerElement.querySelector(".answer-edit").addEventListener("click", toggleEditAnswerForm);
+    answerElement.querySelector(".answer-edit-form").addEventListener("submit", editAnswer);
+    answerElement.querySelector(".up-vote-button").addEventListener("click", vote);
+    answerElement.querySelector(".down-vote-button").addEventListener("click", vote);
+    answerElement.querySelector(".create-comment-form").addEventListener("submit", createComment);
 };
 
 const deleteAnswer = async (event) => {

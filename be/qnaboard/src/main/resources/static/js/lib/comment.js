@@ -14,25 +14,30 @@ const toggleCommentEditor = (event) => {
 
 const createComment = async (event) => {
     event.preventDefault();
+    //필요한 엘리먼트 찾기
     const commentTextArea = event.target[0];
     const content = commentTextArea.value;
     const commentWrapper = commentTextArea.closest(".comment-wrapper");
     const commentList = commentWrapper.querySelector(".comment-list");
-
+    //게시글 아이디 찾기
     const postId = commentTextArea.closest(".post").dataset.postid;
-
+    //api url 생성
     const url = `/posts/${postId}/comments`;
-
+    //서버에 전송할 body 생성
     let body = {
         "parentCommentId": null,
         "content": content
     };
-
     try {
+        //api 요청
         const response = await request(url, PUT, body);
+        //엘리먼트 생성을 위해 dom parser생성
         const domParser = new DOMParser();
+        //domParser를 가지고 응답메세지를 엘리먼트로 파싱
         const comment = domParser.parseFromString(response, "text/html").querySelector(".comment");
+        //이벤트리스너 바인딩
         setCommentEventListener(comment);
+        //엘리먼트를 dom에 추가
         commentList.appendChild(comment);
         commentTextArea.value = "";
 
