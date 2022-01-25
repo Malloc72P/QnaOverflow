@@ -164,5 +164,6 @@
 .hide-form {
     opacity: 0;
     height: 0;
+    position: fixed;
     visibility: hidden;
 }
