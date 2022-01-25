@@ -23,9 +23,8 @@
     </div>
     <script th:inline="javascript">
         const tagParam = [[${tags}]];
-        console.log(tagParam)
     </script>
-    <script th:src="@{/js/lib/tag-inputer.js}"></script>
+    <script type="module" th:src="@{/js/pages/tag-inputer.js}"></script>
 </div>
 
 </body>

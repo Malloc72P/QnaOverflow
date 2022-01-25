@@ -1,3 +1,5 @@
+import {ApiHelper} from "./apiHelper.js";
+
 export class Comment {
 
     static #parser = new DOMParser();
@@ -20,7 +22,7 @@ export class Comment {
         };
         try {
             //api 요청
-            const response = await request(url, PUT, body);
+            const response = await ApiHelper.request(url, ApiHelper.PUT, body);
             //domParser를 가지고 응답메세지를 엘리먼트로 파싱
             const comment = Comment.#parser.parseFromString(response, "text/html").querySelector(".comment");
             //이벤트리스너 바인딩
@@ -29,7 +31,7 @@ export class Comment {
             commentList.appendChild(comment);
             commentTextArea.value = "";
         } catch (error) {
-            alertError(error);
+            ApiHelper.alertError(error);
         }
     };
 
@@ -52,14 +54,14 @@ export class Comment {
         };
 
         try {
-            const response = await request(url, PUT, body);
+            const response = await ApiHelper.request(url, ApiHelper.PUT, body);
             const comment = Comment.#parser.parseFromString(response, "text/html").querySelector(".comment");
             this.#setCommentEventListener(comment);
             commentList.appendChild(comment);
             commentTextArea.value = "";
             commentWriter.classList.toggle("d-none");
         } catch (error) {
-            alertError(error);
+            ApiHelper.alertError(error);
         }
     };
 
@@ -70,11 +72,11 @@ export class Comment {
 
         const url = `/posts/${postId}/comments/${commentId}`;
         try {
-            const response = await request(url, DELETE, null);
+            const response = await ApiHelper.request(url, ApiHelper.DELETE, null);
             comment.querySelector(".comment-author").innerText = response.deletedAuthorName;
             comment.querySelector(".comment-content").innerText = response.deletedContentName;
         } catch (error) {
-            alertError(error);
+            ApiHelper.alertError(error);
         }
     }
 
@@ -105,7 +107,7 @@ export class Comment {
             "content": content
         };
         try {
-            const response = await request(url, PATCH, body);
+            const response = await ApiHelper.request(url, ApiHelper.PATCH, body);
 
             //댓글 내용 바꾸고 입력폼의 내용도 최신화하기
             comment.querySelector(".comment-content").innerText = response.content;
@@ -114,7 +116,7 @@ export class Comment {
             //댓글 수정 폼 숨기기
             commentEditor.classList.toggle("d-none");
         } catch (error) {
-            alertError(error);
+            ApiHelper.alertError(error);
         }
     };
 

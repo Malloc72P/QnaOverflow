@@ -1,3 +1,5 @@
+import {ApiHelper} from "./apiHelper.js";
+
 export class Vote {
     static #VOTE_UP = "UP";
     static #VOTE_DOWN = "DOWN";
@@ -14,10 +16,10 @@ export class Vote {
         const url = `/api/posts/${postId}/votes?voteType=${voteType}`;
 
         try {
-            await request(url, PUT, null);
+            await ApiHelper.request(url, ApiHelper.PUT, null);
             voteScore.innerText = prevScore + Vote.#valueByVoteType(voteType);
         } catch (error) {
-            alertError(error);
+            ApiHelper.alertError(error);
         }
     };
 

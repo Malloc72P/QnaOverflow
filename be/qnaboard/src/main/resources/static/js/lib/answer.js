@@ -1,5 +1,6 @@
 import {Vote} from "./vote.js";
 import {Comment} from "./comment.js";
+import {ApiHelper} from "./apiHelper.js";
 
 export class Answer {
     #parser = new DOMParser();
@@ -73,7 +74,7 @@ export class Answer {
 
         try {
             //필요한 엘리먼트 찾기
-            const response = await request(url, POST, body);
+            const response = await ApiHelper.request(url, ApiHelper.POST, body);
             const answerElementWrapper = this.#parser.parseFromString(response, "text/html");
             const answerElement = answerElementWrapper.querySelector(".answer");
             //새로 생성된 엘리먼트에 이벤트리스너 바인딩
@@ -83,7 +84,7 @@ export class Answer {
             //답변게시글 입력 필드 초기화
             this.#createAnswerTextArea.value = "";
         } catch (error) {
-            alertError(error);
+            ApiHelper.alertError(error);
         }
     };
 
@@ -92,11 +93,11 @@ export class Answer {
         const answerId = Answer.#extractAnswerId(answer)
         const url = `/questions/${this.#questionId}/answers/${answerId}`;
         try {
-            await request(url, DELETE, {});
+            await ApiHelper.request(url, ApiHelper.DELETE, {});
             answer.remove();
             this.#decreaseAnswerCount();
         } catch (error) {
-            alertError(error);
+            ApiHelper.alertError(error);
         }
     };
 
@@ -111,7 +112,7 @@ export class Answer {
         };
         try {
             //api 요청
-            const response = await request(url, PATCH, body);
+            const response = await ApiHelper.request(url, ApiHelper.PATCH, body);
             //답변의 내용을 담고 있는 엘리먼트 찾고 업데이트하기
             const answerContent = answer.querySelector(".post-content-wrapper");
             answerContent.innerText = response.content;
@@ -121,7 +122,7 @@ export class Answer {
             //답변수정폼 토글(숨기기)
             Answer.#toggleEditFormByAnswer(answer);
         } catch (error) {
-            alertError(error);
+            ApiHelper.alertError(error);
         }
     };
 
