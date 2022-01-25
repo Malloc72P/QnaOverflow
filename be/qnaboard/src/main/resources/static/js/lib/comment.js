@@ -211,15 +211,15 @@ export class Comment {
     };
 
     #openForm = (element) => {
-        element.classList.remove("hide-comment-form");
+        element.classList.remove("hide-form");
     };
 
     #closeForm = (element) => {
-        element.classList.add("hide-comment-form");
+        element.classList.add("hide-form");
     };
 
     #isClosed = (element) => {
-        return element.classList.contains("hide-comment-form");
+        return element.classList.contains("hide-form");
     }
 
 

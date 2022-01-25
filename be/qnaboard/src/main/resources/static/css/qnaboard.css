@@ -161,7 +161,7 @@
     transition-timing-function: ease-in-out;
 }
 
-.hide-comment-form {
+.hide-form {
     opacity: 0;
     height: 0;
     transform: translateX(100%);
