@@ -34,8 +34,8 @@ const upVoteButtons = document.querySelectorAll(".up-vote-button");
 const downVoteButtons = document.querySelectorAll(".down-vote-button");
 
 for (const upVoteButton of upVoteButtons) {
-    upVoteButton.addEventListener("pointerdown", vote);
+    upVoteButton.addEventListener("click", vote);
 }
 for (const downVoteButton of downVoteButtons) {
-    downVoteButton.addEventListener("pointerdown", vote);
+    downVoteButton.addEventListener("click", vote);
 }

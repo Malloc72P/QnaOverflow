@@ -16,8 +16,8 @@ const createAnswer = async (event) => {
         answerElement.querySelector(".answer-delete").addEventListener("click", deleteAnswer);
         answerElement.querySelector(".answer-edit").addEventListener("click", toggleEditAnswerForm);
         answerElement.querySelector(".answer-edit-form").addEventListener("submit", editAnswer);
-        answerElement.querySelector(".up-vote-button").addEventListener("pointerdown", vote);
-        answerElement.querySelector(".down-vote-button").addEventListener("pointerdown", vote);
+        answerElement.querySelector(".up-vote-button").addEventListener("click", vote);
+        answerElement.querySelector(".down-vote-button").addEventListener("click", vote);
 
         let answerWrapper = document.getElementById("answer-wrapper");
         answerWrapper.appendChild(answerElement);
@@ -73,7 +73,7 @@ const editAnswer = async (event) => {
         const lastModifiedDate = answer.querySelector(".post-controller .last-modified-date");
         lastModifiedDate.innerText = response.lastModifiedDate;
 
-        // answer.querySelector(".answer-edit").dispatchEvent(new Event("pointerdown"));
+        // answer.querySelector(".answer-edit").dispatchEvent(new Event("click"));
         answer.querySelector(".answer-edit-form").classList.toggle("d-none");
     } catch (error) {
         alertError(error);

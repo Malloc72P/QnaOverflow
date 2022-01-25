@@ -132,9 +132,9 @@ const editComment = async (event) => {
 
 
 const setCommentEventListener = (comment) => {
-    comment.querySelector(".toggle-comment-writer").addEventListener("pointerdown", toggleCommentWriter);
+    comment.querySelector(".toggle-comment-writer").addEventListener("click", toggleCommentWriter);
     comment.querySelector(".reply-comment-form").addEventListener("submit", replyComment);
-    comment.querySelector(".toggle-comment-editor").addEventListener("pointerdown", toggleCommentEditor);
+    comment.querySelector(".toggle-comment-editor").addEventListener("click", toggleCommentEditor);
     comment.querySelector(".edit-comment-form").addEventListener("submit", editComment);
-    comment.querySelector(".delete-comment-button").addEventListener("pointerdown", deleteComment);
+    comment.querySelector(".delete-comment-button").addEventListener("click", deleteComment);
 }

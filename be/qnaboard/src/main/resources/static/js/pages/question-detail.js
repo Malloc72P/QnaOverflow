@@ -1,7 +1,7 @@
 //답변게시글 처리
 const deleteAnswerButtons = document.querySelectorAll(".answer-delete");
 for (const deleteAnswerButton of deleteAnswerButtons) {
-    deleteAnswerButton.addEventListener("pointerdown", deleteAnswer);
+    deleteAnswerButton.addEventListener("click", deleteAnswer);
 }
 
 const submitAnswerButton = document.getElementById("submit-answer-button");
@@ -9,7 +9,7 @@ submitAnswerButton.addEventListener("click", createAnswer);
 
 const editAnswerButtons = document.querySelectorAll(".answer-edit");
 for (const button of editAnswerButtons) {
-    button.addEventListener("pointerdown", toggleEditAnswerForm);
+    button.addEventListener("click", toggleEditAnswerForm);
 }
 
 const editAnswerForms = document.querySelectorAll(".answer-edit-form");
@@ -26,7 +26,7 @@ for (const commentForm of createCommentForms) {
 
 const toggleCommentWriterButtons = document.querySelectorAll(".toggle-comment-writer");
 for (const toggleCommentWriterButton of toggleCommentWriterButtons) {
-    toggleCommentWriterButton.addEventListener("pointerdown", toggleCommentWriter);
+    toggleCommentWriterButton.addEventListener("click", toggleCommentWriter);
 }
 
 const replyCommentForms = document.querySelectorAll(".reply-comment-form");
@@ -36,12 +36,12 @@ for (const replyCommentForm of replyCommentForms) {
 
 const deleteCommentButtons = document.querySelectorAll(".delete-comment-button");
 for (const deleteCommentButton of deleteCommentButtons) {
-    deleteCommentButton.addEventListener("pointerdown", deleteComment);
+    deleteCommentButton.addEventListener("click", deleteComment);
 }
 
 const toggleCommentEditorButtons = document.querySelectorAll(".toggle-comment-editor");
 for (const toggleCommentEditorButton of toggleCommentEditorButtons) {
-    toggleCommentEditorButton.addEventListener("pointerdown", toggleCommentEditor);
+    toggleCommentEditorButton.addEventListener("click", toggleCommentEditor);
 }
 
 const editCommentForms = document.querySelectorAll(".edit-comment-form");

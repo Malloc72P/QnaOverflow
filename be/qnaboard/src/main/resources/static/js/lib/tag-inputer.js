@@ -26,7 +26,7 @@ const addSuggestion = (id, name) => {
     const htmlButtonElement = domParser.parseFromString(
         `<a class="btn btn-sm btn-secondary me-1 mb-1" href="javascript:" data-tagid="${id}">${name}</a>`,
         "text/html").querySelector("a");
-    htmlButtonElement.addEventListener("pointerdown", onSelectTag);
+    htmlButtonElement.addEventListener("click", onSelectTag);
     tagSuggestions.appendChild(htmlButtonElement);
 }
 
@@ -43,7 +43,7 @@ const selectTag = (tagId, tagName) => {
                     <a class="text-decoration-none text-white tag-name" href="javascript:" role="button">${tagName}</a>
                     <a class="text-decoration-none text-white hover-bold tag-delete" href="javascript:" role="button">❌</a>
                </span>`, "text/html").querySelector("span");
-    tagElement.querySelector(".tag-delete").addEventListener("pointerdown", removeTag);
+    tagElement.querySelector(".tag-delete").addEventListener("click", removeTag);
     selectedTags.appendChild(tagElement);
 
     selectedTagMap.set(tagId, {"name": tagName, "tagElement": tagElement});
@@ -108,7 +108,7 @@ const onTagSearchButton = (event) => {
 };
 
 tagInput.addEventListener("keydown", onTagInputKeyDown);
-tagSearchButton.addEventListener("pointerdown", onTagSearchButton);
+tagSearchButton.addEventListener("click", onTagSearchButton);
 
 if (tagParam && tagParam.length > 0) {
     for (const tag of tagParam) {
