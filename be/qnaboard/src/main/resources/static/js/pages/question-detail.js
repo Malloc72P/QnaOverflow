@@ -1,24 +1,21 @@
 //답변게시글 처리
-const deleteAnswerButtons = document.querySelectorAll(".answer-delete");
-for (const deleteAnswerButton of deleteAnswerButtons) {
-    deleteAnswerButton.addEventListener("click", deleteAnswer);
+import {Answer} from "../lib/answer.js";
+
+class QuestionDetail {
+
+    #answer = new Answer();
+
+    init = () => {
+        this.#answer.init();
+    }
 }
 
-const submitAnswerButton = document.getElementById("submit-answer-button");
-submitAnswerButton.addEventListener("click", createAnswer);
+const questionDetail = new QuestionDetail();
 
-const editAnswerButtons = document.querySelectorAll(".answer-edit");
-for (const button of editAnswerButtons) {
-    button.addEventListener("click", toggleEditAnswerForm);
-}
+questionDetail.init()
 
-const editAnswerForms = document.querySelectorAll(".answer-edit-form");
-for (const form of editAnswerForms) {
-    form.addEventListener("submit", editAnswer);
-}
 
 //댓글 처리
-
 const createCommentForms = document.querySelectorAll(".create-comment-form");
 for (const commentForm of createCommentForms) {
     commentForm.addEventListener("submit", createComment);
