@@ -75,6 +75,7 @@ export class Comment {
             const response = await ApiHelper.request(url, ApiHelper.DELETE, null);
             comment.querySelector(".comment-author").innerText = response.deletedAuthorName;
             comment.querySelector(".comment-content").innerText = response.deletedContentName;
+            comment.querySelector(".comment-buttons").remove();
         } catch (error) {
             ApiHelper.alertError(error);
         }

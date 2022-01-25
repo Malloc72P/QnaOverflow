@@ -11,7 +11,7 @@
             <div class="d-inline-block comment-author"
                  th:text="(!${comment.deleted})? ${comment.authorName} : #{ui.comment.delete.author-name}">Edward Nygma
             </div>
-            <div class="float-end">
+            <div class="float-end comment-buttons" th:if="!${comment.deleted}">
                 <span th:text="${{comment.createdDate}}">2021-12-12 12:12PM</span>
                 <a class="toggle-comment-writer text-decoration-none text-black hover-underline"
                    href="javascript:">답글</a>
