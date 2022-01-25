@@ -25,11 +25,11 @@
     }
 
     .question-list-item .left-side {
-        flex: unset!important;
+        flex: unset !important;
     }
 
     .question-list-item .right-side {
-        flex: unset!important;
+        flex: unset !important;
     }
 }
 
@@ -156,7 +156,7 @@
     transform: translateY(-300%);
 }
 
-.comment-writer, .comment-editor {
+.comment-writer, .comment-editor, .answer-edit-form {
     transition: 0.3s;
     transition-timing-function: ease-in-out;
 }
@@ -164,5 +164,5 @@
 .hide-form {
     opacity: 0;
     height: 0;
-    transform: translateX(100%);
+    visibility: hidden;
 }

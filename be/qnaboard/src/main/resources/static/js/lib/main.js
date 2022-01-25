@@ -68,3 +68,54 @@ class Main {
 
 const main = new Main();
 main.init();
+
+export class Toggler {
+
+    currentlyOpenedForm = null;
+
+    /**
+     * 폼을 열고 닫는 토글 기능을 수행하는 메서드
+     * 만약 기존에 열려있던 엘리먼트가 있는 상태에서 새로운 폼을 열려고 시도하면,
+     * 기존 폼을 닫고나서 새로운 폼을 열어준다.
+     * @param newForm 토글 기능을 수행할 새로운 폼
+     */
+    toggleForm = (newForm) => {
+        //닫혀있는 상태라면...
+        if (this.isClosed(newForm)) {
+            //기존에 열려있던 폼을 닫은 다음,
+            this.closeCurrentlyOpenedForm();
+            //새로운 폼을 열어준다
+            this.openForm(newForm);
+            //currentlyOpenedForm을 새로운 폼으로 업데이트한다
+            this.currentlyOpenedForm = newForm;
+        } else {//열려있는 상태라면...
+            //닫아준다
+            this.closeForm(newForm);
+        }
+    };
+
+    openForm = (element) => {
+        element.classList.remove("hide-form");
+    };
+
+    closeForm = (element) => {
+        element.classList.add("hide-form");
+    };
+
+    isClosed = (element) => {
+        return element.classList.contains("hide-form");
+    }
+
+    /**
+     * 현재 열려있는
+     */
+    closeCurrentlyOpenedForm = () => {
+        //현재 열려있는 폼이 없으면 바로 리턴한다
+        if (!this.currentlyOpenedForm) {
+            return;
+        }
+        //현재 열려있는 폼을 닫고 상태값을 null로 초기화한다
+        this.closeForm(this.currentlyOpenedForm);
+        this.currentlyOpenedForm = null;
+    };
+}
