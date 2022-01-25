@@ -5,8 +5,8 @@ import scra.qnaboard.service.exception.EntityNotFoundException;
 public class AlreadyDeletedCommentException extends EntityNotFoundException {
     private static final String MESSAGE = "이미 삭제된 댓글입니다 : ";
 
-    public AlreadyDeletedCommentException(Long postId) {
-        super(MESSAGE + postId);
+    public AlreadyDeletedCommentException(Long commentId) {
+        super(MESSAGE + commentId);
     }
 
     @Override

@@ -9,6 +9,7 @@ import scra.qnaboard.domain.entity.post.Post;
 import scra.qnaboard.domain.repository.comment.CommentRepository;
 import scra.qnaboard.domain.repository.comment.CommentSimpleQueryRepository;
 import scra.qnaboard.service.exception.comment.AlreadyDeletedCommentException;
+import scra.qnaboard.service.exception.comment.AlreadyDeletedParentCommentException;
 import scra.qnaboard.service.exception.comment.CommentNotFoundException;
 import scra.qnaboard.service.exception.comment.delete.UnauthorizedCommentDeletionException;
 import scra.qnaboard.service.exception.comment.edit.UnauthorizedCommentEditException;
@@ -25,15 +26,32 @@ public class CommentService {
     private final CommentRepository commentRepository;
     private final CommentSimpleQueryRepository commentSimpleQueryRepository;
 
+    /**
+     * 댓글 생성 메서드
+     *
+     * @param requesterId     요청자의 아이디
+     * @param postId          댓글의 부모 게시글
+     * @param parentCommentId 댓글의 부모 댓글
+     * @param content         댓글의 내용
+     * @return 새로 생성된 댓글의 정보를 담은 DTO
+     */
     @Transactional
     public CommentDTO createComment(long requesterId, long postId, Long parentCommentId, String content) {
+        //요청자, 부모게시글, 부모댓글 엔티티를 조회함
         Member member = memberService.findMember(requesterId);
         Post parentPost = postService.findPostById(postId);
         Comment parentComment = findCommentParentById(parentCommentId);
 
+        //부모댓글이 존재하긴 하는데 지워졌다면 예외가 발생해야함
+        if (parentComment != null && parentComment.isDeleted()) {
+            throw new AlreadyDeletedParentCommentException(parentCommentId);
+        }
+
+        //댓글 엔티티를 생성하고 저장
         Comment comment = new Comment(member, content, parentPost, parentComment);
         comment = commentRepository.save(comment);
 
+        //DTO를 만들어서 반환
         return CommentDTO.from(comment);
     }
 
@@ -49,7 +67,7 @@ public class CommentService {
         Comment comment = commentWithAuthor(commentId);
         Member requester = memberService.findMember(requesterId);
 
-        //이미 삭제된 댓글인 경우 예외를 발생시켜야 함
+        //이미 삭제된 댓글인 경우 수정할 수 없음
         if (comment.isDeleted()) {
             throw new AlreadyDeletedCommentException(commentId);
         }
@@ -59,8 +77,10 @@ public class CommentService {
             throw new UnauthorizedCommentEditException(commentId, requesterId);
         }
 
+        //댓글 수정
         comment.update(content);
 
+        //업데이트된 댓글의 정보를 담은 DTO 반환
         return new EditCommentResultDTO(content);
     }
 
@@ -68,6 +88,11 @@ public class CommentService {
     public void deleteComment(long requesterId, long commentId) {
         Comment comment = commentWithAuthor(commentId);
         Member requester = memberService.findMember(requesterId);
+
+        //이미 삭제된 경우 또 삭제할 수 없음
+        if (comment.isDeleted()) {
+            throw new AlreadyDeletedCommentException(commentId);
+        }
 
         //관리자가 아니면서 소유자도 아니면 실패해야함
         if (requester.isNotAdmin() && comment.isNotOwner(requester)) {
@@ -79,7 +104,7 @@ public class CommentService {
         comment.delete();
     }
 
-    public Comment commentWithAuthor(long commentId) {
+    private Comment commentWithAuthor(long commentId) {
         return commentSimpleQueryRepository.commentWithAuthor(commentId)
                 .orElseThrow(() -> new CommentNotFoundException(commentId));
     }
