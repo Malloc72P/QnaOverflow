@@ -5,6 +5,11 @@ export class Answer {
     #questionId;//질문게시글 아이디
     #answerCount;//답변게시글 개수 엘리먼트
     #answerWrapper;//답변게시글 컨테이너
+    #comment;
+
+    constructor(comment) {
+        this.#comment = comment;
+    }
 
     /**
      * 답변기능 초기화 메서드. 여기서 질문 상세보기페이지를 위한 이벤트 바인딩을 함
@@ -105,7 +110,7 @@ export class Answer {
         answerElement.querySelector(".up-vote-button").addEventListener("click", vote);
         answerElement.querySelector(".down-vote-button").addEventListener("click", vote);
         //답변 댓글입력기능
-        answerElement.querySelector(".create-comment-form").addEventListener("submit", createComment);
+        answerElement.querySelector(".create-comment-form").addEventListener("submit", this.#comment.createComment);
     }
 
     #appendAnswer(answerElement) {
