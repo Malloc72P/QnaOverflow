@@ -3,7 +3,7 @@ class Main {
 
     init = () => {
         //버튼의 애니메이션을 개선하는 로직
-        const elements = document.querySelectorAll(".btn");
+        const elements = document.querySelectorAll(".navbar-toggler, .btn");
         for (const element of elements) {
             element.addEventListener("click", () => this.#handleBtnClickEffect(element));
         }
