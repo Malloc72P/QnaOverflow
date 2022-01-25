@@ -1,14 +1,39 @@
-export class Answer {
+import {Vote} from "./vote.js";
+import {Comment} from "./comment.js";
 
+export class Answer {
     #parser = new DOMParser();
     #createAnswerTextArea;//답변입력기의 textarea
     #questionId;//질문게시글 아이디
     #answerCount;//답변게시글 개수 엘리먼트
     #answerWrapper;//답변게시글 컨테이너
-    #comment;
 
-    constructor(comment) {
-        this.#comment = comment;
+    /**
+     * 답변 수정폼을 이벤트를 가지고 여닫는 메서드
+     * @param event HTML 클릭 이벤트
+     */
+    static #toggleEditFormByEvent(event) {
+        event.target
+            .closest(".answer")
+            .querySelector(".answer-edit-form")
+            .classList
+            .toggle("d-none");
+    };
+
+    /**
+     * 답변 수정폼을 답변게시글 HTML 엘리먼트를 가지고 여닫는 메서드
+     * @param answer 답변게시글 HTML 엘리먼트
+     */
+    static #toggleEditFormByAnswer(answer) {
+        answer.querySelector(".answer-edit-form").classList.toggle("d-none");
+    }
+
+    static #findAnswerFromEvent(event) {
+        return event.target.closest(".answer");
+    }
+
+    static #extractAnswerId(answer) {
+        return answer.id.substring(2);
     }
 
     /**
@@ -26,7 +51,7 @@ export class Answer {
         //모든 답변의 수정버튼 바인딩
         const editAnswerButtons = document.querySelectorAll(".answer-edit");
         for (const button of editAnswerButtons) {
-            button.addEventListener("click", this.#toggleEditFormByEvent);
+            button.addEventListener("click", Answer.#toggleEditFormByEvent);
         }
         //모든 답변의 수정폼 바인딩
         const editAnswerForms = document.querySelectorAll(".answer-edit-form");
@@ -63,8 +88,8 @@ export class Answer {
     };
 
     delete = async (event) => {
-        const answer = this.#findAnswerFromEvent(event);
-        const answerId = this.#extractAnswerId(answer)
+        const answer = Answer.#findAnswerFromEvent(event);
+        const answerId = Answer.#extractAnswerId(answer)
         const url = `/questions/${this.#questionId}/answers/${answerId}`;
         try {
             await request(url, DELETE, {});
@@ -77,8 +102,8 @@ export class Answer {
 
     edit = async (event) => {
         event.preventDefault();
-        const answer = this.#findAnswerFromEvent(event);
-        const answerId = this.#extractAnswerId(answer)
+        const answer = Answer.#findAnswerFromEvent(event);
+        const answerId = Answer.#extractAnswerId(answer)
         const content = answer.querySelector(".answer-edit-form")[0].value;
         const url = `/questions/${this.#questionId}/answers/${answerId}`;
         const body = {
@@ -94,7 +119,7 @@ export class Answer {
             const lastModifiedDate = answer.querySelector(".post-controller .last-modified-date");
             lastModifiedDate.innerText = response.lastModifiedDate;
             //답변수정폼 토글(숨기기)
-            this.#toggleEditFormByAnswer(answer);
+            Answer.#toggleEditFormByAnswer(answer);
         } catch (error) {
             alertError(error);
         }
@@ -105,12 +130,12 @@ export class Answer {
         answerElement.querySelector(".answer-delete").addEventListener("click", this.delete);
         answerElement.querySelector(".answer-edit-form").addEventListener("submit", this.edit);
         //답변 수정폼 토글기능
-        answerElement.querySelector(".answer-edit").addEventListener("click", this.#toggleEditFormByEvent);
+        answerElement.querySelector(".answer-edit").addEventListener("click", Answer.#toggleEditFormByEvent);
         //답변 투표기능
-        answerElement.querySelector(".up-vote-button").addEventListener("click", vote);
-        answerElement.querySelector(".down-vote-button").addEventListener("click", vote);
+        answerElement.querySelector(".up-vote-button").addEventListener("click", Vote.vote);
+        answerElement.querySelector(".down-vote-button").addEventListener("click", Vote.vote);
         //답변 댓글입력기능
-        answerElement.querySelector(".create-comment-form").addEventListener("submit", this.#comment.createComment);
+        answerElement.querySelector(".create-comment-form").addEventListener("submit", Comment.create);
     }
 
     #appendAnswer(answerElement) {
@@ -120,39 +145,11 @@ export class Answer {
         this.#increaseAnswerCount();
     }
 
-    /**
-     * 답변 수정폼을 이벤트를 가지고 여닫는 메서드
-     * @param event HTML 클릭 이벤트
-     */
-    #toggleEditFormByEvent(event) {
-        event.target
-            .closest(".answer")
-            .querySelector(".answer-edit-form")
-            .classList
-            .toggle("d-none");
-    };
-
-    /**
-     * 답변 수정폼을 답변게시글 HTML 엘리먼트를 가지고 여닫는 메서드
-     * @param answer 답변게시글 HTML 엘리먼트
-     */
-    #toggleEditFormByAnswer(answer) {
-        answer.querySelector(".answer-edit-form").classList.toggle("d-none");
-    }
-
     #increaseAnswerCount() {
         this.#answerCount.innerText = parseInt(this.#answerCount.innerText) + 1;
     }
 
     #decreaseAnswerCount() {
         this.#answerCount.innerText = parseInt(this.#answerCount.innerText) - 1;
-    }
-
-    #findAnswerFromEvent(event) {
-        return event.target.closest(".answer");
-    }
-
-    #extractAnswerId(answer) {
-        return answer.id.substring(2);
     }
 }
