@@ -1,5 +1,4 @@
 import {Vote} from "./vote.js";
-import {Comment} from "./comment.js";
 import {ApiHelper} from "./apiHelper.js";
 
 export class Answer {
@@ -8,30 +7,22 @@ export class Answer {
     #questionId;//질문게시글 아이디
     #answerCount;//답변게시글 개수 엘리먼트
     #answerWrapper;//답변게시글 컨테이너
+    #comment//댓글을 관리하는 객체
+
+    constructor(comment) {
+        this.#comment = comment;
+    }
 
     /**
      * 답변 수정폼을 이벤트를 가지고 여닫는 메서드
      * @param event HTML 클릭 이벤트
      */
     static #toggleEditFormByEvent(event) {
-        event.target
-            .closest(".answer")
+        event.target.closest(".answer")
             .querySelector(".answer-edit-form")
             .classList
             .toggle("d-none");
     };
-
-    /**
-     * 답변 수정폼을 답변게시글 HTML 엘리먼트를 가지고 여닫는 메서드
-     * @param answer 답변게시글 HTML 엘리먼트
-     */
-    static #toggleEditFormByAnswer(answer) {
-        answer.querySelector(".answer-edit-form").classList.toggle("d-none");
-    }
-
-    static #findAnswerFromEvent(event) {
-        return event.target.closest(".answer");
-    }
 
     static #extractAnswerId(answer) {
         return answer.id.substring(2);
@@ -120,7 +111,7 @@ export class Answer {
             const lastModifiedDate = answer.querySelector(".post-controller .last-modified-date");
             lastModifiedDate.innerText = response.lastModifiedDate;
             //답변수정폼 토글(숨기기)
-            Answer.#toggleEditFormByAnswer(answer);
+            Answer.#closeEditFormByAnswer(answer);
         } catch (error) {
             ApiHelper.alertError(error);
         }
@@ -136,7 +127,19 @@ export class Answer {
         answerElement.querySelector(".up-vote-button").addEventListener("click", Vote.vote);
         answerElement.querySelector(".down-vote-button").addEventListener("click", Vote.vote);
         //답변 댓글입력기능
-        answerElement.querySelector(".create-comment-form").addEventListener("submit", Comment.create);
+        answerElement.querySelector(".create-comment-form").addEventListener("submit", this.#comment.create);
+    }
+
+    /**
+     * 답변 수정폼을 답변게시글 HTML 엘리먼트를 가지고 닫는 메서드
+     * @param answer 답변게시글 HTML 엘리먼트
+     */
+    static #closeEditFormByAnswer(answer) {
+        answer.querySelector(".answer-edit-form").classList.add("d-none");
+    }
+
+    static #findAnswerFromEvent(event) {
+        return event.target.closest(".answer");
     }
 
     #appendAnswer(answerElement) {

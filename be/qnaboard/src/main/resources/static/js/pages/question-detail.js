@@ -10,7 +10,7 @@ class QuestionDetail {
 
     constructor() {
         this.#comment = new Comment();
-        this.#answer = new Answer();
+        this.#answer = new Answer(this.#comment);
         this.#vote = new Vote();
     }
 

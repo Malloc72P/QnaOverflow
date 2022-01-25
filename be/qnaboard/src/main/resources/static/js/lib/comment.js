@@ -3,8 +3,9 @@ import {ApiHelper} from "./apiHelper.js";
 export class Comment {
 
     static #parser = new DOMParser();
+    #currentlyOpenedForm = null;
 
-    static create = async (event) => {
+    create = async (event) => {
         event.preventDefault();
         //필요한 엘리먼트 찾기
         const commentTextArea = event.target[0];
@@ -35,7 +36,7 @@ export class Comment {
         }
     };
 
-    static reply = async (event) => {
+    reply = async (event) => {
         event.preventDefault();
         const commentTextArea = event.target[0];
         const commentWriter = event.target.closest(".comment-writer");
@@ -65,7 +66,7 @@ export class Comment {
         }
     };
 
-    static delete = async (event) => {
+    delete = async (event) => {
         const comment = event.target.closest(".comment");
         const commentId = comment.id.substr(2);
         const postId = Comment.#extractPostId(comment);
@@ -81,7 +82,7 @@ export class Comment {
         }
     }
 
-    static edit = async (event) => {
+    edit = async (event) => {
         event.preventDefault();
         //textarea 찾고 안의 내용 꺼내기
         const commentTextArea = event.target[0];
@@ -121,35 +122,106 @@ export class Comment {
         }
     };
 
+    /**
+     * 댓글 엘리먼트로부터 댓글 아이디를 추출한다
+     * @param comment
+     * @returns {string}
+     */
     static #extractCommentId = (comment) => {
         return comment.id.substr(2);
     };
 
+    /**
+     * 게시글의 하위 엘리먼트를 파라미터로 받아서 게시글 아이디를 추출한 다음 반환한다
+     * @param childOfPostElement
+     * @returns {string}
+     */
     static #extractPostId = (childOfPostElement) => {
         return childOfPostElement.closest(".post").dataset.postid;
     };
 
-    static #setCommentEventListener = (comment) => {
-        comment.querySelector(".edit-comment-form").addEventListener("submit", Comment.edit);
-        comment.querySelector(".delete-comment-button").addEventListener("click", Comment.delete);
-        comment.querySelector(".reply-comment-form").addEventListener("submit", Comment.reply);
-        comment.querySelector(".toggle-comment-writer").addEventListener("click", Comment.#toggleCreateComment);
-        comment.querySelector(".toggle-comment-editor").addEventListener("click", Comment.#toggleEditComment);
+    /**
+     * 댓글 엘리먼트에 이벤트 리스너를 바인딩해준다
+     * @param comment
+     */
+    #setCommentEventListener = (comment) => {
+        comment.querySelector(".edit-comment-form").addEventListener("submit", this.edit);
+        comment.querySelector(".delete-comment-button").addEventListener("click", this.delete);
+        comment.querySelector(".reply-comment-form").addEventListener("submit", this.reply);
+        comment.querySelector(".toggle-comment-writer").addEventListener("click", this.#toggleReplyComment);
+        comment.querySelector(".toggle-comment-editor").addEventListener("click", this.#toggleEditComment);
     };
 
-    static #toggleCreateComment = (event) => {
+    /**
+     * 답글 폼을 열고 닫는 기능을 수행하는 메서드.
+     * 이벤트를 발생시킨 버튼을 가지고 있는 댓글 엘리먼트를 찾은 다음, 그 안에 있는 답글 폼을 찾고 토글한다
+     * @param event
+     */
+    #toggleReplyComment = (event) => {
         event.preventDefault();
         const comment = event.target.closest(".comment");
         const commentWriter = comment.querySelector(".comment-writer");
-        commentWriter.classList.toggle("d-none")
+        this.#toggleForm(commentWriter);
     };
 
-    static #toggleEditComment = (event) => {
+    /**
+     * 댓글 수정 폼을 열고 닫는 기능을 수행하는 메서드
+     * 이벤트를 발생시킨 버튼을 가지고 있는 댓글 엘리먼트를 찾은 다음, 그 안에 있는 댓글 수정폼을 찾고 토글한다
+     * @param event
+     */
+    #toggleEditComment = (event) => {
         event.preventDefault();
         const comment = event.target.closest(".comment");
         const commentWriter = comment.querySelector(".comment-editor");
-        commentWriter.classList.toggle("d-none")
+        this.#toggleForm(commentWriter);
     };
+
+    /**
+     * 폼을 열고 닫는 토글 기능을 수행하는 메서드
+     * 만약 기존에 열려있던 엘리먼트가 있는 상태에서 새로운 폼을 열려고 시도하면,
+     * 기존 폼을 닫고나서 새로운 폼을 열어준다.
+     * @param newForm 토글 기능을 수행할 새로운 폼
+     */
+    #toggleForm = (newForm) => {
+        //닫혀있는 상태라면...
+        if (this.#isClosed(newForm)) {
+            //기존에 열려있던 폼을 닫은 다음,
+            this.#closeCurrentlyOpenedForm();
+            //새로운 폼을 열어준다
+            this.#openForm(newForm);
+            //currentlyOpenedForm을 새로운 폼으로 업데이트한다
+            this.#currentlyOpenedForm = newForm;
+        } else {//열려있는 상태라면...
+            //닫아준다
+            this.#closeForm(newForm);
+        }
+    };
+
+    /**
+     * 현재 열려있는
+     */
+    #closeCurrentlyOpenedForm = () => {
+        //현재 열려있는 폼이 없으면 바로 리턴한다
+        if (!this.#currentlyOpenedForm) {
+            return;
+        }
+        //현재 열려있는 폼을 닫고 상태값을 null로 초기화한다
+        this.#closeForm(this.#currentlyOpenedForm);
+        this.#currentlyOpenedForm = null;
+    };
+
+    #openForm = (element) => {
+        element.classList.remove("d-none");
+    };
+
+    #closeForm = (element) => {
+        element.classList.add("d-none");
+    };
+
+    #isClosed = (element) => {
+        return element.classList.contains("d-none");
+    }
+
 
     /**
      * 댓글기능 초기화 메서드
@@ -158,32 +230,32 @@ export class Comment {
         //댓글생성폼 바인딩
         const createCommentForms = document.querySelectorAll(".create-comment-form");
         for (const commentForm of createCommentForms) {
-            commentForm.addEventListener("submit", Comment.create);
+            commentForm.addEventListener("submit", this.create);
         }
         //대댓글 생성폼 토글기능 바인딩
         const toggleCommentWriterButtons = document.querySelectorAll(".toggle-comment-writer");
         for (const toggleCommentWriterButton of toggleCommentWriterButtons) {
-            toggleCommentWriterButton.addEventListener("click", Comment.#toggleCreateComment);
+            toggleCommentWriterButton.addEventListener("click", this.#toggleReplyComment);
         }
         //대댓글 생성폼 바인딩
         const replyCommentForms = document.querySelectorAll(".reply-comment-form");
         for (const replyCommentForm of replyCommentForms) {
-            replyCommentForm.addEventListener("submit", Comment.reply);
+            replyCommentForm.addEventListener("submit", this.reply);
         }
         //댓글삭제버튼 바인딩
         const deleteCommentButtons = document.querySelectorAll(".delete-comment-button");
         for (const deleteCommentButton of deleteCommentButtons) {
-            deleteCommentButton.addEventListener("click", Comment.delete);
+            deleteCommentButton.addEventListener("click", this.delete);
         }
         //댓글 수정폼 토글기능 바인딩
         const toggleCommentEditorButtons = document.querySelectorAll(".toggle-comment-editor");
         for (const toggleCommentEditorButton of toggleCommentEditorButtons) {
-            toggleCommentEditorButton.addEventListener("click", Comment.#toggleEditComment);
+            toggleCommentEditorButton.addEventListener("click", this.#toggleEditComment);
         }
         //댓글 수정폼 바인딩
         const editCommentForms = document.querySelectorAll(".edit-comment-form");
         for (const editCommentForm of editCommentForms) {
-            editCommentForm.addEventListener("submit", Comment.edit);
+            editCommentForm.addEventListener("submit", this.edit);
         }
     };
 }
