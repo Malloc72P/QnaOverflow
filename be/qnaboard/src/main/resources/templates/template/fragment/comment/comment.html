@@ -5,7 +5,9 @@
 <html lang="kr" xmlns:th="http://www.thymeleaf.org">
 
 <body>
-<div class="comment" th:fragment="comment_block(comment)" th:id="'c-' + ${comment.commentId}">
+<div th:fragment="comment_block(comment)"
+     th:id="'c-' + ${comment.commentId}"
+     class="comment">
     <div class="card mb-3">
         <div class="card-header">
             <div class="d-inline-block comment-author"
@@ -31,7 +33,7 @@
     </div>
 
     <!--대댓글 수정 폼-->
-    <div class="comment-editor d-none">
+    <div class="comment-editor hide-comment-form">
         <p class="mb-3">대댓글 수정하기</p>
         <form class="edit-comment-form">
             <div class="mb-3">
@@ -46,7 +48,7 @@
     </div>
 
     <!--대댓글 입력 폼-->
-    <div class="comment-writer d-none">
+    <div class="comment-writer hide-comment-form">
         <p class="mb-3">대댓글 작성하기</p>
         <form class="reply-comment-form">
             <div class="mb-3">

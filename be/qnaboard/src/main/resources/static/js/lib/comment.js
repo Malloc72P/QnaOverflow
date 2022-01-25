@@ -60,7 +60,7 @@ export class Comment {
             this.#setCommentEventListener(comment);
             commentList.appendChild(comment);
             commentTextArea.value = "";
-            commentWriter.classList.toggle("d-none");
+            this.#closeForm(commentWriter);
         } catch (error) {
             ApiHelper.alertError(error);
         }
@@ -211,15 +211,15 @@ export class Comment {
     };
 
     #openForm = (element) => {
-        element.classList.remove("d-none");
+        element.classList.remove("hide-comment-form");
     };
 
     #closeForm = (element) => {
-        element.classList.add("d-none");
+        element.classList.add("hide-comment-form");
     };
 
     #isClosed = (element) => {
-        return element.classList.contains("d-none");
+        return element.classList.contains("hide-comment-form");
     }
 
 
