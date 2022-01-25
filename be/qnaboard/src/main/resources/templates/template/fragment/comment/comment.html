@@ -5,13 +5,15 @@
 <html lang="kr" xmlns:th="http://www.thymeleaf.org">
 
 <body>
-<div class="comment" th:fragment="comment_block(comment)" th:id="'c-' + ${comment.commentId}">
+<div th:fragment="comment_block(comment)"
+     th:id="'c-' + ${comment.commentId}"
+     class="comment">
     <div class="card mb-3">
         <div class="card-header">
             <div class="d-inline-block comment-author"
                  th:text="(!${comment.deleted})? ${comment.authorName} : #{ui.comment.delete.author-name}">Edward Nygma
             </div>
-            <div class="float-end">
+            <div class="float-end comment-buttons" th:if="!${comment.deleted}">
                 <span th:text="${{comment.createdDate}}">2021-12-12 12:12PM</span>
                 <a class="toggle-comment-writer text-decoration-none text-black hover-underline"
                    href="javascript:">답글</a>
@@ -31,7 +33,7 @@
     </div>
 
     <!--대댓글 수정 폼-->
-    <div class="comment-editor d-none">
+    <div class="comment-editor hide-form">
         <p class="mb-3">대댓글 수정하기</p>
         <form class="edit-comment-form">
             <div class="mb-3">
@@ -46,7 +48,7 @@
     </div>
 
     <!--대댓글 입력 폼-->
-    <div class="comment-writer d-none">
+    <div class="comment-writer hide-form">
         <p class="mb-3">대댓글 작성하기</p>
         <form class="reply-comment-form">
             <div class="mb-3">
