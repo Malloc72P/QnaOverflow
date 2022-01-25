@@ -8,6 +8,7 @@ import scra.qnaboard.domain.entity.member.Member;
 import scra.qnaboard.domain.entity.post.Post;
 import scra.qnaboard.domain.repository.comment.CommentRepository;
 import scra.qnaboard.domain.repository.comment.CommentSimpleQueryRepository;
+import scra.qnaboard.service.exception.comment.AlreadyDeletedCommentException;
 import scra.qnaboard.service.exception.comment.CommentNotFoundException;
 import scra.qnaboard.service.exception.comment.delete.UnauthorizedCommentDeletionException;
 import scra.qnaboard.service.exception.comment.edit.UnauthorizedCommentEditException;
@@ -36,13 +37,31 @@ public class CommentService {
         return CommentDTO.from(comment);
     }
 
-    private Comment findCommentParentById(Long commentId) {
-        return commentId == null ? null : findComment(commentId);
-    }
+    /**
+     * 댓글을 수정하는 메서드
+     *
+     * @param requesterId 요청한 유저의 아이디
+     * @param commentId   수정할 댓글의 아이디
+     * @param content     댓글의 새로운 내용
+     */
+    @Transactional
+    public EditCommentResultDTO editComment(long requesterId, long commentId, String content) {
+        Comment comment = commentWithAuthor(commentId);
+        Member requester = memberService.findMember(requesterId);
 
-    private Comment findComment(long commentId) {
-        return commentRepository.findById(commentId)
-                .orElseThrow(() -> new CommentNotFoundException(commentId));
+        //이미 삭제된 댓글인 경우 예외를 발생시켜야 함
+        if (comment.isDeleted()) {
+            throw new AlreadyDeletedCommentException(commentId);
+        }
+
+        //관리자가 아니면서 소유자도 아니면 실패해야함
+        if (requester.isNotAdmin() && comment.isNotOwner(requester)) {
+            throw new UnauthorizedCommentEditException(commentId, requesterId);
+        }
+
+        comment.update(content);
+
+        return new EditCommentResultDTO(content);
     }
 
     @Transactional
@@ -60,31 +79,17 @@ public class CommentService {
         comment.delete();
     }
 
-    /**
-     * 댓글을 수정하는 메서드
-     *
-     * @param requesterId 요청한 유저의 아이디
-     * @param commentId   수정할 댓글의 아이디
-     * @param content     댓글의 새로운 내용
-     */
-    @Transactional
-    public EditCommentResultDTO editComment(long requesterId, long commentId, String content) {
-        Comment comment = commentWithAuthor(commentId);
-        Member requester = memberService.findMember(requesterId);
-
-        //관리자가 아니면서 소유자도 아니면 실패해야함
-        if (requester.isNotAdmin() && comment.isNotOwner(requester)) {
-            throw new UnauthorizedCommentEditException(commentId, requesterId);
-        }
-
-        comment.update(content);
-
-        return new EditCommentResultDTO(content);
-    }
-
-
     public Comment commentWithAuthor(long commentId) {
         return commentSimpleQueryRepository.commentWithAuthor(commentId)
+                .orElseThrow(() -> new CommentNotFoundException(commentId));
+    }
+
+    private Comment findCommentParentById(Long commentId) {
+        return commentId == null ? null : findComment(commentId);
+    }
+
+    private Comment findComment(long commentId) {
+        return commentRepository.findById(commentId)
                 .orElseThrow(() -> new CommentNotFoundException(commentId));
     }
 }
