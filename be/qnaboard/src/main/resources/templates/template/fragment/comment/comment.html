@@ -60,7 +60,8 @@
         </form>
     </div>
 
-    <div class="child-comment-wrapper ms-2 ms-md-3">
+    <!--대댓글 컨테이너-->
+    <div class="child-comment-wrapper ms-3 ms-md-3">
         <div th:each="childComment : ${comment.children}">
             <div th:replace="/template/fragment/comment/comment :: comment_block(${childComment})"></div>
         </div>
