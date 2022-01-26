@@ -9,9 +9,9 @@ spring:
 #  jpa:
 #    hibernate:
 #      ddl-auto: create-drop
-  sql:
-    init:
-      mode: always
+#  sql:
+#    init:
+#      mode: always
 
 database_url: localhost:3306
 database_username: dev
