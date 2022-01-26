@@ -17,6 +17,7 @@ public class Paging<T> {
     private static final int NOT_INITIALIZED = -1;
 
     private String searchInput = "";
+    private long recordCount = 0L;
     //이전 블록의 마지막 페이지
     private int lastPageOfPreviousBlock = NOT_INITIALIZED;
     //다음 블록의 첫 페이지
@@ -52,6 +53,7 @@ public class Paging<T> {
         newPaging.currentPageNumber = page.getNumber();
         newPaging.totalPage = page.getTotalPages();
         newPaging.searchInput = searchInput;
+        newPaging.recordCount = page.getTotalElements();
         return newPaging;
     }
 

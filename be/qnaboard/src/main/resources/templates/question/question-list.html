@@ -2,7 +2,8 @@
 질문목록조회의 뷰(QuestionController.list)
 */-->
 <!DOCTYPE html>
-<html lang="kr" th:replace="~{/template/layout-main :: layout (~{::title}, ~{::section}, ${username}, ~{::script}, ${paging.searchInput})}"
+<html lang="kr"
+      th:replace="~{/template/layout-main :: layout (~{::title}, ~{::section}, ${username}, ~{::script}, ${paging.searchInput})}"
       xmlns:th="http://www.thymeleaf.org">
 
 <title th:text="#{ui.main.title}">제목</title>
@@ -10,6 +11,7 @@
 <section>
     <div class="clearfix">
         <h2 class="float-start" th:text="#{ui.question.list.page-title}">질문 목록</h2>
+        <h2 class="float-start" th:text="': ' +${paging.recordCount} + #{ui.question.list.page-quantity}">: 10000개</h2>
         <a class="btn btn-primary float-end" th:href="@{/questions/form}">질문하기</a>
     </div>
     <hr/>
