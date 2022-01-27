@@ -3,7 +3,7 @@
 */-->
 <!DOCTYPE html>
 <html lang="kr"
-      th:replace="~{/template/layout-main :: layout (~{::title}, ~{::section}, ${username}, ~{::script}, ${paging.searchInput})}"
+      th:replace="~{template/layout-main :: layout (~{::title}, ~{::section}, ${username}, ~{::script}, ${paging.searchInput})}"
       xmlns:th="http://www.thymeleaf.org">
 
 <title th:text="#{ui.main.title}">제목</title>
@@ -16,10 +16,10 @@
     </div>
     <hr/>
     <div th:each="question : ${paging.content}"
-         th:insert="/template/fragment/question/question-item-summary ::
+         th:insert="template/fragment/question/question-item-summary ::
             question_item_summary(${question})">
     </div>
-    <div th:replace="/template/fragment/pagination/pagination :: pagination(${paging}, 'questions')"></div>
+    <div th:replace="template/fragment/pagination/pagination :: pagination(${paging}, 'questions')"></div>
 </section>
 
 </html>
