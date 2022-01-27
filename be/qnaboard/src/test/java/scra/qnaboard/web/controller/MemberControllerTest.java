@@ -7,6 +7,8 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.FilterType;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
@@ -56,8 +58,9 @@ class MemberControllerTest {
         List<MemberDTO> memberDTOS = new ArrayList<>();
         memberDTOS.add(new MemberDTO(1L, "member-1"));
         memberDTOS.add(new MemberDTO(2L, "member-2"));
+        PageImpl page = new PageImpl(memberDTOS);
         //given
-        given(memberService.findAllMember()).willReturn(new MemberListDTO(memberDTOS));
+        given(memberService.members(0, 30)).willReturn(page);
 
         //when
         ResultActions resultActions = mockMvc.perform(

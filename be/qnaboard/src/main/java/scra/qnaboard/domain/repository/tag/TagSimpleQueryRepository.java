@@ -1,7 +1,11 @@
 package scra.qnaboard.domain.repository.tag;
 
+import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.stereotype.Repository;
 import scra.qnaboard.domain.entity.Tag;
 
@@ -10,6 +14,7 @@ import java.util.Optional;
 
 import static scra.qnaboard.domain.entity.QTag.tag;
 import static scra.qnaboard.domain.entity.member.QMember.member;
+import static scra.qnaboard.domain.entity.post.QQuestion.question;
 
 @Repository
 @RequiredArgsConstructor
@@ -17,12 +22,22 @@ public class TagSimpleQueryRepository {
 
     private final JPAQueryFactory queryFactory;
 
-    public List<Tag> tagsWithAuthor() {
-        return queryFactory.select(tag)
+    public Page<Tag> tagsWithAuthor(Pageable pageable) {
+        List<Tag> tags = queryFactory.select(tag)
                 .from(tag)
                 .where((tag.deleted.isFalse()))
                 .innerJoin(tag.author, member).fetchJoin()
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
                 .fetch();
+
+        return PageableExecutionUtils.getPage(tags, pageable, tagsWithAuthorCountQuery()::fetchOne);
+    }
+
+    private JPAQuery<Long> tagsWithAuthorCountQuery() {
+        return queryFactory.select(question.id.count())
+                .from(question)
+                .innerJoin(question.author, member);
     }
 
     public Optional<Tag> tagWithAuthor(long tagId) {

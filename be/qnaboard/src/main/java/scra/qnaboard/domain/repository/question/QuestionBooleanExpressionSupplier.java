@@ -64,12 +64,24 @@ public class QuestionBooleanExpressionSupplier {
         return dto.hasScore() ? question.score.goe(dto.getScore()) : null;
     }
 
+    /**
+     * 태그목록에 있는 모든 태그를 가지고 있는 질문글만 필터링함
+     * 서브쿼리는 조건을 만족하는 태그의 개수를 반환함
+     * 조건을 만족하는 태그의 개수(서브쿼리의 결과)는 검색 파라미터의 태그목록의 수와 같아야 함
+     * 그래야 검색 파라미터의 모든 태그를 가지고 있는 질문글만 검색됨
+     *
+     * @param dto 검색 파라미터
+     * @return 태그목록 검색필터
+     */
     public BooleanExpression tagInRange(ParsedSearchQuestionDTO dto) {
-        return dto.hasTags() ? JPAExpressions.select(questionTag)
-                .from(questionTag)
-                .innerJoin(questionTag.tag, tag)
-                .where(questionTag.question.id.eq(question.id)
-                        .and(tag.name.in(dto.getTags()))).exists()
+        long tagSize = dto.getTags().size();
+        return dto.hasTags() ?
+                JPAExpressions.select(questionTag.count())
+                        .from(questionTag)
+                        .innerJoin(questionTag.tag, tag)
+                        .where(questionTag.question.id.eq(question.id)
+                                .and(tag.name.in(dto.getTags())))
+                        .eq(tagSize)
                 : null;
     }
 }

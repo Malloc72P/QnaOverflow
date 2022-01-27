@@ -2,10 +2,10 @@ from query_generator import QueryGenerator
 
 
 class DataInitializer:
-    __member_count = 10
+    __member_count = 1000
     __question_count = 10000
     __answer_count = 20000
-    __tag_count = 10
+    __tag_count = 1000
     __comment_count = 40000
     # data.sql파일
     __file_data_sql = None

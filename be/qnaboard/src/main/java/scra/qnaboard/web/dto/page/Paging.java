@@ -13,8 +13,8 @@ import java.util.stream.IntStream;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class Paging<T> {
-    private static final int defaultBlockSize = 5;
     private static final int NOT_INITIALIZED = -1;
+    private static final int DEFAULT_BLOCK_SIZE = 10;
 
     private String searchInput = "";
     private long recordCount = 0L;
@@ -30,13 +30,17 @@ public class Paging<T> {
     private List<Integer> pageNumbers = new ArrayList<>();
     private List<T> content = new ArrayList<>();
 
+    public static <T> Paging<T> buildPaging(Page<T> page) {
+        return buildPaging(page, "");
+    }
+
     public static <T> Paging<T> buildPaging(Page<T> page, String searchInput) {
         Paging<T> newPaging = new Paging<>();
         int pageSize = page.getSize();
 
-        int blockNumber = page.getNumber() / pageSize;
-        int pageStart = pageSize * blockNumber;
-        int pageEnd = pageStart + defaultBlockSize - 1;
+        int blockNumber = page.getNumber() / DEFAULT_BLOCK_SIZE;
+        int pageStart = blockNumber * DEFAULT_BLOCK_SIZE;
+        int pageEnd = pageStart + DEFAULT_BLOCK_SIZE - 1;
 
         if (pageEnd >= page.getTotalPages()) {
             pageEnd = page.getTotalPages() - 1;

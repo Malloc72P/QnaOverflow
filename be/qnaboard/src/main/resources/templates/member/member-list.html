@@ -15,10 +15,11 @@
     <hr/>
     <div class="tag-list-wrapper d-flex flex-wrap">
         <!--/*회원 카드*/-->
-        <div style="display: contents;" th:each="member : ${memberListDTO.members}">
+        <div style="display: contents;" th:each="member : ${paging.content}">
             <div th:replace="/template/fragment/member/member-component :: member_component(${member})"></div>
         </div>
     </div>
+    <div th:replace="/template/fragment/pagination/pagination :: pagination(${paging}, 'members')"></div>
 </section>
 
 </html>
