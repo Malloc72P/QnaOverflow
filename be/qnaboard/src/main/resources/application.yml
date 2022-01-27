@@ -5,7 +5,6 @@ spring:
     add-properties: false
   thymeleaf:
     encoding: UTF-8
-    prefix: classpath:/templates
   profiles:
     active: local
     include: oauth

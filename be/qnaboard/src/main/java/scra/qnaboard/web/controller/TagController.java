@@ -40,12 +40,12 @@ public class TagController {
         Page<TagDTO> tagDTOPage = tagService.tagList(pageNumber, pageSize);
         Paging<TagDTO> tagDTOPaging = Paging.buildPaging(tagDTOPage);
         model.addAttribute("paging", tagDTOPaging);
-        return "/tag/tag-list";
+        return "tag/tag-list";
     }
 
     @GetMapping("form")
     public String tagForm(@ModelAttribute("tagForm") CreateTagForm form) {
-        return "/tag/tag-form";
+        return "tag/tag-form";
     }
 
     @PostMapping
@@ -55,7 +55,7 @@ public class TagController {
                          RedirectAttributes redirectAttributes,
                          Locale locale) {
         if (bindingResult.hasErrors()) {
-            return "/tag/tag-form";
+            return "tag/tag-form";
         }
 
         tagService.createTag(sessionUser.getId(), form.getName(), form.getDescription());
@@ -73,7 +73,7 @@ public class TagController {
         TagDTO tagDTO = tagService.tagById(tagId);
         form.update(tagDTO.getTagName(), tagDTO.getTagDescription());
         model.addAttribute("tagId", tagId);
-        return "/tag/tag-edit-form";
+        return "tag/tag-edit-form";
     }
 
     @PostMapping("{tagId}/edit")
@@ -84,7 +84,7 @@ public class TagController {
                        @LoginUser SessionUser sessionUser,
                        Locale locale) {
         if (bindingResult.hasErrors()) {
-            return "/tag/tag-edit-form";
+            return "tag/tag-edit-form";
         }
 
         tagService.editTag(sessionUser.getId(), tagId, form.getName(), form.getDescription());

@@ -40,7 +40,7 @@ public class MemberController {
         Paging<MemberDTO> paging = Paging.buildPaging(memberDTOPage);
         model.addAttribute("paging", paging);
 
-        return "/member/member-list";
+        return "member/member-list";
     }
 
     @PostMapping("/sign-out")
