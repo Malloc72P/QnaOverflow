@@ -3,6 +3,7 @@ package scra.qnaboard.web.controller;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.MessageSource;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -12,6 +13,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import scra.qnaboard.configuration.auth.LoginUser;
 import scra.qnaboard.configuration.auth.SessionUser;
 import scra.qnaboard.service.TagService;
+import scra.qnaboard.web.dto.page.Paging;
 import scra.qnaboard.web.dto.tag.create.CreateTagForm;
 import scra.qnaboard.web.dto.tag.edit.EditTagForm;
 import scra.qnaboard.web.dto.tag.list.TagDTO;
@@ -25,14 +27,19 @@ import java.util.Locale;
 @RequestMapping("/tags")
 public class TagController {
 
+    private static final String defaultPageNumber = "0";
+    private static final String defaultPageSize = "12";
+
     private final TagService tagService;
     private final MessageSource message;
 
     @GetMapping
-    public String list(Model model) {
-        TagListDTO tagListDTO = tagService.tagList();
-
-        model.addAttribute("tagListDTO", tagListDTO);
+    public String list(@RequestParam(defaultValue = defaultPageNumber) int pageNumber,
+                       @RequestParam(defaultValue = defaultPageSize) int pageSize,
+                       Model model) {
+        Page<TagDTO> tagDTOPage = tagService.tagList(pageNumber, pageSize);
+        Paging<TagDTO> tagDTOPaging = Paging.buildPaging(tagDTOPage);
+        model.addAttribute("paging", tagDTOPaging);
         return "/tag/tag-list";
     }
 

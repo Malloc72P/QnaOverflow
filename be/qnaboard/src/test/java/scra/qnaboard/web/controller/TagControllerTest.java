@@ -8,6 +8,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.FilterType;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
@@ -57,8 +58,9 @@ class TagControllerTest {
         List<TagDTO> tags = new ArrayList<>();
         tags.add(TagDTO.builder().tagName("tag-1").build());
         tags.add(TagDTO.builder().tagName("tag-2").build());
+        PageImpl<TagDTO> page = new PageImpl<>(tags);
         //given
-        given(tagService.tagList()).willReturn(new TagListDTO(tags));
+        given(tagService.tagList(0, 12)).willReturn(page);
         //when
         ResultActions resultActions = mockMvc.perform(
                 get("/tags")

@@ -14,7 +14,7 @@ import java.util.stream.IntStream;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class Paging<T> {
     private static final int NOT_INITIALIZED = -1;
-    private static final int DEFAULT_BLOCK_SIZE = 5;
+    private static final int DEFAULT_BLOCK_SIZE = 10;
 
     private String searchInput = "";
     private long recordCount = 0L;

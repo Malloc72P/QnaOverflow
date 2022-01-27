@@ -20,10 +20,11 @@ dto.tag.list 패키지의 TagListDTO를 모델로 받아서 랜더링한다
     <hr/>
     <div class="tag-list-wrapper d-flex flex-wrap">
         <!--/*태그 카드*/-->
-        <div style="display: contents;" th:each="tag : ${tagListDTO.tags}">
+        <div style="display: contents;" th:each="tag : ${paging.content}">
             <div th:replace="/template/fragment/tag/tag-component :: tag_component(${tag})"></div>
         </div>
     </div>
+    <div th:replace="/template/fragment/pagination/pagination :: pagination(${paging}, 'tags')"></div>
 </section>
 
 </html>

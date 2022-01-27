@@ -1,6 +1,8 @@
 package scra.qnaboard.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import scra.qnaboard.domain.entity.Tag;
@@ -12,11 +14,9 @@ import scra.qnaboard.service.exception.tag.delete.UnauthorizedTagDeletionExcepti
 import scra.qnaboard.service.exception.tag.edit.UnauthorizedTagEditException;
 import scra.qnaboard.service.exception.tag.search.TagNotFoundException;
 import scra.qnaboard.web.dto.tag.list.TagDTO;
-import scra.qnaboard.web.dto.tag.list.TagListDTO;
 import scra.qnaboard.web.dto.tag.search.TagSearchResultDTO;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -54,17 +54,12 @@ public class TagService {
      * 태그 전체 목록 조회
      *
      * @return 태그 목록 DTO
-     * @TODO 페이징 처리 넣어야 함!
      */
-    public TagListDTO tagList() {
+    public Page<TagDTO> tagList(int pageNumber, int pageSize) {
+        PageRequest pageRequest = PageRequest.of(pageNumber, pageSize);
         //태그 엔티티를 조회하고, DTO로 변환한다
-        List<TagDTO> tags = tagSimpleQueryRepository.tagsWithAuthor()
-                .stream()
-                .map(TagDTO::from)
-                .collect(Collectors.toList());
-
-        //태그목록 DTO로 감싸서 반환한다
-        return new TagListDTO(tags);
+        return tagSimpleQueryRepository.tagsWithAuthor(pageRequest)
+                .map(TagDTO::from);
     }
 
     /**
