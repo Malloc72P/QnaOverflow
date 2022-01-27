@@ -2,7 +2,7 @@
 질문 수정 기능을 위한 뷰(QuestionController.questionForm)
 */-->
 <!DOCTYPE html>
-<html lang="kr" th:replace="~{/template/layout-main :: layout (~{::title}, ~{::section}, ${username}, ~{script}, '')}"
+<html lang="kr" th:replace="~{template/layout-main :: layout (~{::title}, ~{::section}, ${username}, ~{script}, '')}"
       xmlns:th="http://www.thymeleaf.org">
 
 <title th:text="#{ui.main.title}">제목</title>
@@ -34,7 +34,7 @@
         </div>
 
         <!--/*태그 입력기*/-->
-        <div th:replace="/template/fragment/tag/tag-inputer :: tag_inputer(${tags})"></div>
+        <div th:replace="template/fragment/tag/tag-inputer :: tag_inputer(${tags})"></div>
 
         <div class="clearfix">
             <button class="btn btn-primary float-end" type="submit">Submit</button>

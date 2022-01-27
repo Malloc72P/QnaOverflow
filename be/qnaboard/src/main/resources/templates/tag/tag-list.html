@@ -3,7 +3,7 @@
 dto.tag.list 패키지의 TagListDTO를 모델로 받아서 랜더링한다
 */-->
 <!DOCTYPE html>
-<html lang="kr" th:replace="~{/template/layout-main :: layout (~{::title}, ~{::section}, ${username}, ~{::script}, '')}"
+<html lang="kr" th:replace="~{template/layout-main :: layout (~{::title}, ~{::section}, ${username}, ~{::script}, '')}"
       xmlns:th="http://www.thymeleaf.org">
 
 <title th:text="#{ui.main.title}">제목</title>
@@ -21,10 +21,10 @@ dto.tag.list 패키지의 TagListDTO를 모델로 받아서 랜더링한다
     <div class="tag-list-wrapper d-flex flex-wrap">
         <!--/*태그 카드*/-->
         <div style="display: contents;" th:each="tag : ${paging.content}">
-            <div th:replace="/template/fragment/tag/tag-component :: tag_component(${tag})"></div>
+            <div th:replace="template/fragment/tag/tag-component :: tag_component(${tag})"></div>
         </div>
     </div>
-    <div th:replace="/template/fragment/pagination/pagination :: pagination(${paging}, 'tags')"></div>
+    <div th:replace="template/fragment/pagination/pagination :: pagination(${paging}, 'tags')"></div>
 </section>
 
 </html>
