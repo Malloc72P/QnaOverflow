@@ -1,0 +1,35 @@
+<!--/*
+페이지네이션
+*/-->
+<!DOCTYPE html>
+<html lang="kr" xmlns:th="http://www.thymeleaf.org">
+
+<body>
+
+<!--/*페이지네이션*/-->
+<nav th:fragment="pagination(paging, linkUri)"
+     class="mt-4" th:if="${paging.getTotalPage() > 1}">
+    <ul class="pagination justify-content-center">
+        <!--/*이전 페이지 블록 버튼*/-->
+        <li th:if="${paging.hasPreviousBlock()}" class="page-item">
+            <a th:href="@{/{linkUri}(linkUri=${linkUri},searchInput=${paging.getSearchInput()}, pageNumber=${paging.getLastPageOfPreviousBlock()})}"
+               class="page-link">Previous</a>
+        </li>
+        <!--/*페이지번호 목록 1, 2, 3, 4, 5*/-->
+        <li class="page-item" th:classappend="${pageNumber == paging.getCurrentPageNumber()} ? active : ''"
+            th:each="pageNumber : ${paging.pageNumbers}">
+            <a class="page-link"
+               th:href="@{/{linkUri}(linkUri=${linkUri},searchInput=${paging.getSearchInput()}, pageNumber=${pageNumber})}"
+               th:text="${pageNumber}">1</a>
+        </li>
+        <!--/*다음 페이지 블록 버튼*/-->
+        <li th:if="${paging.hasNextBlock}" class="page-item">
+            <a th:href="@{/{linkUri}(linkUri=${linkUri},searchInput=${paging.getSearchInput()}, pageNumber=${paging.getFirstPageOfNextBlock()})}"
+               class="page-link">Next</a>
+        </li>
+    </ul>
+</nav>
+
+</body>
+
+</html>

@@ -30,6 +30,10 @@ public class Paging<T> {
     private List<Integer> pageNumbers = new ArrayList<>();
     private List<T> content = new ArrayList<>();
 
+    public static <T> Paging<T> buildPaging(Page<T> page) {
+        return buildPaging(page, "");
+    }
+
     public static <T> Paging<T> buildPaging(Page<T> page, String searchInput) {
         Paging<T> newPaging = new Paging<>();
         int pageSize = page.getSize();
