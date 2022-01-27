@@ -58,7 +58,7 @@ public class QuestionController {
 
         model.addAttribute("paging", paging);
 
-        return "/question/question-list";
+        return "question/question-list";
     }
 
     /**
@@ -73,7 +73,7 @@ public class QuestionController {
         QuestionDetailDTO detailDTO = questionService.questionDetail(questionId);
         model.addAttribute("question", detailDTO);
 
-        return "/question/question-detail";
+        return "question/question-detail";
     }
 
     /**
@@ -84,7 +84,7 @@ public class QuestionController {
      */
     @GetMapping("form")
     public String questionForm(@ModelAttribute("questionForm") CreateQuestionForm form) {
-        return "/question/question-form";
+        return "question/question-form";
     }
 
     /**
@@ -102,7 +102,7 @@ public class QuestionController {
                                  RedirectAttributes redirectAttributes) {
         //생성 폼에 문제가 있는지 확인함. 문제가 있다면 생성 페이지로 돌려보냄
         if (bindingResult.hasErrors()) {
-            return "/question/question-form";
+            return "question/question-form";
         }
 
         //질문글을 생성하고, 생성된 질문글의 아이디에 대한 상세 페이지 요청을 하도록 리다이렉션시킴
@@ -157,7 +157,7 @@ public class QuestionController {
         //질문글의 아이디까지 모델에 담아서 넘겨줌
         model.addAttribute("questionId", questionId);
         model.addAttribute("tags", questionDTO.getTags());
-        return "/question/question-edit-form";
+        return "question/question-edit-form";
     }
 
     /**
@@ -182,7 +182,7 @@ public class QuestionController {
 
         //입력 폼에 문제가 있는지 확인
         if (bindingResult.hasErrors()) {
-            return "/question/question-edit-form";
+            return "question/question-edit-form";
         }
 
         //질문글 수정 후 상세 페이지로 리다이렉션

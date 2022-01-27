@@ -13,13 +13,13 @@
      th:fragment="sidebar">
     <ul class="nav nav-pills flex-column mb-auto">
 
-        <li th:replace="/template/fragment/sidebar/sidebar-item ::
+        <li th:replace="template/fragment/sidebar/sidebar-item ::
                 sidebar_item(#{ui.sidebar.questions}, '/questions')"></li>
 
-        <li th:replace="/template/fragment/sidebar/sidebar-item ::
+        <li th:replace="template/fragment/sidebar/sidebar-item ::
                 sidebar_item(#{ui.sidebar.tags}, '/tags')"></li>
 
-        <li th:replace="/template/fragment/sidebar/sidebar-item ::
+        <li th:replace="template/fragment/sidebar/sidebar-item ::
                 sidebar_item(#{ui.sidebar.users}, '/members')"></li>
 
     </ul>

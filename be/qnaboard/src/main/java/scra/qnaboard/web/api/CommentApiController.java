@@ -35,7 +35,7 @@ public class CommentApiController {
                 dto.getParentCommentId(),
                 dto.getContent());
         model.addAttribute("comment", commentDTO);
-        return "/comment/comment-component";
+        return "comment/comment-component";
     }
 
     @ResponseBody

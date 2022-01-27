@@ -29,7 +29,7 @@ public class AnswerApiController {
 
         model.addAttribute("questionId", questionId);
         model.addAttribute("answer", answer);
-        return "/answer/answer-component";
+        return "answer/answer-component";
     }
 
     @ResponseBody

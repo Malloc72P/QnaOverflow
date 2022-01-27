@@ -12,6 +12,6 @@ public class NotifyController {
 
     @GetMapping
     public String notify(@ModelAttribute("notify") NotifyDTO notifyDTO) {
-        return "/commons/notify";
+        return "commons/notify";
     }
 }
