@@ -92,7 +92,6 @@ public class QuestionSearchListRepository {
     private JPAQuery<Long> createCountQuery(ParsedSearchQuestionDTO searchQuestionDTO) {
         return queryFactory.select(question.id.count())
                 .from(question)
-                .innerJoin(question.author, member)
                 .where(questionExpressions.searchQuestions(searchQuestionDTO));
     }
 }

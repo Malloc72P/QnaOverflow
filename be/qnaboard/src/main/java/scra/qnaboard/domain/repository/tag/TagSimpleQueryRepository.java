@@ -14,7 +14,6 @@ import java.util.Optional;
 
 import static scra.qnaboard.domain.entity.QTag.tag;
 import static scra.qnaboard.domain.entity.member.QMember.member;
-import static scra.qnaboard.domain.entity.post.QQuestion.question;
 
 @Repository
 @RequiredArgsConstructor
@@ -36,9 +35,8 @@ public class TagSimpleQueryRepository {
     }
 
     private JPAQuery<Long> tagsWithAuthorCountQuery() {
-        return queryFactory.select(question.id.count())
-                .from(question)
-                .innerJoin(question.author, member);
+        return queryFactory.select(tag.count())
+                .from(tag);
     }
 
     public Optional<Tag> tagWithAuthor(long tagId) {
