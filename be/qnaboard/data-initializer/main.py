@@ -2,11 +2,11 @@ from query_generator import QueryGenerator
 
 
 class DataInitializer:
-    __member_count = 1000
-    __question_count = 1000000
-    __answer_count = 200000
+    __member_count = 50
+    __question_count = 100
+    __answer_count = 200
     __tag_count = 20
-    __comment_count = 400000
+    __comment_count = 300
     # data.sql파일
     __file_data_sql = None
     # 쿼리 생성기
