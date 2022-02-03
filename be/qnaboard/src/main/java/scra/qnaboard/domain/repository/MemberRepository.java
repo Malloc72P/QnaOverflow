@@ -12,7 +12,7 @@ import java.util.Optional;
 
 public interface MemberRepository extends JpaRepository<Member, Long> {
 
-    Page<Member> findAllByDeletedFalse(Pageable pageable);
+    Page<Member> findAllByDeletedFalseOrderByCreatedDateDesc(Pageable pageable);
 
     Optional<Member> findByEmail(String email);
 

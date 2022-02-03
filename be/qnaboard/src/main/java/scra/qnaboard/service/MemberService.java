@@ -19,7 +19,7 @@ public class MemberService {
 
     public Page<MemberDTO> members(int pageNumber, int pageSize) {
         PageRequest pageRequest = PageRequest.of(pageNumber, pageSize);
-        return memberRepository.findAllByDeletedFalse(pageRequest)
+        return memberRepository.findAllByDeletedFalseOrderByCreatedDateDesc(pageRequest)
                 .map(MemberDTO::from);
     }
 

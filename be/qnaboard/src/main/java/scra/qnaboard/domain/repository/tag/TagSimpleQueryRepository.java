@@ -27,6 +27,7 @@ public class TagSimpleQueryRepository {
                 .from(tag)
                 .where((tag.deleted.isFalse()))
                 .innerJoin(tag.author, member).fetchJoin()
+                .orderBy(tag.createdDate.desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();
