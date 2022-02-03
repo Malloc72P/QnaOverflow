@@ -108,3 +108,5 @@ alter table vote
 
 alter table vote
     add constraint fk_vote_post foreign key (post_id) references post (post_id);
+
+create index index_post_create_date on post (post_type, created_date);
