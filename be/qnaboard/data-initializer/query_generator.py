@@ -1,5 +1,6 @@
 from random_data_supplier import RandomDataSupplier
 import random
+from progress_bar import ProgressBar
 
 
 class QueryGenerator:
@@ -33,25 +34,28 @@ class QueryGenerator:
 
     # 멤버 생성 쿼리를 반환함
     def create_members(self, number_of_rows):
-        return self.__create_query(number_of_rows, self.__values_members, self.__insert_into_members)
+        return self.__create_query(number_of_rows, self.__values_members, self.__insert_into_members, 'member')
 
     # 질문글 생성 쿼리를 반환함
     def create_question(self, number_of_rows):
-        return self.__create_query(number_of_rows, self.__values_question, self.__insert_into_post)
+        return self.__create_query(number_of_rows, self.__values_question, self.__insert_into_post, 'question')
 
     # 답변글 생성 쿼리를 반환함
     def create_answer(self, number_of_rows):
-        return self.__create_query(number_of_rows, self.__values_answer, self.__insert_into_post)
+        return self.__create_query(number_of_rows, self.__values_answer, self.__insert_into_post, 'answer')
 
     # 태그 생성 쿼리를 반환함
     def create_tag(self, number_of_rows):
-        return self.__create_query(number_of_rows, self.__values_tag, self.__insert_into_tag)
+        return self.__create_query(number_of_rows, self.__values_tag, self.__insert_into_tag, 'tag')
 
     # 질문태그 생성 쿼리를 반환함
     def create_question_tag(self):
         values = []
         # 모든 질문글을 순회함
+        counter = 1
         for question_id in self.__question_ids:
+            ProgressBar.print_progress(counter, len(self.__question_ids), 'Question_Tag', "Complete", 50)
+            counter += 1
             tag_ids = set()
             # 태그 5개를 무작위로 선택함(중복허용x)
             for i in range(5):
@@ -63,13 +67,14 @@ class QueryGenerator:
 
     # 댓글 생성 쿼리를 반환함
     def create_comment(self, number_of_rows):
-        return self.__create_query(number_of_rows, self.__values_comment, self.__insert_into_comment)
+        return self.__create_query(number_of_rows, self.__values_comment, self.__insert_into_comment, 'comment')
 
     # 쿼리를 생성해서 반환함
     @staticmethod
-    def __create_query(number_of_rows, values_func, query_head):
+    def __create_query(number_of_rows, values_func, query_head, category):
         values = []
         for i in range(number_of_rows):
+            ProgressBar.print_progress(i + 1, number_of_rows, category, "Complete", 50)
             value = values_func()
             values.append(value)
         joined_values = ",\n".join(values)
