@@ -29,7 +29,7 @@ public class GlobalErrorControllerAdvice {
                 "ui.error.page-title-entity-not-found",
                 "ui.error.page-reason-entity-not-found",
                 exception.descriptionMessageCode());
-        return "/error/error-page";
+        return "error/error-page";
     }
 
     @ResponseStatus(HttpStatus.FORBIDDEN)
@@ -40,7 +40,7 @@ public class GlobalErrorControllerAdvice {
                 "ui.error.page-title-entity-delete-failed",
                 "ui.error.page-reason-entity-delete-failed",
                 exception.descriptionMessageCode());
-        return "/error/error-page";
+        return "error/error-page";
     }
 
     @ResponseStatus(HttpStatus.FORBIDDEN)
@@ -51,7 +51,7 @@ public class GlobalErrorControllerAdvice {
                 "ui.error.page-title-entity-edit-failed",
                 "ui.error.page-reason-entity-edit-failed",
                 exception.descriptionMessageCode());
-        return "/error/error-page";
+        return "error/error-page";
     }
 
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
@@ -62,7 +62,7 @@ public class GlobalErrorControllerAdvice {
                 "ui.error.page-title-no-log-in",
                 "ui.error.page-reason-no-log-in",
                 exception.descriptionMessageCode());
-        return "/error/error-page";
+        return "error/error-page";
     }
 
     private void updateModelByException(Model model, Locale locale,
