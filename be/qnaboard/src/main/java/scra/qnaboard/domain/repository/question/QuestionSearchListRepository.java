@@ -40,7 +40,6 @@ public class QuestionSearchListRepository {
     private final AnswerBooleanExpressionSupplier answerExpressions;
 
     private final QuestionTagSimpleQueryRepository questionTagRepository;
-    private final VoteSimpleQueryRepository voteRepository;
 
     /**
      * 질문 목록 조회 메서드 <br>
@@ -96,11 +95,5 @@ public class QuestionSearchListRepository {
         }
 
         return new SliceImpl<>(questions, pageable, hasNext);
-    }
-
-    private JPAQuery<Long> createCountQuery(ParsedSearchQuestionDTO searchQuestionDTO) {
-        return queryFactory.select(question.id.count())
-                .from(question)
-                .where(questionExpressions.searchQuestions(searchQuestionDTO));
     }
 }
