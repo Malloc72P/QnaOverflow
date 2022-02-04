@@ -12,6 +12,6 @@ import javax.validation.constraints.Size;
 public class EditAnswerDTO {
 
     @NotBlank
-    @Size(min = 6, max = 65536, message = "{Size.editAnswerDTO.content}")
+    @Size(min = 6, max = 2000, message = "{Size.editAnswerDTO.content}")
     private String content;
 }
