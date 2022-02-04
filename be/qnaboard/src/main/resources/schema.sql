@@ -41,7 +41,7 @@ create table post
     content            text(2000),
     deleted            bit          not null,
     score              bigint       not null,
-    title              varchar(200) not null,
+    title              varchar(200) not null default 'answer',
     view_count         bigint,
     author_id          bigint,
     question_id        bigint,
@@ -60,11 +60,11 @@ create table question_tag
 
 create table tag
 (
-    tag_id             bigint       not null auto_increment,
-    created_date       datetime(6)  not null,
+    tag_id             bigint      not null auto_increment,
+    created_date       datetime(6) not null,
     last_modified_date datetime(6),
-    deleted            bit          not null,
-    description        varchar(1024),
+    deleted            bit         not null,
+    description        varchar(200),
     name               varchar(40) not null,
     author_id          bigint,
     primary key (tag_id)
