@@ -3,10 +3,10 @@ from query_generator import QueryGenerator
 
 class DataInitializer:
     __member_count = 124
-    __question_count = 368790
-    __answer_count = 478790
+    __question_count = 16879
+    __answer_count = 17879
     __tag_count = 42
-    __comment_count = 578790
+    __comment_count = 17879
     # data.sql파일
     __file_data_sql = None
     # 쿼리 생성기
