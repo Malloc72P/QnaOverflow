@@ -12,11 +12,11 @@ import javax.validation.constraints.Size;
 public class CreateQuestionForm extends QuestionTagForm {
 
     @NotBlank
-    @Size(min = 6, max = 300)
+    @Size(min = 6, max = 200)
     private String title;
 
     @NotBlank
-    @Size(min = 6)
+    @Size(min = 6, max = 2000)
     private String content;
 
     public CreateQuestionForm(String title, String content, String tags) {

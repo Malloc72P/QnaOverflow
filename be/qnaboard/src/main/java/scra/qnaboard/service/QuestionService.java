@@ -3,6 +3,7 @@ package scra.qnaboard.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import scra.qnaboard.domain.entity.member.Member;
@@ -43,7 +44,7 @@ public class QuestionService {
      *
      * @return 질문목록조회를 위한 DTO
      */
-    public Page<QuestionSummaryDTO> searchQuestions(ParsedSearchQuestionDTO searchQuestionDTO, int pageNumber, int pageSize) {
+    public Slice<QuestionSummaryDTO> searchQuestions(ParsedSearchQuestionDTO searchQuestionDTO, int pageNumber, int pageSize) {
         PageRequest pageRequest = PageRequest.of(pageNumber, pageSize);
         return questionSearchListRepository.search(searchQuestionDTO, pageRequest);
     }

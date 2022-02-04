@@ -6,6 +6,8 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
+import org.springframework.data.domain.SliceImpl;
 import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -38,7 +40,6 @@ public class QuestionSearchListRepository {
     private final AnswerBooleanExpressionSupplier answerExpressions;
 
     private final QuestionTagSimpleQueryRepository questionTagRepository;
-    private final VoteSimpleQueryRepository voteRepository;
 
     /**
      * 질문 목록 조회 메서드 <br>
@@ -50,7 +51,7 @@ public class QuestionSearchListRepository {
      *
      * @return 질문목록 DTO List
      */
-    public Page<QuestionSummaryDTO> search(ParsedSearchQuestionDTO searchQuestionDTO, Pageable pageable) {
+    public Slice<QuestionSummaryDTO> search(ParsedSearchQuestionDTO searchQuestionDTO, Pageable pageable) {
         //1. 질문목록 조회( 추가로 질문의 답글개수와 유저 이름을 같이 가져옴 )
         List<QuestionSummaryDTO> questions = queryFactory
                 .select(new QQuestionSummaryDTO(
@@ -68,7 +69,7 @@ public class QuestionSearchListRepository {
                 .where(questionExpressions.searchQuestions(searchQuestionDTO))
                 .orderBy(question.createdDate.desc())
                 .offset(pageable.getOffset())
-                .limit(pageable.getPageSize())
+                .limit(pageable.getPageSize() + 1)
                 .fetch();
 
         //2. 연관된 태그정보 조회쿼리의 In절에서 사용할 ID 컬렉션을 스트림으로 생성한다
@@ -86,13 +87,13 @@ public class QuestionSearchListRepository {
         //5. 태그정보 입력
         questions.forEach(question -> question.update(tagMap));
 
-        return PageableExecutionUtils.getPage(questions, pageable, createCountQuery(searchQuestionDTO)::fetchOne);
-    }
+        //6. 다음 페이지가 있는지 여부 저장
+        boolean hasNext = false;
+        if (questions.size() > pageable.getPageSize()) {
+            questions.remove(pageable.getPageSize());
+            hasNext = true;
+        }
 
-    private JPAQuery<Long> createCountQuery(ParsedSearchQuestionDTO searchQuestionDTO) {
-        return queryFactory.select(question.id.count())
-                .from(question)
-                .innerJoin(question.author, member)
-                .where(questionExpressions.searchQuestions(searchQuestionDTO));
+        return new SliceImpl<>(questions, pageable, hasNext);
     }
 }

@@ -11,11 +11,11 @@ import javax.validation.constraints.Size;
 public class EditTagForm {
 
     @NotBlank
-    @Size(min = 1, max = 12)
+    @Size(min = 1, max = 40)
     private String name;
 
     @NotBlank
-    @Size(min = 6, max = 1000)
+    @Size(min = 6, max = 200)
     private String description;
 
     public void update(String name, String description) {

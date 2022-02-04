@@ -7,7 +7,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.FilterType;
-import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.SliceImpl;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
@@ -71,7 +71,7 @@ class QuestionControllerTest {
 
         //given
         given(questionService.searchQuestions(new ParsedSearchQuestionDTO(), 0, 5))
-                .willReturn(new PageImpl<>(list));
+                .willReturn(new SliceImpl<>(list));
 
         //when
         ResultActions resultActions = mockMvc.perform(get("/questions"));

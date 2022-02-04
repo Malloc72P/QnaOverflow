@@ -11,7 +11,7 @@ import javax.validation.constraints.Size;
 public class CreateTagForm {
 
     @NotBlank
-    @Size(min = 1, max = 12)
+    @Size(min = 1, max = 40)
     private String name;
 
     @NotBlank

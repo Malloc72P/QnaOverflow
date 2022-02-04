@@ -7,11 +7,11 @@ drop table if exists members cascade;
 
 create table comment
 (
-    comment_id         bigint not null auto_increment,
-    created_date       datetime(6),
+    comment_id         bigint        not null auto_increment,
+    created_date       datetime(6)   not null,
     last_modified_date datetime(6),
-    content            varchar(1024),
-    deleted            bit    not null,
+    content            varchar(1024) not null,
+    deleted            bit           not null,
     author_id          bigint,
     parent_comment_id  bigint,
     parent_post_id     bigint,
@@ -21,27 +21,27 @@ create table comment
 
 create table members
 (
-    members_id         bigint not null auto_increment,
-    created_date       datetime(6),
+    members_id         bigint       not null auto_increment,
+    created_date       datetime(6)  not null,
     last_modified_date datetime(6),
-    deleted            bit    not null,
+    deleted            bit          not null,
     email              varchar(255),
-    nickname           varchar(255),
-    role               varchar(255),
+    nickname           varchar(255) not null,
+    role               varchar(255) not null,
     primary key (members_id)
 ) engine = InnoDB;
 
 
 create table post
 (
-    post_type          varchar(31) not null,
-    post_id            bigint      not null auto_increment,
-    created_date       datetime(6),
+    post_type          varchar(31)  not null,
+    post_id            bigint       not null auto_increment,
+    created_date       datetime(6)  not null,
     last_modified_date datetime(6),
-    content            text(65536),
-    deleted            bit         not null,
-    score              bigint      not null,
-    title              varchar(1024),
+    content            text(2000),
+    deleted            bit          not null,
+    score              bigint       not null,
+    title              varchar(200) not null default 'answer',
     view_count         bigint,
     author_id          bigint,
     question_id        bigint,
@@ -51,21 +51,21 @@ create table post
 
 create table question_tag
 (
-    question_id        bigint not null,
-    tag_id             bigint not null,
-    created_date       datetime(6),
+    question_id        bigint      not null,
+    tag_id             bigint      not null,
+    created_date       datetime(6) not null,
     last_modified_date datetime(6),
     primary key (question_id, tag_id)
 ) engine = InnoDB;
 
 create table tag
 (
-    tag_id             bigint not null auto_increment,
-    created_date       datetime(6),
+    tag_id             bigint      not null auto_increment,
+    created_date       datetime(6) not null,
     last_modified_date datetime(6),
-    deleted            bit    not null,
-    description        varchar(1024),
-    name               varchar(255),
+    deleted            bit         not null,
+    description        varchar(200),
+    name               varchar(40) not null,
     author_id          bigint,
     primary key (tag_id)
 ) engine = InnoDB;
@@ -73,7 +73,7 @@ create table tag
 create table vote
 (
     id        bigint not null auto_increment,
-    vote_type varchar(255),
+    vote_type varchar(30),
     member_id bigint,
     post_id   bigint,
     primary key (id)
@@ -108,3 +108,6 @@ alter table vote
 
 alter table vote
     add constraint fk_vote_post foreign key (post_id) references post (post_id);
+
+create index idx_type_and_date on post (post_type, created_date);
+create index idx_title on post (title);

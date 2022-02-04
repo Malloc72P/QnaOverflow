@@ -12,6 +12,8 @@ class RandomDataSupplier:
     __random_tags = []
     __random_short_sentences = []
     __random_long_sentences = []
+    # 태그이름을 꺼낼 때 사용하는 인덱스
+    __tag_idx = 0
 
     def __init__(self):
         self.__prepare_files()
@@ -19,8 +21,8 @@ class RandomDataSupplier:
     # 필요한 파일을 생성하거나 불러옴
     def __prepare_files(self):
         self.__random_names = self.__file_to_list("csv/names.csv")
-        self.__random_tags = self.__file_to_list("csv/tags.csv")
-        self.__random_short_sentences = self.__file_to_list("csv/short_sentences.csv")
+        self.__random_tags = self.__file_to_list("csv/tags.csv", unique=True)
+        self.__random_short_sentences = self.__file_to_list("csv/short_sentences.csv", maximum_length=99)
         self.__random_long_sentences = self.__file_to_list("csv/long_sentences.csv")
 
     # 랜덤날짜를 생성해서 반환함
@@ -38,7 +40,8 @@ class RandomDataSupplier:
 
     # 랜덤태그를 생성해서 반환함
     def random_tag(self):
-        random_tag = random.choice(self.__random_tags)
+        random_tag = self.__random_tags[self.__tag_idx]
+        self.__tag_idx += 1
         return self.__without_bracket(random_tag)
 
     # 랜덤태그 설명을 생성해서 반환함
@@ -58,16 +61,20 @@ class RandomDataSupplier:
 
     # 랜덤컨텐츠를 생성해서 반환함
     def random_content(self):
-        random_title = random.choice(self.__random_long_sentences)
+        random_title = random.choice(self.__random_short_sentences)
         return self.__without_bracket(random_title)
 
     # 파일명을 파라미터로 받아서 파일을 열고 csv reader를 만들어서 라인단위로 읽은 다음 리스트에 담아서 반환함
     @staticmethod
-    def __file_to_list(file_name):
+    def __file_to_list(file_name, maximum_length=0, unique=False):
         file_object = open(file_name, "r")
         csv_reader = csv.reader(file_object, delimiter="\t")
         random_list = []
         for i, line in enumerate(csv_reader):
+            if maximum_length != 0 and len(line) > maximum_length:
+                continue
+            if unique and random_list.__contains__(line):
+                continue
             random_list.append(line)
         return random_list
 
