@@ -29,6 +29,13 @@ public class QuestionBooleanExpressionSupplier {
         return question.id.eq(questionId).and(questionIsNotDeleted());
     }
 
+    /**
+     * 질문글 검색에 사용되는 Where절을 만들어서 반환하는 메서드.
+     * 검색 파라미터 DTO에 값이 있으면 Where절에 조건이 추가된다.
+     * 반대로 값이 없는 경우, Where절에 조건을 추가하지 않는다.
+     * @param dto 검색 파라미터 DTO. ParsedSearchQuestionDTO 클래스이다.
+     * @return Where절에 해당하는 BooleanBuilder
+     */
     public BooleanBuilder searchQuestions(ParsedSearchQuestionDTO dto) {
         BooleanBuilder booleanBuilder = new BooleanBuilder();
         return booleanBuilder
@@ -40,18 +47,32 @@ public class QuestionBooleanExpressionSupplier {
                 .and(tagInRange(dto));
     }
 
+    /**
+     * 삭제되지 않은 질문글에 대한 BooleanExpression
+     */
     public BooleanExpression questionIsNotDeleted() {
         return question.deleted.isFalse();
     }
 
+    /**
+     * 제목이 검색파라미터와 비슷한지 확인하는 조건
+     */
     public BooleanExpression questionTitleLike(ParsedSearchQuestionDTO dto) {
         return dto.hasTitle() ? question.title.like("%" + dto.getTitle() + "%") : null;
     }
 
+    /**
+     * 작성자의 아이디가 검색 파라미터와 같은지 확인하는 조건
+     * @param dto
+     * @return
+     */
     public BooleanExpression authorIdLike(ParsedSearchQuestionDTO dto) {
         return dto.hasAuthorId() ? question.author.id.eq(dto.getAuthorId()) : null;
     }
 
+    /**
+     * 답변글 개수가 검색파라미터보다 이상인지 확인하는 조건
+     */
     public BooleanExpression answersCountGoe(ParsedSearchQuestionDTO dto) {
         return dto.hasAnswers() ? JPAExpressions.select(answer.count())
                 .from(answer)
@@ -60,6 +81,9 @@ public class QuestionBooleanExpressionSupplier {
                 : null;
     }
 
+    /**
+     * 질문글 추천점수가 검색파라미터보다 이상인지 확인하는 조건
+     */
     public BooleanExpression scoreGoe(ParsedSearchQuestionDTO dto) {
         return dto.hasScore() ? question.score.goe(dto.getScore()) : null;
     }
