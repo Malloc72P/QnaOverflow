@@ -1,13 +1,14 @@
 package scra.qnaboard.web.controller;
 
 import org.hamcrest.Matchers;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.FilterType;
-import org.springframework.data.domain.SliceImpl;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
@@ -54,7 +55,8 @@ class QuestionControllerTest {
 
     @Test
     @WithMockUser
-    void 질문_목록조회_테스트() throws Exception {
+    @DisplayName("질문_목록조회_테스트")
+    void testQuestionSearch () throws Exception {
         //given
         QuestionSummaryDTO questionSummaryDTO = QuestionSummaryDTO.builder()
                 .title("question-title-1")
@@ -70,8 +72,8 @@ class QuestionControllerTest {
                 .willReturn(new ParsedSearchQuestionDTO());
 
         //given
-        given(questionService.searchQuestions(new ParsedSearchQuestionDTO(), 0, 5))
-                .willReturn(new SliceImpl<>(list));
+        given(questionService.searchQuestions(new ParsedSearchQuestionDTO(), 0, 20))
+                .willReturn(new PageImpl<>(list));
 
         //when
         ResultActions resultActions = mockMvc.perform(get("/questions"));

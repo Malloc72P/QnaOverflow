@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.MessageSource;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -36,7 +35,7 @@ import java.util.Locale;
 public class QuestionController {
 
     private static final String defaultPageNumber = "0";
-    private static final String defaultPageSize = "5";
+    private static final String defaultPageSize = "20";
 
     private final MessageSource message;
     private final QuestionService questionService;
@@ -53,9 +52,12 @@ public class QuestionController {
                          SearchQuestionDTO searchDTO,
                          Model model) {
         ParsedSearchQuestionDTO parsedInput = searchInputService.parse(searchDTO);
-        Slice<QuestionSummaryDTO> questionSlice = questionService.searchQuestions(parsedInput, pageNumber, pageSize);
-        model.addAttribute("searchInput", parsedInput.searchInput());
-        model.addAttribute("slice", questionSlice);
+        Page<QuestionSummaryDTO> questionPage = questionService.searchQuestions(parsedInput, pageNumber, pageSize);
+
+        Paging<QuestionSummaryDTO> paging = Paging.buildPaging(questionPage, parsedInput.searchInput());
+
+        model.addAttribute("paging", paging);
+
         return "question/question-list";
     }
 
