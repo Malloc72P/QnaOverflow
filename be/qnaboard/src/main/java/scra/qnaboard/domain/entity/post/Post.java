@@ -14,9 +14,9 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * 게시글에 대한 엔티티 <br>
- * 게시글은 추상클래스이고, 실제로 사용할 엔티티는 Answer와 Question 엔티티임 <br>
- * 상속관계를 테이블에서 표현할 때는 싱글테이블 전략을 사용하기로 함
+ * 게시글에 대한 엔티티.
+ * Answer와 Question 엔티티는 Post를 상속해서 구현한다
+ * 상속관계를 테이블에서 표현할 때는 싱글테이블 전략을 사용하기로 했다.
  */
 @Getter
 @Entity
@@ -54,7 +54,6 @@ public abstract class Post extends BaseTimeEntity {
         } else if (voteType == VoteType.DOWN) {
             decreaseScore();
         }
-
     }
 
     public void increaseScore() {
@@ -69,6 +68,9 @@ public abstract class Post extends BaseTimeEntity {
         return !member.equals(author);
     }
 
+    /**
+     * 게시글을 삭제함
+     */
     public void delete() {
         deleted = true;
     }

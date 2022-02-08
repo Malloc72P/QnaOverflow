@@ -16,11 +16,8 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * 질문글에 대한 엔티티 <br>
- * 답변글을 List로 가지고 있다 <br>
- * <p>
- * QuestionTag와 Answer가 Question 엔티티와 다대일 관계를 가지고 있으나, Question에서는 매핑하지 않는다 <br>
- * QuestionTag나 Answer가 필요하다면 JPQL 쿼리를 날려서 가져오도록 하자
+ * 질문글에 대한 엔티티.
+ * 추가로 조회수에 해당하는 viewCount, 제목인 title, 그리고 태그목록인 questionTags를 가지고 있다.
  */
 @Getter
 @Entity
@@ -38,6 +35,12 @@ public class Question extends Post {
         this.title = title;
     }
 
+    /**
+     * 질문글을 수정함
+     *
+     * @param title   새로운 제목
+     * @param content 새로운 내용
+     */
     public void update(String title, String content) {
         if (!StringUtils.hasText(title) || !StringUtils.hasText(content)) {
             throw new QuestionPropertyIsEmptyException(title, content);
@@ -46,10 +49,20 @@ public class Question extends Post {
         this.content = content;
     }
 
+    /**
+     * 새로운 태그를 추가함.
+     * 다만 cascade 설정이 되어있지 않으므로 이 메서드만 호출해서는 QuestionTag가 저장되지 않는다.
+     * 따로 쿼리를 실행해서 추가해야 디비에 반영된다
+     */
     public void addQuestionTag(QuestionTag questionTag) {
         questionTags.add(questionTag);
     }
 
+    /**
+     * 태그 정보를 초기화함
+     * 다만 cascade 설정이 되어있지 않으므로 이 메서드만 호출해서는 QuestionTag가 초기화 되지 않는다.
+     * 따로 쿼리를 실행해서 추가해야 디비에 반영된다
+     */
     public void resetTags() {
         questionTags.clear();
     }

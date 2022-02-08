@@ -12,12 +12,13 @@ import javax.persistence.*;
 import java.util.Objects;
 
 /**
- * 대댓글에 대한 엔티티 <br>
- * 최상위 대댓글인 경우 parentComment가 null이다. <br>
- * parentPost 절대로 null일 수 없고 반드시 존재해야 한다 <br>
- * 대댓글 엔티티는 부모 엔티티만 ManyToOne으로 가지고 있게 한다. 대댓글을 디비에서 <br>
- * 가져올때는 부모게시글 아이디로 한번에 확 퍼오고, 계층관계는 parentComment값을 가지고 디비가 아닌 <br>
- * 애플리케이션에서 채우도록 한다. 디비에 가해지는 부담이 줄여들지 않을까 라고 생각해서 이렇게 했다.
+ * 대댓글에 대한 엔티티.
+ * 최상위 대댓글인 경우 parentComment가 null이다.
+ * parentPost 절대로 null일 수 없고 반드시 존재해야 한다
+ * 대댓글 엔티티는 부모 엔티티만 ManyToOne으로 가지고 있게 한다.
+ * 대댓글을 디비에서 가져올때는 댓글의 계층구조는 고려하지 않고, 부모게시글 아이디(parentPost)로 한번에 다 가져온다.
+ * 댓글의 계층관계는 parentComment값을 가지고 애플리케이션에서 조립한다.
+ * 이렇게 하면 디비에 가해지는 부담이 좀 줄어들지 않을까 라고 생각해서 이렇게 구현했습니다.
  */
 @Getter
 @Entity
@@ -52,14 +53,23 @@ public class Comment extends BaseTimeEntity {
         this.parentComment = parentComment;
     }
 
+    /**
+     * 댓글을 삭제함
+     */
     public void delete() {
         deleted = true;
     }
 
+    /**
+     * 댓글의 소유자가 아닌지 여부를 반환함
+     */
     public boolean isNotOwner(Member member) {
         return !member.equals(author);
     }
 
+    /**
+     * 댓글을 수정함
+     */
     public void update(String content) {
         if (!StringUtils.hasText(content)) {
             throw new CommentPropertyIsEmptyException(content);

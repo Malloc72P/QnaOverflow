@@ -1,5 +1,6 @@
 package scra.qnaboard.domain.repository.question;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -36,7 +37,8 @@ class QuestionSearchDetailRepositoryTest {
     private TagRepository tagRepository;
 
     @Test
-    void 질문글_상세조회_기능_테스트() {
+    @DisplayName("질문글_상세조회_기능_테스트")
+    void testQuestionDetail() {
         //given
         Member author = memberRepository.save(new Member("nickname", "email", MemberRole.USER));
 

@@ -8,6 +8,10 @@ import javax.persistence.Embeddable;
 import java.io.Serializable;
 import java.util.Objects;
 
+/**
+ * 복합키를 위한 클래스
+ * 질문글과 태그 아이디를 가지고 복합키를 구성한다
+ */
 @Getter
 @Embeddable
 @NoArgsConstructor

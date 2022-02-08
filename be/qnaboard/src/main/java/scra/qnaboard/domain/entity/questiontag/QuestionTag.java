@@ -10,6 +10,11 @@ import scra.qnaboard.domain.entity.post.Question;
 import javax.persistence.*;
 import java.util.Objects;
 
+/**
+ * 질문글과 태그의 다대다 관계를 해소하기 위한, 중간 테이블에 해당하는 엔티티.
+ * 질문글 아이디와 태그 아이디를 가지고 복합키를 만들고, 이를 기본키로 사용한다.
+ * JPA를 가지고 복합키를 표현하기 위해 QuestionTagId를 사용한다
+ */
 @Getter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)

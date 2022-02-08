@@ -12,7 +12,8 @@ import javax.persistence.*;
 import java.util.Objects;
 
 /**
- * 회원에 대한 Member 엔티티.
+ * 질문글을 검색할 때 사용하는 태그에 대한 엔티티.
+ * 태그와 질문글은 다대다 관계를 맺고 있다. 중간 테이블에 해당하는 QuestionTag 엔티티를 가지고 다대다 관계를 해소하고 있다.
  */
 @Getter
 @Entity
@@ -41,10 +42,16 @@ public class Tag extends BaseTimeEntity {
         this.description = description;
     }
 
+    /**
+     * 태그의 소유자인지 여부를 반환함
+     */
     public boolean isNotOwner(Member member) {
         return !member.equals(author);
     }
 
+    /**
+     * 태그를 수정함
+     */
     public void update(String name, String description) {
         if (!StringUtils.hasText(name) || !StringUtils.hasText(description)) {
             throw new TagPropertyIsEmptyException(name, description);
@@ -53,6 +60,9 @@ public class Tag extends BaseTimeEntity {
         this.description = description;
     }
 
+    /**
+     * 태그를 삭제함
+     */
     public void delete() {
         deleted = true;
     }

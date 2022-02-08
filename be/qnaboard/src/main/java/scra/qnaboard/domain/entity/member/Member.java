@@ -41,26 +41,34 @@ public class Member extends BaseTimeEntity {
         this.role = role;
     }
 
+    /**
+     * 회원정보를 수정하는 메서드
+     */
     public Member update(String nickname) {
         this.nickname = nickname;
         return this;
     }
 
+    /**
+     * 회원을 다시 활성화 상태로 바꾸는 메서드
+     */
     public Member activate() {
         this.deleted = false;
         return this;
     }
 
+    /**
+     * 관리자인지 여부를 반환함
+     */
     public boolean isAdmin() {
         return role.equals(MemberRole.ADMIN);
     }
 
+    /**
+     * 관리자가 아닌지에 대한 여부를 반환함
+     */
     public boolean isNotAdmin() {
         return !role.equals(MemberRole.ADMIN);
-    }
-
-    public boolean isNotSame(Member another) {
-        return !id.equals(another.id);
     }
 
     @Override

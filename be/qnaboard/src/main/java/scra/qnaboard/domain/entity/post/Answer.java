@@ -13,7 +13,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 /**
- * 답변글에 대한 엔티티 <br>
+ * 답변글에 대한 엔티티.
+ * 답변글을 가지고 있는 질문글 엔티티가 추가되었다
  * 답변글 엔티티를 만들려면 반드시 질문글이 있어야 만들 수 있도록 생성자로 강제함
  */
 @Getter
@@ -30,6 +31,9 @@ public class Answer extends Post {
         this.question = question;
     }
 
+    /**
+     * 답변글을 수정하는 메서드
+     */
     public void update(String content) {
         if (!StringUtils.hasText(content)) {
             throw new AnswerPropertyIsEmptyException(content);
