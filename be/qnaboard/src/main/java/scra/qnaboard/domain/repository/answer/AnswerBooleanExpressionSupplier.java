@@ -20,6 +20,10 @@ public class AnswerBooleanExpressionSupplier {
         return answer.question.id.eq(questionId).and(answer.deleted.isFalse());
     }
 
+    /**
+     * 위의 메서드와 같은 일을 하긴 하는데, 질문글 아이디를 파라미터로 받지 않는다.
+     * 서브쿼리에서 사용한다.
+     */
     public BooleanExpression answerNotDeletedAndEqualsQuestionId() {
         return answer.question.id.eq(question.id).and(answer.deleted.isFalse());
     }

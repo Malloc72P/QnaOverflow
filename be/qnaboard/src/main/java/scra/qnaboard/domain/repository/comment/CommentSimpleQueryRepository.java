@@ -16,12 +16,18 @@ import java.util.stream.Collectors;
 import static scra.qnaboard.domain.entity.QComment.comment;
 import static scra.qnaboard.domain.entity.member.QMember.member;
 
+/**
+ * 댓글 관련 약간 복잡한 쿼리를 위한 리포지토리
+ */
 @Repository
 @RequiredArgsConstructor
 public class CommentSimpleQueryRepository {
 
     private final JPAQueryFactory queryFactory;
 
+    /**
+     * 댓글 아이디로 댓글과 작성자를 패치조인으로 가져와서 옵셔널로 감싸서 반환한다
+     */
     public Optional<Comment> commentWithAuthor(long commentId) {
         Comment findComment = queryFactory.select(comment)
                 .from(comment)

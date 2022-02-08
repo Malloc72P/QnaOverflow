@@ -23,6 +23,9 @@ public class AnswerSimpleQueryRepository {
 
     private final AnswerBooleanExpressionSupplier expressionSupplier;
 
+    /**
+     * 답변글 아이디로 답변글과 작성자를 패치조인으로 가져와서 옵셔널로 감싸서 반환함
+     */
     public Optional<Answer> answerWithAuthor(long answerId) {
         Answer answer = queryFactory.select(QAnswer.answer)
                 .from(QAnswer.answer)
