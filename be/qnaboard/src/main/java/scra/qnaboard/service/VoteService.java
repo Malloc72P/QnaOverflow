@@ -29,14 +29,12 @@ public class VoteService {
         //투표자와 대상 게시글 검색
         Member member = memberService.findMember(requesterId);
         Post post = postService.findPostById(postId);
-
         //이미 투표했는지 확인하기 위해 투표 엔티티 검색
         List<Vote> votes = voteSimpleQueryRepository.findAllById(member, post);
-
         //투표 저장
         saveVote(votes, member, post, voteType);
-
-        post.updateScore(voteType);
+        //게시글 투표점수 업데이트
+        postService.updateScore(postId, voteType);
     }
 
     private void saveVote(List<Vote> votes, Member member, Post post, VoteType voteType) {

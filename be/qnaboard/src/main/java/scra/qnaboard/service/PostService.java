@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import scra.qnaboard.domain.entity.post.Post;
+import scra.qnaboard.domain.entity.vote.VoteType;
 import scra.qnaboard.domain.repository.PostRepository;
 import scra.qnaboard.service.exception.post.PostNotFoundException;
 
@@ -20,5 +21,14 @@ public class PostService {
      */
     public Post findPostById(long postId) {
         return postRepository.findById(postId).orElseThrow(() -> new PostNotFoundException(postId));
+    }
+
+    @Transactional
+    public void updateScore(long postId, VoteType voteType) {
+        if (voteType == VoteType.UP) {
+            postRepository.increaseScore(postId);
+        } else {
+            postRepository.decreaseScore(postId);
+        }
     }
 }

@@ -1,5 +1,6 @@
 package scra.qnaboard.web.api;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -40,7 +41,8 @@ class VoteApiControllerIntegrationTest {
 
     @Test
     @WithMockUser
-    void 투표_테스트() throws Exception {
+    @DisplayName("투표_테스트")
+    void testVote() throws Exception {
         //given
         Member member = memberRepository.save(new Member("nickname", "email", MemberRole.USER));
         //given
