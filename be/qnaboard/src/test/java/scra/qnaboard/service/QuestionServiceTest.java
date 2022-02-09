@@ -16,7 +16,7 @@ import scra.qnaboard.domain.repository.question.QuestionSimpleQueryRepository;
 import scra.qnaboard.service.exception.member.MemberNotFoundException;
 import scra.qnaboard.service.exception.question.delete.UnauthorizedQuestionDeletionException;
 import scra.qnaboard.service.exception.question.edit.QuestionEditFailedException;
-import scra.qnaboard.service.exception.question.edit.UnauthorizedQuestionEditException;
+import scra.qnaboard.service.exception.question.edit.ForbiddenQuestionEditException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -209,7 +209,7 @@ public class QuestionServiceTest {
         //when & then
         assertThatThrownBy(() -> questionService.editQuestion(anotherAuthorId, questionId, "new-title", "new-content", new ArrayList<>()))
                 .isInstanceOf(QuestionEditFailedException.class)
-                .isInstanceOf(UnauthorizedQuestionEditException.class);
+                .isInstanceOf(ForbiddenQuestionEditException.class);
     }
 
     @Test

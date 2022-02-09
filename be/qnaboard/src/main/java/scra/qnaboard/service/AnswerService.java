@@ -9,7 +9,7 @@ import scra.qnaboard.domain.entity.post.Question;
 import scra.qnaboard.domain.repository.answer.AnswerRepository;
 import scra.qnaboard.domain.repository.answer.AnswerSimpleQueryRepository;
 import scra.qnaboard.service.exception.answer.delete.UnauthorizedAnswerDeletionException;
-import scra.qnaboard.service.exception.answer.edit.UnauthorizedAnswerEditException;
+import scra.qnaboard.service.exception.answer.edit.ForbiddenAnswerEditException;
 import scra.qnaboard.service.exception.answer.search.AnswerNotFoundException;
 import scra.qnaboard.dto.answer.AnswerDetailDTO;
 import scra.qnaboard.dto.answer.edit.EditAnswerResultDTO;
@@ -73,7 +73,7 @@ public class AnswerService {
         Member requester = memberService.findMember(requesterId);
         //관리자가 아니면서 소유자도 아니면 실패해야함
         if (requester.isNotAdmin() && answer.isNotOwner(requester)) {
-            throw new UnauthorizedAnswerEditException(answerId, requesterId);
+            throw new ForbiddenAnswerEditException(answerId, requesterId);
         }
         //답변글 수정
         answer.update(content);

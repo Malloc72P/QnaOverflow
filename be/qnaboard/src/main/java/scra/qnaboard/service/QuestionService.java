@@ -14,7 +14,7 @@ import scra.qnaboard.domain.repository.question.QuestionSimpleQueryRepository;
 import scra.qnaboard.dto.question.edit.QuestionWithTagDTO;
 import scra.qnaboard.service.exception.question.AlreadyDeletedQuestionException;
 import scra.qnaboard.service.exception.question.delete.UnauthorizedQuestionDeletionException;
-import scra.qnaboard.service.exception.question.edit.UnauthorizedQuestionEditException;
+import scra.qnaboard.service.exception.question.edit.ForbiddenQuestionEditException;
 import scra.qnaboard.service.exception.question.search.QuestionNotFoundException;
 import scra.qnaboard.dto.question.detail.QuestionDetailDTO;
 import scra.qnaboard.dto.question.list.QuestionSummaryDTO;
@@ -121,7 +121,7 @@ public class QuestionService {
 
         //관리자가 아니면서 소유자도 아니면 실패해야함
         if (requester.isNotAdmin() && question.isNotOwner(requester)) {
-            throw new UnauthorizedQuestionEditException(questionId, requesterId);
+            throw new ForbiddenQuestionEditException(questionId, requesterId);
         }
 
         //질문게시글 수정

@@ -13,7 +13,7 @@ import scra.qnaboard.domain.repository.answer.AnswerRepository;
 import scra.qnaboard.domain.repository.question.QuestionRepository;
 import scra.qnaboard.service.exception.answer.delete.UnauthorizedAnswerDeletionException;
 import scra.qnaboard.service.exception.answer.edit.AnswerEditFailedException;
-import scra.qnaboard.service.exception.answer.edit.UnauthorizedAnswerEditException;
+import scra.qnaboard.service.exception.answer.edit.ForbiddenAnswerEditException;
 import scra.qnaboard.service.exception.member.MemberNotFoundException;
 import scra.qnaboard.dto.answer.AnswerDetailDTO;
 
@@ -161,7 +161,7 @@ public class AnswerServiceIntegrationTest {
         //when
         assertThatThrownBy(() -> answerService.editAnswer(anotherAuthor.getId(), answer.getId(), newAnswerContent))
                 .isInstanceOf(AnswerEditFailedException.class)
-                .isInstanceOf(UnauthorizedAnswerEditException.class);
+                .isInstanceOf(ForbiddenAnswerEditException.class);
 
         //then
         Answer findAnswer = answerRepository.findById(answer.getId()).orElse(null);

@@ -14,7 +14,7 @@ import scra.qnaboard.service.exception.comment.AlreadyDeletedCommentException;
 import scra.qnaboard.service.exception.comment.AlreadyDeletedParentCommentException;
 import scra.qnaboard.service.exception.comment.CommentNotFoundException;
 import scra.qnaboard.service.exception.comment.delete.UnauthorizedCommentDeletionException;
-import scra.qnaboard.service.exception.comment.edit.UnauthorizedCommentEditException;
+import scra.qnaboard.service.exception.comment.edit.ForbiddenCommentEditException;
 
 /**
  * 댓글 서비스
@@ -77,7 +77,7 @@ public class CommentService {
 
         //관리자가 아니면서 소유자도 아니면 실패해야함
         if (requester.isNotAdmin() && comment.isNotOwner(requester)) {
-            throw new UnauthorizedCommentEditException(commentId, requesterId);
+            throw new ForbiddenCommentEditException(commentId, requesterId);
         }
 
         //댓글 수정

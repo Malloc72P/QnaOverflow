@@ -16,7 +16,7 @@ import scra.qnaboard.service.exception.member.MemberNotFoundException;
 import scra.qnaboard.service.exception.question.AlreadyDeletedQuestionException;
 import scra.qnaboard.service.exception.question.delete.UnauthorizedQuestionDeletionException;
 import scra.qnaboard.service.exception.question.edit.QuestionEditFailedException;
-import scra.qnaboard.service.exception.question.edit.UnauthorizedQuestionEditException;
+import scra.qnaboard.service.exception.question.edit.ForbiddenQuestionEditException;
 import scra.qnaboard.dto.question.list.QuestionSummaryDTO;
 import scra.qnaboard.dto.question.search.ParsedSearchQuestionDTO;
 
@@ -256,7 +256,7 @@ class QuestionServiceIntegrationTest {
         assertThatThrownBy(() ->
                 questionService.editQuestion(anotherAuthor.getId(), questionId, newTitle, newContent, tagIds))
                 .isInstanceOf(QuestionEditFailedException.class)
-                .isInstanceOf(UnauthorizedQuestionEditException.class);
+                .isInstanceOf(ForbiddenQuestionEditException.class);
         Question findQuestion = questionService.findQuestion(questionId);
 
         //then

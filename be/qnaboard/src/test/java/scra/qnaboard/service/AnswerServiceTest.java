@@ -14,7 +14,7 @@ import scra.qnaboard.domain.repository.answer.AnswerRepository;
 import scra.qnaboard.domain.repository.answer.AnswerSimpleQueryRepository;
 import scra.qnaboard.service.exception.answer.delete.UnauthorizedAnswerDeletionException;
 import scra.qnaboard.service.exception.answer.edit.AnswerEditFailedException;
-import scra.qnaboard.service.exception.answer.edit.UnauthorizedAnswerEditException;
+import scra.qnaboard.service.exception.answer.edit.ForbiddenAnswerEditException;
 import scra.qnaboard.service.exception.member.MemberNotFoundException;
 import scra.qnaboard.dto.answer.AnswerDetailDTO;
 import scra.qnaboard.dto.answer.edit.EditAnswerResultDTO;
@@ -230,7 +230,7 @@ class AnswerServiceTest {
         //when & then
         assertThatThrownBy(() -> answerService.editAnswer(anotherAuthorId, answerId, newContent))
                 .isInstanceOf(AnswerEditFailedException.class)
-                .isInstanceOf(UnauthorizedAnswerEditException.class);
+                .isInstanceOf(ForbiddenAnswerEditException.class);
     }
 
     @Test

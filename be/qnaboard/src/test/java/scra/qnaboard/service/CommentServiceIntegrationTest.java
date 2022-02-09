@@ -13,7 +13,7 @@ import scra.qnaboard.domain.repository.comment.CommentRepository;
 import scra.qnaboard.domain.repository.question.QuestionRepository;
 import scra.qnaboard.service.exception.comment.delete.UnauthorizedCommentDeletionException;
 import scra.qnaboard.service.exception.comment.edit.CommentEditFailedException;
-import scra.qnaboard.service.exception.comment.edit.UnauthorizedCommentEditException;
+import scra.qnaboard.service.exception.comment.edit.ForbiddenCommentEditException;
 import scra.qnaboard.dto.comment.CommentDTO;
 import scra.qnaboard.dto.comment.edit.EditCommentResultDTO;
 
@@ -146,7 +146,7 @@ public class CommentServiceIntegrationTest {
         //when
         assertThatThrownBy(() -> commentService.editComment(anotherAuthor.getId(), comment.getId(), newCommentContent))
                 .isInstanceOf(CommentEditFailedException.class)
-                .isInstanceOf(UnauthorizedCommentEditException.class);
+                .isInstanceOf(ForbiddenCommentEditException.class);
     }
 
     @Test
