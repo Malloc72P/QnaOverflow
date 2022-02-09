@@ -121,7 +121,7 @@ public class TagService {
         }
 
         tag.delete();
-        questionTagSimpleQueryRepository.deleteByTagIdIn(tagId);
+        questionTagSimpleQueryRepository.deleteByTagId(tagId);
     }
 
     /**
