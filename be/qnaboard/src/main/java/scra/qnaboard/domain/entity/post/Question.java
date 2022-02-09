@@ -24,10 +24,10 @@ import java.util.Objects;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Question extends Post {
 
+    private String title;
+    private long viewCount = 0;
     @OneToMany(mappedBy = "question")
     private final List<QuestionTag> questionTags = new ArrayList<>();
-    private long viewCount = 0;
-    private String title;
 
     @Builder
     public Question(Member author, String content, String title) {
