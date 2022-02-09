@@ -7,12 +7,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpSession;
 
+/**
+ * 홈 컨트롤러
+ */
 @Controller
 @RequestMapping("/")
 @RequiredArgsConstructor
 public class HomeController {
-
-    private final HttpSession session;
 
     @GetMapping
     public String home() {

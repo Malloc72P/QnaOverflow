@@ -1,7 +1,6 @@
 package scra.qnaboard.web.controller;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.MessageSource;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
@@ -12,23 +11,22 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import scra.qnaboard.configuration.auth.LoginUser;
 import scra.qnaboard.configuration.auth.SessionUser;
-import scra.qnaboard.service.QuestionService;
-import scra.qnaboard.service.SearchInputParserService;
-import scra.qnaboard.dto.question.edit.QuestionWithTagDTO;
 import scra.qnaboard.dto.page.Paging;
 import scra.qnaboard.dto.question.create.CreateQuestionForm;
 import scra.qnaboard.dto.question.detail.QuestionDetailDTO;
 import scra.qnaboard.dto.question.edit.EditQuestionForm;
+import scra.qnaboard.dto.question.edit.QuestionWithTagDTO;
 import scra.qnaboard.dto.question.list.QuestionSummaryDTO;
 import scra.qnaboard.dto.question.search.ParsedSearchQuestionDTO;
 import scra.qnaboard.dto.question.search.SearchQuestionDTO;
+import scra.qnaboard.service.QuestionService;
+import scra.qnaboard.service.SearchInputParserService;
 
 import java.util.Locale;
 
 /**
  * 질문글에 대한 요청을 처리하는 컨트롤러
  */
-@Slf4j
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/questions")
