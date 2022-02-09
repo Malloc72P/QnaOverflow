@@ -1,4 +1,4 @@
-package scra.qnaboard.dto;
+package scra.qnaboard.dto.error;
 
 import lombok.Builder;
 import lombok.Getter;

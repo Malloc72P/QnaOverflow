@@ -13,7 +13,7 @@ import scra.qnaboard.service.exception.DeleteFailedException;
 import scra.qnaboard.service.exception.EditFailedException;
 import scra.qnaboard.service.exception.EntityNotFoundException;
 import scra.qnaboard.service.exception.vote.DuplicateVoteException;
-import scra.qnaboard.dto.ApiErrorDTO;
+import scra.qnaboard.dto.error.ApiErrorDTO;
 
 import java.util.Locale;
 import java.util.stream.Collectors;

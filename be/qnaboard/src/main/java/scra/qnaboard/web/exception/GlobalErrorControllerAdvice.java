@@ -11,7 +11,7 @@ import scra.qnaboard.configuration.auth.NoSessionUserException;
 import scra.qnaboard.service.exception.DeleteFailedException;
 import scra.qnaboard.service.exception.EditFailedException;
 import scra.qnaboard.service.exception.EntityNotFoundException;
-import scra.qnaboard.dto.ErrorDTO;
+import scra.qnaboard.dto.error.ErrorDTO;
 
 import java.util.Locale;
 

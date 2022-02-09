@@ -5,7 +5,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
-import scra.qnaboard.dto.exception.DtoUpdateException;
 import scra.qnaboard.dto.question.tag.QuestionTagDTO;
 
 import java.time.LocalDateTime;
@@ -58,7 +57,7 @@ public class QuestionSummaryDTO {
 
     public void update(Map<Long, List<QuestionTagDTO>> questionTagMap) {
         if (questionTagMap == null) {
-            throw new DtoUpdateException();
+            return;
         }
         tags = questionTagMap.get(questionId);
     }
