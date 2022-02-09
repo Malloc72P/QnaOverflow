@@ -1,4 +1,4 @@
-package scra.qnaboard.web.utils;
+package scra.qnaboard.utils;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;

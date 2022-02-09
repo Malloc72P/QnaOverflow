@@ -3,7 +3,7 @@ package scra.qnaboard.dto.answer.edit;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Builder;
 import lombok.Getter;
-import scra.qnaboard.web.utils.LocalDateTimeUtils;
+import scra.qnaboard.utils.LocalDateTimeUtils;
 
 import java.time.LocalDateTime;
 

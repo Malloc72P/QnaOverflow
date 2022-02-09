@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import static scra.qnaboard.utils.DateTimeUtil.MY_FORMAT;
+import static scra.qnaboard.utils.LocalDateTimeUtils.STRING_DATE_TIME_FORMAT;
 
 /**
  * 질문 목록조회를 위한 DTO. 질문목록의 요약정보라고 생각하면 된다. <br>
@@ -28,7 +28,7 @@ public class QuestionSummaryDTO {
     private long voteScore;
     private int answerCount;
     private long viewCount;
-    @DateTimeFormat(pattern = MY_FORMAT)
+    @DateTimeFormat(pattern = STRING_DATE_TIME_FORMAT)
     private LocalDateTime createDate;
     private String authorName;
     private List<QuestionTagDTO> tags = new ArrayList<>();

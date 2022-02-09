@@ -7,13 +7,14 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import scra.qnaboard.domain.entity.Comment;
-import scra.qnaboard.utils.DateTimeUtil;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static scra.qnaboard.utils.LocalDateTimeUtils.STRING_DATE_TIME_FORMAT;
 
 /**
  * 댓글 조회용 DTO.
@@ -26,7 +27,7 @@ public class CommentDTO implements Comparable<CommentDTO> {
     private long commentId;
     private long authorId;
     private String authorName;
-    @DateTimeFormat(pattern = DateTimeUtil.MY_FORMAT)
+    @DateTimeFormat(pattern = STRING_DATE_TIME_FORMAT)
     private LocalDateTime createdDate;
     private String content;
     private Long parentCommentId;

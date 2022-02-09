@@ -5,9 +5,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import scra.qnaboard.domain.entity.Tag;
-import scra.qnaboard.utils.DateTimeUtil;
 
 import java.time.LocalDateTime;
+
+import static scra.qnaboard.utils.LocalDateTimeUtils.STRING_DATE_TIME_FORMAT;
 
 /**
  * 태그 목록조회를 위한 DTO
@@ -21,7 +22,7 @@ public class TagDTO {
     private String authorName;
     private String tagName;
     private String tagDescription;
-    @DateTimeFormat(pattern = DateTimeUtil.MY_FORMAT)
+    @DateTimeFormat(pattern = STRING_DATE_TIME_FORMAT)
     private LocalDateTime createdDate;
 
     @Builder

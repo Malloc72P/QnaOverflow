@@ -30,7 +30,7 @@ import static org.mockito.BDDMockito.given;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-import static scra.qnaboard.web.utils.LocalDateTimeUtils.localeFormatter;
+import static scra.qnaboard.utils.LocalDateTimeUtils.localeFormatter;
 
 @WebMvcTest(
         controllers = AnswerApiController.class,
