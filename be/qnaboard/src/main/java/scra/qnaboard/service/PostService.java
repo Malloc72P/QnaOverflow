@@ -14,6 +14,10 @@ public class PostService {
 
     private final PostRepository postRepository;
 
+    /**
+     * 게시글을 찾아서 반환함
+     * 게시글은 질문글 또는 답변글일 수 있음
+     */
     public Post findPostById(long postId) {
         return postRepository.findById(postId).orElseThrow(() -> new PostNotFoundException(postId));
     }

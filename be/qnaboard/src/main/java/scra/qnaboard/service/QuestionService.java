@@ -43,7 +43,10 @@ public class QuestionService {
      *
      * @return 질문목록조회를 위한 DTO
      */
-    public Page<QuestionSummaryDTO> searchQuestions(ParsedSearchQuestionDTO searchQuestionDTO, int pageNumber, int pageSize) {
+    public Page<QuestionSummaryDTO> searchQuestions(ParsedSearchQuestionDTO searchQuestionDTO,
+                                                    int pageNumber,
+                                                    int pageSize) {
+        //파라미터로 PageRequest 객체 생성 후 리포지토리를 통해 질문글 검색
         PageRequest pageRequest = PageRequest.of(pageNumber, pageSize);
         return questionSearchListRepository.search(searchQuestionDTO, pageRequest);
     }

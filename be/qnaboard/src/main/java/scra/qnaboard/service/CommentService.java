@@ -8,14 +8,17 @@ import scra.qnaboard.domain.entity.member.Member;
 import scra.qnaboard.domain.entity.post.Post;
 import scra.qnaboard.domain.repository.comment.CommentRepository;
 import scra.qnaboard.domain.repository.comment.CommentSimpleQueryRepository;
+import scra.qnaboard.dto.comment.CommentDTO;
+import scra.qnaboard.dto.comment.edit.EditCommentResultDTO;
 import scra.qnaboard.service.exception.comment.AlreadyDeletedCommentException;
 import scra.qnaboard.service.exception.comment.AlreadyDeletedParentCommentException;
 import scra.qnaboard.service.exception.comment.CommentNotFoundException;
 import scra.qnaboard.service.exception.comment.delete.UnauthorizedCommentDeletionException;
 import scra.qnaboard.service.exception.comment.edit.UnauthorizedCommentEditException;
-import scra.qnaboard.dto.comment.CommentDTO;
-import scra.qnaboard.dto.comment.edit.EditCommentResultDTO;
 
+/**
+ * 댓글 서비스
+ */
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -84,35 +87,47 @@ public class CommentService {
         return new EditCommentResultDTO(content);
     }
 
+    /**
+     * 댓글 삭제.
+     * 관리자는 자신이 댓글의 작성자가 아니어도 댓글을 지울 수 있음
+     */
     @Transactional
     public void deleteComment(long requesterId, long commentId) {
+        //댓글과 요청자 엔티티 조회
         Comment comment = commentWithAuthor(commentId);
         Member requester = memberService.findMember(requesterId);
-
         //이미 삭제된 경우 또 삭제할 수 없음
         if (comment.isDeleted()) {
             throw new AlreadyDeletedCommentException(commentId);
         }
-
         //관리자가 아니면서 소유자도 아니면 실패해야함
         if (requester.isNotAdmin() && comment.isNotOwner(requester)) {
             throw new UnauthorizedCommentDeletionException(commentId, requesterId);
         }
-
         //관리자이거나 질문게시글의 소유자면 질문게시글 삭제함
         //관리자는 다른 관리자의 게시글을 지울 수 있음
         comment.delete();
     }
 
+    /**
+     * 댓글과 작성자 엔티티를 함께 조회함
+     */
     private Comment commentWithAuthor(long commentId) {
         return commentSimpleQueryRepository.commentWithAuthor(commentId)
                 .orElseThrow(() -> new CommentNotFoundException(commentId));
     }
 
+    /**
+     * 부모 댓글 엔티티를 찾아서 반환함
+     * 부모 댓글의 아이디가 null이면 null을 반환함
+     */
     private Comment findCommentParentById(Long commentId) {
         return commentId == null ? null : findComment(commentId);
     }
 
+    /**
+     * 댓글 엔티티 조회 메서드
+     */
     private Comment findComment(long commentId) {
         return commentRepository.findById(commentId)
                 .orElseThrow(() -> new CommentNotFoundException(commentId));
