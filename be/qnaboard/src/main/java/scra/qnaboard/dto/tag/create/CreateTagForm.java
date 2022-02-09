@@ -6,6 +6,10 @@ import lombok.Getter;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
+/**
+ * 태그 생성 요청을 위한 DTO
+ * 컨트롤러의 파라미터에서 사용함
+ */
 @Getter
 @AllArgsConstructor
 public class CreateTagForm {

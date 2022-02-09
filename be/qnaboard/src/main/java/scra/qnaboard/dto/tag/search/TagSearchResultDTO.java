@@ -7,6 +7,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * 태그 검색 API의 결과에 해당하는 DTO.
+ */
 @Getter
 public class TagSearchResultDTO {
 

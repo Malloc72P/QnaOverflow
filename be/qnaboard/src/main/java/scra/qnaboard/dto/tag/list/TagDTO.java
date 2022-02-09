@@ -9,6 +9,9 @@ import scra.qnaboard.utils.DateTimeUtil;
 
 import java.time.LocalDateTime;
 
+/**
+ * 태그 목록조회를 위한 DTO
+ */
 @Getter
 @NoArgsConstructor
 public class TagDTO {
@@ -31,6 +34,9 @@ public class TagDTO {
         this.createdDate = createdDate;
     }
 
+    /**
+     * 엔티티에서 DTO로 변환함
+     */
     public static TagDTO from(Tag tag) {
         TagDTO tagDTO = new TagDTO();
 

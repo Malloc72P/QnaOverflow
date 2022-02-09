@@ -7,6 +7,10 @@ import scra.qnaboard.dto.question.QuestionTagForm;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
+/**
+ * 질문글 생성을 위한 DTO
+ * 컨트롤러의 파라미터에서 사용함
+ */
 @Getter
 @ToString
 public class CreateQuestionForm extends QuestionTagForm {

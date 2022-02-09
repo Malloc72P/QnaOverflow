@@ -35,7 +35,7 @@ public class QuestionSummaryDTO {
     private List<QuestionTagDTO> tags = new ArrayList<>();
 
     /**
-     * QueryDSL에서 프로젝션할 때 사용하는 생성자 <br>
+     * QueryDSL에서 프로젝션할 때 사용하는 생성자
      * 이 메서드는 Q 클래스에서 사용한다. 지우면 안된다!
      */
     @Builder
