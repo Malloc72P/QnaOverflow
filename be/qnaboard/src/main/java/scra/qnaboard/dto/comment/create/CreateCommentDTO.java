@@ -8,6 +8,10 @@ import lombok.NoArgsConstructor;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
+/**
+ * 댓글 생성 DTO.
+ * 컨트롤러의 파라미터에서 사용함
+ */
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class CreateCommentDTO {

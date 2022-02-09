@@ -15,6 +15,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * 댓글 조회용 DTO.
+ * 질문글 및 답변글에서 해당 DTO를 사용해서 댓글에 대한 화면구현을 한다.
+ */
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class CommentDTO implements Comparable<CommentDTO> {
@@ -82,6 +86,9 @@ public class CommentDTO implements Comparable<CommentDTO> {
         return newComments;
     }
 
+    /**
+     * 엔티티에서 DTO로 변환함
+     */
     public static CommentDTO from(Comment comment) {
         CommentDTO commentDTO = new CommentDTO();
         commentDTO.commentId = comment.getId();

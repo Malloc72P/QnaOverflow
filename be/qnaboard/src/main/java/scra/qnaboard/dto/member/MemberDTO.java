@@ -6,6 +6,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import scra.qnaboard.domain.entity.member.Member;
 
+/**
+ * 회원 조회를 위한 DTO.
+ */
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)

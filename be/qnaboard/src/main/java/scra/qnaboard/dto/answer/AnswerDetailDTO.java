@@ -50,6 +50,10 @@ public class AnswerDetailDTO {
         this.authorName = authorName;
     }
 
+    /**
+     * 엔티티를 DTO로 변환함
+     * answer.getAuthor()로 인해 Lazy Loading이 발생함에 주의할 것.
+     */
     public static AnswerDetailDTO from(Answer answer) {
         AnswerDetailDTO answerDTO = new AnswerDetailDTO();
         answerDTO.answerId = answer.getId();
@@ -62,12 +66,17 @@ public class AnswerDetailDTO {
         return answerDTO;
     }
 
+    /**
+     * 답변글의 아이디로, 파라미터로 받은 newCommentMap에서, 댓글 List를 꺼내고, 이걸로 DTO의 댓글을 업데이트함
+     */
     public void update(Map<Long, List<CommentDTO>> newCommentMap) {
         List<CommentDTO> comments = newCommentMap.get(answerId);
-
         updateComments(comments);
     }
 
+    /**
+     * DTO의 댓글을 업데이트함
+     */
     private void updateComments(List<CommentDTO> comments) {
         if (comments == null) {
             return;

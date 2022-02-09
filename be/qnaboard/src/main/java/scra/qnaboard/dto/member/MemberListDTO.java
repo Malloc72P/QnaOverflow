@@ -4,6 +4,9 @@ import lombok.Getter;
 
 import java.util.List;
 
+/**
+ * 회원 목록조회를 위한 DTO
+ */
 @Getter
 public class MemberListDTO {
 
