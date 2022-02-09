@@ -12,7 +12,7 @@ import scra.qnaboard.domain.entity.post.Question;
 import scra.qnaboard.domain.repository.MemberRepository;
 import scra.qnaboard.domain.repository.tag.TagRepository;
 import scra.qnaboard.service.QuestionService;
-import scra.qnaboard.web.dto.question.detail.QuestionDetailDTO;
+import scra.qnaboard.dto.question.detail.QuestionDetailDTO;
 
 import java.util.ArrayList;
 import java.util.List;

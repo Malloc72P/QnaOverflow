@@ -19,7 +19,7 @@ import scra.qnaboard.domain.entity.post.Question;
 import scra.qnaboard.domain.repository.MemberRepository;
 import scra.qnaboard.domain.repository.question.QuestionRepository;
 import scra.qnaboard.domain.repository.tag.TagRepository;
-import scra.qnaboard.web.dto.question.search.ParsedSearchQuestionDTO;
+import scra.qnaboard.dto.question.search.ParsedSearchQuestionDTO;
 
 import java.util.ArrayList;
 import java.util.List;

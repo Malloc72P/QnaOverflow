@@ -13,11 +13,10 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import scra.qnaboard.configuration.auth.LoginUser;
 import scra.qnaboard.configuration.auth.SessionUser;
 import scra.qnaboard.service.TagService;
-import scra.qnaboard.web.dto.page.Paging;
-import scra.qnaboard.web.dto.tag.create.CreateTagForm;
-import scra.qnaboard.web.dto.tag.edit.EditTagForm;
-import scra.qnaboard.web.dto.tag.list.TagDTO;
-import scra.qnaboard.web.dto.tag.list.TagListDTO;
+import scra.qnaboard.dto.page.Paging;
+import scra.qnaboard.dto.tag.create.CreateTagForm;
+import scra.qnaboard.dto.tag.edit.EditTagForm;
+import scra.qnaboard.dto.tag.list.TagDTO;
 
 import java.util.Locale;
 

@@ -6,7 +6,7 @@ import com.querydsl.jpa.JPAExpressions;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import scra.qnaboard.domain.repository.answer.AnswerBooleanExpressionSupplier;
-import scra.qnaboard.web.dto.question.search.ParsedSearchQuestionDTO;
+import scra.qnaboard.dto.question.search.ParsedSearchQuestionDTO;
 
 import static scra.qnaboard.domain.entity.QTag.tag;
 import static scra.qnaboard.domain.entity.post.QAnswer.answer;

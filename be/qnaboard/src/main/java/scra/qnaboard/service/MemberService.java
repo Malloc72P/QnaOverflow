@@ -8,7 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import scra.qnaboard.domain.entity.member.Member;
 import scra.qnaboard.domain.repository.MemberRepository;
 import scra.qnaboard.service.exception.member.MemberNotFoundException;
-import scra.qnaboard.web.dto.member.MemberDTO;
+import scra.qnaboard.dto.member.MemberDTO;
 
 @Service
 @Transactional(readOnly = true)

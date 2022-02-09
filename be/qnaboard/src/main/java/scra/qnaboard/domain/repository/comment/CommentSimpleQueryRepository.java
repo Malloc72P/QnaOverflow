@@ -4,8 +4,8 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import scra.qnaboard.domain.entity.Comment;
-import scra.qnaboard.web.dto.comment.CommentDTO;
-import scra.qnaboard.web.dto.comment.QCommentDTO;
+import scra.qnaboard.dto.comment.CommentDTO;
+import scra.qnaboard.dto.comment.QCommentDTO;
 
 import java.util.HashMap;
 import java.util.List;

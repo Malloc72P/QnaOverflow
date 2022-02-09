@@ -15,7 +15,7 @@ import scra.qnaboard.service.exception.answer.delete.UnauthorizedAnswerDeletionE
 import scra.qnaboard.service.exception.answer.edit.AnswerEditFailedException;
 import scra.qnaboard.service.exception.answer.edit.UnauthorizedAnswerEditException;
 import scra.qnaboard.service.exception.member.MemberNotFoundException;
-import scra.qnaboard.web.dto.answer.AnswerDetailDTO;
+import scra.qnaboard.dto.answer.AnswerDetailDTO;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;

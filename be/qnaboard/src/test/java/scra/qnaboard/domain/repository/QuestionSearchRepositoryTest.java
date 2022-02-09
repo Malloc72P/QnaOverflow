@@ -15,9 +15,9 @@ import scra.qnaboard.domain.repository.comment.CommentRepository;
 import scra.qnaboard.domain.repository.question.QuestionRepository;
 import scra.qnaboard.domain.repository.question.QuestionSearchDetailRepository;
 import scra.qnaboard.domain.repository.tag.TagRepository;
-import scra.qnaboard.web.dto.answer.AnswerDetailDTO;
-import scra.qnaboard.web.dto.comment.CommentDTO;
-import scra.qnaboard.web.dto.question.detail.QuestionDetailDTO;
+import scra.qnaboard.dto.answer.AnswerDetailDTO;
+import scra.qnaboard.dto.comment.CommentDTO;
+import scra.qnaboard.dto.question.detail.QuestionDetailDTO;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

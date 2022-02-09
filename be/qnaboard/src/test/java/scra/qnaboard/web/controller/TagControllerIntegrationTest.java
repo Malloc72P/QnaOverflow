@@ -16,8 +16,8 @@ import scra.qnaboard.domain.entity.member.MemberRole;
 import scra.qnaboard.domain.repository.MemberRepository;
 import scra.qnaboard.domain.repository.question.QuestionRepository;
 import scra.qnaboard.domain.repository.tag.TagRepository;
-import scra.qnaboard.web.dto.tag.search.TagSearchResultDTO;
-import scra.qnaboard.web.dto.tag.search.TagSimpleDTO;
+import scra.qnaboard.dto.tag.search.TagSearchResultDTO;
+import scra.qnaboard.dto.tag.search.TagSimpleDTO;
 
 import java.util.ArrayList;
 import java.util.List;

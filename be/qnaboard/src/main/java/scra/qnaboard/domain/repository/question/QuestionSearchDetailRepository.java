@@ -8,11 +8,11 @@ import scra.qnaboard.domain.repository.answer.AnswerSimpleQueryRepository;
 import scra.qnaboard.domain.repository.comment.CommentSimpleQueryRepository;
 import scra.qnaboard.domain.repository.tag.QuestionTagSimpleQueryRepository;
 import scra.qnaboard.service.exception.question.search.QuestionNotFoundException;
-import scra.qnaboard.web.dto.answer.AnswerDetailDTO;
-import scra.qnaboard.web.dto.comment.CommentDTO;
-import scra.qnaboard.web.dto.question.detail.QQuestionDetailDTO;
-import scra.qnaboard.web.dto.question.detail.QuestionDetailDTO;
-import scra.qnaboard.web.dto.question.tag.QuestionTagDTO;
+import scra.qnaboard.dto.answer.AnswerDetailDTO;
+import scra.qnaboard.dto.comment.CommentDTO;
+import scra.qnaboard.dto.question.detail.QQuestionDetailDTO;
+import scra.qnaboard.dto.question.detail.QuestionDetailDTO;
+import scra.qnaboard.dto.question.tag.QuestionTagDTO;
 
 import javax.persistence.EntityManager;
 import java.util.List;

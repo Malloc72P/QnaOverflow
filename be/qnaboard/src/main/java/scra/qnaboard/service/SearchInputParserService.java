@@ -1,8 +1,8 @@
 package scra.qnaboard.service;
 
 import org.springframework.stereotype.Service;
-import scra.qnaboard.web.dto.question.search.ParsedSearchQuestionDTO;
-import scra.qnaboard.web.dto.question.search.SearchQuestionDTO;
+import scra.qnaboard.dto.question.search.ParsedSearchQuestionDTO;
+import scra.qnaboard.dto.question.search.SearchQuestionDTO;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -8,10 +8,10 @@ import org.springframework.web.bind.annotation.*;
 import scra.qnaboard.configuration.auth.LoginUser;
 import scra.qnaboard.configuration.auth.SessionUser;
 import scra.qnaboard.service.AnswerService;
-import scra.qnaboard.web.dto.answer.AnswerDetailDTO;
-import scra.qnaboard.web.dto.answer.create.CreateAnswerDTO;
-import scra.qnaboard.web.dto.answer.edit.EditAnswerDTO;
-import scra.qnaboard.web.dto.answer.edit.EditAnswerResultDTO;
+import scra.qnaboard.dto.answer.AnswerDetailDTO;
+import scra.qnaboard.dto.answer.create.CreateAnswerDTO;
+import scra.qnaboard.dto.answer.edit.EditAnswerDTO;
+import scra.qnaboard.dto.answer.edit.EditAnswerResultDTO;
 
 @Controller
 @RequiredArgsConstructor

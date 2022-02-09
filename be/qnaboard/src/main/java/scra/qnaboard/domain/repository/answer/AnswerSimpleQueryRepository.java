@@ -5,8 +5,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import scra.qnaboard.domain.entity.post.Answer;
 import scra.qnaboard.domain.entity.post.QAnswer;
-import scra.qnaboard.web.dto.answer.AnswerDetailDTO;
-import scra.qnaboard.web.dto.answer.QAnswerDetailDTO;
+import scra.qnaboard.dto.answer.AnswerDetailDTO;
+import scra.qnaboard.dto.answer.QAnswerDetailDTO;
 
 import java.util.List;
 import java.util.Optional;

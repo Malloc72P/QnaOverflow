@@ -11,11 +11,10 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import scra.qnaboard.domain.repository.answer.AnswerBooleanExpressionSupplier;
 import scra.qnaboard.domain.repository.tag.QuestionTagSimpleQueryRepository;
-import scra.qnaboard.domain.repository.vote.VoteSimpleQueryRepository;
-import scra.qnaboard.web.dto.question.list.QQuestionSummaryDTO;
-import scra.qnaboard.web.dto.question.list.QuestionSummaryDTO;
-import scra.qnaboard.web.dto.question.search.ParsedSearchQuestionDTO;
-import scra.qnaboard.web.dto.question.tag.QuestionTagDTO;
+import scra.qnaboard.dto.question.list.QQuestionSummaryDTO;
+import scra.qnaboard.dto.question.list.QuestionSummaryDTO;
+import scra.qnaboard.dto.question.search.ParsedSearchQuestionDTO;
+import scra.qnaboard.dto.question.tag.QuestionTagDTO;
 
 import java.util.List;
 import java.util.Map;

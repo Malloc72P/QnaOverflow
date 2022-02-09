@@ -17,11 +17,11 @@ import scra.qnaboard.configuration.auth.SecurityConfig;
 import scra.qnaboard.configuration.auth.SessionUser;
 import scra.qnaboard.service.QuestionService;
 import scra.qnaboard.service.SearchInputParserService;
-import scra.qnaboard.service.dto.QuestionWithTagDTO;
-import scra.qnaboard.web.dto.question.detail.QuestionDetailDTO;
-import scra.qnaboard.web.dto.question.list.QuestionSummaryDTO;
-import scra.qnaboard.web.dto.question.search.ParsedSearchQuestionDTO;
-import scra.qnaboard.web.dto.question.search.SearchQuestionDTO;
+import scra.qnaboard.dto.question.edit.QuestionWithTagDTO;
+import scra.qnaboard.dto.question.detail.QuestionDetailDTO;
+import scra.qnaboard.dto.question.list.QuestionSummaryDTO;
+import scra.qnaboard.dto.question.search.ParsedSearchQuestionDTO;
+import scra.qnaboard.dto.question.search.SearchQuestionDTO;
 
 import java.util.ArrayList;
 import java.util.List;

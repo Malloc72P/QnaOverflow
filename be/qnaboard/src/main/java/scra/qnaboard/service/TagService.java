@@ -13,8 +13,8 @@ import scra.qnaboard.domain.repository.tag.TagSimpleQueryRepository;
 import scra.qnaboard.service.exception.tag.delete.UnauthorizedTagDeletionException;
 import scra.qnaboard.service.exception.tag.edit.UnauthorizedTagEditException;
 import scra.qnaboard.service.exception.tag.search.TagNotFoundException;
-import scra.qnaboard.web.dto.tag.list.TagDTO;
-import scra.qnaboard.web.dto.tag.search.TagSearchResultDTO;
+import scra.qnaboard.dto.tag.list.TagDTO;
+import scra.qnaboard.dto.tag.search.TagSearchResultDTO;
 
 import java.util.List;
 

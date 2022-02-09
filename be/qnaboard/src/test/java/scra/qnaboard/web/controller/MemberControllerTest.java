@@ -8,15 +8,13 @@ import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.FilterType;
 import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import scra.qnaboard.configuration.auth.SecurityConfig;
 import scra.qnaboard.configuration.auth.SessionUser;
 import scra.qnaboard.service.MemberService;
-import scra.qnaboard.web.dto.member.MemberDTO;
-import scra.qnaboard.web.dto.member.MemberListDTO;
+import scra.qnaboard.dto.member.MemberDTO;
 
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;

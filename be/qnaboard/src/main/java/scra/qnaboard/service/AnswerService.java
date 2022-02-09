@@ -11,8 +11,8 @@ import scra.qnaboard.domain.repository.answer.AnswerSimpleQueryRepository;
 import scra.qnaboard.service.exception.answer.delete.UnauthorizedAnswerDeletionException;
 import scra.qnaboard.service.exception.answer.edit.UnauthorizedAnswerEditException;
 import scra.qnaboard.service.exception.answer.search.AnswerNotFoundException;
-import scra.qnaboard.web.dto.answer.AnswerDetailDTO;
-import scra.qnaboard.web.dto.answer.edit.EditAnswerResultDTO;
+import scra.qnaboard.dto.answer.AnswerDetailDTO;
+import scra.qnaboard.dto.answer.edit.EditAnswerResultDTO;
 
 @Service
 @RequiredArgsConstructor

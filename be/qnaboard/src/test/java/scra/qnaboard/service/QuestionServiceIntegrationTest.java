@@ -17,8 +17,8 @@ import scra.qnaboard.service.exception.question.AlreadyDeletedQuestionException;
 import scra.qnaboard.service.exception.question.delete.UnauthorizedQuestionDeletionException;
 import scra.qnaboard.service.exception.question.edit.QuestionEditFailedException;
 import scra.qnaboard.service.exception.question.edit.UnauthorizedQuestionEditException;
-import scra.qnaboard.web.dto.question.list.QuestionSummaryDTO;
-import scra.qnaboard.web.dto.question.search.ParsedSearchQuestionDTO;
+import scra.qnaboard.dto.question.list.QuestionSummaryDTO;
+import scra.qnaboard.dto.question.search.ParsedSearchQuestionDTO;
 
 import java.util.ArrayList;
 import java.util.List;

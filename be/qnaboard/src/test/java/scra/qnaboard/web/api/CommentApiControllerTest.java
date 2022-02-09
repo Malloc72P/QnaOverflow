@@ -16,11 +16,11 @@ import org.springframework.test.web.servlet.ResultActions;
 import scra.qnaboard.configuration.auth.SecurityConfig;
 import scra.qnaboard.configuration.auth.SessionUser;
 import scra.qnaboard.service.CommentService;
-import scra.qnaboard.web.dto.comment.CommentDTO;
-import scra.qnaboard.web.dto.comment.create.CreateCommentDTO;
-import scra.qnaboard.web.dto.comment.delete.CommentDeleteResultDTO;
-import scra.qnaboard.web.dto.comment.edit.EditCommentDTO;
-import scra.qnaboard.web.dto.comment.edit.EditCommentResultDTO;
+import scra.qnaboard.dto.comment.CommentDTO;
+import scra.qnaboard.dto.comment.create.CreateCommentDTO;
+import scra.qnaboard.dto.comment.delete.CommentDeleteResultDTO;
+import scra.qnaboard.dto.comment.edit.EditCommentDTO;
+import scra.qnaboard.dto.comment.edit.EditCommentResultDTO;
 
 import java.time.LocalDateTime;
 import java.util.Locale;

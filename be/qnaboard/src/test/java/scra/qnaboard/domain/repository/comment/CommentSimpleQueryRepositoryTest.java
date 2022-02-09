@@ -10,7 +10,7 @@ import scra.qnaboard.domain.entity.member.MemberRole;
 import scra.qnaboard.domain.entity.post.Question;
 import scra.qnaboard.domain.repository.MemberRepository;
 import scra.qnaboard.domain.repository.question.QuestionRepository;
-import scra.qnaboard.web.dto.comment.CommentDTO;
+import scra.qnaboard.dto.comment.CommentDTO;
 
 import java.util.ArrayList;
 import java.util.List;

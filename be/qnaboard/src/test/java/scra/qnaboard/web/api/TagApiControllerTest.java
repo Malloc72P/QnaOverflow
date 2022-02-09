@@ -15,7 +15,7 @@ import scra.qnaboard.domain.entity.Tag;
 import scra.qnaboard.domain.entity.member.Member;
 import scra.qnaboard.domain.entity.member.MemberRole;
 import scra.qnaboard.service.TagService;
-import scra.qnaboard.web.dto.tag.search.TagSearchResultDTO;
+import scra.qnaboard.dto.tag.search.TagSearchResultDTO;
 
 import java.util.ArrayList;
 import java.util.List;

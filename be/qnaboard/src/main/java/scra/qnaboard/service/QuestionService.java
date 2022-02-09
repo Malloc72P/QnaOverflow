@@ -11,14 +11,14 @@ import scra.qnaboard.domain.repository.question.QuestionRepository;
 import scra.qnaboard.domain.repository.question.QuestionSearchDetailRepository;
 import scra.qnaboard.domain.repository.question.QuestionSearchListRepository;
 import scra.qnaboard.domain.repository.question.QuestionSimpleQueryRepository;
-import scra.qnaboard.service.dto.QuestionWithTagDTO;
+import scra.qnaboard.dto.question.edit.QuestionWithTagDTO;
 import scra.qnaboard.service.exception.question.AlreadyDeletedQuestionException;
 import scra.qnaboard.service.exception.question.delete.UnauthorizedQuestionDeletionException;
 import scra.qnaboard.service.exception.question.edit.UnauthorizedQuestionEditException;
 import scra.qnaboard.service.exception.question.search.QuestionNotFoundException;
-import scra.qnaboard.web.dto.question.detail.QuestionDetailDTO;
-import scra.qnaboard.web.dto.question.list.QuestionSummaryDTO;
-import scra.qnaboard.web.dto.question.search.ParsedSearchQuestionDTO;
+import scra.qnaboard.dto.question.detail.QuestionDetailDTO;
+import scra.qnaboard.dto.question.list.QuestionSummaryDTO;
+import scra.qnaboard.dto.question.search.ParsedSearchQuestionDTO;
 
 import java.util.List;
 

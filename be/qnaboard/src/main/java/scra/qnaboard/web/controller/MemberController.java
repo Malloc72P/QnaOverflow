@@ -13,9 +13,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import scra.qnaboard.configuration.auth.LoginUser;
 import scra.qnaboard.configuration.auth.SessionUser;
 import scra.qnaboard.service.MemberService;
-import scra.qnaboard.web.dto.member.MemberDTO;
-import scra.qnaboard.web.dto.member.MemberListDTO;
-import scra.qnaboard.web.dto.page.Paging;
+import scra.qnaboard.dto.member.MemberDTO;
+import scra.qnaboard.dto.page.Paging;
 
 import javax.servlet.http.HttpSession;
 import java.util.Locale;

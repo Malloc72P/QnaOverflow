@@ -16,8 +16,7 @@ import org.springframework.test.web.servlet.ResultActions;
 import scra.qnaboard.configuration.auth.SecurityConfig;
 import scra.qnaboard.configuration.auth.SessionUser;
 import scra.qnaboard.service.TagService;
-import scra.qnaboard.web.dto.tag.list.TagDTO;
-import scra.qnaboard.web.dto.tag.list.TagListDTO;
+import scra.qnaboard.dto.tag.list.TagDTO;
 
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;

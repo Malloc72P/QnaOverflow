@@ -20,9 +20,9 @@ import scra.qnaboard.domain.entity.post.Question;
 import scra.qnaboard.domain.repository.MemberRepository;
 import scra.qnaboard.domain.repository.comment.CommentRepository;
 import scra.qnaboard.domain.repository.question.QuestionRepository;
-import scra.qnaboard.web.dto.comment.CommentDTO;
-import scra.qnaboard.web.dto.comment.create.CreateCommentDTO;
-import scra.qnaboard.web.dto.comment.edit.EditCommentDTO;
+import scra.qnaboard.dto.comment.CommentDTO;
+import scra.qnaboard.dto.comment.create.CreateCommentDTO;
+import scra.qnaboard.dto.comment.edit.EditCommentDTO;
 
 import java.util.Locale;
 

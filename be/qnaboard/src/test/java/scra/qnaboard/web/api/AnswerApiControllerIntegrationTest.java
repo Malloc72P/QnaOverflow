@@ -20,9 +20,9 @@ import scra.qnaboard.domain.entity.post.Question;
 import scra.qnaboard.domain.repository.MemberRepository;
 import scra.qnaboard.domain.repository.answer.AnswerRepository;
 import scra.qnaboard.domain.repository.question.QuestionRepository;
-import scra.qnaboard.web.dto.answer.AnswerDetailDTO;
-import scra.qnaboard.web.dto.answer.create.CreateAnswerDTO;
-import scra.qnaboard.web.dto.answer.edit.EditAnswerDTO;
+import scra.qnaboard.dto.answer.AnswerDetailDTO;
+import scra.qnaboard.dto.answer.create.CreateAnswerDTO;
+import scra.qnaboard.dto.answer.edit.EditAnswerDTO;
 
 import java.lang.reflect.Constructor;
 import java.util.Locale;

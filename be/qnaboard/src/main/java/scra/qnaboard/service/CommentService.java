@@ -13,8 +13,8 @@ import scra.qnaboard.service.exception.comment.AlreadyDeletedParentCommentExcept
 import scra.qnaboard.service.exception.comment.CommentNotFoundException;
 import scra.qnaboard.service.exception.comment.delete.UnauthorizedCommentDeletionException;
 import scra.qnaboard.service.exception.comment.edit.UnauthorizedCommentEditException;
-import scra.qnaboard.web.dto.comment.CommentDTO;
-import scra.qnaboard.web.dto.comment.edit.EditCommentResultDTO;
+import scra.qnaboard.dto.comment.CommentDTO;
+import scra.qnaboard.dto.comment.edit.EditCommentResultDTO;
 
 @Service
 @RequiredArgsConstructor

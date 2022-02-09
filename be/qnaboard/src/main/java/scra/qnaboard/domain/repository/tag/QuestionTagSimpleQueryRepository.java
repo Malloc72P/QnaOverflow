@@ -5,8 +5,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import scra.qnaboard.domain.entity.questiontag.QuestionTag;
 import scra.qnaboard.domain.entity.questiontag.QuestionTagId;
-import scra.qnaboard.web.dto.question.tag.QQuestionTagDTO;
-import scra.qnaboard.web.dto.question.tag.QuestionTagDTO;
+import scra.qnaboard.dto.question.tag.QQuestionTagDTO;
+import scra.qnaboard.dto.question.tag.QuestionTagDTO;
 
 import java.util.List;
 

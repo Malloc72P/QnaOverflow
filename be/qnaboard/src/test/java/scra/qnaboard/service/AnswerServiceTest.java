@@ -16,8 +16,8 @@ import scra.qnaboard.service.exception.answer.delete.UnauthorizedAnswerDeletionE
 import scra.qnaboard.service.exception.answer.edit.AnswerEditFailedException;
 import scra.qnaboard.service.exception.answer.edit.UnauthorizedAnswerEditException;
 import scra.qnaboard.service.exception.member.MemberNotFoundException;
-import scra.qnaboard.web.dto.answer.AnswerDetailDTO;
-import scra.qnaboard.web.dto.answer.edit.EditAnswerResultDTO;
+import scra.qnaboard.dto.answer.AnswerDetailDTO;
+import scra.qnaboard.dto.answer.edit.EditAnswerResultDTO;
 
 import java.util.Optional;
 

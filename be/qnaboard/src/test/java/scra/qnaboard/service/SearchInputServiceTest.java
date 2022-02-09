@@ -5,13 +5,13 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.util.StringUtils;
-import scra.qnaboard.web.dto.question.search.ParsedSearchQuestionDTO;
-import scra.qnaboard.web.dto.question.search.SearchQuestionDTO;
+import scra.qnaboard.dto.question.search.ParsedSearchQuestionDTO;
+import scra.qnaboard.dto.question.search.SearchQuestionDTO;
 
 import java.util.regex.Pattern;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static scra.qnaboard.web.dto.question.search.ParsedSearchQuestionDTO.*;
+import static scra.qnaboard.dto.question.search.ParsedSearchQuestionDTO.*;
 
 class SearchInputServiceTest {
 
