@@ -19,7 +19,7 @@ import static scra.qnaboard.domain.entity.questiontag.QQuestionTag.questionTag;
  */
 @Repository
 @RequiredArgsConstructor
-public class QuestionTagSimpleQueryRepository {
+public class QuestionTagQueryRepository {
 
     private final JPAQueryFactory queryFactory;
 

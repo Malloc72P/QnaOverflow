@@ -23,7 +23,7 @@ public class TagApiController {
     /**
      * 태그 검색요청을 처리하는 핸들러
      *
-     * @param searchParameter 태그 검색 파라미터. 이걸로 태그를 검색한다.
+     * @param searchParameter 태그 검색어. 이걸로 태그를 검색한다.
      * @return 검색된 태그 목록(JSON)
      */
     @GetMapping

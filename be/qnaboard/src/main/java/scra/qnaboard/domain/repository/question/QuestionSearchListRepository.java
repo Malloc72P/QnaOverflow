@@ -10,7 +10,7 @@ import org.springframework.data.support.PageableExecutionUtils;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import scra.qnaboard.domain.repository.answer.AnswerBooleanExpressionSupplier;
-import scra.qnaboard.domain.repository.tag.QuestionTagSimpleQueryRepository;
+import scra.qnaboard.domain.repository.tag.QuestionTagQueryRepository;
 import scra.qnaboard.dto.question.list.QQuestionSummaryDTO;
 import scra.qnaboard.dto.question.list.QuestionSummaryDTO;
 import scra.qnaboard.dto.question.search.ParsedSearchQuestionDTO;
@@ -36,15 +36,13 @@ public class QuestionSearchListRepository {
     private final QuestionBooleanExpressionSupplier questionExpressions;
     private final AnswerBooleanExpressionSupplier answerExpressions;
 
-    private final QuestionTagSimpleQueryRepository questionTagRepository;
+    private final QuestionTagQueryRepository questionTagRepository;
 
     /**
-     * 질문 목록 조회 메서드 <br>
-     * 원래는 복잡한 검색조건도 넣고 페이징 처리도 해야 하지만, 아직 적용하지 못함 <br>
-     * 현재는 DTO 프로젝션을 사용해서 원하는 데이터를 퍼오기만 한다. <br>
-     * 해당 기능을 위해 두번의 쿼리가 발생한다 <br>
-     * 1. 질문목록 조회( 추가로 질문의 답글개수와 유저 이름을 같이 가져옴 ) <br>
-     * 2. 질문목록에서 참조하는 태그정보 조회(QuestionTag와 Tag까지 조인해서 가져오되, in 절을 사용해서 최적화함)
+     * 질문 목록을 검색어 DTO를 사용해서 조회함. <br>
+     * 해당 기능을 위해 두번의 쿼리가 발생함. <br>
+     * 1. 질문목록 조회쿼리(추가로 질문의 답글개수와 유저 이름을 같이 가져옴 ) <br>
+     * 2. 연관된 태그조회 쿼리(QuestionTag와 Tag엔티티를 Join을 사용해서 가져옴.)
      *
      * @return 질문목록 DTO List
      */

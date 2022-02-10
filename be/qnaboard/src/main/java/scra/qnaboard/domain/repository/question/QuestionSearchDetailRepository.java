@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import scra.qnaboard.domain.repository.answer.AnswerSimpleQueryRepository;
 import scra.qnaboard.domain.repository.comment.CommentSimpleQueryRepository;
-import scra.qnaboard.domain.repository.tag.QuestionTagSimpleQueryRepository;
+import scra.qnaboard.domain.repository.tag.QuestionTagQueryRepository;
 import scra.qnaboard.service.exception.question.search.QuestionNotFoundException;
 import scra.qnaboard.dto.answer.AnswerDetailDTO;
 import scra.qnaboard.dto.comment.CommentDTO;
@@ -35,7 +35,7 @@ public class QuestionSearchDetailRepository {
 
     private final CommentSimpleQueryRepository commentRepository;
     private final AnswerSimpleQueryRepository answerRepository;
-    private final QuestionTagSimpleQueryRepository questionTagRepository;
+    private final QuestionTagQueryRepository questionTagRepository;
 
     private final QuestionBooleanExpressionSupplier expressionSupplier;
 

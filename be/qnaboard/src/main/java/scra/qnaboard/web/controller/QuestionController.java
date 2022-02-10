@@ -49,13 +49,13 @@ public class QuestionController {
                          @RequestParam(defaultValue = defaultPageSize) int pageSize,
                          SearchQuestionDTO searchDTO,
                          Model model) {
+        //사용자가 입력한 검색어를 DTO로 파싱
         ParsedSearchQuestionDTO parsedInput = searchInputService.parse(searchDTO);
+        //파싱된 검색어 DTO를 이용해서 질문글 검색
         Page<QuestionSummaryDTO> questionPage = questionService.searchQuestions(parsedInput, pageNumber, pageSize);
-
+        //페이지네이션을 위한 DTO를 생성하고 모델에 담아서 뷰로 전달
         Paging<QuestionSummaryDTO> paging = Paging.buildPaging(questionPage, parsedInput.searchInput());
-
         model.addAttribute("paging", paging);
-
         return "question/question-list";
     }
 
@@ -70,7 +70,6 @@ public class QuestionController {
     public String detail(@PathVariable Long questionId, Model model) {
         QuestionDetailDTO detailDTO = questionService.questionDetail(questionId);
         model.addAttribute("question", detailDTO);
-
         return "question/question-detail";
     }
 
@@ -109,6 +108,7 @@ public class QuestionController {
                 form.getContent(),
                 form.extractTagIds());
 
+        //리다이렉트할 경로에 새로운 질문글의 아이디를 붙여줌
         redirectAttributes.addAttribute("questionId", newQuestionId);
         return "redirect:/questions/{questionId}";
     }
@@ -129,7 +129,6 @@ public class QuestionController {
             Locale locale) {
         //질문글 삭제
         questionService.deleteQuestion(sessionUser.getId(), questionId);
-
         //삭제완료를 알리는 페이지로 리다이렉션 시킴. 필요한 정보는 요청 파라미터에 넣어줌
         redirectAttributes.addAttribute("title", message.getMessage("ui.notify.question.delete.title", null, locale));
         redirectAttributes.addAttribute("content", message.getMessage("ui.notify.question.delete.content", null, locale));
@@ -151,7 +150,6 @@ public class QuestionController {
         //질문글을 조회해서 폼의 내용을 업데이트함(이 내용이 질문글 수정페이지로 전달됨)
         QuestionWithTagDTO questionDTO = questionService.questionWithTag(questionId);
         form.update(questionDTO.getTitle(), questionDTO.getContent());
-
         //질문글의 아이디까지 모델에 담아서 넘겨줌
         model.addAttribute("questionId", questionId);
         model.addAttribute("tags", questionDTO.getTags());
@@ -177,12 +175,10 @@ public class QuestionController {
             @PathVariable("questionId") long questionId,
             @LoginUser SessionUser sessionUser,
             RedirectAttributes redirectAttributes) {
-
         //입력 폼에 문제가 있는지 확인
         if (bindingResult.hasErrors()) {
             return "question/question-edit-form";
         }
-
         //질문글 수정 후 상세 페이지로 리다이렉션
         questionService.editQuestion(
                 sessionUser.getId(),

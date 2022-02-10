@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import scra.qnaboard.domain.entity.Tag;
 import scra.qnaboard.domain.entity.member.Member;
-import scra.qnaboard.domain.repository.tag.QuestionTagSimpleQueryRepository;
+import scra.qnaboard.domain.repository.tag.QuestionTagQueryRepository;
 import scra.qnaboard.domain.repository.tag.TagRepository;
 import scra.qnaboard.domain.repository.tag.TagSimpleQueryRepository;
 import scra.qnaboard.service.exception.tag.delete.UnauthorizedTagDeletionException;
@@ -25,7 +25,7 @@ public class TagService {
 
     private final MemberService memberService;
     private final TagRepository tagRepository;
-    private final QuestionTagSimpleQueryRepository questionTagSimpleQueryRepository;
+    private final QuestionTagQueryRepository questionTagQueryRepository;
     private final TagSimpleQueryRepository tagSimpleQueryRepository;
 
     /**
@@ -121,7 +121,7 @@ public class TagService {
         }
 
         tag.delete();
-        questionTagSimpleQueryRepository.deleteByTagId(tagId);
+        questionTagQueryRepository.deleteByTagId(tagId);
     }
 
     /**

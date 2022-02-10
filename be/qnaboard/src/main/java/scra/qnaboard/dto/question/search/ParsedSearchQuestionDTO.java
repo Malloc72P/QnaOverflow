@@ -11,18 +11,18 @@ import java.util.Objects;
 /**
  * SearchQuestionDTO을 편하게 사용할 수 있도록 변환한 DTO.
  * 질문목록 검색 쿼리를 만들 때 해당 DTO를 사용한다.
- * hasXXX() 메서드를 사용해서 검색 파라미터가 있는지를 확인하고, 있으면 Where조건을 추가하는 식으로 작동한다.
+ * hasXXX() 메서드를 사용해서 검색어가 있는지를 확인하고, 있으면 Where조건을 추가하는 식으로 작동한다.
  */
 @Getter
 @Setter
 @NoArgsConstructor
 public class ParsedSearchQuestionDTO {
-    //검색 파라미터의 기본값.
+    //검색어의 기본값.
     public static final Long DEFAULT_AUTHOR_ID = -1L;
     public static final Long DEFAULT_ANSWERS = -1L;
     public static final Long DEFAULT_SCORE = Long.MIN_VALUE;
     public static final String DEFAULT_TITLE = "";
-    //검색 파라미터.
+    //검색어.
     private long authorId = DEFAULT_AUTHOR_ID;
     private long answers = DEFAULT_ANSWERS;
     private long score = DEFAULT_SCORE;
@@ -37,35 +37,35 @@ public class ParsedSearchQuestionDTO {
     }
 
     /**
-     * 검색 파라미터에 사용자 아이디 검색이 있는지 여부를 반환함
+     * 검색어에 사용자 아이디 검색이 있는지 여부를 반환함
      */
     public boolean hasAuthorId() {
         return authorId != DEFAULT_AUTHOR_ID;
     }
 
     /**
-     * 검색 파라미터에 답변글 개수 검색이 있는지 여부를 반환함
+     * 검색어에 답변글 개수 검색이 있는지 여부를 반환함
      */
     public boolean hasAnswers() {
         return answers != DEFAULT_ANSWERS;
     }
 
     /**
-     * 검색 파라미터에 제목 검색이 있는지 여부를 반환함
+     * 검색어에 제목 검색이 있는지 여부를 반환함
      */
     public boolean hasTitle() {
         return !title.equals(DEFAULT_TITLE);
     }
 
     /**
-     * 검색 파라미터에 추천점수 검색이 있는지 여부를 반환함
+     * 검색어에 추천점수 검색이 있는지 여부를 반환함
      */
     public boolean hasScore() {
         return score != DEFAULT_SCORE;
     }
 
     /**
-     * 검색 파라미터에 태그 검색이 있는지 여부를 반환함
+     * 검색어에 태그 검색이 있는지 여부를 반환함
      */
     public boolean hasTags() {
         return tags.size() > 0;

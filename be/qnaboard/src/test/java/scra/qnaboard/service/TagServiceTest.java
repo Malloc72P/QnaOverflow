@@ -9,7 +9,7 @@ import org.springframework.test.util.ReflectionTestUtils;
 import scra.qnaboard.domain.entity.Tag;
 import scra.qnaboard.domain.entity.member.Member;
 import scra.qnaboard.domain.entity.member.MemberRole;
-import scra.qnaboard.domain.repository.tag.QuestionTagSimpleQueryRepository;
+import scra.qnaboard.domain.repository.tag.QuestionTagQueryRepository;
 import scra.qnaboard.domain.repository.tag.TagRepository;
 import scra.qnaboard.domain.repository.tag.TagSimpleQueryRepository;
 import scra.qnaboard.service.exception.tag.delete.UnauthorizedTagDeletionException;
@@ -40,7 +40,7 @@ class TagServiceTest {
     @Mock
     private TagRepository tagRepository;
     @Mock
-    private QuestionTagSimpleQueryRepository questionTagSimpleQueryRepository;
+    private QuestionTagQueryRepository questionTagQueryRepository;
     @Mock
     private TagSimpleQueryRepository tagSimpleQueryRepository;
 

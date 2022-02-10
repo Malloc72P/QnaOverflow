@@ -7,7 +7,7 @@ import scra.qnaboard.domain.entity.Tag;
 import scra.qnaboard.domain.entity.post.Question;
 import scra.qnaboard.domain.entity.questiontag.QuestionTag;
 import scra.qnaboard.domain.repository.tag.QuestionTagRepository;
-import scra.qnaboard.domain.repository.tag.QuestionTagSimpleQueryRepository;
+import scra.qnaboard.domain.repository.tag.QuestionTagQueryRepository;
 import scra.qnaboard.domain.repository.tag.TagSimpleQueryRepository;
 
 import java.util.List;
@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
 public class QuestionTagService {
 
     private final QuestionTagRepository questionTagRepository;
-    private final QuestionTagSimpleQueryRepository questionTagSimpleQueryRepository;
+    private final QuestionTagQueryRepository questionTagQueryRepository;
     private final TagSimpleQueryRepository tagSimpleQueryRepository;
 
     /**
@@ -49,7 +49,7 @@ public class QuestionTagService {
      */
     @Transactional
     public void updateQuestionTags(Question question, List<Long> tagIds) {
-        questionTagSimpleQueryRepository.deleteByQuestionId(question.getId());
+        questionTagQueryRepository.deleteByQuestionId(question.getId());
         question.resetTags();
         createQuestionTags(question, tagIds);
     }

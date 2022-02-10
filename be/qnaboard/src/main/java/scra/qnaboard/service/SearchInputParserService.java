@@ -10,10 +10,10 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * SearchQuestionDTO를 ParsedSearchQuestionDTO로 변환하는 서비스.
- * 정규표현식을 가지고 문자열을 DTO로 변환한다.
- * 정규표현식은 각각의 검색 파라미터에 대해 그룹을 만들어 놓았다(score, answers, ...)
- * 문자열을 정규표현식으로 해독할 때 그룹을 사용하는데, 그룹의 이름을 모아놓은 리스트가 바로 groupNames이다.
+ * SearchQuestionDTO를 ParsedSearchQuestionDTO로 파싱하는 서비스.
+ * 정규표현식을 가지고 문자열로 된 검색어를 DTO로 파싱함
+ * 검색어는 5가지 유형으로 되어있다(추천점수, 답변글개수, 작성자아이디, 태그, 제목)
+ * 각각의 유형에 대해 그룹을 만들어 놓았고, 이러한 그룹의 이름을 모아놓은 리스트가 바로 groupNames이다.
  */
 @Service
 public class SearchInputParserService {
@@ -25,7 +25,7 @@ public class SearchInputParserService {
     private final String groupNameUser = "user";
     private final String groupNameTags = "tags";
     private final String groupNameTitle = "title";
-    //ParsedSearchQuestionDTO로 변환할 때 쓰는 정규표현식
+    //ParsedSearchQuestionDTO로 파싱할 때 쓰는 정규표현식
     private final String regex = "(?<score>score:[+-]?[0-9]{1,})|" +
             "(?<answers>answers:[0-9]{1,})|" +
             "(?<user>user:[0-9]{1,})|" +
@@ -44,29 +44,29 @@ public class SearchInputParserService {
     }
 
     /**
-     * 검색 파라미터를 해독해서 DTO로 만들고 반환함
+     * 검색어를 파싱해서 DTO로 만들고 반환함
      *
-     * @param searchDTO 해독되지 않은 검색 파라미터
-     * @return 해독된 검색 파라미터 DTO
+     * @param searchDTO 파싱되지 않은 검색어
+     * @return 파싱된 검색어 DTO
      */
     public ParsedSearchQuestionDTO parse(SearchQuestionDTO searchDTO) {
-        //해독된 검색 파라미터 DTO 생성
+        //검색어 DTO 생성
         ParsedSearchQuestionDTO parsedQuestionSearchDTO = new ParsedSearchQuestionDTO();
-        //해독되지 않은 검색 파라미터를 꺼냄.
+        //파싱되지 않은 검색어를 꺼냄.
         String searchInput = searchDTO.getSearchInput();
         //패턴을 통해 Matcher 객체를 생성함
         Matcher matcher = pattern.matcher(searchInput);
-        //검색 파라미터를 전부 찾을때 까지 반복함
+        //검색어를 전부 찾을때 까지 반복함
         while (matcher.find()) {
-            //찾은 검색 파라미터를 가지고 해독된 검색 파라미터 DTO를 업데이트함
+            //찾은 검색어를 가지고 파싱된 검색어 DTO를 업데이트함
             updateDtoByMatcher(parsedQuestionSearchDTO, matcher);
         }
-        //해독된 검색 파라미터 DTO를 반환함
+        //파싱된 검색어 DTO를 반환함
         return parsedQuestionSearchDTO;
     }
 
     /**
-     * 찾은 검색 파라미터를 가지고 해독된 검색 파라미터 DTO를 업데이트함
+     * 찾은 검색어를 가지고 파싱된 검색어 DTO를 업데이트함
      */
     private void updateDtoByMatcher(ParsedSearchQuestionDTO parsedQuestionSearchDTO, Matcher matcher) {
         //매칭된 그룹이 존재하는지 확인.
@@ -80,14 +80,14 @@ public class SearchInputParserService {
     }
 
     /**
-     * 찾은 검색 파라미터를 가지고 해독된 검색 파라미터 DTO를 업데이트함
+     * 찾은 검색어를 가지고 파싱된 검색어 DTO를 업데이트함
      *
-     * @param parsedQuestionSearchDTO 검색 파라미터 DTO
-     * @param groupName               찾은 검색 파라미터가 소속한 그룹의 이름
-     * @param group                   찾은 검색 파라미터(ex: "user:516389")
+     * @param parsedQuestionSearchDTO 검색어 DTO
+     * @param groupName               찾은 검색어가 소속한 그룹의 이름
+     * @param group                   찾은 검색어(ex: "user:516389")
      */
     private void updateDtoByGroup(ParsedSearchQuestionDTO parsedQuestionSearchDTO, String groupName, String group) {
-        //그룹 이름에 따라 각각 다른 방식으로 검색 파라미터를 추출해서 DTO에 집어넣는다.
+        //그룹 이름에 따라 각각 다른 방식으로 검색어를 추출해서 DTO에 집어넣는다.
         switch (groupName) {
             case groupNameUser:
                 //user:516389

@@ -31,12 +31,13 @@ public class QuestionBooleanExpressionSupplier {
 
     /**
      * 질문글 검색에 사용되는 Where절을 만들어서 반환하는 메서드.
-     * 검색 파라미터 DTO에 값이 있으면 Where절에 조건이 추가된다.
+     * 검색어 DTO에 값이 있으면 Where절에 조건이 추가된다.
      * 반대로 값이 없는 경우, Where절에 조건을 추가하지 않는다.
-     * @param dto 검색 파라미터 DTO. ParsedSearchQuestionDTO 클래스이다.
+     * @param dto 검색어 DTO. ParsedSearchQuestionDTO 클래스이다.
      * @return Where절에 해당하는 BooleanBuilder
      */
     public BooleanBuilder searchQuestions(ParsedSearchQuestionDTO dto) {
+        //BooleanBuilder를 사용해서 검색조건을 동적으로 추가함.
         BooleanBuilder booleanBuilder = new BooleanBuilder();
         return booleanBuilder
                 .and(questionIsNotDeleted())
@@ -62,7 +63,7 @@ public class QuestionBooleanExpressionSupplier {
     }
 
     /**
-     * 작성자의 아이디가 검색 파라미터와 같은지 확인하는 조건
+     * 작성자의 아이디가 검색어와 같은지 확인하는 조건
      * @param dto
      * @return
      */
@@ -91,10 +92,10 @@ public class QuestionBooleanExpressionSupplier {
     /**
      * 태그목록에 있는 모든 태그를 가지고 있는 질문글만 필터링함
      * 서브쿼리는 조건을 만족하는 태그의 개수를 반환함
-     * 조건을 만족하는 태그의 개수(서브쿼리의 결과)는 검색 파라미터의 태그목록의 수와 같아야 함
-     * 그래야 검색 파라미터의 모든 태그를 가지고 있는 질문글만 검색됨
+     * 조건을 만족하는 태그의 개수(서브쿼리의 결과)는 검색어의 태그목록의 수와 같아야 함
+     * 그래야 검색어의 모든 태그를 가지고 있는 질문글만 검색됨
      *
-     * @param dto 검색 파라미터
+     * @param dto 검색어
      * @return 태그목록 검색필터
      */
     public BooleanExpression tagInRange(ParsedSearchQuestionDTO dto) {
