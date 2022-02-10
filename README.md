@@ -139,33 +139,145 @@
 
 <hr/>
 
+> 이 서비스의 핵심 기능은 질문글 검색기능입니다.  
+> 사용자는 검색창에 검색어를 입력하고 엔터를 치기만 하면 끝입니다.  
+> 서버는 사용자가 입력한 검색어를 가지고 복잡한 동적쿼리를 만들어서 질문글을 조회합니다.
 
 #### 4.1 전체흐름
 
-- 전체흐름을 표현하는 흐름도
+![](https://i.imgur.com/Cd2SoLr.png)
 
-#### 4.2 게시글 검색 및 페이지네이션
+#### 4.2 사용자 요청
 
-- 리액트 화면에서 검색조건 넣는 부분
+![](https://i.imgur.com/4C1sDDp.png)
 
-#### 4.3 대댓글 기능
+- **질문글 검색**
+  - 사용자는 위의 이미지처럼 검색어를 입력해서 질문글을 검색합니다
+  - [직접 검색해보기](https://qnaoverflow.dase.me/questions?searchInput=%2522blandit%2522+answers%253A2+%255Bdefinition%255D+)
+- **질문글 검색요청 및 요청 파라미터**
+  - 사용자의 브라우저는 GET 요청을 서버로 전송합니다.
+  - 사용자가 입력한 검색어는 쿼리스트링으로 URL에 붙어서 서버에 전송됩니다
 
-- 효율적으로 대댓글을 가져오기 위한 고민에 대해 작성
+#### 4.3 컨트롤러 계층 - [코드보기](https://github.com/Malloc72P/QnaBoard/blob/4ea1e8260bcce9c27764631df2302db2a80b85c7/be/qnaboard/src/main/java/scra/qnaboard/web/controller/QuestionController.java#L42)
 
+![](https://i.imgur.com/nyQ3uIH.png)
 
+- **요청 처리 1 - 검색어 파싱**
+  - 컨트롤러는 검색요청을 받고, 이를 처리하기 위한 작업을 수행합니다
+  - 먼저, 사용자가 입력한 검색어를 파싱합니다. 검색어는 한줄짜리 문자열로 구성되어 있기 때문에, 
+    파싱을 해서 사용하기 편하게 만들어야 합니다.
+  - 검색어 파싱 로직은 `SearchInputParserService`라는 서비스 계층에 위임합니다.
+    해당 서비스는 검색어를 파싱하고, 그 결과를 객체에 담아서 반환합니다.
+    객체의 타입은 `ParsedSearchQuestionDTO`입니다.
+- **요청처리 2 - 질문글 검색**
+  - 질문글을 검색하기 위한 로직 처리를 QuestionService라는 서비스 계층에 위임합니다.
+- **결과 응답**
+  - 타임리프에서 페이지네이션을 구현하는데 필요한 기능을 제공하는 DTO 객체를 생성하고,
+    모델에 담아서 뷰에 전달합니다.
 
-### 5. 핵심 기능을 위한 고민
+#### 4.4 서비스 계층
+
+![](https://i.imgur.com/FzV0pZ7.png)
+
+- **검색어 파싱 서비스 : SearchInputParserService** - [코드보기](https://github.com/Malloc72P/QnaBoard/blob/4ea1e8260bcce9c27764631df2302db2a80b85c7/be/qnaboard/src/main/java/scra/qnaboard/service/SearchInputParserService.java#L46)
+  - 정규표현식을 사용해서 사용자가 입력한 검색어를 파싱합니다.
+  - 파싱된 검색어는 `ParsedSearchQuestionDTO`타입의 객체로 만들어서 반환합니다.
+- **질문글 검색 서비스: QuestionService** - [코드보기]()
+  - 질문글에 관련된 로직을 처리합니다. 질문글 검색로직도 해당 서비스에서 처리합니다.
+  - 페이징 처리를 위해서 파라미터를 사용해 PageRequest객체를 생성하고, 리포지토리 계층을 통해 
+    질문글을 조회합니다.
+
+#### 4.5 리포지토리 계층
+
+![](https://i.imgur.com/HS3rdRL.png)
+
+- **질문글 조회를 위해 복잡한 동적쿼리 생성**
+
+  - QueryDSL의 BooleanBuilder를 사용해서 복잡한 동적쿼리를 생성하도록 구현했습니다.
+
+  - 검색어 DTO인 ParsedSearchQuestionDTO를 가지고, Where절에 조건을 추가할지 여부를 결정합니다.
+
+  ```java
+  public BooleanBuilder searchQuestions(ParsedSearchQuestionDTO dto) {
+  //BooleanBuilder를 사용해서 검색조건을 동적으로 추가함.
+  BooleanBuilder booleanBuilder = new BooleanBuilder();
+  return booleanBuilder
+  	.and(questionIsNotDeleted())
+  	.and(questionTitleLike(dto))
+  	.and(authorIdLike(dto))
+  	.and(answersCountGoe(dto))
+  	.and(scoreGoe(dto))
+  	.and(tagInRange(dto));
+  }
+  
+  /**
+  * 제목이 검색파라미터와 비슷한지 확인하는 조건
+  */
+  public BooleanExpression questionTitleLike(ParsedSearchQuestionDTO dto) {
+      return dto.hasTitle() ? question.title.like("%" + dto.getTitle() + "%") : null;
+  }
+  ```
+
+  - 만약 검색어 DTO에 제목에 대한 검색어가 없다면, dto.hasTitle()의 결과가 false가 되고, 
+    `questionTitleLike`메서드는 null을 반환하게 됩니다.
+    그러면 booleanBuilder에 의해 해당 조건은 쿼리에 추가되지 않고 무시됩니다.
+    반면, DTO에 제목에 대한 검색어가 있다면 조건이 쿼리에 추가됩니다.
+    이러한 방식으로 Where절을 동적으로 생성합니다.
+  - 문자열로 JPQL을 직접 작성했다면, 상황에 따라 달라지는 Where절을 만드는게 매우 어려웠을 것 같은데, 
+    QueryDSL 덕분에 편하게 작성할 수 있었던 것 같습니다.
+
+- **질문글에 달린 태그 조회(N + 1 문제 해결)**
+
+  - 질문글과 태그는 N:M 관계로 연관관계를 맺고 있습니다.
+    따라서 질문글 목록을 조회할 때 연관된 태그까지 한번에 조회할 수 없었습니다.
+    따로 쿼리를 날려서 태그를 조회 해야 했습니다.
+
+  - 그런데, 조회된 질문글 개수만큼 태그를 조회하는 쿼리를 날리면, N + 1 문제가 발생합니다.
+    이 문제를 해결하기 위해, In 절을 활용해서 최적화 하는 방법을 선택했습니다.
+    아래의 코드는 질문글 목록에 달린 태그를 한번의 쿼리로 조회합니다.
+
+    ```java
+    //1. 질문목록 조회( 추가로 질문의 답글개수와 유저 이름을 같이 가져옴 )
+    /*...질문목록 조회하는 코드는 생략...*/
+    
+    //2. 연관된 태그정보 조회쿼리의 In절에서 사용할 ID 컬렉션을 스트림으로 생성한다
+    List<Long> questionIds = questions.stream()
+    .map(QuestionSummaryDTO::getQuestionId)
+    .collect(Collectors.toList());
+    
+    //3. 질문목록에서 참조하는 태그정보 조회(QuestionTag와 Tag까지 조인해서 가져오되, in 절을 사용해서 최적화함)
+    List<QuestionTagDTO> tags = questionTagRepository.questionTagsBy(questionIds);
+    
+    //4. 태그의 Question ID값을 가지고 Map으로 그룹화 함
+    Map<Long, List<QuestionTagDTO>> tagMap = tags.stream()
+    .collect(Collectors.groupingBy(QuestionTagDTO::getQuestionId));
+    
+    //5. 태그정보 입력
+    questions.forEach(question -> question.update(tagMap));
+    ```
+
+  - 조회된 모든 질문글의 아이디를 List 자료구조에 저장합니다
+    이 리스트와 In절을 사용해서 태그를 조회합니다.
+    이렇게 되면 질문글에 필요한 모든 태그를 DB로 부터 조회한 상태가 됩니다.
+
+  - 조회한 태그를 알맞은 질문글 객체에 넣어줘야 합니다.
+    이 부분을 해결하기 위해, 스트림의 `Collectors.groupingBy()`메서드를 활용했습니다.
+    `groupingBy`를 하면 질문글의 아이디를 Key로, 해당 질문글에 연관된 태그List를 Value로 가지는 맵을 만들 수 있습니다. 그 다음은 질문글을 순회하면서 맵에서 태그List를 꺼내서 넣습니다.
+
+  - 이렇게 해서 발생하는 쿼리는 최소한으로 하면서 원하는 기능은 구현할 수 있었습니다.
+
+### ~~5. 핵심 기능을 위한 고민 그 외의 고민들과 통합할 것~~
 
 <hr/>
 
 
-#### 5.1 복잡한 동적쿼리와 페이징 처리
+#### ~~5.1 복잡한 동적쿼리와 페이징 처리 내용중복, 지워야함~~
 
 - QueryDSL 사용
   - 컴파일 시점에 쿼리 생성부분에 문제가 없는지 체크해서, 잘못 작성된 JPQL로 인해 런타임에 예외가 발생하는 문제를 최소화 하였음
 
 
-#### 5.2 N + 1 문제
+#### ~~5.2 N + 1 문제 내용중복, 지워야함~~
 
 - `default_batch_fetch_size: 100`설정을 추가해서 1번의 쿼리로 가져온 N개의 엔티티에 대해 단건조회가 나가지 않고,
    in절을 사용해서 최적화된 쿼리가 나갈 수 있도록 함
@@ -183,7 +295,7 @@
   - 테스트 데이터에서 특정 데이터를 찾아서 반환하는 편의성 메서드도 만들어서 테스트를 최대한 편하게 할 수 있도록 함
     adminMember(), anotherMember()
 
-#### 5.4 대댓글 불러오기
+#### ~~5.4 대댓글 불러오기 내용 너무 많아지니까 빼는게 좋을 듯~~
 
 - 계층구조를 가지고 있는 댓글을 디비에서 어떻게 가져올지가 문제였음
 - 댓글 엔티티에 ManyToOne 관계로 부모 게시글과 댓글을 추가하였음
@@ -191,13 +303,6 @@
 - 댓글의 계층구조를 세팅하는건 WAS에서 담당하도록 구현하였음
   최대한 효율적으로 세팅할 수 있도록 Map 자료구조를 활용하였음.
   상세코드는 아래와 같음
-
-#### 5.5 대댓글을 정상적으로 가져오는지 테스트
-
-- 대댓글이 계층구조를 가지고 있어서 테스트하는게 쉽지 않았음
-- 넓이 우선 탐색 알고리즘을  사용해서 대댓글의 계층구조를 탐색하도록 하였음.
-  탐색할때마다 해당 댓글의 자식 댓글이 디비와 같은 상태인지 비교하도록 테스트 코드를 작성하였음
-- 상세코드는 아래와 같음
 
 ### 6. 그 외의 고민
 
@@ -219,6 +324,10 @@
 - 질문글 상세보기 페이지는 많은 쿼리를 발생시킴. 해당 페이지를 요청하는 일을 최소화하고 싶었음
 - 답변글을 작성하거나 댓글을 작성할때마다 질문글 상세보기 페이지를 재요청하는건 너무 비효율적이라고 생각하였음
 - 질문글 상세보기 페이지에서 새로고침 없이 답변을 달거나 댓글을 달 수 있도록, 답변글과 댓글은 API로 구현하였음. 
+
+#### 6.? 생성폼을 통해 사용자 실수 보여주기
+
+- input  필드 아래에 빨간글씨로 왜 요청이 실패했는지 알려주는 부분 쓰기
 
 #### 6.? 메세지 기능
 
