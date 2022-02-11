@@ -183,7 +183,9 @@
   - 페이징 처리를 위해서 파라미터를 사용해 PageRequest객체를 생성하고, 리포지토리 계층을 통해 
     질문글을 조회합니다.
 
-### 4.5 리포지토리 계층 - [질문글 조회 메서드 코드](https://github.com/Malloc72P/QnaBoard/blob/76c4759624f2162745340460390b6882cae2a23e/be/qnaboard/src/main/java/scra/qnaboard/domain/repository/question/QuestionSearchListRepository.java#L41)
+### 4.5 리포지토리 계층
+
+- [질문글을 조회하는 코드 보기](https://github.com/Malloc72P/QnaBoard/blob/76c4759624f2162745340460390b6882cae2a23e/be/qnaboard/src/main/java/scra/qnaboard/domain/repository/question/QuestionSearchListRepository.java#L41)
 
 ![](https://i.imgur.com/HS3rdRL.png)
 
@@ -224,7 +226,7 @@
   - 문자열로 JPQL을 직접 작성했다면, 상황에 따라 달라지는 Where절을 만드는게 매우 어려웠을 것 같은데, 
     QueryDSL 덕분에 편하게 작성할 수 있었던 것 같습니다.
 
-- **질문글에 달린 태그 조회(N + 1 문제 해결)** [코드보기](https://github.com/Malloc72P/QnaBoard/blob/76c4759624f2162745340460390b6882cae2a23e/be/qnaboard/src/main/java/scra/qnaboard/domain/repository/question/QuestionSearchListRepository.java#L70)
+- **질문글에 달린 태그 조회(N + 1 문제 해결)**  [코드보기](https://github.com/Malloc72P/QnaBoard/blob/76c4759624f2162745340460390b6882cae2a23e/be/qnaboard/src/main/java/scra/qnaboard/domain/repository/question/QuestionSearchListRepository.java#L70)
 
   - 질문글과 태그는 N:M 관계로 연관관계를 맺고 있습니다.
     따라서 질문글 목록을 조회할 때 연관된 태그까지 한번에 조회할 수 없었습니다.
