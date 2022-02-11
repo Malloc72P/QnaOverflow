@@ -9,17 +9,17 @@
 - 많은 질문글 속에서 찾고자 하는 질문글만 찾을 수 있도록, 제목, 답변글 개수, 태그, 추천점수를 사용해서 
   질문글을 검색할 수 있습니다.
 
+
+
 # 1. 제작기간 & 참여인원
-
-
 
 - **2021-12-13 ~ 2022-02-11**
 - **개인 프로젝트**
 
 
+
+
 # 2. 사용기술
-
-
 
 🔨**Backend**
 
@@ -175,23 +175,24 @@
 
 ![](https://i.imgur.com/FzV0pZ7.png)
 
-- **검색어 파싱 서비스 : SearchInputParserService** - [코드보기](https://github.com/Malloc72P/QnaBoard/blob/4ea1e8260bcce9c27764631df2302db2a80b85c7/be/qnaboard/src/main/java/scra/qnaboard/service/SearchInputParserService.java#L46)
+- **검색어 파싱 서비스 : SearchInputParserService** - [코드보기](https://github.com/Malloc72P/QnaBoard/blob/76c4759624f2162745340460390b6882cae2a23e/be/qnaboard/src/main/java/scra/qnaboard/service/SearchInputParserService.java#L12)
   - 정규표현식을 사용해서 사용자가 입력한 검색어를 파싱합니다.
   - 파싱된 검색어는 `ParsedSearchQuestionDTO`타입의 객체로 만들어서 반환합니다.
-- **질문글 검색 서비스: QuestionService** - [코드보기]()
+- **질문글 검색 서비스: QuestionService** - [코드보기](https://github.com/Malloc72P/QnaBoard/blob/76c4759624f2162745340460390b6882cae2a23e/be/qnaboard/src/main/java/scra/qnaboard/service/QuestionService.java#L40)
   - 질문글에 관련된 로직을 처리합니다. 질문글 검색로직도 해당 서비스에서 처리합니다.
   - 페이징 처리를 위해서 파라미터를 사용해 PageRequest객체를 생성하고, 리포지토리 계층을 통해 
     질문글을 조회합니다.
 
-### 4.5 리포지토리 계층
+### 4.5 리포지토리 계층 - [질문글 조회 메서드 코드](https://github.com/Malloc72P/QnaBoard/blob/76c4759624f2162745340460390b6882cae2a23e/be/qnaboard/src/main/java/scra/qnaboard/domain/repository/question/QuestionSearchListRepository.java#L41)
 
 ![](https://i.imgur.com/HS3rdRL.png)
 
 - **질문글 조회를 위해 복잡한 동적쿼리 생성**
 
   - QueryDSL의 BooleanBuilder를 사용해서 복잡한 동적쿼리를 생성하도록 구현했습니다.
-
   - 검색어 DTO인 ParsedSearchQuestionDTO를 가지고, Where절에 조건을 추가할지 여부를 결정합니다.
+
+  [동적으로 Where절 생성하는 부분의 코드](https://github.com/Malloc72P/QnaBoard/blob/76c4759624f2162745340460390b6882cae2a23e/be/qnaboard/src/main/java/scra/qnaboard/domain/repository/question/QuestionBooleanExpressionSupplier.java#L32)
 
   ```java
   public BooleanBuilder searchQuestions(ParsedSearchQuestionDTO dto) {
@@ -212,6 +213,7 @@
   public BooleanExpression questionTitleLike(ParsedSearchQuestionDTO dto) {
       return dto.hasTitle() ? question.title.like("%" + dto.getTitle() + "%") : null;
   }
+  /*...생략*/
   ```
 
   - 만약 검색어 DTO에 제목에 대한 검색어가 없다면, dto.hasTitle()의 결과가 false가 되고, 
@@ -222,7 +224,7 @@
   - 문자열로 JPQL을 직접 작성했다면, 상황에 따라 달라지는 Where절을 만드는게 매우 어려웠을 것 같은데, 
     QueryDSL 덕분에 편하게 작성할 수 있었던 것 같습니다.
 
-- **질문글에 달린 태그 조회(N + 1 문제 해결)**
+- **질문글에 달린 태그 조회(N + 1 문제 해결)** [코드보기](https://github.com/Malloc72P/QnaBoard/blob/76c4759624f2162745340460390b6882cae2a23e/be/qnaboard/src/main/java/scra/qnaboard/domain/repository/question/QuestionSearchListRepository.java#L70)
 
   - 질문글과 태그는 N:M 관계로 연관관계를 맺고 있습니다.
     따라서 질문글 목록을 조회할 때 연관된 태그까지 한번에 조회할 수 없었습니다.
@@ -262,108 +264,239 @@
 
   - 이렇게 해서 발생하는 쿼리는 최소한으로 하면서 원하는 기능은 구현할 수 있었습니다.
 
-# ~~5. 핵심 기능을 위한 고민 그 외의 고민들과 통합할 것~~
+# 5. 프로젝트 특징
 
 
 
-### ~~5.1 복잡한 동적쿼리와 페이징 처리 내용중복, 지워야함~~
+### 5.1 테스트 코드 작성
 
-- QueryDSL 사용
-  - 컴파일 시점에 쿼리 생성부분에 문제가 없는지 체크해서, 잘못 작성된 JPQL로 인해 런타임에 예외가 발생하는 문제를 최소화 하였음
+- **H2 데이터베이스를 사용하여 독립된 테스트 전용 데이터베이스 구축**
+  - 데이터베이스를 사용하는 테스트코드를 수행할 때, 데이터베이스는 어떻게 할 지가 문제였습니다.
+    운영중인 데이터베이스는 절대 사용해선 안되고, 따로 데이터베이스를 구축하는것도 문제가 있을 것 같았습니다.
+  - 방법이 없을까 고민하다가, H2 데이터베이스를 알게 되었습니다.
+    테스트코드만을 위한 독립된 인메모리 DB를 만들어줄 수 있는데다가 가벼워서 상당히 유용했습니다.
+  - 또한 H2 데이터베이스를 MySQL 호환모드로 실행할 수 있었습니니다. 덕분에 운영환경과  비슷한 상황에서  테스트할 수 있었습니다.
 
-
-### ~~5.2 N + 1 문제 내용중복, 지워야함~~
-
-- `default_batch_fetch_size: 100`설정을 추가해서 1번의 쿼리로 가져온 N개의 엔티티에 대해 단건조회가 나가지 않고,
-   in절을 사용해서 최적화된 쿼리가 나갈 수 있도록 함
-- 엔티티를 가져오는 경우, 필요한 범위의 연관관계를 미리 파악하고, 패치조인으로 연관관계를 세팅하도록 하였음
-
-### 5.3 효율적인 테스트
-
-- 테스트 코드는 H2 데이터베이스를 사용해서 테스트함
-  - 덕분에 별도로 디비를 설치하지 않아도 메모리상에서 H2 디비를 띄워서 테스트할 수 있었음
-  - H2 데이터베이스를 MySQL모드로 실행시켜서 최대한 실제 환경과 비슷하게 조성하였음
-- 테스트메서드에서 데이터 초기화 로직을 간소화해서, 테스트 코드를 작성하는데 걸리는 시간을 줄였음
-  - 테스트를 위한 테스트 데이터를 생성하는 유틸 클래스 구현함
-  - `TestDataInit`로 테스트 데이터를 초기화하고, `TestDataDTO`에 담아서 반환하도록 구현함
-  - 테스트 메서드는 `TestDataDTO`를 받아서 정해진 로직대로 테스트를 수행함
-  - 테스트 데이터에서 특정 데이터를 찾아서 반환하는 편의성 메서드도 만들어서 테스트를 최대한 편하게 할 수 있도록 함
-    adminMember(), anotherMember()
-
-### ~~5.4 대댓글 불러오기 내용 너무 많아지니까 빼는게 좋을 듯~~
-
-- 계층구조를 가지고 있는 댓글을 디비에서 어떻게 가져올지가 문제였음
-- 댓글 엔티티에 ManyToOne 관계로 부모 게시글과 댓글을 추가하였음
-- 댓글을 가져올 때 in절을 사용해서 특정 게시글을 부모로 가지고 있는 댓글을 디비에서 한번에 퍼오도록 쿼리를 작성하였음
-- 댓글의 계층구조를 세팅하는건 WAS에서 담당하도록 구현하였음
-  최대한 효율적으로 세팅할 수 있도록 Map 자료구조를 활용하였음.
-  상세코드는 아래와 같음
-
-# 6. 그 외의 고민
+- **단위 테스트와 통합 테스트** 
+  [단위테스트 코드 보기](https://github.com/Malloc72P/QnaBoard/blob/76c4759624f2162745340460390b6882cae2a23e/be/qnaboard/src/test/java/scra/qnaboard/web/controller/QuestionControllerTest.java#L36)
+  [통합테스트 코드보기](https://github.com/Malloc72P/QnaBoard/blob/76c4759624f2162745340460390b6882cae2a23e/be/qnaboard/src/test/java/scra/qnaboard/web/controller/QuestionControllerIntegrationTest.java#L35)
+  - 단위테스트와 통합테스트 둘 다 작성해서 테스트하였습니다.
+  - 컨트롤러와 서비스 계층에 대한 단위테스트를 작성하여, 각 계층에 대한 테스트를 격리해서 할 수 있었습니다. 테스트 격리 덕분에 각 계층에 문제가 없는지를 빠르게 검증할 수 있었습니다.
+  - 모든 빈을 올려서 테스트하는 통합테스트도 작성했습니다. 덕분에 운영환경과 유사하게 테스트할 수 있었습니다.
 
 
-### 6.1 상속을 통해 대댓글 기능 재활용
+### 5.2 상속을 통해 soft delete 코드 재사용 - [코드보기](https://github.com/Malloc72P/QnaBoard/blob/76c4759624f2162745340460390b6882cae2a23e/be/qnaboard/src/main/java/scra/qnaboard/domain/entity/post/Post.java#L39)
 
-- 질문글과 답변글은 공통점이 많지만 다른 부분이 있어서 같은 엔티티로 처리할 수 없었다
-- 어떻게 할까 고민하다가 두 객체의 공통된 부분을 추출해서 게시글(Post)이라는 엔티티를 만들고 상속을 사용해서 공통부분을 재활용할 수 있었다
-- 특히 대댓글 기능을 게시글 클래스에서 구현하고 질문글과 답변글 엔티티에게 상속해줘서 중복구현 없이 기능을 재활용할 수 있었다
+- **공통기능 추출 후 추상 클래스(Post) 생성해서 해결하기**
 
-### 6.? Post/Redirection/Get 패턴 적용
+  - 질문글(Question)과 답변글(Answer)의 공통기능을 추출하여 게시글(Post) 클래스를 만들었습니다.
 
-- Form을 통한 Post  요청에 대해 PRG 패턴 적용함
-- 사용자가 새로고침할 때 마다 요청하는 것을 막기 위해서 적용하였음
+  - 추출된 공통기능에는 soft delete 기능이 있습니다. 질문글과 답변글 클래스에 삭제 코드를 중복작성하지 않고, 상위클래스인 Post에 작성하고 상속하여, 코드를 재사용할 수 있었습니다.
+    [코드보기](https://github.com/Malloc72P/QnaBoard/blob/76c4759624f2162745340460390b6882cae2a23e/be/qnaboard/src/main/java/scra/qnaboard/domain/entity/post/Post.java#L58)
 
-#### 6.? 페이지 새로고침 최소화
+    ```java
+    @Getter
+    @Entity
+    @NoArgsConstructor(access = AccessLevel.PROTECTED)
+    @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+    @DiscriminatorColumn(name = "post_type")
+    public abstract class Post extends BaseTimeEntity {
+    	//...생략
+    	protected boolean deleted = false;
+    	   
+         /**
+         * 게시글을 삭제함
+         */
+    	public void delete() {
+            deleted = true;
+        }
+    }
+    ```
 
-- 질문글 상세보기 페이지는 많은 쿼리를 발생시킴. 해당 페이지를 요청하는 일을 최소화하고 싶었음
-- 답변글을 작성하거나 댓글을 작성할때마다 질문글 상세보기 페이지를 재요청하는건 너무 비효율적이라고 생각하였음
-- 질문글 상세보기 페이지에서 새로고침 없이 답변을 달거나 댓글을 달 수 있도록, 답변글과 댓글은 API로 구현하였음. 
+    
 
-#### 6.? 생성폼을 통해 사용자 실수 보여주기
 
-- input  필드 아래에 빨간글씨로 왜 요청이 실패했는지 알려주는 부분 쓰기
+### 5.3 Post/Redirection/Get 패턴 적용
 
-#### 6.? 메세지 기능
+- **PRG 패턴 적용을 통해 의도하지 않은 Post요청 방지** 
+  [질문글 생성 후 리다이렉트하는 코드](https://github.com/Malloc72P/QnaBoard/blob/76c4759624f2162745340460390b6882cae2a23e/be/qnaboard/src/main/java/scra/qnaboard/web/controller/QuestionController.java#L111)
 
-- 메세지 소스를 사용해서 뷰에 들어가는 문자열을 관리하였음
-- 덕분에 국제화 기능을 넣을 때 추가구현 없이 properties파일 하나만 추가하는걸로 해결할 수 있었음
+  - Post 요청에 대한 응답이 페이지인 경우, 브라우저를 새로고침하는 순간, Post요청이 다시 전송되는 문제가 있었습니다. 이렇게 되면 같은 내용의 질문글을 중복해서 생성하게 되므로 막을 방법이 필요했습니다.
 
-#### 6.? 예외처리
+  - 그래서 PRG 패턴을 적용하였습니다. 페이지를 응답하지 않고, 리다이렉트를 시켰습니다. 리다이렉트 된 페이지에서 새로고침을 해도 Post요청이 아닌 페이지에 대한 Get요청을 날리기 때문에, 중복된 질문글 생성요청을  날리는 문제를 해결할 수 있었습니다.
 
-- ControllerAdvice를 사용한 예외처리 부분이 전체적으로 어케 생겼는지 소개
 
-#### 6.? 개발환경 구축
+### 5.4 페이지 새로고침 최소화
 
-- 로컬, 개발서버, 운영서버마다 별도의 설정파일로 관리한다
+- 질문글 상세보기 페이지는 여러 쿼리를 발생시킵니다. 질문글과 관련된 모든 답변글을 불러와야 하고, 각각의 게시글에 달려있는 댓글도 가져와야 합니다. 그런데, 댓글이나 답변글을 작성하거나 수정, 삭제할때마다 질문글 상세보기 페이지를 새로고침해버리면 또 다시 여러 개의 쿼리가 발생하게 됩니다. 
+- 질문글 상세보기 페이지의 새로고침 없이, 댓글과 답변글에 대한 생성, 수정, 삭제를 하는게 더 효율적이라는 판단을 했습니다. 그래서 답변글과 댓글 생성 수정 삭제 기능은 API로 개발하였습니다.
+  해당 기능을 요청하는 것은 자바스크립트의 fetch()함수를 사용했습니다.
+- API 컨트롤러와 자바스크립트 코드는 아래에서 확인할 수 있습니다
+  - [API 컨트롤러 코드보기](https://github.com/Malloc72P/QnaBoard/blob/76c4759624f2162745340460390b6882cae2a23e/be/qnaboard/src/main/java/scra/qnaboard/web/api/AnswerApiController.java#L26)
+  - [자바스크립트 코드보기](https://github.com/Malloc72P/QnaBoard/blob/76c4759624f2162745340460390b6882cae2a23e/be/qnaboard/src/main/resources/static/js/lib/answer.js#L52)
 
+
+### 5.5 사용자 입력 검증 및 사용자에게 입력오류 알려주기
+
+- **검증의 필요성**
+  - 질문글 생성요청을 할 때, 사용자 입력을 검증해야 했습니다. 그래야 잘못된 값으로 엔티티를 생성하려는 시도를 막아야 하기 때문입니다.
+  - 또한 어디서 오류가 발생했는지를 고객에게 알려줘야 했습니다. 왜 요청이 실패하는지를 알아야 입력을 수정해서 다시 요청할 수 있기 때문입니다.
+
+
+- **Bean Validation을 사용한 사용자 입력 검증** - [코드보기](https://github.com/Malloc72P/QnaBoard/blob/76c4759624f2162745340460390b6882cae2a23e/be/qnaboard/src/main/java/scra/qnaboard/dto/question/create/CreateQuestionForm.java#L19)
+
+  - 폼 요청에 대해서 DTO를 만들고, 여기에 검증을 위한 애너테이션을 부착했습니다.
+  - 엔티티와 같은 도메인 객체를 사용할 수 도 있었지만, 그렇게 구현하지 않았습니다. 생성, 수정등의 요청마다 검증로직이 달라질 수 있는데다가 다루는 데이터에 차이가 생길 수 도 있으니, DTO를 만들어서 처리하는게 좋다고 생각했기 때문입니다.
+
+- **사용자에게 입력 오류 알리기** - [코드보기](https://github.com/Malloc72P/QnaBoard/blob/76c4759624f2162745340460390b6882cae2a23e/be/qnaboard/src/main/resources/templates/question/question-form.html#L23)
+
+  - Bean Validation에 실패하면 `bindingResult.hasErrors()`가 true가 되는 것을 이용해서, 입력에 문제가 있으면 사용자를 입력폼 페이지로 보내도록 구현했습니다.
+
+  - 사용자에게 입력 오류를 알리는 기능은 타임리프를 활용해서 구현했습니다.
+    `th:errors`를 사용해서, 오류가 있는 필드에 에러메세지를 랜더링했습니다. 에러메세지는 메세지 소스에서 가져오도록 구현했습니다. 
+
+  - *예시) 질문글 생성폼의 제목필드에 대한 입력오류 처리*
+
+  - ```html
+    <!--/*질문 제목*/-->
+    <div class="mb-3">
+        <label class="form-label" for="title" th:text="#{ui.question.form.input-title}">질문 제목</label>
+        <input aria-describedby="titleHelp" class="form-control" id="title" name="title" required
+               th:field="*{title}"
+               type="text">
+        <div class="form-text" id="titleHelp" th:text="#{ui.question.form.input-title-help}">질문의 제목을 적어주세요</div>
+        <div class="text-danger" th:errors="*{title}">제목은 6자 이상이어야 합니다</div>
+    </div>
+    ```
+
+
+### 5.6 예외처리
+
+- **특정 예외에 대한 처리** - [코드보기](https://github.com/Malloc72P/QnaBoard/blob/76c4759624f2162745340460390b6882cae2a23e/be/qnaboard/src/main/java/scra/qnaboard/web/exception/GlobalErrorControllerAdvice.java#L22)
+
+  ```java
+  /**
+  * 인증오류에 대한 예외처리
+  * 로그인 하지 않고 로그인이 필요한 작업을 요청한 경우에 대해 처리한다
+  */
+  @ResponseStatus(HttpStatus.UNAUTHORIZED)
+  @ExceptionHandler(NoSessionUserException.class)
+  public String notLoggedInUser(NoSessionUserException exception, Model model, 
+                                Locale locale) {
+      updateModelByException(model,
+                             locale,
+                             "ui.error.page-title-no-log-in",
+                             "ui.error.page-reason-no-log-in",
+                             exception.descriptionMessageCode());
+      return "error/error-page";
+  }
+  
+  private void updateModelByException(Model model, Locale locale,
+                                      String titleCode, String reasonCode, 
+                                      String descriptionCode) {
+      //에러페이지에 필요한 DTO 생성
+      ErrorDTO errorDTO = ErrorDTO.builder()
+          .title(messageSource.getMessage(titleCode, null, locale))
+          .reason(messageSource.getMessage(reasonCode, null, locale))
+          .description(messageSource.getMessage(descriptionCode, null, locale))
+          .build();
+      //모델에 DTO를 넣는다
+      model.addAttribute("error", errorDTO);
+  }
   ```
-  src/main/resources
-            |--application.yml
-            |--application-local.yml
-            |--application-dev.yml
-            |--application-prod.yml
-  				
+
+  - 컨트롤러에서 발생한 예외를 처리하기 위해서 ControllerAdvice를 사용했습니다
+  - 예외가 왜 발생했는지를 사용자에게 알려주기 위해서, 예외가 발생한 상황에 대한 설명을 메세지에 적어두었습니다. 그리고 ExceptionHandler 메서드에서 발생한 예외에 해당하는 메세지를 메세지 소스에서 꺼내와서 모델에 담았습니다. 에러페이지는 모델에서 ErrorDTO를 꺼내서 랜더링하여 사용자에게 현재 상황에 대한 설명을 할 수 있도록 구현했습니다. 아래의 이미지는 로그인 하지 않은 상태로 질문글 생성요청을 했을 때 볼 수 있는 에러페이지입니다.
+    ![](https://i.imgur.com/E5S8I0B.png)
+
+- **4xx, 5xx 에러 처리**
+
+  - WAS까지 전파되는 예외를 처리하기 위해 스프링 부트에서 제공하는 기능을 이용했습니다
+  - 아래의 이미지와 같이, /template/error밑에 에러페이지를 생성하여 처리했습니다
+    ![](https://i.imgur.com/v3X4Ha2.png)
+
+- **API 예외처리**
+
+  - API 예외처리는 컨트롤러와는 다른 방식으로 처리해야 했습니다. 컨트롤러는 에러페이지를 랜더링해서 응답해주면 됐지만, API의 예외처리는 예외에 대한 내용을 담은 DTO를 만들어서 응답해줘야 했기 때문입니다.
+  - 컨트롤러와 API컨트롤러에 ControllerAdvice를 따로 적용하기 위해 패키지를 분리했습니다.
+    ![](https://i.imgur.com/4v0zt6R.png)
+
+  - 패키지를 사용해서 사용할 ControllerAdvice를 지정할 수 있었습니다. 
+    [코드 보러가기](https://github.com/Malloc72P/QnaBoard/blob/76c4759624f2162745340460390b6882cae2a23e/be/qnaboard/src/main/java/scra/qnaboard/web/exception/ApiGlobalErrorControllerAdvice.java#L25)
+
+    ```java
+    @RequiredArgsConstructor
+    @RestControllerAdvice("scra.qnaboard.web.api")
+    public class ApiGlobalErrorControllerAdvice {/*...*/}
+    ```
+
+  - 클라이언트에서 에러 응답을 받게 되면 아래의 자바스크립트 코드를 사용해서 사용자에게 어떤 문제가 발생했는지를 보여주도록 구현했습니다 
+    [코드 보러가기](https://github.com/Malloc72P/QnaBoard/blob/76c4759624f2162745340460390b6882cae2a23e/be/qnaboard/src/main/resources/static/js/lib/apiHelper.js#L56)
+
+    ```javascript
+    static alertError = (error) => {
+        if (error != null && error.description != null && error.description !== "") {
+            //서버에서 응답해준 ErrorDTO 안의 description 메세지를 alert을 사용해서 보여줌
+            alert(error.description);
+        } else {
+    	    alert("unknown error");
+        }
+    };
+    ```
+
+  - 로그인하지 않고 질문글 추천기능을 이용하면 예외가 발생하고, 아래와 같이 사용자에게 보여줍니다.
+    ![image-20220211225142601](C:\Users\scra\AppData\Roaming\Typora\typora-user-images\image-20220211225142601.png)
+
+### 5.7 로그인 처리
+
+- **로그인 처리를 위해 세션 사용 & ArgumentResolver 활용** - [코드보기](https://github.com/Malloc72P/QnaBoard/blob/76c4759624f2162745340460390b6882cae2a23e/be/qnaboard/src/main/java/scra/qnaboard/configuration/auth/LoginUserArgumentResolver.java#L20)
+
+  ```java
+  //ArgumentResolver에서 사용자DTO를 꺼내는 부분
+  @Override
+  public Object resolveArgument(MethodParameter parameter,
+  ModelAndViewContainer mavContainer,
+  NativeWebRequest webRequest,
+  WebDataBinderFactory binderFactory) throws Exception {
+      //세션에서 사용자 DTO 조회
+  	SessionUser sessionUser = (SessionUser) httpSession.getAttribute("user");
+  	//만약 존재하지 않는다면 로그인한 적이 없다는 의미로 예외를 발생시킴
+      if (sessionUser == null) {
+          throw new NoSessionUserException();
+      }
+      return sessionUser;
+  }
   ```
 
-- 로컬환경의 MySQL 데이터베이스는 docker-compose를 사용해서 편하게 구축한다
-  개발서버 및 운영서버의 데이터베이스는 AWS의 RDS를 사용해서 구축한다
+  - 사용자가 로그인에 성공하면 세션에 사용자 정보를 저장하도록 구현했습니다.
 
-- 스프링의 ddl-auto: create 설정은 로컬환경에서만 사용하도록 한다
+  - 컨트롤러에서 로그인 된 사용자의 정보를 세션에서 꺼내오는 중복코드가 발생하였는데, 이러한 공통 관심사를 대신 해주는 ArgumentResolver를 만들어서 중복을 제거하였습니다. 
+  - 컨트롤러의 파라미터에 애너테이션이 달려있으면, 직접 만든 ArgumentResolver가 동작하여 세션에서 사용자 정보를 꺼내고 컨트롤러의 핸들러 메서드에 인자로 넘겨주도록 구현했습니다.
 
-### 7. 배포
+# 7. 배포
 
-<hr/>
-
-#### 7.1 ⚙배포환경
+### 7.1 ⚙배포환경
 
 ![](https://i.imgur.com/doM8mIi.png)
 
-- 로컬환경에서 도커를 설치하고, 그 안에 젠킨스를 설치하여 배포를 진행했다.
-- 젠킨스에서 빌드 및 테스트를 하고 jar파일을 S3에 업로드 한 다음, CodeDeploy에 배포요청을 해서 대상 EC2 인스턴스에서 앱을 실행할 수 있도록 설정했다.
-- 데이터베이스의 주소 및 계정정보와 같은 민감한 내용을 담고 있는 설정파일은 Git 리포지토리에 올라가지 않도록 하고, 젠킨스에서 없는 설정파일을 따로 주입해서 빌드하도록 설정했다.
-- 배포가 끝나서 EC2에서 앱을 실행시킬 때, 어떤 프로필로 동작할지를 명시해주었다.
+- **젠킨스 설치와 배포 전 테스트 자동화**
 
+  - 로컬환경에서 도커를 설치하고, 그 안에 젠킨스를 설치하여 자동배포를 구성했습니다.
+  - 배포를 시작하면 젠킨스에서 프로젝트의 모든 테스트코드를 실행하도록 했습니다. 131개의 모든 테스트코드를 통과해야만 배포가 가능하기 때문에, 적어도 테스트코드에서 커버해주는 기능은 잘 동작한다는 것이 검증된 상태에서만 배포할 수 있도록 강제할 수 있었던 점이 좋았던 것 같습니다.
 
+- **AWS의 S3와 CodeDeploy를 활용하기**
 
+  - 빌드한  jar파일을 AWS로 업로드하는 일은 S3로 처리했습니다.
+  - 업로드가 끝나면 CodeDeploy에 요청을 해서 배포했습니다. CodeDeploy는 미리 작성한 배포스크립트를 실행해서 기존에 동작중인 스프링 애플리케이션을 중지시키고 새로운 jar을 실행합니다.
 
+- **Git에 올라가 있지 않은 설정파일 주입**
+
+  - 데이터베이스의 url 및 아이디와 비밀번호, OAUTH의 ClientID와 Secret과 같은 외부에 노출하면 안되는 설정은 Git에 올라가지 않도록 gitignore에 추가했습니다. 그래서 git clone 하고나서 그대로 빌드하면 필수설정이 없어서 실행되지 않는 문제가 있었습니다.
+
+  - 이 문제를 해결하기 위해서, 젠킨스가 설치된 서버에 설정파일을 따로 업로드했습니다. git clone을 한 다음, 미리 업로드해놓은 설정파일을 프로젝트의 resources 경로에 복사하도록 젠킨스의 배포스크립트를 작성했습니다.
+
+    ```shell
+    # git repository에는 없는 설정파일 주입
+    cp /var/jenkins_home/workspace/ignored-settings/* /var/jenkins_home/workspace/qnaboard-dev/be/qnaboard/src/main/resources/
+    ```
 
