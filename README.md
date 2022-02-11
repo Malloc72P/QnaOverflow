@@ -446,7 +446,7 @@
     ```
 
   - 로그인하지 않고 질문글 추천기능을 이용하면 예외가 발생하고, 아래와 같이 사용자에게 보여줍니다.
-    ![image-20220211225142601](C:\Users\scra\AppData\Roaming\Typora\typora-user-images\image-20220211225142601.png)
+    ![image-20220211225142601](https://i.imgur.com/M15Ynzs.png)
 
 ### 5.7 로그인 처리
 
