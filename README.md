@@ -279,9 +279,9 @@
     테스트코드만을 위한 독립된 인메모리 DB를 만들어줄 수 있는데다가 가벼워서 상당히 유용했습니다.
   - 또한 H2 데이터베이스를 MySQL 호환모드로 실행할 수 있었습니니다. 덕분에 운영환경과  비슷한 상황에서  테스트할 수 있었습니다.
 
-- **단위 테스트와 통합 테스트** 
-  [단위테스트 코드 보기](https://github.com/Malloc72P/QnaBoard/blob/76c4759624f2162745340460390b6882cae2a23e/be/qnaboard/src/test/java/scra/qnaboard/web/controller/QuestionControllerTest.java#L36)
-  [통합테스트 코드보기](https://github.com/Malloc72P/QnaBoard/blob/76c4759624f2162745340460390b6882cae2a23e/be/qnaboard/src/test/java/scra/qnaboard/web/controller/QuestionControllerIntegrationTest.java#L35)
+- **단위 테스트와 통합 테스트**   
+  [단위테스트 코드 보기](https://github.com/Malloc72P/QnaBoard/blob/76c4759624f2162745340460390b6882cae2a23e/be/qnaboard/src/test/java/scra/qnaboard/web/controller/QuestionControllerTest.java#L36)  
+  [통합테스트 코드보기](https://github.com/Malloc72P/QnaBoard/blob/76c4759624f2162745340460390b6882cae2a23e/be/qnaboard/src/test/java/scra/qnaboard/web/controller/QuestionControllerIntegrationTest.java#L35)  
   - 단위테스트와 통합테스트 둘 다 작성해서 테스트하였습니다.
   - 컨트롤러와 서비스 계층에 대한 단위테스트를 작성하여, 각 계층에 대한 테스트를 격리해서 할 수 있었습니다. 테스트 격리 덕분에 각 계층에 문제가 없는지를 빠르게 검증할 수 있었습니다.
   - 모든 빈을 올려서 테스트하는 통합테스트도 작성했습니다. 덕분에 운영환경과 유사하게 테스트할 수 있었습니다.
