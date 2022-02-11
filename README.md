@@ -294,7 +294,6 @@
   - 질문글(Question)과 답변글(Answer)의 공통기능을 추출하여 게시글(Post) 클래스를 만들었습니다.
 
   - 추출된 공통기능에는 soft delete 기능이 있습니다. 질문글과 답변글 클래스에 삭제 코드를 중복작성하지 않고, 상위클래스인 Post에 작성하고 상속하여, 코드를 재사용할 수 있었습니다.
-    [코드보기](https://github.com/Malloc72P/QnaBoard/blob/76c4759624f2162745340460390b6882cae2a23e/be/qnaboard/src/main/java/scra/qnaboard/domain/entity/post/Post.java#L58)
 
     ```java
     @Getter
