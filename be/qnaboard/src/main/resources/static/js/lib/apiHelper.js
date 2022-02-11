@@ -55,6 +55,7 @@ export class ApiHelper {
      */
     static alertError = (error) => {
         if (error != null && error.description != null && error.description !== "") {
+            //서버에서 응답해준 ErrorDTO 안의 description 메세지를 alert을 사용해서 보여줌
             alert(error.description);
         } else {
             alert("unknown error");

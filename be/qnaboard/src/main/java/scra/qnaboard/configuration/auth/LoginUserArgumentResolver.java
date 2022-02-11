@@ -44,12 +44,12 @@ public class LoginUserArgumentResolver implements HandlerMethodArgumentResolver 
                                   ModelAndViewContainer mavContainer,
                                   NativeWebRequest webRequest,
                                   WebDataBinderFactory binderFactory) throws Exception {
+        //세션에서 사용자 DTO 조회
         SessionUser sessionUser = (SessionUser) httpSession.getAttribute("user");
-
+        //만약 존재하지 않는다면 로그인한 적이 없다는 의미로 예외를 발생시킴
         if (sessionUser == null) {
             throw new NoSessionUserException();
         }
-
         return sessionUser;
     }
 }

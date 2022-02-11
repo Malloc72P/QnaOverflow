@@ -48,22 +48,6 @@ public abstract class Post extends BaseTimeEntity {
         this.content = content;
     }
 
-    public void updateScore(VoteType voteType) {
-        if (voteType == VoteType.UP) {
-            increaseScore();
-        } else if (voteType == VoteType.DOWN) {
-            decreaseScore();
-        }
-    }
-
-    public void increaseScore() {
-        score++;
-    }
-
-    public void decreaseScore() {
-        score--;
-    }
-
     public boolean isNotOwner(Member member) {
         return !member.equals(author);
     }
