@@ -474,6 +474,36 @@
   - 컨트롤러에서 로그인 된 사용자의 정보를 세션에서 꺼내오는 중복코드가 발생하였는데, 이러한 공통 관심사를 대신 해주는 ArgumentResolver를 만들어서 중복을 제거하였습니다. 
   - 컨트롤러의 파라미터에 애너테이션이 달려있으면, 직접 만든 ArgumentResolver가 동작하여 세션에서 사용자 정보를 꺼내고 컨트롤러의 핸들러 메서드에 인자로 넘겨주도록 구현했습니다.
 
+### 5.8 HTTPS 적용
+
+- 웹서버와 웹 클라이언트 사이에 암호화된 채널을 생성하여 전송중인 데이터가 도청되지 않도록 보호하기 위하여 HTTPS를 적용했습니다.
+- Certbot을 사용해서 Let's Encrypt SSL 인증서를 발급받아서 사용했습니다.
+- 스프링 부트의 톰캣서버 앞단에 Nginx 서버를 두고, Nginx서버에 SSL인증서를 적용하였습니다
+```
+server {
+       listen 80;
+       server_name qnaoverflow.dase.me www.qnaoverflow.dase.me;
+       return 301 https://qnaoverflow.dase.me$request_uri;   
+       # http로 들어오면 https로 redirect 해주는 부분
+}
+server {
+       listen 443 ssl;
+server_name qnaoverflow.dase.me www.qnaoverflow.dase.me;
+       # Certificate
+       ssl_certificate /etc/letsencrypt/live/qnaoverflow.dase.me/fullchain.pem;
+
+       # Private Key
+       ssl_certificate_key /etc/letsencrypt/live/qnaoverflow.dase.me/privkey.pem;
+       location / {
+               proxy_pass http://localhost:8080;
+               proxy_set_header Host $host;
+               proxy_set_header X-Real-IP $remote_addr;
+               proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+               proxy_set_header X-Forwarded-Proto $scheme;
+        }
+}
+```
+
 # 7. 배포
 
 ### 7.1 ⚙배포환경
