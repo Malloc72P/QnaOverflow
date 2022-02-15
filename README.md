@@ -3,6 +3,8 @@
 > ** Q&A 게시판 프로젝트**
 >
 > demo : https://qnaoverflow.dase.me
+> 프로젝트 설치방법 : [설치방법 링크](https://github.com/Malloc72P/QnaOverflow/wiki/%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8-%EC%84%A4%EC%B9%98-%EB%B0%8F-%EC%8B%A4%ED%96%89%EB%B0%A9%EB%B2%95)
+> 프로젝트 자동배포방법 : [자동배포방법 링크](https://github.com/Malloc72P/QnaOverflow/wiki/%EC%9E%90%EB%8F%99%EB%B0%B0%ED%8F%AC-%EC%84%A4%EC%A0%95%ED%95%98%EA%B8%B0)
 
 - **Stack Overflow**를 따라서 만든 질문게시판 서비스입니다 😁
 - 질문글을 작성해서 궁금한 내용을 다른 사람들에게 물어보고, 다른 사람의 질문글에 대한 답변글을 작성할 수 있으며, 질문글과 답변글에 댓글을 달아서 자신의 의견을 공유할 수 있습니다.
