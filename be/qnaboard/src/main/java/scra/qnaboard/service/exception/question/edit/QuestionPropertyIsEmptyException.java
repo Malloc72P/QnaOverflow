@@ -8,7 +8,7 @@ public class QuestionPropertyIsEmptyException extends QuestionEditFailedExceptio
     }
 
     @Override
-    public String descriptionMessageCode() {
+    public String describeMessage() {
         return "ui.error.page-desc-edit-failed-question-property-empty";
     }
 }

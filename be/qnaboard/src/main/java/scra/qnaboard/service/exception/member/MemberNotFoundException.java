@@ -10,7 +10,7 @@ public class MemberNotFoundException extends EntityNotFoundException {
     }
 
     @Override
-    public String descriptionMessageCode() {
+    public String describeMessage() {
         return "ui.error.page-reason-member-not-found";
     }
 }

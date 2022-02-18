@@ -10,7 +10,7 @@ public class PostNotFoundException extends EntityNotFoundException {
     }
 
     @Override
-    public String descriptionMessageCode() {
+    public String describeMessage() {
         return "ui.error.page-reason-post-not-found";
     }
 

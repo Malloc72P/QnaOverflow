@@ -8,7 +8,7 @@ public class ForbiddenCommentEditException extends CommentEditFailedException {
     }
 
     @Override
-    public String descriptionMessageCode() {
+    public String describeMessage() {
         return "ui.error.page-desc-edit-failed-comment-unauthorized";
     }
 }

@@ -10,7 +10,7 @@ public class CommentNotFoundException extends EntityNotFoundException {
     }
 
     @Override
-    public String descriptionMessageCode() {
+    public String describeMessage() {
         return "ui.error.page-reason-comment-not-found";
     }
 }

@@ -10,7 +10,7 @@ public class QuestionNotFoundException extends EntityNotFoundException {
     }
 
     @Override
-    public String descriptionMessageCode() {
+    public String describeMessage() {
         return "ui.error.page-reason-question-not-found";
     }
 }

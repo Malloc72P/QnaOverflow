@@ -3,7 +3,6 @@ package scra.qnaboard.web.exception;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
-import org.springframework.ui.Model;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -35,7 +34,7 @@ public class ApiGlobalErrorControllerAdvice {
     public ApiErrorDTO notLoggedInUser(NoSessionUserException exception, Locale locale) {
         return ApiErrorDTO.builder()
                 .status(HttpStatus.UNAUTHORIZED.value())
-                .description(messageSource.getMessage(exception.descriptionMessageCode(), null, locale))
+                .description(messageSource.getMessage(exception.describeMessage(), null, locale))
                 .build();
     }
 
@@ -47,7 +46,7 @@ public class ApiGlobalErrorControllerAdvice {
     public ApiErrorDTO duplicateVote(DuplicateVoteException exception, Locale locale) {
         return ApiErrorDTO.builder()
                 .status(HttpStatus.UNAUTHORIZED.value())
-                .description(messageSource.getMessage(exception.descriptionMessageCode(), null, locale))
+                .description(messageSource.getMessage(exception.describeMessage(), null, locale))
                 .build();
     }
 
@@ -59,7 +58,7 @@ public class ApiGlobalErrorControllerAdvice {
     public ApiErrorDTO deleteFailed(DeleteFailedException exception, Locale locale) {
         return ApiErrorDTO.builder()
                 .status(HttpStatus.FORBIDDEN.value())
-                .description(messageSource.getMessage(exception.descriptionMessageCode(), null, locale))
+                .description(messageSource.getMessage(exception.describeMessage(), null, locale))
                 .build();
     }
 
@@ -71,7 +70,7 @@ public class ApiGlobalErrorControllerAdvice {
     public ApiErrorDTO editFailed(EditFailedException exception, Locale locale) {
         return ApiErrorDTO.builder()
                 .status(HttpStatus.FORBIDDEN.value())
-                .description(messageSource.getMessage(exception.descriptionMessageCode(), null, locale))
+                .description(messageSource.getMessage(exception.describeMessage(), null, locale))
                 .build();
     }
 
@@ -83,7 +82,7 @@ public class ApiGlobalErrorControllerAdvice {
     public ApiErrorDTO entityNotFound(EntityNotFoundException exception, Locale locale) {
         return ApiErrorDTO.builder()
                 .status(HttpStatus.FORBIDDEN.value())
-                .description(messageSource.getMessage(exception.descriptionMessageCode(), null, locale))
+                .description(messageSource.getMessage(exception.describeMessage(), null, locale))
                 .build();
     }
 
@@ -113,7 +112,7 @@ public class ApiGlobalErrorControllerAdvice {
     public ApiErrorDTO tagExtractionFailed(ExtractingTagIdFailedException exception, Locale locale) {
         return ApiErrorDTO.builder()
                 .status(HttpStatus.BAD_REQUEST.value())
-                .description(messageSource.getMessage(exception.descriptionMessageCode(), null, locale))
+                .description(messageSource.getMessage(exception.describeMessage(), null, locale))
                 .build();
     }
 }

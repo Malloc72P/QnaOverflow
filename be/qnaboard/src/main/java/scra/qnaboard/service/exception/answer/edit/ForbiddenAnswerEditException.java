@@ -8,7 +8,7 @@ public class ForbiddenAnswerEditException extends AnswerEditFailedException {
     }
 
     @Override
-    public String descriptionMessageCode() {
+    public String describeMessage() {
         return "ui.error.page-desc-edit-failed-answer-unauthorized";
     }
 }

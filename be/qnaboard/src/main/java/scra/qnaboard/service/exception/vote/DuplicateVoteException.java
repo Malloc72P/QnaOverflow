@@ -1,9 +1,9 @@
 package scra.qnaboard.service.exception.vote;
 
 import scra.qnaboard.domain.entity.vote.VoteType;
-import scra.qnaboard.service.exception.DescriptionMessageCodeSupplier;
+import scra.qnaboard.service.exception.DescribableException;
 
-public class DuplicateVoteException extends RuntimeException implements DescriptionMessageCodeSupplier {
+public class DuplicateVoteException extends RuntimeException implements DescribableException {
     private static final String MESSAGE = "중복투표입니다";
     private final VoteType voteType;
 
@@ -13,7 +13,7 @@ public class DuplicateVoteException extends RuntimeException implements Descript
     }
 
     @Override
-    public String descriptionMessageCode() {
+    public String describeMessage() {
         switch (voteType) {
             case UP:
                 return "vote.duplicate.up";

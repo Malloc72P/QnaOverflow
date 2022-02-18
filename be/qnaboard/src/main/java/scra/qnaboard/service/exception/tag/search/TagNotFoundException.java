@@ -10,7 +10,7 @@ public class TagNotFoundException extends EntityNotFoundException {
     }
 
     @Override
-    public String descriptionMessageCode() {
+    public String describeMessage() {
         return "ui.error.page-reason-tag-not-found";
     }
 }

@@ -8,7 +8,7 @@ public class ForbiddenQuestionEditException extends QuestionEditFailedException 
     }
 
     @Override
-    public String descriptionMessageCode() {
+    public String describeMessage() {
         return "ui.error.page-desc-edit-failed-question-unauthorized";
     }
 }

@@ -10,7 +10,7 @@ public class AlreadyDeletedParentCommentException extends EntityNotFoundExceptio
     }
 
     @Override
-    public String descriptionMessageCode() {
+    public String describeMessage() {
         return "ui.error.page-reason-comment-parent-already-deleted";
     }
 }
