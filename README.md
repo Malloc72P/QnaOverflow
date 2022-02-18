@@ -116,8 +116,6 @@
 - 댓글 수정, 삭제
 - 댓글에 댓글을 다는 '대댓글' 기능 구현
 
-
-
 ### 6.2 🛠엔티티 설계
 
 ![](https://i.imgur.com/Z8O5MGa.png)
@@ -170,6 +168,11 @@
 
 ** 인덱스 추가생성 **
 - 질문글 검색쿼리의 Where절과 Order by 절에서 사용하는 컬럼인 post_type(게시글유형)과 createdDate(생성일)에 인덱스를 생성하여, 조회 성능을 향상시켰습니다.
+  - `create index idx_type_and_date on post (post_type, created_date);`
+- 인덱스 추가 전, 질문목록조회 쿼리의 수행시간  
+  ![](https://i.imgur.com/uD2PrI9.png)
+- 인덱스 적용 후, 질문목록조회 쿼리의 수행시간  
+  ![](https://i.imgur.com/rqAhM4q.png)
 
 # 7. 핵심기능
 
