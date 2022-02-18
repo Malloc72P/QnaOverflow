@@ -8,23 +8,43 @@
 > 프로젝트 자동배포방법 : [자동배포방법 링크](https://github.com/Malloc72P/QnaOverflow/wiki/%EC%9E%90%EB%8F%99%EB%B0%B0%ED%8F%AC-%EC%84%A4%EC%A0%95%ED%95%98%EA%B8%B0)  
 
 # 1. 프로젝트 소개
+### 1.1 개요
+
 - 스택 오버플로우의 UI와 기능을 사용자 요구사항으로 가정하고 만든 질문게시판 서비스입니다 😁
 - 질문글을 작성해서 궁금한 내용을 다른 사람들에게 물어보고, 다른 사람의 질문글에 대한 답변글을 작성할 수 있으며, 질문글과 답변글에 댓글을 달아서 자신의 의견을 공유할 수 있습니다.
 - 많은 질문글 속에서 찾고자 하는 질문글만 찾을 수 있도록, 제목, 답변글 개수, 태그, 추천점수를 사용해서 질문글을 검색할 수 있습니다.
 
-# 2. 주요 기술 목표
-- 복잡한 동적쿼리를 생성하는 코드의 복잡도를 완화하기 위해 QueryDSL 적용하기
-- 사용자 입력 검증을 위해 Bean Validation 기술 적용하기
-- 페이지 새로고침으로 인해 의도하지 않은 Post요청을 재요청하지 않도록 PRG 패턴 적용하기
-- ControllerAdvice를 사용해서 컨트롤러에서 예외처리 코드를 최대한 분리하기
-- 서비스 수동배포로 인한 시간낭비를 피하기 위해 자동배포기술 적용하기
-- Let's Encrypt로 SSL 인증서를 받고 HTTPS를 적용하기
+### 1.2 주요 기술 목표
 
-# 3. 제작기간 & 참여인원
+- 객체지향 설계의 주요 목표
+
+  - 공통기능을 추출하여 코드 재사용성을 향상시키기
+  - 다형성을 활용하여 하나의 메세지로 객체마다 고유한 방식으로 동작할 수 있게 하기
+
+- 데이터베이스 설계의 주요 목표
+
+  - 무결성 제약조건을 사용해서 데이터 일관성을 지키기
+  - 인덱스를 사용하여 조회쿼리의 성능 향상시키기
+
+- 스프링 프레임워크 사용의 주요 목표
+
+  - 복잡한 동적쿼리를 생성하는 코드의 복잡도를 완화하기 위해 QueryDSL 적용하기
+  - 사용자 입력 검증을 위해 Bean Validation 기술 적용하기
+  - 페이지 새로고침으로 인해 의도하지 않은 Post요청을 재요청하지 않도록 PRG 패턴 적용하기
+  - ControllerAdvice를 사용해서 컨트롤러에서 예외처리 코드를 최대한 분리하기
+
+- 배포 및 운영의 주요 목표
+
+  - 서비스 수동배포로 인한 시간낭비를 피하기 위해 자동배포기술 적용하기
+
+  - Let's Encrypt로 SSL 인증서를 받고 HTTPS를 적용하기
+
+
+### 1.3 제작기간 & 참여인원
 - **2021-12-13 ~ 2022-02-11**
 - **개인 프로젝트**
 
-# 4. 사용기술 & 개발환경
+### 1.4 사용기술 & 개발환경
 
 🗼**Frontend**
 
@@ -59,42 +79,15 @@
 | ----------------| ---------- |
 | IntelliJ IDEA   | 2021.2.1   |
 
-# 5. 배포
-
-### 5.1 ⚙배포환경
-
-![](https://i.imgur.com/doM8mIi.png)
-
-- **젠킨스 설치와 배포 전 테스트 자동화**
-
-  - 로컬환경에서 도커를 설치하고, 그 안에 젠킨스를 설치하여 자동배포를 구성했습니다.
-  - 배포를 시작하면 젠킨스에서 프로젝트의 모든 테스트코드를 실행하도록 했습니다. 131개의 모든 테스트코드를 통과해야만 배포가 가능하기 때문에, 적어도 테스트코드에서 커버해주는 기능은 잘 동작한다는 것이 검증된 상태에서만 배포할 수 있도록 강제할 수 있었던 점이 좋았던 것 같습니다.
-
-- **AWS의 S3와 CodeDeploy를 활용하기**
-
-  - 빌드한  jar파일을 AWS로 업로드하는 일은 S3로 처리했습니다.
-  - 업로드가 끝나면 CodeDeploy에 요청을 해서 배포했습니다. CodeDeploy는 미리 작성한 배포스크립트를 실행해서 기존에 동작중인 스프링 애플리케이션을 중지시키고 새로운 jar을 실행합니다.
-
-- **Git에 올라가 있지 않은 설정파일 주입**
-
-  - 데이터베이스의 url 및 아이디와 비밀번호, OAUTH의 ClientID와 Secret과 같은 외부에 노출하면 안되는 설정은 Git에 올라가지 않도록 gitignore에 추가했습니다. 그래서 git clone 하고나서 그대로 빌드하면 필수설정이 없어서 실행되지 않는 문제가 있었습니다.
-
-  - 이 문제를 해결하기 위해서, 젠킨스가 설치된 서버에 설정파일을 따로 업로드했습니다. git clone을 한 다음, 미리 업로드해놓은 설정파일을 프로젝트의 resources 경로에 복사하도록 젠킨스의 배포스크립트를 작성했습니다.
-
-    ```shell
-    # git repository에는 없는 설정파일 주입
-    cp /var/jenkins_home/workspace/ignored-settings/* /var/jenkins_home/workspace/qnaboard-dev/be/qnaboard/src/main/resources/
-    ```
-
-# 6. 엔티티 및 ERD 설계
-
-### 6.1 👓기능 분석
+# 2. 요구사항 분석
 
 **회원 기능**
+
 - 회원가입 회원탈퇴, 로그인
 - 내가 작성한 질문 및 답변 조회
 
 **질문 기능**
+
 - 질문 작성, 수정, 삭제
 - 질문 조회
 - 검색필터를 사용한 질문 검색
@@ -117,57 +110,60 @@
 - 댓글 수정, 삭제
 - 댓글에 댓글을 다는 '대댓글' 기능 구현
 
-### 6.2 🛠엔티티 설계
+# 3. 클래스 설계
 
 ![](https://i.imgur.com/Z8O5MGa.png)
 
-**회원(Member)**
+**회원(Member) 클래스**
 
-- 이름과 역할(관리자, 일반사용자)을 가집니다.
+- 회원 클래스는 이름과 역할(관리자, 일반사용자)을 가집니다.
 
-**질문(Question)**
+**질문(Question) 클래스**
 
 - 질문글은 제목(title)과 내용(content)을 가지고 있습니다.
 - 질문글은 태그를 사용하는 검색을 지원하기 위해서 태그정보를 가지고 있습니다.
 - 질문글은 답변글과 일대다 관계를 맺고 있습니다.
   연관관계의 주인은 외래키를 가지게 될 답변게시글로 선택했습니다.
 
-**질문글에 달린 태그(QuestionTag)**
-
-- 질문글과 태그는 다대다 관계를 맺고 있습니다.  
-  다대다 관계를 일대다, 다대일 관계로 만들기 위해서, 중간에 QuestionTag라는 엔티티를 추가했습니다.
-
-**태그(Tag)**
-
-- 태그 엔티티는 작성자와 태그이름, 태그에 대한 설명을 가지고 있습니다.
-  
 **답변(Answer)**
 
-- 질문글에 대한 답변에 해당하는 엔티티입니다
+- 질문글에 대한 답변글에 해당하는 클래스입니다
 
 **게시글(Post)**
 
-- 질문글(Question)과 답변글(Answer)의 부모 엔티티입니다
-- 두 엔티티의 공통기능인 댓글기능은 Post엔티티에서 제공합니다
-  상속을 활용한 덕분에, 같은 기능을 중복해서 구현하는 문제를 피할 수 있었습니다.
+- 질문글(Question)과 답변글(Answer)의 부모 클래스입니다
+- 두 클래스의 공통기능인 댓글기능과 삭제기능은, Post클래스에서 제공합니다.
+  **상속**을 활용한 덕분에, 같은 기능을 중복해서 구현하는 문제를 피할 수 있었습니다.
 
+**질문글에 달린 태그(QuestionTag)**
 
-### 6.3 🧰ERD 설계
+- 질문글과 태그는 다대다 관계를 맺고 있습니다.  
+  다대다 관계를 일대다, 다대일 관계로 만들기 위해서, 중간에 QuestionTag라는 클래스를 추가했습니다.
+
+**태그(Tag)**
+
+- 태그 클래스는 작성자와 태그이름, 태그에 대한 설명을 가지고 있습니다.
+
+# 4. 데이터베이스 설계
 
 ![](https://i.imgur.com/98KifCB.png)
 
+### 4.1 데이터베이스 설계에 대한 주요 고민
+
 **싱글테이블 전략**
 
-- 답변글(Answer)과 질문글(Question) 엔티티는 하나의 테이블(Post)로 관리하도록 설계했습니다.
+- 답변글(Answer)과 질문글(Question)은 하나의 테이블(Post)로 관리하도록 설계했습니다.
 - 엔티티에서 사용하지 않는 컬럼에는 null을 허용해야 하고, 테이블이 지나치게 커질 수 있긴 하지만, 
   insert할 때 하나의 테이블에만 insert하면 되고, 조회할때도 join없이 필요한 데이터를 가져올 수 있다는 장점이 있어서 싱글테이블 전략을 사용했습니다.
 
 **기본키 제약조건** 
+
 - 테이블의 레코드를 고유하게 식별할 수 있는 컬럼인 아이디에 기본키 제약조건을 부여했습니다.
 - PK를 부여하여 아이디 컬럼은 중복이 될 수 없고, NULL값이 들어갈 수 없도록 하였습니다.
 - 테이블을 JOIN할 때 기본키를 사용하도록 해서 JOIN성능을 향상시켰습니다.
 
-** 인덱스 추가생성 **
+**인덱스 추가생성**
+
 - 질문글 검색쿼리의 Where절과 Order by 절에서 사용하는 컬럼인 post_type(게시글유형)과 createdDate(생성일)에 인덱스를 생성하여, 조회 성능을 향상시켰습니다.
   - `create index idx_type_and_date on post (post_type, created_date);`
 - 인덱스 추가 전, 질문목록조회 쿼리의 수행시간  
@@ -175,18 +171,113 @@
 - 인덱스 적용 후, 질문목록조회 쿼리의 수행시간  
   ![](https://i.imgur.com/rqAhM4q.png)
 
-# 7. 핵심기능
+# 5. JPA 활용
+
+### 5.1 **게시글 설계(상속)의 패러다임 불일치 해결** 
+
+- 객체에는 상속이라는 개념이 있지만, 관계형 데이터베이스엔 상속이라는 개념이 없다보니, 패러다임 불일치 문제가 발생합니다. 이 문제를 해결하기 위해 JPA의 상속관계 매핑을  사용하였습니다  
+
+  ```java
+  @Entity
+  @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+  @DiscriminatorColumn(name = "post_type")
+  public abstract class Post extends BaseTimeEntity {/*...*/}
+  
+  @Entity
+  public class Answer extends Post {/*...*/}
+      
+  @Entity
+  public class Question extends Post {/*...*/}
+  ```
+
+- 위와 같이 `@Inheritance`를 사용하여 상속관계를 매핑할 수 있었습니다.
+
+- 게시글(Post) 테이블의 레코드가 Question타입인지 Answer타입인지를 표현하기 위해, 구분 컬럼인 `post_type`을 사용했습니다.
+
+### 5.2 모든 연관관계는 지연로딩으로 설정
+
+```java
+@Getter
+@Entity
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+public class Comment extends BaseTimeEntity {
+	/*...생략*/
+    @ManyToOne(fetch = FetchType.LAZY)//연관관계를 지연로딩으로 설정
+    @JoinColumn(name = "author_id")
+    private Member author;
+	/*...생략*/
+}
+
+//댓글과 작성자 엔티티가 둘 다 필요한 경우, 패치조인을 사용해서 한번의 쿼리로 조회한다.
+public Optional<Comment> commentWithAuthor(long commentId) {
+    Comment findComment = queryFactory.select(comment)
+        .from(comment)
+        .innerJoin(comment.author, member).fetchJoin()
+        .where(comment.id.eq(commentId))
+        .fetchOne();
+    return Optional.ofNullable(findComment);
+}
+```
+
+- 엔티티를 조회할 때마다 연관된 엔티티를 항상 전부 가져오지 않도록, **지연로딩**을 사용했습니다.
+
+- 연관된 엔티티가 필요할때만 **패치조인**등을 활용해서 최적화된 쿼리로 필요한 데이터를 최소한의 쿼리로 가져올 수 있도록 구현했습니다.  
+
+- 그 외의 경우, 지연로딩을 하더라도 필요한 엔티티를 한번에 조회할 수 있도록 아래의 설정을 추가했습니다.  
+
+  ```yaml
+  default_batch_fetch_size: 100
+  ```
+
+### 5.3 복합키 매핑
+
+- QuestionTag는 question_id와 tag_id를 묶은 복합키를 기본키로 사용하고 있습니다.
+
+- 복합키를 클래스로 매핑하기 위해서`Embeddable`과  `@EmbededId`를 사용했습니다.  
+
+  ```java
+  @Getter
+  @Embeddable
+  @NoArgsConstructor
+  @AllArgsConstructor
+  public class QuestionTagId implements Serializable {
+      protected Long questionId;
+      protected Long tagId;
+      /*...생략*/
+  }
+  
+  @Entity
+  public class QuestionTag extends BaseTimeEntity {
+      @EmbeddedId
+      private QuestionTagId id;
+  
+      @MapsId("tagId")
+      @ManyToOne(fetch = FetchType.LAZY)
+      @JoinColumn(name = "tag_id")
+      private Tag tag;
+  
+      @MapsId("questionId")
+      @ManyToOne(fetch = FetchType.LAZY)
+      @JoinColumn(name = "question_id")
+      private Question question;
+      /*...생략*/
+  }
+  ```
+
+- 또한 `@MapsId`를 사용해서 외래키와 매핑한 연관관계를 기본키에도 매핑할 수 있었습니다.
+
+# 6. 핵심기능
 
 
 > 이 서비스의 핵심 기능은 질문글 검색기능입니다.  
 > 사용자는 검색창에 검색어를 입력하고 엔터를 치기만 하면 끝입니다.  
 > 서버는 사용자가 입력한 검색어를 가지고 복잡한 동적쿼리를 만들어서 질문글을 조회합니다.
 
-### 7.1 전체흐름
+### 6.1 전체흐름
 
 ![](https://i.imgur.com/Cd2SoLr.png)
 
-### 7.2 사용자 요청
+### 6.2 사용자 요청
 
 ![](https://i.imgur.com/4C1sDDp.png)
 
@@ -197,7 +288,7 @@
   - 사용자의 브라우저는 GET 요청을 서버로 전송합니다.
   - 사용자가 입력한 검색어는 쿼리스트링으로 URL에 붙어서 서버에 전송됩니다
 
-### 7.3 컨트롤러 계층 - [코드보기](https://github.com/Malloc72P/QnaBoard/blob/4ea1e8260bcce9c27764631df2302db2a80b85c7/be/qnaboard/src/main/java/scra/qnaboard/web/controller/QuestionController.java#L42)
+### 6.3 컨트롤러 계층 - [코드보기](https://github.com/Malloc72P/QnaBoard/blob/4ea1e8260bcce9c27764631df2302db2a80b85c7/be/qnaboard/src/main/java/scra/qnaboard/web/controller/QuestionController.java#L42)
 
 ![](https://i.imgur.com/nyQ3uIH.png)
 
@@ -214,7 +305,7 @@
   - 타임리프에서 페이지네이션을 구현하는데 필요한 기능을 제공하는 DTO 객체를 생성하고,
     모델에 담아서 뷰에 전달합니다.
 
-### 7.4 서비스 계층
+### 6.4 서비스 계층
 
 ![](https://i.imgur.com/FzV0pZ7.png)
 
@@ -226,7 +317,7 @@
   - 페이징 처리를 위해서 파라미터를 사용해 PageRequest객체를 생성하고, 리포지토리 계층을 통해 
     질문글을 조회합니다.
 
-### 7.5 리포지토리 계층
+### 6.5 리포지토리 계층
 
 - [질문글을 조회하는 코드 보기](https://github.com/Malloc72P/QnaBoard/blob/76c4759624f2162745340460390b6882cae2a23e/be/qnaboard/src/main/java/scra/qnaboard/domain/repository/question/QuestionSearchListRepository.java#L41)
 
@@ -267,7 +358,7 @@
     반면, DTO에 제목에 대한 검색어가 있다면 조건이 쿼리에 추가됩니다.
     이러한 방식으로 Where절을 동적으로 생성합니다.
   - 문자열로 JPQL을 
-  작성했다면, 상황에 따라 달라지는 Where절을 만드는게 매우 어려웠을 것 같은데, 
+    작성했다면, 상황에 따라 달라지는 Where절을 만드는게 매우 어려웠을 것 같은데, 
     QueryDSL 덕분에 편하게 작성할 수 있었던 것 같습니다.
 
 - **질문글에 달린 태그 조회(N + 1 문제 해결)**  [코드보기](https://github.com/Malloc72P/QnaBoard/blob/76c4759624f2162745340460390b6882cae2a23e/be/qnaboard/src/main/java/scra/qnaboard/domain/repository/question/QuestionSearchListRepository.java#L70)
@@ -310,9 +401,9 @@
 
   - 이렇게 해서 발생하는 쿼리는 최소한으로 하면서 원하는 기능을 구현할 수 있었습니다.
 
-# 8. 프로젝트 특징
+# 7. 프로젝트 특징
 
-### 8.1 테스트 코드 작성
+### 7.1 테스트 코드 작성
 
 - **H2 데이터베이스를 사용하여 독립된 테스트 전용 데이터베이스 구축**
   - 데이터베이스를 사용하는 테스트코드를 수행할 때, 데이터베이스는 어떻게 할 지가 문제였습니다.
@@ -329,7 +420,7 @@
   - 모든 빈을 올려서 테스트하는 통합테스트도 작성했습니다. 덕분에 운영환경과 유사하게 테스트할 수 있었습니다.
 
 
-### 8.2 상속을 통해 soft delete 코드 재사용 - [코드보기](https://github.com/Malloc72P/QnaOverflow/blob/76c4759624f2162745340460390b6882cae2a23e/be/qnaboard/src/main/java/scra/qnaboard/domain/entity/post/Post.java#L58)
+### 7.2 상속을 통해 soft delete 코드 재사용 - [코드보기](https://github.com/Malloc72P/QnaOverflow/blob/76c4759624f2162745340460390b6882cae2a23e/be/qnaboard/src/main/java/scra/qnaboard/domain/entity/post/Post.java#L58)
 
 - **공통기능 추출 후 추상 클래스(Post) 생성해서 해결하기**
 
@@ -356,10 +447,13 @@
     }
     ```
 
-    
+
+### 7.3 다형성을 활용
+
+- 다형성을 활용하여 메세지 처리하기
 
 
-### 8.3 Post/Redirection/Get 패턴 적용
+### 7.3 Post/Redirection/Get 패턴 적용
 
 - **PRG 패턴 적용을 통해 의도하지 않은 Post요청 방지** 
   [질문글 생성 후 리다이렉트하는 코드](https://github.com/Malloc72P/QnaBoard/blob/76c4759624f2162745340460390b6882cae2a23e/be/qnaboard/src/main/java/scra/qnaboard/web/controller/QuestionController.java#L111)
@@ -369,7 +463,7 @@
   - 그래서 PRG 패턴을 적용하였습니다. 페이지를 응답하지 않고, 리다이렉트를 시켰습니다. 리다이렉트 된 페이지에서 새로고침을 해도 Post요청이 아닌 페이지에 대한 Get요청을 날리기 때문에, 중복된 질문글 생성요청을  날리는 문제를 해결할 수 있었습니다.
 
 
-### 8.4 페이지 새로고침 최소화
+### 7.4 페이지 새로고침 최소화
 
 - 질문글 상세보기 페이지는 여러 쿼리를 발생시킵니다. 질문글과 관련된 모든 답변글을 불러와야 하고, 각각의 게시글에 달려있는 댓글도 가져와야 합니다. 그런데, 댓글이나 답변글을 작성하거나 수정, 삭제할때마다 질문글 상세보기 페이지를 새로고침해버리면 또 다시 여러 개의 쿼리가 발생하게 됩니다. 
 - 질문글 상세보기 페이지의 새로고침 없이, 댓글과 답변글에 대한 생성, 수정, 삭제를 하는게 더 효율적이라는 판단을 했습니다. 그래서 답변글과 댓글 생성 수정 삭제 기능은 API로 개발하였습니다.
@@ -379,7 +473,7 @@
   - [자바스크립트 코드보기](https://github.com/Malloc72P/QnaBoard/blob/76c4759624f2162745340460390b6882cae2a23e/be/qnaboard/src/main/resources/static/js/lib/answer.js#L52)
 
 
-### 8.5 사용자 입력 검증 및 사용자에게 입력오류 알려주기
+### 7.5 사용자 입력 검증 및 사용자에게 입력오류 알려주기
 
 - **검증의 필요성**
   - 질문글 생성요청을 할 때, 사용자 입력을 검증해야 했습니다. 그래야 잘못된 값으로 엔티티를 생성하려는 시도를 막을 수 있기 때문입니다.
@@ -413,7 +507,7 @@
     ```
 
 
-### 8.6 예외처리
+### 7.6 예외처리
 
 - **특정 예외에 대한 처리** - [코드보기](https://github.com/Malloc72P/QnaBoard/blob/76c4759624f2162745340460390b6882cae2a23e/be/qnaboard/src/main/java/scra/qnaboard/web/exception/GlobalErrorControllerAdvice.java#L22)
 
@@ -490,7 +584,7 @@
   - 로그인하지 않고 질문글 추천기능을 이용하면 예외가 발생하고, 아래와 같이 사용자에게 보여줍니다.
     ![image-20220211225142601](https://i.imgur.com/M15Ynzs.png)
 
-### 8.7 로그인 처리
+### 7.7 로그인 처리
 
 - **로그인 처리를 위해 세션 사용 & ArgumentResolver 활용** - [코드보기](https://github.com/Malloc72P/QnaBoard/blob/76c4759624f2162745340460390b6882cae2a23e/be/qnaboard/src/main/java/scra/qnaboard/configuration/auth/LoginUserArgumentResolver.java#L20)
 
@@ -516,7 +610,7 @@
   - 컨트롤러에서 로그인 된 사용자의 정보를 세션에서 꺼내오는 중복코드가 발생하였는데, 이러한 공통 관심사를 대신 해주는 ArgumentResolver를 만들어서 중복을 제거하였습니다. 
   - 컨트롤러의 파라미터에 애너테이션이 달려있으면, 직접 만든 ArgumentResolver가 동작하여 세션에서 사용자 정보를 꺼내고 컨트롤러의 핸들러 메서드에 인자로 넘겨주도록 구현했습니다.
 
-### 8.8 HTTPS 적용
+### 7.8 HTTPS 적용
 
 - 웹서버와 웹 클라이언트 사이에 암호화된 채널을 생성하여 전송중인 데이터가 도청되지 않도록 보호하기 위하여 HTTPS를 적용했습니다.
 - Certbot을 사용해서 Let's Encrypt SSL 인증서를 발급받아서 사용했습니다.
@@ -546,3 +640,29 @@ server_name qnaoverflow.dase.me www.qnaoverflow.dase.me;
 }
 ```
 
+# 8. 배포 환경
+
+![](https://i.imgur.com/doM8mIi.png)
+
+- **젠킨스 설치와 배포 전 테스트 자동화**
+
+  - 로컬환경에서 도커를 설치하고, 그 안에 젠킨스를 설치하여 자동배포를 구성했습니다.
+  - 배포를 시작하면 젠킨스에서 프로젝트의 모든 테스트코드를 실행하도록 했습니다. 131개의 모든 테스트코드를 통과해야만 배포가 가능하기 때문에, 적어도 테스트코드에서 커버해주는 기능은 잘 동작한다는 것이 검증된 상태에서만 배포할 수 있도록 강제할 수 있었던 점이 좋았던 것 같습니다.
+
+- **AWS의 S3와 CodeDeploy를 활용하기**
+
+  - 빌드한  jar파일을 AWS로 업로드하는 일은 S3로 처리했습니다.
+  - 업로드가 끝나면 CodeDeploy에 요청을 해서 배포했습니다. CodeDeploy는 미리 작성한 배포스크립트를 실행해서 기존에 동작중인 스프링 애플리케이션을 중지시키고 새로운 jar을 실행합니다.
+
+- **Git에 올라가 있지 않은 설정파일 주입**
+
+  - 데이터베이스의 url 및 아이디와 비밀번호, OAUTH의 ClientID와 Secret과 같은 외부에 노출하면 안되는 설정은 Git에 올라가지 않도록 gitignore에 추가했습니다. 그래서 git clone 하고나서 그대로 빌드하면 필수설정이 없어서 실행되지 않는 문제가 있었습니다.
+
+  - 이 문제를 해결하기 위해서, 젠킨스가 설치된 서버에 설정파일을 따로 업로드했습니다. git clone을 한 다음, 미리 업로드해놓은 설정파일을 프로젝트의 resources 경로에 복사하도록 젠킨스의 배포스크립트를 작성했습니다.
+
+    ```shell
+    # git repository에는 없는 설정파일 주입
+    cp /var/jenkins_home/workspace/ignored-settings/* /var/jenkins_home/workspace/qnaboard-dev/be/qnaboard/src/main/resources/
+    ```
+
+# 
