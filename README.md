@@ -447,7 +447,7 @@ public Optional<Comment> commentWithAuthor(long commentId) {
     ```
 
 
-### 7.3 다형성을 활용한 예외처리 - [코드보기]()
+### 7.3 다형성을 활용한 예외처리
 
 - **다형성을 사용하게 된 계기**
 
