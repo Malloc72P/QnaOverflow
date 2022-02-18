@@ -448,22 +448,85 @@ public Optional<Comment> commentWithAuthor(long commentId) {
     ```
 
 
-### 7.3 다형성을 활용
+### 7.3 다형성을 활용한 예외처리 - [코드보기]()
 
-- 다형성을 활용하여 메세지 처리하기
+- **다형성을 사용하게 된 계기**
+
+  - 예외마다 상황에 맞는 에러메세지를 만들어서 사용자에게 보여줄 수 있도록 구현하고 싶었습니다.  
+    그래야 왜 요청이 실패했는지 등을 사용자에게 알려줄 수 있다고 생각했기 때문입니다.
+  - 처음에는 if문이나 switch-case문을 사용해서, 발생한 예외마다 서로 다른 에러메세지를 사용하도록 구현하려고 했습니다. 하지만 이 방법을 사용하면 코드의 가독성도 떨어지고, 무엇보다 새로운 예외를 추가할때마다 분기처리해서 에러메세지를 가져오는 코드를 수정해야 했습니다.
+  - 다른 방법이 없나 고민하다가, 객체지향의 다형성을 활용하기로 했습니다.  
+    하나의 메세지로, 객체마다 고유한 방식으로 응답할 수 있는 기능인 다형성을 적용하면,  
+     중복코드를 최소화하면서 상황에 맞는 에러메세지를 만들 수 있겠다는 생각이 들었습니다.  
+
+- **에러메세지 생성을 위한 인터페이스**
+
+  - [인터페이스 코드보기](https://github.com/Malloc72P/QnaOverflow/blob/b1435a803ccc606cf0ddccf01bf8e81a9af70800/be/qnaboard/src/main/java/scra/qnaboard/service/exception/DescribableException.java#L7)
+  - [NoSessionUser 코드보기](https://github.com/Malloc72P/QnaOverflow/blob/b1435a803ccc606cf0ddccf01bf8e81a9af70800/be/qnaboard/src/main/java/scra/qnaboard/configuration/auth/NoSessionUserException.java#L9)
+
+  ```java
+  /**
+   * 에러페이지의 설명에 들어갈 메세지의 코드를 반환하는 기능을 가지고 있는 인터페이스.
+   * 이걸 구현하는 클래스는 에러페이지의 설명에 들어갈 메세지 코드를 반환할 수 있어야 함
+   */
+  public interface DescribableException {
+      String describeMessage();
+  }
+  
+  /**
+   * 세션에서 유저DTO를 찾지 못한 경우 발생하는 예외.
+   * 로그인되지 않은 상태에서 로그인이 필요한 작업을 요청하는 경우 해당 예외가 발생된다
+   */
+  public class NoSessionUserException extends RuntimeException 
+      implements DescribableException {
+  	/*...생략*/
+      
+      //로그인 한 다음 다시 시도해달라는 메세지코드를 반환함.
+      @Override
+      public String describeMessage() {
+          return "ui.error.page-desc-no-log-in";
+      }
+  }
+  ```
+
+  - `DescribableException`라는 인터페이스를 만들고, 애플리케이션에서 발생시키는 모든 예외 클래스에서 구현하도록 했습니다. 
+  - 해당 인터페이스를 구현한 클래스에선, 자신의 예외 상황에 맞는 메세지를 반환하도록 구현했습니다.
+  - `NoSessionUserException`에선 로그인 한 다음 다시 시도해달라는 메세지의 코드인 `ui.error.page-desc-no-log-in`를 반환하도록 구현했습니다.
+
+- **인터페이스 구현 및 사용**  - [코드보기](https://github.com/Malloc72P/QnaOverflow/blob/b1435a803ccc606cf0ddccf01bf8e81a9af70800/be/qnaboard/src/main/java/scra/qnaboard/web/exception/GlobalErrorControllerAdvice.java#L103)
+
+  ```java
+  private void updateModelByException(Model model, Locale locale,
+                                      String titleCode, String reasonCode, 
+                                      DescribableException exception) {
+      //에러페이지에 필요한 DTO 생성
+      ErrorDTO errorDTO = ErrorDTO.builder()
+          .title(messageSource.getMessage(titleCode, null, locale))
+          .reason(messageSource.getMessage(reasonCode, null, locale))
+          .description(messageSource.getMessage(exception.describeMessage(),
+                                                null, locale))
+          .build();
+      //모델에 에러정보를 담은 DTO를 넣는다
+      model.addAttribute("error", errorDTO);
+  }
+  ```
+
+  - 예외처리를 담당하는 `GlobalErrorControllerAdvice`에서는 `updateModelByException`이라는 메서드를 사용해서 `ErrorDTO`를 생성합니다. 
+  - `ErrorDTO`에는 왜 에러가 발생했는지에 대한 설명인 `description`이라는 필드가 있습니다. 해당 필드를 채우기 위해, `DescribableException` 인터페이스의 `describeMessage()`메서드를 호출합니다.
+  - 애플리케이션 내에서 발생하는 예외 객체들은 `DescribableException`인터페이스를 구현했으므로, 각자의 고유한 방식으로 메세지코드를 생성해서 반환합니다.
+  - 반환받은 메세지코드를 가지고 메세지소스에서 에러메세지를 꺼내도록 구현하여, 중복코드나 복잡한 분기처리 없이, 예외 상황에 맞는 에러메세지를 사용자에게 보여줄 수 있었습니다.
 
 
-### 7.3 Post/Redirection/Get 패턴 적용
+### 7.4 Post/Redirection/Get 패턴 적용
 
 - **PRG 패턴 적용을 통해 의도하지 않은 Post요청 방지** 
   [질문글 생성 후 리다이렉트하는 코드](https://github.com/Malloc72P/QnaBoard/blob/76c4759624f2162745340460390b6882cae2a23e/be/qnaboard/src/main/java/scra/qnaboard/web/controller/QuestionController.java#L111)
-
   - Post 요청에 대한 응답이 페이지인 경우, 브라우저를 새로고침하는 순간, Post요청이 다시 전송되는 문제가 있었습니다. 이렇게 되면 같은 내용의 질문글을 중복해서 생성하게 되므로 막을 방법이 필요했습니다.
-
+  
   - 그래서 PRG 패턴을 적용하였습니다. 페이지를 응답하지 않고, 리다이렉트를 시켰습니다. 리다이렉트 된 페이지에서 새로고침을 해도 Post요청이 아닌 페이지에 대한 Get요청을 날리기 때문에, 중복된 질문글 생성요청을  날리는 문제를 해결할 수 있었습니다.
 
 
-### 7.4 페이지 새로고침 최소화
+### 7.5 페이지 새로고침 최소화
 
 - 질문글 상세보기 페이지는 여러 쿼리를 발생시킵니다. 질문글과 관련된 모든 답변글을 불러와야 하고, 각각의 게시글에 달려있는 댓글도 가져와야 합니다. 그런데, 댓글이나 답변글을 작성하거나 수정, 삭제할때마다 질문글 상세보기 페이지를 새로고침해버리면 또 다시 여러 개의 쿼리가 발생하게 됩니다. 
 - 질문글 상세보기 페이지의 새로고침 없이, 댓글과 답변글에 대한 생성, 수정, 삭제를 하는게 더 효율적이라는 판단을 했습니다. 그래서 답변글과 댓글 생성 수정 삭제 기능은 API로 개발하였습니다.
@@ -473,7 +536,7 @@ public Optional<Comment> commentWithAuthor(long commentId) {
   - [자바스크립트 코드보기](https://github.com/Malloc72P/QnaBoard/blob/76c4759624f2162745340460390b6882cae2a23e/be/qnaboard/src/main/resources/static/js/lib/answer.js#L52)
 
 
-### 7.5 사용자 입력 검증 및 사용자에게 입력오류 알려주기
+### 7.6 사용자 입력 검증 및 사용자에게 입력오류 알려주기
 
 - **검증의 필요성**
   - 질문글 생성요청을 할 때, 사용자 입력을 검증해야 했습니다. 그래야 잘못된 값으로 엔티티를 생성하려는 시도를 막을 수 있기 때문입니다.
@@ -507,7 +570,7 @@ public Optional<Comment> commentWithAuthor(long commentId) {
     ```
 
 
-### 7.6 예외처리
+### 7.7 예외처리
 
 - **특정 예외에 대한 처리** - [코드보기](https://github.com/Malloc72P/QnaBoard/blob/76c4759624f2162745340460390b6882cae2a23e/be/qnaboard/src/main/java/scra/qnaboard/web/exception/GlobalErrorControllerAdvice.java#L22)
 
@@ -584,7 +647,7 @@ public Optional<Comment> commentWithAuthor(long commentId) {
   - 로그인하지 않고 질문글 추천기능을 이용하면 예외가 발생하고, 아래와 같이 사용자에게 보여줍니다.
     ![image-20220211225142601](https://i.imgur.com/M15Ynzs.png)
 
-### 7.7 로그인 처리
+### 7.8 로그인 처리
 
 - **로그인 처리를 위해 세션 사용 & ArgumentResolver 활용** - [코드보기](https://github.com/Malloc72P/QnaBoard/blob/76c4759624f2162745340460390b6882cae2a23e/be/qnaboard/src/main/java/scra/qnaboard/configuration/auth/LoginUserArgumentResolver.java#L20)
 
@@ -665,4 +728,3 @@ server_name qnaoverflow.dase.me www.qnaoverflow.dase.me;
     cp /var/jenkins_home/workspace/ignored-settings/* /var/jenkins_home/workspace/qnaboard-dev/be/qnaboard/src/main/resources/
     ```
 
-# 
