@@ -328,7 +328,7 @@
   - 모든 빈을 올려서 테스트하는 통합테스트도 작성했습니다. 덕분에 운영환경과 유사하게 테스트할 수 있었습니다.
 
 
-### 8.2 상속을 통해 soft delete 코드 재사용 - [코드보기](https://github.com/Malloc72P/QnaBoard/blob/76c4759624f2162745340460390b6882cae2a23e/be/qnaboard/src/main/java/scra/qnaboard/domain/entity/post/Post.java#L39)
+### 8.2 상속을 통해 soft delete 코드 재사용 - [코드보기](https://github.com/Malloc72P/QnaOverflow/blob/76c4759624f2162745340460390b6882cae2a23e/be/qnaboard/src/main/java/scra/qnaboard/domain/entity/post/Post.java#L58)
 
 - **공통기능 추출 후 추상 클래스(Post) 생성해서 해결하기**
 
@@ -454,7 +454,7 @@
 - **4xx, 5xx 에러 처리**
 
   - WAS까지 전파되는 예외를 처리하기 위해 스프링 부트에서 제공하는 기능을 이용했습니다
-  - 아래의 이미지와 같이, /template/error밑에 에러페이지를 생성하여 처리했습니다
+  - 아래의 이미지와 같이, /template/error밑에 에러페이지를 생성하여 처리했습니다  
     ![](https://i.imgur.com/v3X4Ha2.png)
 
 - **API 예외처리**
