@@ -191,7 +191,7 @@
 
 - **질문글 검색**
   - 사용자는 위의 이미지처럼 검색어를 입력해서 질문글을 검색합니다
-  - [직접 검색해보기](https://qnaoverflow.dase.me/questions?searchInput=%2522blandit%2522+answers%253A2+%255Bdefinition%255D+)
+  - [직접 검색해보기](https://qnaoverflow.dase.me/questions?searchInput=%22blandit%22+answers%3A2+%5Bdefinition%5D)
 - **질문글 검색요청 및 요청 파라미터**
   - 사용자의 브라우저는 GET 요청을 서버로 전송합니다.
   - 사용자가 입력한 검색어는 쿼리스트링으로 URL에 붙어서 서버에 전송됩니다
@@ -265,7 +265,8 @@
     그러면 booleanBuilder에 의해 해당 조건은 쿼리에 추가되지 않고 무시됩니다.
     반면, DTO에 제목에 대한 검색어가 있다면 조건이 쿼리에 추가됩니다.
     이러한 방식으로 Where절을 동적으로 생성합니다.
-  - 문자열로 JPQL을 직접 작성했다면, 상황에 따라 달라지는 Where절을 만드는게 매우 어려웠을 것 같은데, 
+  - 문자열로 JPQL을 
+  작성했다면, 상황에 따라 달라지는 Where절을 만드는게 매우 어려웠을 것 같은데, 
     QueryDSL 덕분에 편하게 작성할 수 있었던 것 같습니다.
 
 - **질문글에 달린 태그 조회(N + 1 문제 해결)**  [코드보기](https://github.com/Malloc72P/QnaBoard/blob/76c4759624f2162745340460390b6882cae2a23e/be/qnaboard/src/main/java/scra/qnaboard/domain/repository/question/QuestionSearchListRepository.java#L70)
